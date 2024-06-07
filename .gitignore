@@ -4,8 +4,6 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 *.user
-*opencover.xml
-coverage.xml
 .idea/
 
 # Client

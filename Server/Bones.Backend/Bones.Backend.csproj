@@ -11,10 +11,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DataAccess\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Bones.Database\Bones.Database.csproj" />
     </ItemGroup>
 

@@ -1,9 +1,9 @@
-namespace Bones.Backend.UnitTests.Features.Accounts;
+namespace Bones.Database.UnitTests.Operations.Accounts;
 
 /// <summary>
 ///   Tests for the VerifyAccountEmail handler.
 /// </summary>
-public class VerifyAccountEmailTests : TestBase
+public class VerifyAccountEmailDb : TestBase
 {
     // TODO: write these
 }
