@@ -13,12 +13,12 @@ using Serilog;
 namespace Bones.Api;
 
 /// <summary>
-///   Should be self-explanatory as to what this is.
+///     Should be self-explanatory as to what this is.
 /// </summary>
 public static class Program
 {
     /// <summary>
-    ///   The main character of the project.
+    ///     The main character of the project.
     /// </summary>
     /// <param name="args">Arg, I'm a pirate.</param>
     public static void Main(string[] args)
@@ -32,7 +32,7 @@ public static class Program
 
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
             loggerConfig.ReadFrom.Configuration(builder.Configuration)
-                        .ReadFrom.Services(serviceProvider)
+                .ReadFrom.Services(serviceProvider)
         );
 
         builder.Services.AddBonesDbContext();

@@ -3,12 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bones.Database.Infrastructure.Extensions;
 
 /// <summary>
-///   Extensions for IServiceCollection
+///     Extensions for IServiceCollection
 /// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    ///   Adds the DbContext to the DI registry
+    ///     Adds the DbContext to the DI registry
     /// </summary>
     /// <param name="serviceCollection"></param>
     /// <returns></returns>

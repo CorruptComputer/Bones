@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Bones.Database.Models;
 
 /// <summary>
-///   Result from a query.
+///     Result from a query.
 /// </summary>
 /// <typeparam name="TResult"></typeparam>
 [Serializable]
@@ -11,22 +11,22 @@ namespace Bones.Database.Models;
 public sealed record DbQueryResponse<TResult>
 {
     /// <summary>
-    ///   Was the command successful?
+    ///     Was the command successful?
     /// </summary>
     public required bool Success { get; init; } = true;
 
     /// <summary>
-    ///   If the query was successful, this should have some data in it.
+    ///     If the query was successful, this should have some data in it.
     /// </summary>
-    public TResult? Result { get; init; } = default;
+    public TResult? Result { get; init; }
 
     /// <summary>
-    ///   If the command failed, why?
+    ///     If the command failed, why?
     /// </summary>
     public string? FailureReason { get; init; } = null;
 
     /// <summary>
-    ///   Translates a DbQueryResponse&lt;TResult&gt; into a TResult?
+    ///     Translates a DbQueryResponse&lt;TResult&gt; into a TResult?
     /// </summary>
     /// <param name="response">The DbQueryResponse&lt;TResult&gt;</param>
     /// <returns>The newly translated TResult?</returns>
@@ -41,7 +41,7 @@ public sealed record DbQueryResponse<TResult>
     }
 
     /// <summary>
-    ///   Translates a TResult? into a DbQueryResponse&lt;TResult&gt;
+    ///     Translates a TResult? into a DbQueryResponse&lt;TResult&gt;
     /// </summary>
     /// <param name="result">The TResult? you want to translate</param>
     /// <returns>The newly translated DbQueryResponse&lt;TResult&gt;</returns>

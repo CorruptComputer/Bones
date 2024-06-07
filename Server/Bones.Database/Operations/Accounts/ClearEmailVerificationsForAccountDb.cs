@@ -5,14 +5,15 @@ using MediatR;
 namespace Bones.Database.Operations.Accounts;
 
 /// <summary>
-///   
 /// </summary>
 /// <param name="AccountId"></param>
 public record ClearEmailVerificationsForAccountDbCommand(long AccountId) : IRequest<DbCommandResponse>;
 
-internal class ClearEmailVerificationsForAccountDbHandler(BonesDbContext dbContext) : IRequestHandler<ClearEmailVerificationsForAccountDbCommand, DbCommandResponse>
+internal class ClearEmailVerificationsForAccountDbHandler(BonesDbContext dbContext)
+    : IRequestHandler<ClearEmailVerificationsForAccountDbCommand, DbCommandResponse>
 {
-    public async Task<DbCommandResponse> Handle(ClearEmailVerificationsForAccountDbCommand request, CancellationToken cancellationToken)
+    public async Task<DbCommandResponse> Handle(ClearEmailVerificationsForAccountDbCommand request,
+        CancellationToken cancellationToken)
     {
         IEnumerable<AccountEmailVerification> oldVerifications = dbContext.AccountEmailVerifications
             .OrderBy(v => v.AccountId)

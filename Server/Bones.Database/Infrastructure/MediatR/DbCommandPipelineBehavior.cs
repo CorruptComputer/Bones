@@ -8,7 +8,8 @@ namespace Bones.Database.Infrastructure.MediatR;
 internal class DbCommandPipelineBehavior<TRequest> : IPipelineBehavior<TRequest, DbCommandResponse>
     where TRequest : notnull
 {
-    public async Task<DbCommandResponse> Handle(TRequest request, RequestHandlerDelegate<DbCommandResponse> next, CancellationToken cancellationToken)
+    public async Task<DbCommandResponse> Handle(TRequest request, RequestHandlerDelegate<DbCommandResponse> next,
+        CancellationToken cancellationToken)
     {
         Guid requestId = Guid.NewGuid();
         bool hasException = false;
@@ -41,7 +42,8 @@ internal class DbCommandPipelineBehavior<TRequest> : IPipelineBehavior<TRequest,
             }
             else
             {
-                Log.Error($"DB Command Errored [{requestId}] | {exception?.GetType().FullName ?? "No Name"} | {stopwatch.ElapsedMilliseconds}ms | {exception?.Message ?? "No Message"} | {typeof(TRequest).FullName} | {request.ToString()}");
+                Log.Error(
+                    $"DB Command Errored [{requestId}] | {exception?.GetType().FullName ?? "No Name"} | {stopwatch.ElapsedMilliseconds}ms | {exception?.Message ?? "No Message"} | {typeof(TRequest).FullName} | {request.ToString()}");
             }
         }
     }

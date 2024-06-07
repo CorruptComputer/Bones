@@ -8,6 +8,14 @@ internal class BonesDbContext(IConfiguration configuration) : DbContext
 {
     private const string BonesDbConnectionStringKey = "BonesDb";
 
+    internal DbSet<Account> Accounts { get; set; }
+
+    internal DbSet<AccountEmailVerification> AccountEmailVerifications { get; set; }
+
+    internal DbSet<TaskSchedule> TaskSchedules { get; set; }
+
+    internal DbSet<TaskHistory> TaskHistories { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         string useInMemoryDbStr = configuration["Database:UseInMemoryDb"] ?? "false";
@@ -16,10 +24,8 @@ internal class BonesDbContext(IConfiguration configuration) : DbContext
         if (useInMemoryDb)
         {
             // Name needs to be unique, else the tests will clobber each other
-            optionsBuilder.UseInMemoryDatabase($"BonesInMemoryDb-{Guid.NewGuid()}", options =>
-            {
-                options.EnableNullChecks();
-            });
+            optionsBuilder.UseInMemoryDatabase($"BonesInMemoryDb-{Guid.NewGuid()}",
+                options => { options.EnableNullChecks(); });
         }
         else
         {
@@ -33,12 +39,4 @@ internal class BonesDbContext(IConfiguration configuration) : DbContext
             optionsBuilder.UseNpgsql(connectionString);
         }
     }
-
-    internal DbSet<Account> Accounts { get; set; }
-
-    internal DbSet<AccountEmailVerification> AccountEmailVerifications { get; set; }
-
-    internal DbSet<TaskSchedule> TaskSchedules { get; set; }
-
-    internal DbSet<TaskHistory> TaskHistories { get; set; }
 }

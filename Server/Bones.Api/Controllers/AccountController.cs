@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace Bones.Api.Controllers;
 
 /// <summary>
-///   Manages API functions relating to accounts.
+///     Manages API functions relating to accounts.
 /// </summary>
 /// <param name="sender">MediatR sender to communicate with the back-end.</param>
 public class AccountController(ISender sender) : BonesControllerBase(sender)
 {
     /// <summary>
-    ///   Creates a new account.
+    ///     Creates a new account.
     /// </summary>
     /// <param name="email">The email address for the new account.</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
@@ -31,7 +31,7 @@ public class AccountController(ISender sender) : BonesControllerBase(sender)
     }
 
     /// <summary>
-    ///   Verify the account email.
+    ///     Verify the account email.
     /// </summary>
     /// <param name="accountId">Account ID that is being verified</param>
     /// <param name="token">Please drink verification can.</param>
@@ -51,7 +51,7 @@ public class AccountController(ISender sender) : BonesControllerBase(sender)
     }
 
     /// <summary>
-    ///   Change the email address on the account.
+    ///     Change the email address on the account.
     /// </summary>
     /// <param name="accountId">Account ID to change the email on.</param>
     /// <param name="email">New email address for the account.</param>

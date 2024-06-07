@@ -7,7 +7,7 @@ using MediatR;
 namespace Bones.Backend.Features.Accounts;
 
 /// <summary>
-///   Command for creating an account.
+///     Command for creating an account.
 /// </summary>
 /// <param name="Email">Email address to use for the account.</param>
 public record CreateAccountCommand(string Email) : IRequest<CommandResponse>;
@@ -28,7 +28,8 @@ internal class CreateAccountHandler(ISender sender) : IRequestHandler<CreateAcco
 
 
         // Verify no other users in the DB have this email already
-        DbCommandResponse emailAvailable = await sender.Send(new EmailAvailableForUseDbCommand(request.Email), cancellationToken);
+        DbCommandResponse emailAvailable =
+            await sender.Send(new EmailAvailableForUseDbCommand(request.Email), cancellationToken);
         if (!emailAvailable.Success)
         {
             return emailAvailable;
@@ -43,7 +44,8 @@ internal class CreateAccountHandler(ISender sender) : IRequestHandler<CreateAcco
             return createAccount;
         }
 
-        CommandResponse emailVerification = await sender.Send(new CreateEmailVerificationCommand(createAccount.Id.Value), cancellationToken);
+        CommandResponse emailVerification =
+            await sender.Send(new CreateEmailVerificationCommand(createAccount.Id.Value), cancellationToken);
 
         if (!emailVerification.Success)
         {
@@ -51,7 +53,8 @@ internal class CreateAccountHandler(ISender sender) : IRequestHandler<CreateAcco
             {
                 Success = false,
                 Id = createAccount.Id.Value,
-                FailureReason = $"Account created, but failed to create verification email. Reason: {emailVerification.FailureReason}"
+                FailureReason =
+                    $"Account created, but failed to create verification email. Reason: {emailVerification.FailureReason}"
             };
         }
 

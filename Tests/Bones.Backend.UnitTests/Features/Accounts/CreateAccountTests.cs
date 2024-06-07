@@ -1,15 +1,16 @@
 using Bones.Backend.Features.Accounts;
+using Bones.Database.DbSets;
 using Bones.UnitTests.Shared.TestOperations.Accounts;
 
 namespace Bones.Backend.UnitTests.Features.Accounts;
 
 /// <summary>
-///   Tests for the CreateAccount handler.
+///     Tests for the CreateAccount handler.
 /// </summary>
 public class CreateAccountTests : TestBase
 {
     /// <summary>
-    ///   Valid emails should have the account created.
+    ///     Valid emails should have the account created.
     /// </summary>
     /// <param name="email">The email address to test.</param>
     [Theory]
@@ -25,13 +26,14 @@ public class CreateAccountTests : TestBase
         createAccount.Success.Should().BeTrue();
         createAccount.Id.Should().Be(1);
 
-        IEnumerable<GetEmailVerificationForAccountResponse> verifications = await Sender.Send(new GetEmailVerificationForAccountQuery(createAccount.Id!.Value));
+        IEnumerable<AccountEmailVerification> verifications =
+            await Sender.Send(new GetEmailVerificationForAccountQuery(createAccount.Id!.Value));
 
         verifications.Count().Should().Be(1);
     }
 
     /// <summary>
-    ///   Invalid emails should not have the account created.
+    ///     Invalid emails should not have the account created.
     /// </summary>
     /// <param name="email">The email address to test.</param>
     [Theory]
@@ -52,7 +54,7 @@ public class CreateAccountTests : TestBase
     }
 
     /// <summary>
-    ///   Duplicate emails should not allow the account to be created.
+    ///     Duplicate emails should not allow the account to be created.
     /// </summary>
     [Fact]
     public async Task DuplicateEmail_ShouldFail()

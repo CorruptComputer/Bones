@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bones.Database.Operations.Tasks;
 
 /// <summary>
-///   DB Command for setting a task history entry to DNF.
+///     DB Command for setting a task history entry to DNF.
 /// </summary>
 /// <param name="TaskHistoryId">ID of the History to DNF</param>
 public record SetTaskDnfDbCommand(long TaskHistoryId) : IRequest<DbCommandResponse>;
@@ -32,7 +32,9 @@ internal class SetTaskDnfDbHandler(BonesDbContext dbContext) : IRequestHandler<S
         taskHistory.ErrorMessage = "DNF";
         taskHistory.EndDateTime = DateTimeOffset.MaxValue;
 
-        TaskSchedule? schedule = await dbContext.TaskSchedules.FirstOrDefaultAsync(ts => ts.TaskName == taskHistory.TaskName, cancellationToken);
+        TaskSchedule? schedule =
+            await dbContext.TaskSchedules.FirstOrDefaultAsync(ts => ts.TaskName == taskHistory.TaskName,
+                cancellationToken);
         if (schedule == null)
         {
             return new()

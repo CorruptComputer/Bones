@@ -7,7 +7,7 @@ using MediatR;
 namespace Bones.Backend.Features.Accounts;
 
 /// <summary>
-///   Command for changing the accounts Email Address.
+///     Command for changing the accounts Email Address.
 /// </summary>
 /// <param name="AccountId">Account ID of the account to change it on.</param>
 /// <param name="Email">New email address to be used.</param>
@@ -27,6 +27,7 @@ internal class ChangeAccountEmailHandler(ISender sender) : IRequestHandler<Chang
             };
         }
 
+
         DbCommandResponse emailChanged =
             await sender.Send(new ChangeAccountEmailDbCommand(request.AccountId, request.Email));
 
@@ -35,14 +36,16 @@ internal class ChangeAccountEmailHandler(ISender sender) : IRequestHandler<Chang
             return emailChanged;
         }
 
-        CommandResponse result = await sender.Send(new CreateEmailVerificationCommand(request.AccountId), cancellationToken);
+        CommandResponse result =
+            await sender.Send(new CreateEmailVerificationCommand(request.AccountId), cancellationToken);
 
         if (!result.Success)
         {
             return new()
             {
                 Success = false,
-                FailureReason = $"Email updated, but failed to create verification email. Reason: {result.FailureReason}"
+                FailureReason =
+                    $"Email updated, but failed to create verification email. Reason: {result.FailureReason}"
             };
         }
 

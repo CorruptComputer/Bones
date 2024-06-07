@@ -1,7 +1,7 @@
 namespace Bones.Database.UnitTests.Operations.Accounts;
 
 /// <summary>
-///   Tests for the ChangeAccountEmailDb handler.
+///     Tests for the ChangeAccountEmailDb handler.
 /// </summary>
 public class ChangeAccountEmailDbTests : TestBase
 {

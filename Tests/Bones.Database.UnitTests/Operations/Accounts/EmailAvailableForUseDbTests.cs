@@ -1,7 +1,7 @@
 namespace Bones.Database.UnitTests.Operations.Accounts;
 
 /// <summary>
-///   Tests for the EmailAvailableForUseDb handler.
+///     Tests for the EmailAvailableForUseDb handler.
 /// </summary>
 public class EmailAvailableForUseDbTests : TestBase
 {

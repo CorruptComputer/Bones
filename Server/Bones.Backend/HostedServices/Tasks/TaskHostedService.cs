@@ -1,6 +1,4 @@
 using Bones.Backend.HostedServices.Tasks.Hourly;
-using Bones.Database.Models;
-using Bones.Database.Operations.Tasks;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -9,15 +7,22 @@ namespace Bones.Backend.HostedServices.Tasks;
 
 internal class TaskHostedService(ISender sender) : IHostedService, IDisposable
 {
-    private Timer? _timer;
-    private readonly List<TaskBase> _registeredTasks = [
+    private readonly List<TaskBase> _registeredTasks =
+    [
         // Variable
         // Hourly
-        new CleanupExpiredEmailVerifications(sender),
+        new CleanupExpiredEmailVerifications(sender)
         // Daily
         // Weekly
         // Monthly
     ];
+
+    private Timer? _timer;
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
 
     public async Task StartAsync(CancellationToken stoppingToken)
     {
@@ -26,6 +31,15 @@ internal class TaskHostedService(ISender sender) : IHostedService, IDisposable
         await CheckForDnfTasks();
 
         _timer = new(CheckForTasksReadyToRun, null, TimeSpan.Zero, TimeSpan.FromSeconds(3));
+    }
+
+    public Task StopAsync(CancellationToken stoppingToken)
+    {
+        Log.Information("Task Service is stopping.");
+        _timer?.Dispose();
+        _timer = null;
+
+        return Task.CompletedTask;
     }
 
     private Task CheckForDnfTasks()
@@ -85,19 +99,5 @@ internal class TaskHostedService(ISender sender) : IHostedService, IDisposable
         //        }
         //    }
         //});
-    }
-
-    public Task StopAsync(CancellationToken stoppingToken)
-    {
-        Log.Information("Task Service is stopping.");
-        _timer?.Dispose();
-        _timer = null;
-
-        return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        _timer?.Dispose();
     }
 }

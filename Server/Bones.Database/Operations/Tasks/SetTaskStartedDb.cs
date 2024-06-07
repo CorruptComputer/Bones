@@ -7,16 +7,18 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace Bones.Database.Operations.Tasks;
 
 /// <summary>
-///   DB Command for setting a task to running and logging its start time.
+///     DB Command for setting a task to running and logging its start time.
 /// </summary>
 /// <param name="TaskName">Name of the task to start</param>
 public record SetTaskStartedDbCommand(string TaskName) : IRequest<DbCommandResponse>;
 
-internal class SetTaskStartedDbHandler(BonesDbContext dbContext) : IRequestHandler<SetTaskStartedDbCommand, DbCommandResponse>
+internal class SetTaskStartedDbHandler(BonesDbContext dbContext)
+    : IRequestHandler<SetTaskStartedDbCommand, DbCommandResponse>
 {
     public async Task<DbCommandResponse> Handle(SetTaskStartedDbCommand request, CancellationToken cancellationToken)
     {
-        TaskSchedule? schedule = await dbContext.TaskSchedules.FirstOrDefaultAsync(ts => ts.TaskName == request.TaskName, cancellationToken);
+        TaskSchedule? schedule =
+            await dbContext.TaskSchedules.FirstOrDefaultAsync(ts => ts.TaskName == request.TaskName, cancellationToken);
         if (schedule == null)
         {
             schedule = new()

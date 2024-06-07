@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - '*'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-        
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:

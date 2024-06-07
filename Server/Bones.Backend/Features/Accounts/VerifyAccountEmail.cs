@@ -5,7 +5,6 @@ using MediatR;
 namespace Bones.Backend.Features.Accounts;
 
 /// <summary>
-///   
 /// </summary>
 /// <param name="AccountId"></param>
 /// <param name="Token"></param>

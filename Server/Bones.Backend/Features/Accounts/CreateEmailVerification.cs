@@ -6,25 +6,27 @@ using MediatR;
 namespace Bones.Backend.Features.Accounts;
 
 /// <summary>
-///   Command for creating an email verification.
+///     Command for creating an email verification.
 /// </summary>
 /// <param name="AccountId">AccountId to require verification</param>
 public record CreateEmailVerificationCommand(long AccountId) : IRequest<CommandResponse>;
 
-internal class CreateEmailVerificationHandler(ISender sender) : IRequestHandler<CreateEmailVerificationCommand, CommandResponse>
+internal class CreateEmailVerificationHandler(ISender sender)
+    : IRequestHandler<CreateEmailVerificationCommand, CommandResponse>
 {
-    public async Task<CommandResponse> Handle(CreateEmailVerificationCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(CreateEmailVerificationCommand request,
+        CancellationToken cancellationToken)
     {
-
-
-        DbCommandResponse clearOldVerifications = await sender.Send(new ClearEmailVerificationsForAccountDbCommand(request.AccountId), cancellationToken);
+        DbCommandResponse clearOldVerifications =
+            await sender.Send(new ClearEmailVerificationsForAccountDbCommand(request.AccountId), cancellationToken);
 
         if (!clearOldVerifications.Success)
         {
             return clearOldVerifications;
         }
 
-        DbCommandResponse createVerification = await sender.Send(new CreateEmailVerificationDbCommand(request.AccountId), cancellationToken);
+        DbCommandResponse createVerification =
+            await sender.Send(new CreateEmailVerificationDbCommand(request.AccountId), cancellationToken);
 
         return createVerification;
     }

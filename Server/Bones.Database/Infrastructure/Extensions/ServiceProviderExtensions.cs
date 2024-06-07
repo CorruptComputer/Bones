@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bones.Database.Infrastructure.Extensions;
 
 /// <summary>
-///   Extensions for IServiceProvider
+///     Extensions for IServiceProvider
 /// </summary>
 public static class ServiceProviderExtensions
 {
     /// <summary>
-    ///   Migrates the DB up to the latest version
+    ///     Migrates the DB up to the latest version
     /// </summary>
     /// <param name="serviceProvider"></param>
     public static void MigrateBonesDb(this IServiceProvider serviceProvider)

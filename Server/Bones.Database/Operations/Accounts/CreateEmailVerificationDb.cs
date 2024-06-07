@@ -6,14 +6,16 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace Bones.Database.Operations.Accounts;
 
 /// <summary>
-///   DB Command for generating an email verification token and queuing an email to be sent.
+///     DB Command for generating an email verification token and queuing an email to be sent.
 /// </summary>
 /// <param name="AccountId">Account ID that must drink the verification can.</param>
 public record CreateEmailVerificationDbCommand(long AccountId) : IRequest<DbCommandResponse>;
 
-internal class CreateEmailVerificationDbHandler(BonesDbContext dbContext) : IRequestHandler<CreateEmailVerificationDbCommand, DbCommandResponse>
+internal class CreateEmailVerificationDbHandler(BonesDbContext dbContext)
+    : IRequestHandler<CreateEmailVerificationDbCommand, DbCommandResponse>
 {
-    public async Task<DbCommandResponse> Handle(CreateEmailVerificationDbCommand request, CancellationToken cancellationToken)
+    public async Task<DbCommandResponse> Handle(CreateEmailVerificationDbCommand request,
+        CancellationToken cancellationToken)
     {
         EntityEntry<AccountEmailVerification> created = await dbContext.AccountEmailVerifications.AddAsync(new()
         {

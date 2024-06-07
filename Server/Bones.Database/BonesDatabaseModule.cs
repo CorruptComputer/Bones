@@ -6,7 +6,7 @@ using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 namespace Bones.Database;
 
 /// <summary>
-///   Autofac module for the Bones database
+///     Autofac module for the Bones database
 /// </summary>
 public class BonesDatabaseModule : Module
 {

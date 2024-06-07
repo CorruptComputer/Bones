@@ -14,16 +14,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Server\Bones.Backend\Bones.Backend.csproj" />
+        <ProjectReference Include="..\..\Server\Bones.Backend\Bones.Backend.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="appsettings.json">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 

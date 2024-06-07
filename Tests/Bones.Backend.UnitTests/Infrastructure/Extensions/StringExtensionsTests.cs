@@ -3,12 +3,12 @@ using Bones.Backend.Infrastructure.Extensions;
 namespace Bones.Backend.UnitTests.Infrastructure.Extensions;
 
 /// <summary>
-///   Tests for the StringExtensions class
+///     Tests for the StringExtensions class
 /// </summary>
 public class StringExtensionsTests : TestBase
 {
     /// <summary>
-    ///   Valid emails should return true.
+    ///     Valid emails should return true.
     /// </summary>
     /// <param name="email">The email address to test.</param>
     [Theory]
@@ -22,7 +22,7 @@ public class StringExtensionsTests : TestBase
     }
 
     /// <summary>
-    ///   Invalid emails should return false.
+    ///     Invalid emails should return false.
     /// </summary>
     /// <param name="email">The email address to test.</param>
     [Theory]

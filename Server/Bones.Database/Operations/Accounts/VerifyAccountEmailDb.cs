@@ -6,15 +6,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Bones.Database.Operations.Accounts;
 
 /// <summary>
-///   DB Command for verifying an email address for an account.
+///     DB Command for verifying an email address for an account.
 /// </summary>
 /// <param name="AccountId">ID of the account</param>
 /// <param name="Token">Verification can</param>
 public record VerifyAccountEmailDbCommand(long AccountId, Guid Token) : IRequest<DbCommandResponse>;
 
-internal class VerifyAccountEmailDbHandler(BonesDbContext dbContext) : IRequestHandler<VerifyAccountEmailDbCommand, DbCommandResponse>
+internal class VerifyAccountEmailDbHandler(BonesDbContext dbContext)
+    : IRequestHandler<VerifyAccountEmailDbCommand, DbCommandResponse>
 {
-    public async Task<DbCommandResponse> Handle(VerifyAccountEmailDbCommand request, CancellationToken cancellationToken)
+    public async Task<DbCommandResponse> Handle(VerifyAccountEmailDbCommand request,
+        CancellationToken cancellationToken)
     {
         IQueryable<AccountEmailVerification> validMatches = dbContext.AccountEmailVerifications.Where(verification =>
             verification.AccountId == request.AccountId
