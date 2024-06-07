@@ -1,4 +1,4 @@
-using Bones.Database.DbSets;
+using Bones.Database.DbSets.Identity;
 using Bones.Database.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ namespace Bones.Database.Operations.Accounts;
 /// </summary>
 /// <param name="AccountId">The ID of the account to update</param>
 /// <param name="Email">The new email address</param>
-public record ChangeAccountEmailDbCommand(long AccountId, string Email) : IRequest<DbCommandResponse>;
+public record ChangeAccountEmailDbCommand(Guid AccountId, string Email) : IRequest<DbCommandResponse>;
 
 internal class ChangeAccountEmailDbHandler(BonesDbContext dbContext, ISender sender)
     : IRequestHandler<ChangeAccountEmailDbCommand, DbCommandResponse>
@@ -26,7 +26,7 @@ internal class ChangeAccountEmailDbHandler(BonesDbContext dbContext, ISender sen
         }
 
         Account? acct =
-            await dbContext.Accounts.FirstOrDefaultAsync(a => a.AccountId == request.AccountId, cancellationToken);
+            await dbContext.Accounts.FirstOrDefaultAsync(a => a.Id == request.AccountId, cancellationToken);
 
         if (acct == null)
         {
@@ -37,10 +37,9 @@ internal class ChangeAccountEmailDbHandler(BonesDbContext dbContext, ISender sen
             };
         }
 
-        acct.OldEmail = acct.Email;
         acct.Email = request.Email;
-        acct.EmailVerified = false;
-        acct.EmailVerifiedDateTime = null;
+        acct.EmailConfirmed = false;
+        acct.EmailConfirmedDateTime = null;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

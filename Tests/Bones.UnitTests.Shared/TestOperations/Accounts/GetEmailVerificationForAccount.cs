@@ -8,7 +8,7 @@ namespace Bones.UnitTests.Shared.TestOperations.Accounts;
 ///     TEST - Query for getting the accounts Email Verifications.
 /// </summary>
 /// <param name="AccountId">ID of the account to check.</param>
-public record GetEmailVerificationForAccountQuery(long AccountId) : IRequest<IEnumerable<AccountEmailVerification>>;
+public record GetEmailVerificationForAccountQuery(Guid AccountId) : IRequest<IEnumerable<AccountEmailVerification>>;
 
 internal class GetEmailVerificationForAccountHandler(BonesDbContext dbContext)
     : IRequestHandler<GetEmailVerificationForAccountQuery, IEnumerable<AccountEmailVerification>>

@@ -36,10 +36,10 @@ public class AccountController(ISender sender) : BonesControllerBase(sender)
     /// <param name="accountId">Account ID that is being verified</param>
     /// <param name="token">Please drink verification can.</param>
     /// <returns>OK if verified, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPut("{accountId:long}/verify-email/{token:guid}", Name = "VerifyAccountEmailAsync")]
+    [HttpPut("{accountId:guid}/verify-email/{token:guid}", Name = "VerifyAccountEmailAsync")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> VerifyAccountEmailAsync(int accountId, Guid token)
+    public async Task<ActionResult> VerifyAccountEmailAsync(Guid accountId, Guid token)
     {
         BackendCommandResponse response = await Sender.Send(new VerifyAccountEmailCommand(accountId, token));
         if (!response.Success)
@@ -56,10 +56,10 @@ public class AccountController(ISender sender) : BonesControllerBase(sender)
     /// <param name="accountId">Account ID to change the email on.</param>
     /// <param name="email">New email address for the account.</param>
     /// <returns>Accepted if changed, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{accountId:long}/change-email/{email}", Name = "ChangeAccountEmailAsync")]
+    [HttpPost("{accountId:guid}/change-email/{email}", Name = "ChangeAccountEmailAsync")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> ChangeAccountEmailAsync(int accountId, string email)
+    public async Task<ActionResult> ChangeAccountEmailAsync(Guid accountId, string email)
     {
         BackendCommandResponse response = await Sender.Send(new ChangeAccountEmailCommand(accountId, email));
         if (!response.Success)

@@ -11,7 +11,7 @@ namespace Bones.Backend.Features.Accounts;
 /// </summary>
 /// <param name="AccountId">Account ID of the account to change it on.</param>
 /// <param name="Email">New email address to be used.</param>
-public record ChangeAccountEmailCommand(long AccountId, string Email) : IRequest<BackendCommandResponse>;
+public record ChangeAccountEmailCommand(Guid AccountId, string Email) : IRequest<BackendCommandResponse>;
 
 internal class ChangeAccountEmailHandler(ISender sender)
     : IRequestHandler<ChangeAccountEmailCommand, BackendCommandResponse>

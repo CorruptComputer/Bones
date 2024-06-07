@@ -7,14 +7,14 @@ namespace Bones.Database.DbSets;
 ///     Model for the TaskHistory table.
 /// </summary>
 [Table("TaskHistory")]
-[PrimaryKey(nameof(TaskHistoryId))]
+[PrimaryKey(nameof(Id))]
 public class TaskHistory
 {
     /// <summary>
     ///     Internal ID for the Task History.
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long TaskHistoryId { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     ///     Name of the Task, should usually be set to nameof(ClassName)

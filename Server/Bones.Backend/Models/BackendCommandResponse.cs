@@ -18,7 +18,7 @@ public sealed record BackendCommandResponse
     /// <summary>
     ///     If an ID was generated for something by the command, it can optionally be returned here.
     /// </summary>
-    public long? Id { get; init; }
+    public Guid? Id { get; init; }
 
     /// <summary>
     ///     If the command failed, why?

@@ -2,7 +2,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Backend;
 using Bones.Database;
-using Bones.Database.Extensions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -53,7 +52,7 @@ internal static class TestFactory
                     .ReadFrom.Services(serviceProvider)
             );
 
-            services.AddBonesDbContext();
+            services.AddDbContext<BonesDbContext>();
         });
 
         return hostBuilder.Build();

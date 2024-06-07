@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Bones.Backend;
 using Bones.Backend.Extensions;
 using Bones.Database;
+using Bones.Database.DbSets.Identity;
 using Bones.Database.Extensions;
 using Serilog;
 
@@ -21,6 +22,10 @@ public static class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+
+        builder.Services.AddAuthorization();
+
+
         builder.Services.AddControllers();
 
         if (builder.Environment.IsDevelopment())
@@ -34,7 +39,10 @@ public static class Program
                 .ReadFrom.Services(serviceProvider)
         );
 
-        builder.Services.AddBonesDbContext();
+        builder.Services.AddDbContext<BonesDbContext>();
+        builder.Services.AddIdentityApiEndpoints<Account>()
+            .AddEntityFrameworkStores<BonesDbContext>();
+
         builder.Services.AddBonesHostedServices();
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());

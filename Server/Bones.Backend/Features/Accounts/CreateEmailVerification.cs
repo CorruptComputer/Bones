@@ -9,7 +9,7 @@ namespace Bones.Backend.Features.Accounts;
 ///     Command for creating an email verification.
 /// </summary>
 /// <param name="AccountId">AccountId to require verification</param>
-public record CreateEmailVerificationCommand(long AccountId) : IRequest<BackendCommandResponse>;
+public record CreateEmailVerificationCommand(Guid AccountId) : IRequest<BackendCommandResponse>;
 
 internal class CreateEmailVerificationHandler(ISender sender)
     : IRequestHandler<CreateEmailVerificationCommand, BackendCommandResponse>

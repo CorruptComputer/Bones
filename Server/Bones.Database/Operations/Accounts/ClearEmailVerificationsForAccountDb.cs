@@ -7,7 +7,7 @@ namespace Bones.Database.Operations.Accounts;
 /// <summary>
 /// </summary>
 /// <param name="AccountId"></param>
-public record ClearEmailVerificationsForAccountDbCommand(long AccountId) : IRequest<DbCommandResponse>;
+public record ClearEmailVerificationsForAccountDbCommand(Guid AccountId) : IRequest<DbCommandResponse>;
 
 internal class ClearEmailVerificationsForAccountDbHandler(BonesDbContext dbContext)
     : IRequestHandler<ClearEmailVerificationsForAccountDbCommand, DbCommandResponse>

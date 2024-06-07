@@ -8,7 +8,7 @@ namespace Bones.Backend.Features.Accounts;
 /// </summary>
 /// <param name="AccountId"></param>
 /// <param name="Token"></param>
-public record VerifyAccountEmailCommand(long AccountId, Guid Token) : IRequest<BackendCommandResponse>;
+public record VerifyAccountEmailCommand(Guid AccountId, Guid Token) : IRequest<BackendCommandResponse>;
 
 internal class VerifyAccountEmailHandler(ISender sender)
     : IRequestHandler<VerifyAccountEmailCommand, BackendCommandResponse>

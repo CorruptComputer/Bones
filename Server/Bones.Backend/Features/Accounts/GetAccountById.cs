@@ -1,5 +1,5 @@
 using Bones.Backend.Models;
-using Bones.Database.DbSets;
+using Bones.Database.DbSets.Identity;
 using Bones.Database.Models;
 using Bones.Database.Operations.Accounts;
 using MediatR;
@@ -10,7 +10,7 @@ namespace Bones.Backend.Features.Accounts;
 ///     Query for getting an Account's details by the Account ID.
 /// </summary>
 /// <param name="AccountId">Account ID that you want to get the details of.</param>
-public record GetAccountByIdQuery(long AccountId) : IRequest<BackendQueryResponse<GetAccountByIdResponse>>;
+public record GetAccountByIdQuery(Guid AccountId) : IRequest<BackendQueryResponse<GetAccountByIdResponse>>;
 
 /// <summary>
 ///     Response for getting an Account's details by the Account ID.
@@ -28,7 +28,7 @@ internal class GetAccountByIdHandler(ISender sender)
         DbQueryResponse<Account> dbResponse =
             await sender.Send(new GetAccountByIdDbQuery(request.AccountId), cancellationToken);
 
-        if (!dbResponse.Success || dbResponse.Result == null)
+        if (!dbResponse.Success || dbResponse.Result?.Email == null)
         {
             return new()
             {

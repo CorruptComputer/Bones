@@ -47,7 +47,7 @@ internal class SetTaskStartedDbHandler(BonesDbContext dbContext)
         return new()
         {
             Success = true,
-            Id = created.Entity.TaskHistoryId
+            Id = created.Entity.Id
         };
     }
 }

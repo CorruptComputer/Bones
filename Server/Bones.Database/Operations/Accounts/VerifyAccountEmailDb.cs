@@ -1,4 +1,5 @@
 using Bones.Database.DbSets;
+using Bones.Database.DbSets.Identity;
 using Bones.Database.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace Bones.Database.Operations.Accounts;
 /// </summary>
 /// <param name="AccountId">ID of the account</param>
 /// <param name="Token">Verification can</param>
-public record VerifyAccountEmailDbCommand(long AccountId, Guid Token) : IRequest<DbCommandResponse>;
+public record VerifyAccountEmailDbCommand(Guid AccountId, Guid Token) : IRequest<DbCommandResponse>;
 
 internal class VerifyAccountEmailDbHandler(BonesDbContext dbContext)
     : IRequestHandler<VerifyAccountEmailDbCommand, DbCommandResponse>
@@ -34,7 +35,7 @@ internal class VerifyAccountEmailDbHandler(BonesDbContext dbContext)
 
         await validMatches.ExecuteDeleteAsync(cancellationToken);
 
-        Account? acct = await dbContext.Accounts.FirstOrDefaultAsync(account => account.AccountId == request.AccountId,
+        Account? acct = await dbContext.Accounts.FirstOrDefaultAsync(account => account.Id == request.AccountId,
             cancellationToken);
 
         if (acct == null)
@@ -46,8 +47,8 @@ internal class VerifyAccountEmailDbHandler(BonesDbContext dbContext)
             };
         }
 
-        acct.EmailVerified = true;
-        acct.EmailVerifiedDateTime = DateTime.UtcNow;
+        acct.EmailConfirmed = true;
+        acct.EmailConfirmedDateTime = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

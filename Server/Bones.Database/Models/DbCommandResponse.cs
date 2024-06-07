@@ -17,7 +17,7 @@ public sealed record DbCommandResponse
     /// <summary>
     ///     If an ID was generated for something by the command, it can optionally be returned here.
     /// </summary>
-    public long? Id { get; init; } = null;
+    public Guid? Id { get; init; } = null;
 
     /// <summary>
     ///     If the command failed, why?

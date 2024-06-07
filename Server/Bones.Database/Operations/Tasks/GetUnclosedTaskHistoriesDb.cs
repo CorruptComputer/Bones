@@ -8,12 +8,12 @@ namespace Bones.Database.Operations.Tasks;
 /// <summary>
 ///     DB Query for getting all unclosed task history entry IDs.
 /// </summary>
-public record GetUnclosedTaskHistoriesDbQuery : IRequest<DbQueryResponse<List<long>>>;
+public record GetUnclosedTaskHistoriesDbQuery : IRequest<DbQueryResponse<List<Guid>>>;
 
 internal class GetUnclosedTaskHistoriesDbHandler(BonesDbContext dbContext)
-    : IRequestHandler<GetUnclosedTaskHistoriesDbQuery, DbQueryResponse<List<long>>>
+    : IRequestHandler<GetUnclosedTaskHistoriesDbQuery, DbQueryResponse<List<Guid>>>
 {
-    public async Task<DbQueryResponse<List<long>>> Handle(GetUnclosedTaskHistoriesDbQuery request,
+    public async Task<DbQueryResponse<List<Guid>>> Handle(GetUnclosedTaskHistoriesDbQuery request,
         CancellationToken cancellationToken)
     {
         IQueryable<TaskHistory> unclosed = dbContext.TaskHistories.Where(ts => ts.EndDateTime == null);
@@ -21,7 +21,7 @@ internal class GetUnclosedTaskHistoriesDbHandler(BonesDbContext dbContext)
         return new()
         {
             Success = true,
-            Result = await unclosed.Select(th => th.TaskHistoryId).ToListAsync(cancellationToken)
+            Result = await unclosed.Select(th => th.Id).ToListAsync(cancellationToken)
         };
     }
 }

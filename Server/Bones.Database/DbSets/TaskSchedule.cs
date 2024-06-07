@@ -8,14 +8,14 @@ namespace Bones.Database.DbSets;
 ///     Model for the TaskSchedule table.
 /// </summary>
 [Table("TaskSchedule")]
-[PrimaryKey(nameof(TaskScheduleId))]
+[PrimaryKey(nameof(Id))]
 public class TaskSchedule
 {
     /// <summary>
     ///     Internal ID for the Task Schedule.
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long TaskScheduleId { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     ///     Name of the Task, should usually be set to nameof(ClassName)

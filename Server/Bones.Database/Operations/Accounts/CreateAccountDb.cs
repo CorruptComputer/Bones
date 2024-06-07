@@ -1,4 +1,4 @@
-using Bones.Database.DbSets;
+using Bones.Database.DbSets.Identity;
 using Bones.Database.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -26,8 +26,7 @@ internal class CreateAccountDbHandler(BonesDbContext dbContext, ISender sender)
         EntityEntry<Account> created = await dbContext.Accounts.AddAsync(new()
         {
             CreateDateTime = DateTime.UtcNow,
-            Email = request.Email,
-            EmailVerified = false
+            Email = request.Email
         }, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -35,7 +34,7 @@ internal class CreateAccountDbHandler(BonesDbContext dbContext, ISender sender)
         return new()
         {
             Success = true,
-            Id = created.Entity.AccountId
+            Id = created.Entity.Id
         };
     }
 }

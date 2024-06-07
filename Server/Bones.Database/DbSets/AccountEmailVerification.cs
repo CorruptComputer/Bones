@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Bones.Database.DbSets.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bones.Database.DbSets;
@@ -7,23 +8,25 @@ namespace Bones.Database.DbSets;
 ///     Model for the AccountEmailVerification table.
 /// </summary>
 [Table("AccountEmailVerification")]
-[PrimaryKey(nameof(EmailVerificationId))]
+[PrimaryKey(nameof(Id))]
 public class AccountEmailVerification
 {
     /// <summary>
     ///     Internal ID for the Account Email Verification.
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long EmailVerificationId { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     ///     Internal ID of the account this verification is for.
     /// </summary>
-    public required long AccountId { get; set; }
+    [ForeignKey(nameof(Account))]
+    public required Guid AccountId { get; set; }
 
     /// <summary>
     ///     Verification token.
     /// </summary>
+    // TODO: Might want to use something other than a Guid for this at some point
     public required Guid Token { get; set; }
 
     /// <summary>

@@ -9,7 +9,7 @@ namespace Bones.Database.Operations.Accounts;
 ///     DB Command for generating an email verification token and queuing an email to be sent.
 /// </summary>
 /// <param name="AccountId">Account ID that must drink the verification can.</param>
-public record CreateEmailVerificationDbCommand(long AccountId) : IRequest<DbCommandResponse>;
+public record CreateEmailVerificationDbCommand(Guid AccountId) : IRequest<DbCommandResponse>;
 
 internal class CreateEmailVerificationDbHandler(BonesDbContext dbContext)
     : IRequestHandler<CreateEmailVerificationDbCommand, DbCommandResponse>
@@ -32,7 +32,7 @@ internal class CreateEmailVerificationDbHandler(BonesDbContext dbContext)
         return new()
         {
             Success = true,
-            Id = created.Entity.EmailVerificationId
+            Id = created.Entity.Id
         };
     }
 }

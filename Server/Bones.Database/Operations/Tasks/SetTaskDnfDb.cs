@@ -9,14 +9,14 @@ namespace Bones.Database.Operations.Tasks;
 ///     DB Command for setting a task history entry to DNF.
 /// </summary>
 /// <param name="TaskHistoryId">ID of the History to DNF</param>
-public record SetTaskDnfDbCommand(long TaskHistoryId) : IRequest<DbCommandResponse>;
+public record SetTaskDnfDbCommand(Guid TaskHistoryId) : IRequest<DbCommandResponse>;
 
 internal class SetTaskDnfDbHandler(BonesDbContext dbContext) : IRequestHandler<SetTaskDnfDbCommand, DbCommandResponse>
 {
     public async Task<DbCommandResponse> Handle(SetTaskDnfDbCommand request, CancellationToken cancellationToken)
     {
         TaskHistory? taskHistory =
-            await dbContext.TaskHistories.FirstOrDefaultAsync(th => th.TaskHistoryId == request.TaskHistoryId,
+            await dbContext.TaskHistories.FirstOrDefaultAsync(th => th.Id == request.TaskHistoryId,
                 cancellationToken);
 
         if (taskHistory == null)

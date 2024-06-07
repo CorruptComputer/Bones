@@ -24,7 +24,7 @@ public class CreateAccountTests : TestBase
 
         createAccount.FailureReason.Should().BeNull();
         createAccount.Success.Should().BeTrue();
-        createAccount.Id.Should().Be(1);
+        createAccount.Id.Should().NotBeNull();
 
         IEnumerable<AccountEmailVerification> verifications =
             await Sender.Send(new GetEmailVerificationForAccountQuery(createAccount.Id!.Value));
