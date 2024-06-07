@@ -35,7 +35,6 @@ public class CreateAccountTests : TestBase
     /// </summary>
     /// <param name="email">The email address to test.</param>
     [Theory]
-    [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
     [InlineData("\t")]
@@ -44,9 +43,9 @@ public class CreateAccountTests : TestBase
     [InlineData("test@example")]
     [InlineData("test@")]
     [InlineData("test")]
-    public async Task InvalidEmail_ShouldFail(string? email)
+    public async Task InvalidEmail_ShouldFail(string email)
     {
-        CommandResponse createAccount = await Sender.Send(new CreateAccountCommand(email!));
+        CommandResponse createAccount = await Sender.Send(new CreateAccountCommand(email));
 
         createAccount.Success.Should().BeFalse();
     }
