@@ -10,7 +10,7 @@ namespace Bones.Backend.Features.Accounts;
 ///     Query for getting an Account's details by the Account ID.
 /// </summary>
 /// <param name="AccountId">Account ID that you want to get the details of.</param>
-public record GetAccountByIdQuery(long AccountId) : IRequest<QueryResponse<GetAccountByIdResponse>>;
+public record GetAccountByIdQuery(long AccountId) : IRequest<BackendQueryResponse<GetAccountByIdResponse>>;
 
 /// <summary>
 ///     Response for getting an Account's details by the Account ID.
@@ -20,9 +20,9 @@ public record GetAccountByIdQuery(long AccountId) : IRequest<QueryResponse<GetAc
 public record GetAccountByIdResponse(string Email, DateTimeOffset CreateDateTime);
 
 internal class GetAccountByIdHandler(ISender sender)
-    : IRequestHandler<GetAccountByIdQuery, QueryResponse<GetAccountByIdResponse>>
+    : IRequestHandler<GetAccountByIdQuery, BackendQueryResponse<GetAccountByIdResponse>>
 {
-    public async Task<QueryResponse<GetAccountByIdResponse>> Handle(GetAccountByIdQuery request,
+    public async Task<BackendQueryResponse<GetAccountByIdResponse>> Handle(GetAccountByIdQuery request,
         CancellationToken cancellationToken)
     {
         DbQueryResponse<Account> dbResponse =

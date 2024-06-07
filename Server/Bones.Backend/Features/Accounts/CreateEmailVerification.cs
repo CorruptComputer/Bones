@@ -9,12 +9,12 @@ namespace Bones.Backend.Features.Accounts;
 ///     Command for creating an email verification.
 /// </summary>
 /// <param name="AccountId">AccountId to require verification</param>
-public record CreateEmailVerificationCommand(long AccountId) : IRequest<CommandResponse>;
+public record CreateEmailVerificationCommand(long AccountId) : IRequest<BackendCommandResponse>;
 
 internal class CreateEmailVerificationHandler(ISender sender)
-    : IRequestHandler<CreateEmailVerificationCommand, CommandResponse>
+    : IRequestHandler<CreateEmailVerificationCommand, BackendCommandResponse>
 {
-    public async Task<CommandResponse> Handle(CreateEmailVerificationCommand request,
+    public async Task<BackendCommandResponse> Handle(CreateEmailVerificationCommand request,
         CancellationToken cancellationToken)
     {
         DbCommandResponse clearOldVerifications =

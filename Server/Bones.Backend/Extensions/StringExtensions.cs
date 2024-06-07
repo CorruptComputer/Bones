@@ -1,6 +1,6 @@
 using System.Net.Mail;
 
-namespace Bones.Backend.Infrastructure.Extensions;
+namespace Bones.Backend.Extensions;
 
 internal static class StringExtensions
 {

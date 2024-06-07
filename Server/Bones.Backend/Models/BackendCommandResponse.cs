@@ -7,8 +7,8 @@ namespace Bones.Backend.Models;
 ///     Basic response of any command.
 /// </summary>
 [Serializable]
-[JsonSerializable(typeof(CommandResponse))]
-public sealed record CommandResponse
+[JsonSerializable(typeof(BackendCommandResponse))]
+public sealed record BackendCommandResponse
 {
     /// <summary>
     ///     Was the command successful?
@@ -30,7 +30,7 @@ public sealed record CommandResponse
     /// </summary>
     /// <param name="dbResponse">The DbCommandResponse.</param>
     /// <returns>The newly translated CommandResponse.</returns>
-    public static implicit operator CommandResponse(DbCommandResponse dbResponse)
+    public static implicit operator BackendCommandResponse(DbCommandResponse dbResponse)
     {
         return new()
         {

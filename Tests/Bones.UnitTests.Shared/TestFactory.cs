@@ -2,7 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Backend;
 using Bones.Database;
-using Bones.Database.Infrastructure.Extensions;
+using Bones.Database.Extensions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

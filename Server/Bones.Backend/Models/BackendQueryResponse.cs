@@ -7,8 +7,8 @@ namespace Bones.Backend.Models;
 /// </summary>
 /// <typeparam name="TResult"></typeparam>
 [Serializable]
-[JsonSerializable(typeof(QueryResponse<>))]
-public sealed record QueryResponse<TResult>
+[JsonSerializable(typeof(BackendQueryResponse<>))]
+public sealed record BackendQueryResponse<TResult>
 {
     /// <summary>
     ///     Was the command successful?
@@ -30,7 +30,7 @@ public sealed record QueryResponse<TResult>
     /// </summary>
     /// <param name="response">The QueryResponse&lt;TResult&gt;</param>
     /// <returns>The newly translated TResult?</returns>
-    public static implicit operator TResult?(QueryResponse<TResult> response)
+    public static implicit operator TResult?(BackendQueryResponse<TResult> response)
     {
         if (response.Success == false || response.Result == null)
         {
@@ -45,7 +45,7 @@ public sealed record QueryResponse<TResult>
     /// </summary>
     /// <param name="result">The TResult? you want to translate</param>
     /// <returns>The newly translated QueryResponse&lt;TResult&gt;</returns>
-    public static implicit operator QueryResponse<TResult>(TResult? result)
+    public static implicit operator BackendQueryResponse<TResult>(TResult? result)
     {
         if (result == null)
         {

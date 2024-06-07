@@ -1,4 +1,4 @@
-using Bones.Backend.Infrastructure.Extensions;
+using Bones.Backend.Extensions;
 
 namespace Bones.Backend.UnitTests.Infrastructure.Extensions;
 

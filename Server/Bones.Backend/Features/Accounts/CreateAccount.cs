@@ -1,4 +1,4 @@
-using Bones.Backend.Infrastructure.Extensions;
+using Bones.Backend.Extensions;
 using Bones.Backend.Models;
 using Bones.Database.Models;
 using Bones.Database.Operations.Accounts;
@@ -10,11 +10,11 @@ namespace Bones.Backend.Features.Accounts;
 ///     Command for creating an account.
 /// </summary>
 /// <param name="Email">Email address to use for the account.</param>
-public record CreateAccountCommand(string Email) : IRequest<CommandResponse>;
+public record CreateAccountCommand(string Email) : IRequest<BackendCommandResponse>;
 
-internal class CreateAccountHandler(ISender sender) : IRequestHandler<CreateAccountCommand, CommandResponse>
+internal class CreateAccountHandler(ISender sender) : IRequestHandler<CreateAccountCommand, BackendCommandResponse>
 {
-    public async Task<CommandResponse> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+    public async Task<BackendCommandResponse> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
     {
         // Verify email is valid format
         if (!request.Email.IsValidEmail())
@@ -44,7 +44,7 @@ internal class CreateAccountHandler(ISender sender) : IRequestHandler<CreateAcco
             return createAccount;
         }
 
-        CommandResponse emailVerification =
+        BackendCommandResponse emailVerification =
             await sender.Send(new CreateEmailVerificationCommand(createAccount.Id.Value), cancellationToken);
 
         if (!emailVerification.Success)

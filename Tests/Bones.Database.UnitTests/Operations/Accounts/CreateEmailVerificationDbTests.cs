@@ -21,7 +21,7 @@ public class CreateEmailVerificationDbTests : TestBase
         createAccount.Id.Should().NotBeNull();
 
         // Test
-        CommandResponse createEmailVerification =
+        BackendCommandResponse createEmailVerification =
             await Sender.Send(new CreateEmailVerificationCommand(createAccount.Id!.Value));
         createEmailVerification.Success.Should().BeTrue();
         createEmailVerification.Id.Should().NotBeNull();

@@ -21,7 +21,7 @@ public class AccountController(ISender sender) : BonesControllerBase(sender)
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateAccountAsync(string email)
     {
-        CommandResponse response = await Sender.Send(new CreateAccountCommand(email));
+        BackendCommandResponse response = await Sender.Send(new CreateAccountCommand(email));
         if (!response.Success)
         {
             return BadRequest(response.FailureReason);
@@ -41,7 +41,7 @@ public class AccountController(ISender sender) : BonesControllerBase(sender)
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> VerifyAccountEmailAsync(int accountId, Guid token)
     {
-        CommandResponse response = await Sender.Send(new VerifyAccountEmailCommand(accountId, token));
+        BackendCommandResponse response = await Sender.Send(new VerifyAccountEmailCommand(accountId, token));
         if (!response.Success)
         {
             return BadRequest(response.FailureReason);
@@ -61,7 +61,7 @@ public class AccountController(ISender sender) : BonesControllerBase(sender)
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ChangeAccountEmailAsync(int accountId, string email)
     {
-        CommandResponse response = await Sender.Send(new ChangeAccountEmailCommand(accountId, email));
+        BackendCommandResponse response = await Sender.Send(new ChangeAccountEmailCommand(accountId, email));
         if (!response.Success)
         {
             return BadRequest(response.FailureReason);

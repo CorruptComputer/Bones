@@ -1,5 +1,5 @@
 using Autofac;
-using Bones.Database.Infrastructure.MediatR;
+using Bones.Database.PipelineBehaviors;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 
@@ -17,8 +17,8 @@ public class BonesDatabaseModule : Module
             .Create(ThisAssembly)
             .WithAllOpenGenericHandlerTypesRegistered()
             .WithCustomPipelineBehaviors([
-                typeof(DbCommandPipelineBehavior<>),
-                typeof(DbQueryPipelineBehavior<,>)
+                typeof(DbCommandBehavior<>),
+                typeof(DbQueryBehavior<,>)
             ]);
 
         builder.RegisterMediatR(mediatrConfig.Build());

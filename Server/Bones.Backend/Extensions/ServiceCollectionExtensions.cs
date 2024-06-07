@@ -1,7 +1,7 @@
 using Bones.Backend.HostedServices.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bones.Backend.Infrastructure.Extensions;
+namespace Bones.Backend.Extensions;
 
 /// <summary>
 ///     Extensions for IServiceCollection

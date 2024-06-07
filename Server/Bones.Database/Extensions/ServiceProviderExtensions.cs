@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bones.Database.Infrastructure.Extensions;
+namespace Bones.Database.Extensions;
 
 /// <summary>
 ///     Extensions for IServiceProvider

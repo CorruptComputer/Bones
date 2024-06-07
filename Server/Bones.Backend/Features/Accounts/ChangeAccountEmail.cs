@@ -1,4 +1,4 @@
-using Bones.Backend.Infrastructure.Extensions;
+using Bones.Backend.Extensions;
 using Bones.Backend.Models;
 using Bones.Database.Models;
 using Bones.Database.Operations.Accounts;
@@ -11,11 +11,13 @@ namespace Bones.Backend.Features.Accounts;
 /// </summary>
 /// <param name="AccountId">Account ID of the account to change it on.</param>
 /// <param name="Email">New email address to be used.</param>
-public record ChangeAccountEmailCommand(long AccountId, string Email) : IRequest<CommandResponse>;
+public record ChangeAccountEmailCommand(long AccountId, string Email) : IRequest<BackendCommandResponse>;
 
-internal class ChangeAccountEmailHandler(ISender sender) : IRequestHandler<ChangeAccountEmailCommand, CommandResponse>
+internal class ChangeAccountEmailHandler(ISender sender)
+    : IRequestHandler<ChangeAccountEmailCommand, BackendCommandResponse>
 {
-    public async Task<CommandResponse> Handle(ChangeAccountEmailCommand request, CancellationToken cancellationToken)
+    public async Task<BackendCommandResponse> Handle(ChangeAccountEmailCommand request,
+        CancellationToken cancellationToken)
     {
         // Verify email is valid format
         if (!request.Email.IsValidEmail())
@@ -36,7 +38,7 @@ internal class ChangeAccountEmailHandler(ISender sender) : IRequestHandler<Chang
             return emailChanged;
         }
 
-        CommandResponse result =
+        BackendCommandResponse result =
             await sender.Send(new CreateEmailVerificationCommand(request.AccountId), cancellationToken);
 
         if (!result.Success)

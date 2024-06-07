@@ -20,7 +20,7 @@ public class CreateAccountTests : TestBase
     [InlineData("_test@example.com")]
     public async Task ValidEmail_ShouldSuccessAndCreateEmailVerification(string email)
     {
-        CommandResponse createAccount = await Sender.Send(new CreateAccountCommand(email));
+        BackendCommandResponse createAccount = await Sender.Send(new CreateAccountCommand(email));
 
         createAccount.FailureReason.Should().BeNull();
         createAccount.Success.Should().BeTrue();
@@ -48,7 +48,7 @@ public class CreateAccountTests : TestBase
     [InlineData("test")]
     public async Task InvalidEmail_ShouldFail(string email)
     {
-        CommandResponse createAccount = await Sender.Send(new CreateAccountCommand(email));
+        BackendCommandResponse createAccount = await Sender.Send(new CreateAccountCommand(email));
 
         createAccount.Success.Should().BeFalse();
     }
@@ -60,10 +60,10 @@ public class CreateAccountTests : TestBase
     public async Task DuplicateEmail_ShouldFail()
     {
         const string duplicateEmail = "duplicate@example.com";
-        CommandResponse createAccount = await Sender.Send(new CreateAccountCommand(duplicateEmail));
+        BackendCommandResponse createAccount = await Sender.Send(new CreateAccountCommand(duplicateEmail));
         createAccount.Success.Should().BeTrue();
 
-        CommandResponse duplicateAccount = await Sender.Send(new CreateAccountCommand(duplicateEmail));
+        BackendCommandResponse duplicateAccount = await Sender.Send(new CreateAccountCommand(duplicateEmail));
         duplicateAccount.Success.Should().BeFalse();
     }
 }
