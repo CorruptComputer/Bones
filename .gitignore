@@ -1,0 +1,22 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+*.user
+*opencover.xml
+coverage.xml
+.idea/
+
+# Client
+Bones.Api.Client.xml
+
+# Server
+Bones.Api.xml
+Bones.Backend.xml
+Bones.Database.xml
+
+# Tests
+Bones.Backend.UnitTests.xml
+Bones.Database.UnitTests.xml
+Bones.UnitTests.Shared.xml

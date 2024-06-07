@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <DocumentationFile>Bones.Database.UnitTests.xml</DocumentationFile>
+
+        <IsPackable>false</IsPackable>
+        <IsPublishable>false</IsPublishable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Bones.UnitTests.Shared\Bones.UnitTests.Shared.csproj" />
+    </ItemGroup>
+
+</Project>
