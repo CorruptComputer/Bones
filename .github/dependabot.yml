@@ -1,0 +1,42 @@
+---
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      Microsoft:
+        dependency-type: production
+        patterns:
+          - "^Microsoft.*"
+        exclude-patterns:
+          - "^Microsoft.NET.Test.Sdk"
+      MediatR:
+        dependency-type: production
+        patterns:
+          - "^MediatR"
+          - "^MediatR.*"
+      PostgreSQL:
+        dependency-type: production
+        patterns:
+          - "^Npgsql.EntityFrameworkCore.PostgreSQL"
+          - "^Npgsql.EntityFrameworkCore.PostgreSQL.*"
+      Autofac:
+        dependency-type: production
+        patterns:
+          - "^Autofac"
+          - "^Autofac.*"
+      Serilog:
+        dependency-type: production
+        patterns:
+          - "^Serilog"
+          - "^Serilog.*"
+      Testing:
+        dependency-type: development
+        patterns:
+          - "^FluentAssertions"
+          - "^Microsoft.NET.Test.Sdk"
+          - "^xunit"
+          - "^xunit.*"
+          - "^coverlet.collector"

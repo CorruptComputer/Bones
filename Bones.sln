@@ -5,10 +5,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		LICENSE = LICENSE
 		.gitignore = .gitignore
+		.github\dependabot.yml = .github\dependabot.yml
+		.github\workflows\dotnetcore.yml = .github\workflows\dotnetcore.yml
 	EndProjectSection
 EndProject
 
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{F5BB8FEE-F7C1-40E6-BA6F-D09823B5A333}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client", "Client\Bones.Api.Client\Bones.Api.Client.csproj", "{6876C3F2-63BF-47AE-B701-835BDA39DCFC}"
 EndProject
 
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AFD22481-8267-4E6C-89D9-AB37A3FE020C}"
@@ -27,8 +31,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Backend", "Server\Bones.Backend\Bones.Backend.csproj", "{39FBEAB1-900D-4116-99E5-2B2D593261FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Database", "Server\Bones.Database\Bones.Database.csproj", "{770FD557-F74A-4A65-9292-F66DAD5EE244}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client", "Client\Bones.Api.Client\Bones.Api.Client.csproj", "{6876C3F2-63BF-47AE-B701-835BDA39DCFC}"
 EndProject
 
 Global
