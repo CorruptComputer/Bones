@@ -6,37 +6,35 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      Microsoft:
-        dependency-type: production
+      microsoft:
         patterns:
-          - "^Microsoft.*"
+          - "Microsoft.*"
         exclude-patterns:
-          - "^Microsoft.NET.Test.Sdk"
-      MediatR:
-        dependency-type: production
+          - "Microsoft.NET.Test.Sdk"
+      mediatr:
         patterns:
-          - "^MediatR"
-          - "^MediatR.*"
-      PostgreSQL:
-        dependency-type: production
+          - "MediatR"
+          - "MediatR.*"
+      postgresql:
         patterns:
-          - "^Npgsql.EntityFrameworkCore.PostgreSQL"
-          - "^Npgsql.EntityFrameworkCore.PostgreSQL.*"
-      Autofac:
-        dependency-type: production
+          - "Npgsql.EntityFrameworkCore.PostgreSQL"
+          - "Npgsql.EntityFrameworkCore.PostgreSQL.*"
+      autofac:
         patterns:
-          - "^Autofac"
-          - "^Autofac.*"
-      Serilog:
-        dependency-type: production
+          - "Autofac"
+          - "Autofac.*"
+      serilog:
         patterns:
-          - "^Serilog"
-          - "^Serilog.*"
-      Testing:
-        dependency-type: development
+          - "Serilog"
+          - "Serilog.*"
+      testing:
         patterns:
-          - "^FluentAssertions"
-          - "^Microsoft.NET.Test.Sdk"
-          - "^xunit"
-          - "^xunit.*"
-          - "^coverlet.collector"
+          - "FluentAssertions"
+          - "Microsoft.NET.Test.Sdk"
+          - "xunit"
+          - "xunit.*"
+          - "coverlet.collector"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
