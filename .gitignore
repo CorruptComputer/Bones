@@ -6,15 +6,12 @@ riderModule.iml
 *.user
 .idea/
 
-# Client
-Bones.Api.Client.xml
-
-# Server
 Bones.Api.xml
-Bones.Backend.xml
 Bones.Database.xml
+Bones.Shared.xml
 
 # Tests
 Bones.Backend.UnitTests.xml
 Bones.Database.UnitTests.xml
-Bones.UnitTests.Shared.xml
+Bones.Shared.UnitTests.xml
+Bones.Testing.Shared.xml

@@ -1,8 +1,7 @@
-using Bones.Backend.Features.Accounts;
-using Bones.Backend.Models;
+using Bones.Api.Features.Accounts;
 using Bones.Database.DbSets;
 using Bones.Database.Operations.Accounts;
-using Bones.UnitTests.Shared.TestOperations.Accounts;
+using Bones.Testing.Shared.TestOperations.Accounts;
 
 namespace Bones.Database.UnitTests.Operations.Accounts;
 
@@ -17,11 +16,11 @@ public class CreateEmailVerificationDbTests : TestBase
     public async Task ValidRequest_ShouldSuccessAndCreateDbEntry()
     {
         // Setup
-        DbCommandResponse createAccount = await Sender.Send(new CreateAccountDbCommand("valid@example.com"));
+        CommandResponse createAccount = await Sender.Send(new CreateAccountDbCommand("valid@example.com"));
         createAccount.Id.Should().NotBeNull();
 
         // Test
-        BackendCommandResponse createEmailVerification =
+        CommandResponse createEmailVerification =
             await Sender.Send(new CreateEmailVerificationCommand(createAccount.Id!.Value));
         createEmailVerification.Success.Should().BeTrue();
         createEmailVerification.Id.Should().NotBeNull();
