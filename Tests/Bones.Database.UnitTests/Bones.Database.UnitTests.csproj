@@ -7,7 +7,6 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <DocumentationFile>Bones.Database.UnitTests.xml</DocumentationFile>
 
         <IsPackable>false</IsPackable>
         <IsPublishable>false</IsPublishable>

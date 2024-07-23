@@ -1,7 +1,7 @@
-using Bones.Api.Features.Accounts;
+using Bones.Api.Features.Users;
 using Bones.Database.DbSets;
-using Bones.Database.Operations.Accounts;
-using Bones.Testing.Shared.TestOperations.Accounts;
+using Bones.Database.Operations.Users;
+using Bones.Testing.Shared.TestOperations.Users;
 
 namespace Bones.Database.UnitTests.Operations.Accounts;
 
@@ -16,17 +16,17 @@ public class CreateEmailVerificationDbTests : TestBase
     public async Task ValidRequest_ShouldSuccessAndCreateDbEntry()
     {
         // Setup
-        CommandResponse createAccount = await Sender.Send(new CreateAccountDbCommand("valid@example.com"));
+        CommandResponse createAccount = await Sender.Send(new CreateUserDb.Command("valid@example.com"));
         createAccount.Id.Should().NotBeNull();
 
         // Test
         CommandResponse createEmailVerification =
-            await Sender.Send(new CreateEmailVerificationCommand(createAccount.Id!.Value));
+            await Sender.Send(new CreateEmailVerification.Command(createAccount.Id!.Value));
         createEmailVerification.Success.Should().BeTrue();
         createEmailVerification.Id.Should().NotBeNull();
 
-        IEnumerable<AccountEmailVerification> verifications =
-            await Sender.Send(new GetEmailVerificationForAccountQuery(createAccount.Id!.Value));
+        IEnumerable<UserEmailVerification> verifications =
+            await Sender.Send(new GetEmailVerificationForUser.Query(createAccount.Id!.Value));
         verifications.Count().Should().Be(1);
     }
 }

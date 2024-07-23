@@ -1,7 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Bones.Api.Extensions;
 using Bones.Database;
+using Bones.Database.DbSets;
 using Bones.Database.DbSets.Identity;
 using Bones.Database.Extensions;
 using Bones.Shared.PipelineBehaviors;
@@ -37,11 +37,9 @@ public static class Program
         );
 
         builder.Services.AddDbContext<BonesDbContext>();
-        builder.Services.AddIdentityApiEndpoints<Account>()
+        builder.Services.AddIdentityApiEndpoints<BonesUser>()
             .AddEntityFrameworkStores<BonesDbContext>();
-
-        builder.Services.AddBonesHostedServices();
-
+        
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {

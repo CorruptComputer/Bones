@@ -1,0 +1,26 @@
+using Bones.Database.Operations.Users;
+
+namespace Bones.Api.Features.Users;
+
+public class CreateEmailVerification(ISender sender) : IRequestHandler<CreateEmailVerification.Command, CommandResponse>
+{
+    /// <summary>
+    ///     Command for creating an email verification.
+    /// </summary>
+    /// <param name="UserId">UserId to require verification</param>
+    public record Command(Guid UserId) : IRequest<CommandResponse>;
+    
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
+    {
+        CommandResponse clearOldVerifications = await sender.Send(new ClearEmailVerificationsForUserDb.Command(request.UserId), cancellationToken);
+
+        if (!clearOldVerifications.Success)
+        {
+            return clearOldVerifications;
+        }
+
+        CommandResponse createVerification = await sender.Send(new CreateEmailVerificationDb.Command(request.UserId), cancellationToken);
+
+        return createVerification;
+    }
+}

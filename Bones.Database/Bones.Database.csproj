@@ -7,7 +7,6 @@
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <DocumentationFile>Bones.Database.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

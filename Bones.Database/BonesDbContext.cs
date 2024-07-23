@@ -1,5 +1,5 @@
-using Bones.Database.DbSets;
 using Bones.Database.DbSets.Identity;
+using Bones.Database.DbSets.TaskTracking;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +12,17 @@ namespace Bones.Database;
 /// </summary>
 /// <param name="configuration">App configuration</param>
 public class BonesDbContext(IConfiguration configuration)
-    : IdentityDbContext<Account, Group, Guid, AccountPermission, AccountGroup, AccountLogin, GroupPermission,
-        AccountToken>
+    : IdentityDbContext<BonesUser, BonesRole, Guid, BonesUserClaim, BonesUserRole, BonesUserLogin, BonesRoleClaim, BonesUserToken>
 {
     private const string BonesDbConnectionStringKey = "BonesDb";
 
-    internal DbSet<AccountEmailVerification> AccountEmailVerifications { get; set; }
-
-    internal DbSet<TaskSchedule> TaskSchedules { get; set; }
-
-    internal DbSet<TaskHistory> TaskHistories { get; set; }
+    internal DbSet<UserEmailVerification> UserEmailVerifications { get; set; }
+    
+    internal DbSet<Task> Tasks { get; set; }
+    
+    internal DbSet<Tag> Tags { get; set; }
+    
+    internal DbSet<Queue> Queues { get; set; }
 
     /// <summary>
     ///     Configure which database to use: PostgreSQL in most cases, in-memory DB for unit tests.
@@ -51,7 +52,7 @@ public class BonesDbContext(IConfiguration configuration)
             optionsBuilder.UseNpgsql(connectionString);
         }
     }
-
+    
     /// <summary>
     ///     Create models
     /// </summary>
@@ -61,30 +62,12 @@ public class BonesDbContext(IConfiguration configuration)
         base.OnModelCreating(modelBuilder);
 
         // Identity
-        modelBuilder.Entity<Account>().ToTable("Accounts", "Identity");
-        modelBuilder.Entity<AccountGroup>().ToTable("AccountGroups", "Identity");
-        modelBuilder.Entity<AccountLogin>().ToTable("AccountLogins", "Identity");
-        modelBuilder.Entity<AccountPermission>().ToTable("AccountPermissions", "Identity");
-        modelBuilder.Entity<AccountToken>().ToTable("AccountTokens", "Identity");
-        modelBuilder.Entity<Group>().ToTable("Groups", "Identity");
-        modelBuilder.Entity<GroupPermission>().ToTable("GroupPermissions", "Identity");
+        modelBuilder.Entity<BonesUser>().ToTable("BonesUsers", "Identity");
+        modelBuilder.Entity<BonesUserRole>().ToTable("BonesUserRoles", "Identity");
+        modelBuilder.Entity<BonesUserLogin>().ToTable("BonesUserLogins", "Identity");
+        modelBuilder.Entity<BonesUserClaim>().ToTable("BonesUserClaims", "Identity");
+        modelBuilder.Entity<BonesUserToken>().ToTable("BonesUserTokens", "Identity");
+        modelBuilder.Entity<BonesRole>().ToTable("BonesRoles", "Identity");
+        modelBuilder.Entity<BonesRoleClaim>().ToTable("BonesRoleClaims", "Identity");
     }
-
-    #region Identity
-
-    internal DbSet<Account> Accounts { get; set; }
-
-    internal DbSet<AccountGroup> AccountGroups { get; set; }
-
-    internal DbSet<AccountLogin> AccountLogins { get; set; }
-
-    internal DbSet<AccountPermission> AccountPermissions { get; set; }
-
-    internal DbSet<AccountToken> AccountTokens { get; set; }
-
-    internal DbSet<Group> Groups { get; set; }
-
-    internal DbSet<GroupPermission> GroupPermissions { get; set; }
-
-    #endregion
 }
