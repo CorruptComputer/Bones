@@ -3,7 +3,7 @@ name: .NET Build & Test
 on:
   push:
     branches:
-      - 'main'
+      - 'develop'
   pull_request:
     branches:
       - '*'
