@@ -1,20 +1,29 @@
-using Bones.Database.DbSets;
 using Bones.Database.DbSets.Identity;
-using Microsoft.EntityFrameworkCore;
 
-namespace Bones.Database.Operations.Users;
+namespace Bones.Database.Operations.Identity;
 
-public class ChangeUserEmailDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<ChangeUserEmailDb.Command, CommandResponse>
+public class ChangeUserEmailDb(BonesDbContext dbContext, ISender sender) : IValidatableRequestHandler<ChangeUserEmailDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for updating the email address on an User.
+    ///     DB Command for updating the email address on a user.
     /// </summary>
     /// <param name="UserId">The ID of the User to update</param>
     /// <param name="Email">The new email address</param>
     public record Command(Guid UserId, string Email) : IRequest<CommandResponse>;
     
-    public async Task<CommandResponse> Handle(Command request,
-        CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public bool RequestIsValid(Command request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Email))
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         CommandResponse emailAvailable =
             await sender.Send(new EmailAvailableForUseDb.Command(request.Email), cancellationToken);

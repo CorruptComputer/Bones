@@ -1,8 +1,7 @@
 using Bones.Database.DbSets.Identity;
-using Bones.Database.DbSets.TaskTracking;
+using Bones.Database.DbSets.ProjectManagement;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Bones.Database;
@@ -17,12 +16,20 @@ public class BonesDbContext(IConfiguration configuration)
     private const string BonesDbConnectionStringKey = "BonesDb";
 
     internal DbSet<UserEmailVerification> UserEmailVerifications { get; set; }
-    
-    internal DbSet<Task> Tasks { get; set; }
-    
-    internal DbSet<Tag> Tags { get; set; }
-    
+
+    #region ProjectManagement
+    internal DbSet<Project> Projects { get; set; }
+    internal DbSet<Initiative> Initiatives { get; set; }
     internal DbSet<Queue> Queues { get; set; }
+    internal DbSet<Item> Items { get; set; }
+    internal DbSet<ItemHistory> ItemHistories { get; set; }
+    internal DbSet<ItemLayout> ItemLayouts { get; set; }
+    internal DbSet<ItemField> ItemFields { get; set; }
+    internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
+    internal DbSet<ItemValue> ItemValues { get; set; }
+    internal DbSet<Tag> Tags { get; set; }
+    #endregion
+
 
     /// <summary>
     ///     Configure which database to use: PostgreSQL in most cases, in-memory DB for unit tests.

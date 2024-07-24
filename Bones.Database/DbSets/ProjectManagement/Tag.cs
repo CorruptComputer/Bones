@@ -1,12 +1,9 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-namespace Bones.Database.DbSets.TaskTracking;
+namespace Bones.Database.DbSets.ProjectManagement;
 
 /// <summary>
-///     Model for the TaskTracking.Tags table
+///     Model for the ProjectManagement.Tags table
 /// </summary>
-[Table("Tags", Schema = "TaskTracking")]
+[Table("Tags", Schema = "ProjectManagement")]
 [PrimaryKey(nameof(Id))]
 public class Tag
 {
@@ -15,6 +12,7 @@ public class Tag
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-
     
+    [MaxLength(512)]
+    public required string Name { get; set; }
 }

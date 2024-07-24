@@ -1,4 +1,4 @@
-using Bones.Api.Features.Users;
+using Bones.Api.Features.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;

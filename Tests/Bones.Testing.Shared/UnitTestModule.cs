@@ -1,6 +1,4 @@
 using Autofac;
-using Bones.Api.Controllers;
-using Bones.Database;
 using Bones.Shared.PipelineBehaviors;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;

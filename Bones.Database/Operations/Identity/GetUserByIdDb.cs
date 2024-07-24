@@ -1,13 +1,11 @@
-using Bones.Database.DbSets;
 using Bones.Database.DbSets.Identity;
-using Microsoft.EntityFrameworkCore;
 
-namespace Bones.Database.Operations.Users;
+namespace Bones.Database.Operations.Identity;
 
 public class GetUserByIdDb(BonesDbContext dbContext) : IRequestHandler<GetUserByIdDb.Query, QueryResponse<BonesUser>>
 {
     /// <summary>
-    ///     DB Query to get a User by UserId
+    ///     DB Query to get a user by UserId
     /// </summary>
     /// <param name="UserId">ID of the User to get</param>
     public record Query(Guid UserId) : IRequest<QueryResponse<BonesUser>>;

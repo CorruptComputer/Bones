@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Bones.Database.DbSets.Identity;
-using Microsoft.EntityFrameworkCore;
-
 namespace Bones.Database.DbSets.Identity;
 
 /// <summary>
@@ -16,17 +12,11 @@ public class UserEmailVerification
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-
-    /// <summary>
-    ///     Internal ID of the user this verification is for
-    /// </summary>
-    public required Guid UserId { get; set; }
     
     /// <summary>
     ///   The user 
     /// </summary>
-    [ForeignKey(nameof(UserId))]
-    public BonesUser? User { get; set; }
+    public required BonesUser User { get; set; }
 
     /// <summary>
     ///     Verification token

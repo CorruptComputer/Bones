@@ -1,7 +1,8 @@
-using Bones.Database.DbSets;
+using Bones.Database.DbSets.Identity;
+using Bones.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Bones.Database.Operations.Users;
+namespace Bones.Database.Operations.Identity;
 
 public class CreateEmailVerificationDb(BonesDbContext dbContext) : IRequestHandler<CreateEmailVerificationDb.Command, CommandResponse>
 {
@@ -13,12 +14,19 @@ public class CreateEmailVerificationDb(BonesDbContext dbContext) : IRequestHandl
     
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
+        BonesUser? user = dbContext.Users.FirstOrDefault(u => u.Id == request.UserId);
+
+        if (user == null)
+        {
+            throw new UnrecoverableException($"Unable to find user by ID: {request.UserId}");
+        }
+        
         EntityEntry<UserEmailVerification> created = await dbContext.UserEmailVerifications.AddAsync(new()
         {
             Token = Guid.NewGuid(),
             CreateDateTime = DateTimeOffset.UtcNow,
             ValidUntilDateTime = DateTimeOffset.UtcNow.AddDays(1),
-            UserId = request.UserId
+            User = user
         }, cancellationToken);
 
         // TODO: Might want to actually queue an email to be sent at some point

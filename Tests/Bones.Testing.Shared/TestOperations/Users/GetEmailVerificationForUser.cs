@@ -1,5 +1,5 @@
 using Bones.Database;
-using Bones.Database.DbSets;
+using Bones.Database.DbSets.Identity;
 using MediatR;
 
 namespace Bones.Testing.Shared.TestOperations.Users;
@@ -16,8 +16,7 @@ public class GetEmailVerificationForUser(BonesDbContext dbContext) : IRequestHan
         CancellationToken cancellationToken)
     {
         IEnumerable<UserEmailVerification> verifications = dbContext.UserEmailVerifications
-            .OrderBy(v => v.UserId)
-            .Where(v => v.UserId == request.AccountId);
+            .Where(v => v.User.Id == request.AccountId);
 
         return Task.FromResult(verifications);
     }

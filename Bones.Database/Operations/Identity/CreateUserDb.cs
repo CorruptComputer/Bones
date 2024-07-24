@@ -1,16 +1,26 @@
-using Bones.Database.DbSets;
 using Bones.Database.DbSets.Identity;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Bones.Database.Operations.Users;
+namespace Bones.Database.Operations.Identity;
 
-public class CreateUserDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<CreateUserDb.Command, CommandResponse>
+public class CreateUserDb(BonesDbContext dbContext, ISender sender) : IValidatableRequestHandler<CreateUserDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a User.
+    ///     DB Command for creating a user.
     /// </summary>
     /// <param name="Email">Email address to use for the User.</param>
     public record Command(string Email) : IRequest<CommandResponse>;
+    
+    /// <inheritdoc />
+    public bool RequestIsValid(Command request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Email))
+        {
+            return false;
+        }
+        
+        return true;
+    }
     
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
@@ -23,7 +33,7 @@ public class CreateUserDb(BonesDbContext dbContext, ISender sender) : IRequestHa
 
         EntityEntry<BonesUser> created = await dbContext.Users.AddAsync(new()
         {
-            CreateDateTime = DateTime.UtcNow,
+            CreateDateTime = DateTimeOffset.UtcNow,
             Email = request.Email
         }, cancellationToken);
 

@@ -1,5 +1,5 @@
-using Bones.Api.Features.Users;
-using Bones.Database.DbSets;
+using Bones.Api.Features.Identity;
+using Bones.Database.DbSets.Identity;
 using Bones.Testing.Shared.TestOperations.Users;
 
 namespace Bones.Api.UnitTests.Features.Accounts;

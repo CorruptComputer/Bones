@@ -1,6 +1,6 @@
-using Bones.Database.Operations.Users;
+using Bones.Database.Operations.Identity;
 
-namespace Bones.Api.Features.Users;
+namespace Bones.Api.Features.Identity;
 
 public class VerifyUserEmail(ISender sender) : IRequestHandler<VerifyUserEmail.Command, CommandResponse>
 {

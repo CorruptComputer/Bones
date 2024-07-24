@@ -1,7 +1,7 @@
-using Bones.Database.Operations.Users;
+using Bones.Database.Operations.Identity;
 using Bones.Shared.Extensions;
 
-namespace Bones.Api.Features.Users;
+namespace Bones.Api.Features.Identity;
 
 public class CreateUser(ISender sender) : IRequestHandler<CreateUser.Command, CommandResponse>
 {

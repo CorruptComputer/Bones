@@ -1,7 +1,6 @@
-using Bones.Database.DbSets;
-using Microsoft.EntityFrameworkCore;
+using Bones.Database.DbSets.Identity;
 
-namespace Bones.Database.Operations.Users;
+namespace Bones.Database.Operations.Identity;
 
 public class ClearExpiredEmailVerificationsDb(BonesDbContext dbContext) : IRequestHandler<ClearExpiredEmailVerificationsDb.Query, QueryResponse<int>>
 {

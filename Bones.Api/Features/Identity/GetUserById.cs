@@ -1,7 +1,7 @@
 using Bones.Database.DbSets.Identity;
-using Bones.Database.Operations.Users;
+using Bones.Database.Operations.Identity;
 
-namespace Bones.Api.Features.Users;
+namespace Bones.Api.Features.Identity;
 
 public class GetUserById(ISender sender) : IRequestHandler<GetUserById.Query, QueryResponse<GetUserById.Response>>
 {

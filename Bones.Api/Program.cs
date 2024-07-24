@@ -1,12 +1,8 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Database;
-using Bones.Database.DbSets;
 using Bones.Database.DbSets.Identity;
 using Bones.Database.Extensions;
-using Bones.Shared.PipelineBehaviors;
-using MediatR.Extensions.Autofac.DependencyInjection;
-using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 
 namespace Bones.Api;
 

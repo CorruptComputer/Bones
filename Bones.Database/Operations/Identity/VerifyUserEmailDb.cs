@@ -1,13 +1,11 @@
-using Bones.Database.DbSets;
 using Bones.Database.DbSets.Identity;
-using Microsoft.EntityFrameworkCore;
 
-namespace Bones.Database.Operations.Users;
+namespace Bones.Database.Operations.Identity;
 
 public class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<VerifyUserEmailDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for verifying an email address for an User.
+    ///     DB Command for verifying an email address for a user.
     /// </summary>
     /// <param name="UserId">ID of the User</param>
     /// <param name="Token">Verification can</param>
@@ -16,9 +14,9 @@ public class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<Verif
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         IQueryable<UserEmailVerification> validMatches = dbContext.UserEmailVerifications.Where(verification =>
-            verification.UserId == request.UserId
+            verification.User.Id == request.UserId
             && verification.Token == request.Token
-            && verification.ValidUntilDateTime > DateTime.UtcNow);
+            && verification.ValidUntilDateTime > DateTimeOffset.UtcNow);
 
         if (!validMatches.Any())
         {
@@ -31,7 +29,7 @@ public class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<Verif
 
         await validMatches.ExecuteDeleteAsync(cancellationToken);
 
-        BonesUser? acct = await dbContext.Users.FirstOrDefaultAsync(User => User.Id == request.UserId,
+        BonesUser? acct = await dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.UserId,
             cancellationToken);
 
         if (acct == null)
@@ -44,7 +42,7 @@ public class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<Verif
         }
 
         acct.EmailConfirmed = true;
-        acct.EmailConfirmedDateTime = DateTime.UtcNow;
+        acct.EmailConfirmedDateTime = DateTimeOffset.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

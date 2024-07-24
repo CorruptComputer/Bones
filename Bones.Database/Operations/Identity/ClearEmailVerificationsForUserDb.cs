@@ -1,6 +1,6 @@
-using Bones.Database.DbSets;
+using Bones.Database.DbSets.Identity;
 
-namespace Bones.Database.Operations.Users;
+namespace Bones.Database.Operations.Identity;
 
 public class ClearEmailVerificationsForUserDb(BonesDbContext dbContext) : IRequestHandler<ClearEmailVerificationsForUserDb.Command, CommandResponse>
 {
@@ -13,8 +13,7 @@ public class ClearEmailVerificationsForUserDb(BonesDbContext dbContext) : IReque
         CancellationToken cancellationToken)
     {
         IEnumerable<UserEmailVerification> oldVerifications = dbContext.UserEmailVerifications
-            .OrderBy(v => v.UserId)
-            .Where(v => v.UserId == request.UserId)
+            .Where(v => v.User.Id == request.UserId)
             .AsEnumerable();
 
         dbContext.UserEmailVerifications.RemoveRange(oldVerifications);
