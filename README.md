@@ -1,3 +1,9 @@
+# Bones
+This is just something I'm working on in my spare time. 
+I will not be accepting any public pull requests to here.
+
+---
+
 DB Setup:
 
 ```bash
