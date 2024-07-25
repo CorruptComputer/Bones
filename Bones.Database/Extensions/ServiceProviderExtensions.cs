@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bones.Database.Extensions;
@@ -14,7 +15,13 @@ public static class ServiceProviderExtensions
     public static void MigrateBonesDb(this IServiceProvider serviceProvider)
     {
         using IServiceScope scope = serviceProvider.CreateScope();
-        BonesDbContext db = scope.ServiceProvider.GetRequiredService<BonesDbContext>();
-        db.Database.Migrate();
+        IConfiguration config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+        string useInMemoryDbStr = config["Database:UseInMemoryDb"] ?? "false";
+        bool useInMemoryDb = bool.Parse(useInMemoryDbStr);
+        if (!useInMemoryDb)
+        {
+            BonesDbContext db = scope.ServiceProvider.GetRequiredService<BonesDbContext>();
+            db.Database.Migrate();
+        }
     }
 }

@@ -16,9 +16,9 @@ public class StringExtensionsTests : TestBase
     [InlineData("unit+test@example.com")]
     [InlineData("🍕@example.com")]
     [InlineData("_test@example.com")]
-    public void ValidEmail_ShouldReturnTrue(string email)
+    public async Task ValidEmail_ShouldReturnTrue(string email)
     {
-        email.IsValidEmail().Should().BeTrue();
+        (await email.IsValidEmailAsync()).Should().BeTrue();
     }
 
     /// <summary>
@@ -35,8 +35,8 @@ public class StringExtensionsTests : TestBase
     [InlineData("test@example")]
     [InlineData("test@")]
     [InlineData("test")]
-    public void InvalidEmail_ShouldFail(string email)
+    public async Task InvalidEmail_ShouldFail(string email)
     {
-        email.IsValidEmail().Should().BeFalse();
+        (await email.IsValidEmailAsync()).Should().BeFalse();
     }
 }

@@ -2,26 +2,27 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class ChangeUserEmailDb(BonesDbContext dbContext, ISender sender) : IValidatableRequestHandler<ChangeUserEmailDb.Command, CommandResponse>
+public class ChangeUserEmailDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<ChangeUserEmailDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for updating the email address on a user.
     /// </summary>
     /// <param name="UserId">The ID of the User to update</param>
     /// <param name="Email">The new email address</param>
-    public record Command(Guid UserId, string Email) : IRequest<CommandResponse>;
-    
-    /// <inheritdoc />
-    public bool RequestIsValid(Command request)
+    public record Command(Guid UserId, string Email) : IValidatableRequest<CommandResponse>
     {
-        if (string.IsNullOrWhiteSpace(request.Email))
+        /// <inheritdoc />
+        public bool IsRequestValid()
         {
-            return false;
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                return false;
+            }
+
+            return true;
         }
-        
-        return true;
     }
-    
+
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {

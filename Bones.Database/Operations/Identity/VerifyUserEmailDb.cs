@@ -9,8 +9,25 @@ public class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<Verif
     /// </summary>
     /// <param name="UserId">ID of the User</param>
     /// <param name="Token">Verification can</param>
-    public record Command(Guid UserId, Guid Token) : IRequest<CommandResponse>;
-    
+    public record Command(Guid UserId, Guid Token) : IValidatableRequest<CommandResponse>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (UserId == Guid.Empty)
+            {
+                return false;
+            }
+
+            if (Token == Guid.Empty)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         IQueryable<UserEmailVerification> validMatches = dbContext.UserEmailVerifications.Where(verification =>

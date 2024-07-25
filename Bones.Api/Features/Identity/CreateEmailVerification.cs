@@ -8,8 +8,20 @@ public class CreateEmailVerification(ISender sender) : IRequestHandler<CreateEma
     ///     Command for creating an email verification.
     /// </summary>
     /// <param name="UserId">UserId to require verification</param>
-    public record Command(Guid UserId) : IRequest<CommandResponse>;
-    
+    public record Command(Guid UserId) : IValidatableRequest<CommandResponse>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (UserId == Guid.Empty)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         CommandResponse clearOldVerifications = await sender.Send(new ClearEmailVerificationsForUserDb.Command(request.UserId), cancellationToken);

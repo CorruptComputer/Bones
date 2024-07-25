@@ -31,4 +31,22 @@
       <ProjectReference Include="..\Bones.Shared\Bones.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Controllers\ProjectManagementController.Projects.cs">
+        <DependentUpon>ProjectManagementController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\ProjectManagementController.Initiatives.cs">
+        <DependentUpon>ProjectManagementController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\ProjectManagementController.Items.cs">
+        <DependentUpon>ProjectManagementController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\ProjectManagementController.Layouts.cs">
+        <DependentUpon>ProjectManagementController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\ProjectManagementController.Queues.cs">
+        <DependentUpon>ProjectManagementController.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

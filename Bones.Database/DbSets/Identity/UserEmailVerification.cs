@@ -12,7 +12,7 @@ public class UserEmailVerification
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///   The user 
     /// </summary>

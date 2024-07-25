@@ -10,20 +10,37 @@ public class ChangeUserEmail(ISender sender) : IRequestHandler<ChangeUserEmail.C
     /// </summary>
     /// <param name="UserId">User ID of the User to change it on.</param>
     /// <param name="Email">New email address to be used.</param>
-    public record Command(Guid UserId, string Email) : IRequest<CommandResponse>;
-    
+    public record Command(Guid UserId, string Email) : IValidatableRequest<CommandResponse>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (UserId == Guid.Empty)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         // Verify email is valid format
-        if (!request.Email.IsValidEmail())
+        if (!await request.Email.IsValidEmailAsync())
         {
             return new()
             {
                 Success = false,
-                FailureReason = "Invalid email format."
+                FailureReason = "Invalid email."
             };
         }
-        
+
         CommandResponse emailChanged = await sender.Send(new ChangeUserEmailDb.Command(request.UserId, request.Email));
 
         if (!emailChanged.Success)

@@ -1,5 +1,9 @@
 using Bones.Database.DbSets.Identity;
-using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.ProjectManagement.Initiatives;
+using Bones.Database.DbSets.ProjectManagement.Items;
+using Bones.Database.DbSets.ProjectManagement.Layouts;
+using Bones.Database.DbSets.ProjectManagement.Projects;
+using Bones.Database.DbSets.ProjectManagement.Queues;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,15 +22,35 @@ public class BonesDbContext(IConfiguration configuration)
     internal DbSet<UserEmailVerification> UserEmailVerifications { get; set; }
 
     #region ProjectManagement
-    internal DbSet<Project> Projects { get; set; }
+
+    #region Initiatives
     internal DbSet<Initiative> Initiatives { get; set; }
-    internal DbSet<Queue> Queues { get; set; }
+    #endregion
+
+    #region Items
     internal DbSet<Item> Items { get; set; }
-    internal DbSet<ItemHistory> ItemHistories { get; set; }
-    internal DbSet<ItemLayout> ItemLayouts { get; set; }
     internal DbSet<ItemField> ItemFields { get; set; }
     internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
     internal DbSet<ItemValue> ItemValues { get; set; }
+    internal DbSet<ItemVersion> ItemVersions { get; set; }
+    #endregion
+
+    #region Layouts
+    internal DbSet<Layout> Layouts { get; set; }
+    internal DbSet<LayoutVersion> LayoutVersions { get; set; }
+    #endregion
+
+    #region Projects
+    internal DbSet<Project> Projects { get; set; }
+    #endregion
+
+    #region Queues
+    internal DbSet<Queue> Queues { get; set; }
+    #endregion
+
+
+
+
     internal DbSet<Tag> Tags { get; set; }
     #endregion
 
@@ -59,7 +83,7 @@ public class BonesDbContext(IConfiguration configuration)
             optionsBuilder.UseNpgsql(connectionString);
         }
     }
-    
+
     /// <summary>
     ///     Create models
     /// </summary>

@@ -9,17 +9,29 @@ public class CreateUser(ISender sender) : IRequestHandler<CreateUser.Command, Co
     ///     Command for creating a User.
     /// </summary>
     /// <param name="Email">Email address to use for the User.</param>
-    public record Command(string Email) : IRequest<CommandResponse>;
-    
+    public record Command(string Email) : IValidatableRequest<CommandResponse>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         // Verify email is valid format
-        if (!request.Email.IsValidEmail())
+        if (!await request.Email.IsValidEmailAsync())
         {
             return new()
             {
                 Success = false,
-                FailureReason = "Invalid email format."
+                FailureReason = "Invalid email."
             };
         }
 

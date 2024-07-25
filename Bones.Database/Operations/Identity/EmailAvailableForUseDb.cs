@@ -2,25 +2,27 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class EmailAvailableForUseDb(BonesDbContext dbContext) : IValidatableRequestHandler<EmailAvailableForUseDb.Command, CommandResponse>
+public class EmailAvailableForUseDb(BonesDbContext dbContext) : IRequestHandler<EmailAvailableForUseDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for checking if an email is available to use.
     /// </summary>
     /// <param name="Email">Email address to check</param>
-    public record Command(string Email) : IRequest<CommandResponse>;
-    
-    /// <inheritdoc />
-    public bool RequestIsValid(Command request)
+    public record Command(string Email) : IValidatableRequest<CommandResponse>
     {
-        if (string.IsNullOrWhiteSpace(request.Email))
+        /// <inheritdoc />
+        public bool IsRequestValid()
         {
-            return false;
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                return false;
+            }
+
+            return true;
         }
-        
-        return true;
     }
-    
+
+
     public async Task<CommandResponse> Handle(Command request,
         CancellationToken cancellationToken)
     {

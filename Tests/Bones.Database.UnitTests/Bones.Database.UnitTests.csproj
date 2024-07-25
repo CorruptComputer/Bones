@@ -26,4 +26,9 @@
         <ProjectReference Include="..\Bones.Testing.Shared\Bones.Testing.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Operations\ProjectManagement\Initiatives\" />
+      <Folder Include="Operations\ProjectManagement\Items\" />
+    </ItemGroup>
+
 </Project>

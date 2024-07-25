@@ -12,7 +12,7 @@ public sealed record CommandResponse
     /// <summary>
     ///     Was the command successful?
     /// </summary>
-    public required bool Success { get; init; } = true;
+    public required bool Success { get; init; } = false;
 
     /// <summary>
     ///     If an ID was generated for something by the command, it can optionally be returned here.

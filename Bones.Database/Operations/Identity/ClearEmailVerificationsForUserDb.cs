@@ -7,8 +7,20 @@ public class ClearEmailVerificationsForUserDb(BonesDbContext dbContext) : IReque
     /// <summary>
     /// </summary>
     /// <param name="UserId"></param>
-    public record Command(Guid UserId) : IRequest<CommandResponse>;
-    
+    public record Command(Guid UserId) : IValidatableRequest<CommandResponse>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (UserId == Guid.Empty)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public async Task<CommandResponse> Handle(Command request,
         CancellationToken cancellationToken)
     {

@@ -8,8 +8,20 @@ public class GetUserByIdDb(BonesDbContext dbContext) : IRequestHandler<GetUserBy
     ///     DB Query to get a user by UserId
     /// </summary>
     /// <param name="UserId">ID of the User to get</param>
-    public record Query(Guid UserId) : IRequest<QueryResponse<BonesUser>>;
-    
+    public record Query(Guid UserId) : IValidatableRequest<QueryResponse<BonesUser>>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (UserId == Guid.Empty)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public async Task<QueryResponse<BonesUser>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.Users.FirstOrDefaultAsync(a => a.Id == request.UserId, cancellationToken);

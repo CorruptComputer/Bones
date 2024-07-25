@@ -13,7 +13,7 @@ public sealed record QueryResponse<TResult>
     /// <summary>
     ///     Was the command successful?
     /// </summary>
-    public required bool Success { get; init; } = true;
+    public required bool Success { get; init; } = false;
 
     /// <summary>
     ///     If the query was successful, this should have some data in it.

@@ -35,7 +35,7 @@ public static class Program
         builder.Services.AddDbContext<BonesDbContext>();
         builder.Services.AddIdentityApiEndpoints<BonesUser>()
             .AddEntityFrameworkStores<BonesDbContext>();
-        
+
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {

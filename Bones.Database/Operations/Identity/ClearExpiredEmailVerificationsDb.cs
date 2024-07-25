@@ -8,7 +8,7 @@ public class ClearExpiredEmailVerificationsDb(BonesDbContext dbContext) : IReque
     ///     DB Query for clearing the expired email verifications, returns the number removed.
     /// </summary>
     public record Query : IRequest<QueryResponse<int>>;
-    
+
     public async Task<QueryResponse<int>> Handle(Query request, CancellationToken cancellationToken)
     {
         IQueryable<UserEmailVerification> expired =

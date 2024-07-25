@@ -11,7 +11,7 @@ public class GetEmailVerificationForUser(BonesDbContext dbContext) : IRequestHan
     /// </summary>
     /// <param name="AccountId">ID of the account to check.</param>
     public record Query(Guid AccountId) : IRequest<IEnumerable<UserEmailVerification>>;
-    
+
     public Task<IEnumerable<UserEmailVerification>> Handle(Query request,
         CancellationToken cancellationToken)
     {

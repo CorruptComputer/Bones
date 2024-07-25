@@ -3,25 +3,28 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.Identity;
 
-public class CreateUserDb(BonesDbContext dbContext, ISender sender) : IValidatableRequestHandler<CreateUserDb.Command, CommandResponse>
+public class CreateUserDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<CreateUserDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for creating a user.
     /// </summary>
     /// <param name="Email">Email address to use for the User.</param>
-    public record Command(string Email) : IRequest<CommandResponse>;
-    
-    /// <inheritdoc />
-    public bool RequestIsValid(Command request)
+    public record Command(string Email) : IValidatableRequest<CommandResponse>
     {
-        if (string.IsNullOrWhiteSpace(request.Email))
+        /// <inheritdoc />
+        public bool IsRequestValid()
         {
-            return false;
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                return false;
+            }
+
+            return true;
         }
-        
-        return true;
     }
-    
+
+
+
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         CommandResponse emailAvailable =

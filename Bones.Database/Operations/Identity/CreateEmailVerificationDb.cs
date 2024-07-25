@@ -10,8 +10,20 @@ public class CreateEmailVerificationDb(BonesDbContext dbContext) : IRequestHandl
     ///     DB Command for generating an email verification token and queuing an email to be sent.
     /// </summary>
     /// <param name="UserId">User ID that must drink the verification can.</param>
-    public record Command(Guid UserId) : IRequest<CommandResponse>;
-    
+    public record Command(Guid UserId) : IValidatableRequest<CommandResponse>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (UserId == Guid.Empty)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         BonesUser? user = dbContext.Users.FirstOrDefault(u => u.Id == request.UserId);
@@ -20,7 +32,7 @@ public class CreateEmailVerificationDb(BonesDbContext dbContext) : IRequestHandl
         {
             throw new UnrecoverableException($"Unable to find user by ID: {request.UserId}");
         }
-        
+
         EntityEntry<UserEmailVerification> created = await dbContext.UserEmailVerifications.AddAsync(new()
         {
             Token = Guid.NewGuid(),

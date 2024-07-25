@@ -9,7 +9,19 @@ public class GetUserById(ISender sender) : IRequestHandler<GetUserById.Query, Qu
     ///     Query for getting a User's details by the User ID.
     /// </summary>
     /// <param name="UserId">User ID that you want to get the details of.</param>
-    public record Query(Guid UserId) : IRequest<QueryResponse<Response>>;
+    public record Query(Guid UserId) : IValidatableRequest<QueryResponse<Response>>
+    {
+        /// <inheritdoc />
+        public bool IsRequestValid()
+        {
+            if (UserId == Guid.Empty)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
 
     /// <summary>
     ///     Response for getting a User's details by the User ID.
@@ -17,7 +29,7 @@ public class GetUserById(ISender sender) : IRequestHandler<GetUserById.Query, Qu
     /// <param name="Email">User's email address.</param>
     /// <param name="CreateDateTime">User's create date.</param>
     public record Response(string Email, DateTimeOffset CreateDateTime);
-    
+
     public async Task<QueryResponse<Response>> Handle(Query request, CancellationToken cancellationToken)
     {
         QueryResponse<BonesUser> response =
