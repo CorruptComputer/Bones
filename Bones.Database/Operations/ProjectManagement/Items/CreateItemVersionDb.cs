@@ -5,27 +5,21 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Items;
 
-public sealed class CreateItemDb(BonesDbContext dbContext) : IRequestHandler<CreateItemDb.Command, CommandResponse>
+public sealed class CreateItemVersionDb(BonesDbContext dbContext) : IRequestHandler<CreateItemVersionDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating an Item.
+    ///     DB Command for creating an ItemVersion.
     /// </summary>
-    /// <param name="Name">Name of the item</param>
-    /// <param name="QueueId">Internal ID of the queue this item is in</param>
+    /// <param name="ItemID">Internal ID of the item</param>
     /// <param name="LayoutVersionId">Internal ID of the layout version this item is using</param>
     /// <param name="Values">Internal ID of the queue</param>
-    public record Command(string Name, Guid QueueId, Guid LayoutVersionId, Dictionary<string, object> Values)
+    public record Command(Guid ItemID, Guid LayoutVersionId, Dictionary<string, object> Values)
         : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
         public bool IsRequestValid()
         {
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                return false;
-            }
-
-            if (QueueId == Guid.Empty)
+            if (ItemID == Guid.Empty)
             {
                 return false;
             }
@@ -42,13 +36,13 @@ public sealed class CreateItemDb(BonesDbContext dbContext) : IRequestHandler<Cre
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        Queue? queue = await dbContext.Queues.FirstOrDefaultAsync(q => q.Id == request.QueueId, cancellationToken);
-        if (queue == null)
+        Item? item = await dbContext.Items.Include(item => item.Versions).FirstOrDefaultAsync(i => i.Id == request.ItemID, cancellationToken);
+        if (item == null)
         {
             return new()
             {
                 Success = false,
-                FailureReason = "Invalid QueueId."
+                FailureReason = "Invalid ItemID."
             };
         }
 
@@ -100,20 +94,15 @@ public sealed class CreateItemDb(BonesDbContext dbContext) : IRequestHandler<Cre
         }
 
 
-        ItemVersion initialVersion = new()
+        ItemVersion newVersion = new()
         {
-            Version = 0,
-            Item = new()
-            {
-                Name = request.Name,
-                Queue = queue,
-                AddedToQueueDateTime = DateTimeOffset.UtcNow
-            },
+            Version = item.Versions.Count,
+            Item = item,
             Layout = layoutVersion,
             Values = values
         };
 
-        EntityEntry<ItemVersion> created = await dbContext.ItemVersions.AddAsync(initialVersion, cancellationToken);
+        EntityEntry<ItemVersion> created = await dbContext.ItemVersions.AddAsync(newVersion, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

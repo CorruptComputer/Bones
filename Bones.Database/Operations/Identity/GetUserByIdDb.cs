@@ -2,7 +2,7 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class GetUserByIdDb(BonesDbContext dbContext) : IRequestHandler<GetUserByIdDb.Query, QueryResponse<BonesUser>>
+public sealed class GetUserByIdDb(BonesDbContext dbContext) : IRequestHandler<GetUserByIdDb.Query, QueryResponse<BonesUser>>
 {
     /// <summary>
     ///     DB Query to get a user by UserId

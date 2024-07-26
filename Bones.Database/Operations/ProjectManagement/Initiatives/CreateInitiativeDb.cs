@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Initiatives;
 
-public class CreateInitiativeDb(BonesDbContext dbContext) : IRequestHandler<CreateInitiativeDb.Command, CommandResponse>
+public sealed class CreateInitiativeDb(BonesDbContext dbContext) : IRequestHandler<CreateInitiativeDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for creating an Initiative.
@@ -29,8 +29,6 @@ public class CreateInitiativeDb(BonesDbContext dbContext) : IRequestHandler<Crea
             return true;
         }
     }
-
-
 
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)

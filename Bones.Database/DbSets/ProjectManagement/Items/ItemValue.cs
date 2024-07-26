@@ -19,6 +19,11 @@ public class ItemValue
 
     public string? Value { get; private set; }
 
+    /// <summary>
+    ///   Disables viewing this item value, and when safe to do so it will be removed.
+    /// </summary>
+    public bool DeleteFlag { get; set; } = false;
+
     public bool TrySetValue<T>(T value)
     {
         string? valueStr = value?.ToString();

@@ -26,4 +26,10 @@ public class LayoutVersion
     public required long Version { get; init; }
 
     public List<ItemField> Fields { get; init; } = [];
+
+    /// <summary>
+    ///   Disables creating of new items using this layout version,
+    ///   and when all items using it are deleted it will be removed.
+    /// </summary>
+    public bool DeleteFlag { get; set; } = false;
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Projects;
 
-public class CreateProjectDb(BonesDbContext dbContext) : IRequestHandler<CreateProjectDb.Command, CommandResponse>
+public sealed class CreateProjectDb(BonesDbContext dbContext) : IRequestHandler<CreateProjectDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for creating a Project.

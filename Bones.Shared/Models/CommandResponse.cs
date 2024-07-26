@@ -12,15 +12,15 @@ public sealed record CommandResponse
     /// <summary>
     ///     Was the command successful?
     /// </summary>
-    public required bool Success { get; init; } = false;
+    public required bool Success { get; init; }
 
     /// <summary>
     ///     If an ID was generated for something by the command, it can optionally be returned here.
     /// </summary>
-    public Guid? Id { get; init; } = null;
+    public Guid? Id { get; init; }
 
     /// <summary>
     ///     If the command failed, why?
     /// </summary>
-    public string? FailureReason { get; init; } = null;
+    public string? FailureReason { get; init; }
 }

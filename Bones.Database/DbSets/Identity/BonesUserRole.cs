@@ -6,6 +6,4 @@ namespace Bones.Database.DbSets.Identity;
 ///     Model for the Identity.BonesUserRoles table.
 /// </summary>
 [Table("BonesUserRoles", Schema = "Identity")]
-public class BonesUserRole : IdentityUserRole<Guid>
-{
-}
+public class BonesUserRole : IdentityUserRole<Guid>;

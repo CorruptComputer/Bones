@@ -25,4 +25,9 @@ public class Item
     public List<Tag> Tags { get; set; } = [];
 
     public List<ItemVersion> Versions { get; set; } = [];
+
+    /// <summary>
+    ///   Disables viewing this item, and when safe to do so it will be removed.
+    /// </summary>
+    public bool DeleteFlag { get; set; } = false;
 }

@@ -14,10 +14,16 @@ public class Layout
     public Guid Id { get; init; }
 
     [MaxLength(512)]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     /// <summary>
     ///   The versions for this layout
     /// </summary>
     public List<LayoutVersion> Versions { get; set; } = [];
+
+    /// <summary>
+    ///   Disables creating of new items using this layout,
+    ///   and when all items using it are deleted it will be removed.
+    /// </summary>
+    public bool DeleteFlag { get; set; } = false;
 }

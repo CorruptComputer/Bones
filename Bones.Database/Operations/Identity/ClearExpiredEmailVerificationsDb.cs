@@ -2,7 +2,7 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class ClearExpiredEmailVerificationsDb(BonesDbContext dbContext) : IRequestHandler<ClearExpiredEmailVerificationsDb.Query, QueryResponse<int>>
+public sealed class ClearExpiredEmailVerificationsDb(BonesDbContext dbContext) : IRequestHandler<ClearExpiredEmailVerificationsDb.Query, QueryResponse<int>>
 {
     /// <summary>
     ///     DB Query for clearing the expired email verifications, returns the number removed.

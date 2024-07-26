@@ -2,7 +2,7 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class ChangeUserEmailDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<ChangeUserEmailDb.Command, CommandResponse>
+public sealed class ChangeUserEmailDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<ChangeUserEmailDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for updating the email address on a user.

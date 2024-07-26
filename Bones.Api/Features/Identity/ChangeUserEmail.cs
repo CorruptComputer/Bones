@@ -41,7 +41,7 @@ public class ChangeUserEmail(ISender sender) : IRequestHandler<ChangeUserEmail.C
             };
         }
 
-        CommandResponse emailChanged = await sender.Send(new ChangeUserEmailDb.Command(request.UserId, request.Email));
+        CommandResponse emailChanged = await sender.Send(new ChangeUserEmailDb.Command(request.UserId, request.Email), cancellationToken);
 
         if (!emailChanged.Success)
         {

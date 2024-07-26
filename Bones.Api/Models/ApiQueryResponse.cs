@@ -32,7 +32,7 @@ public sealed record ApiQueryResponse<TResult>
     /// <returns>The newly translated TResult?</returns>
     public static implicit operator TResult?(ApiQueryResponse<TResult> response)
     {
-        if (response.Success == false || response.Result == null)
+        if (!response.Success || Equals(response.Result, default(TResult)))
         {
             return default;
         }
@@ -47,7 +47,7 @@ public sealed record ApiQueryResponse<TResult>
     /// <returns>The newly translated QueryResponse&lt;TResult&gt;</returns>
     public static implicit operator ApiQueryResponse<TResult>(TResult? result)
     {
-        if (result == null)
+        if (Equals(result, default(TResult)))
         {
             return new()
             {

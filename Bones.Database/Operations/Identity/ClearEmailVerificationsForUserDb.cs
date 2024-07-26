@@ -2,7 +2,7 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class ClearEmailVerificationsForUserDb(BonesDbContext dbContext) : IRequestHandler<ClearEmailVerificationsForUserDb.Command, CommandResponse>
+public sealed class ClearEmailVerificationsForUserDb(BonesDbContext dbContext) : IRequestHandler<ClearEmailVerificationsForUserDb.Command, CommandResponse>
 {
     /// <summary>
     /// </summary>

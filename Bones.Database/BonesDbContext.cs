@@ -77,7 +77,7 @@ public class BonesDbContext(IConfiguration configuration)
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new UnrecoverableException("Missing appsettings configuration for connection string: BonesDb");
+                throw new BonesException("Missing appsettings configuration for connection string: BonesDb");
             }
 
             optionsBuilder.UseNpgsql(connectionString);
@@ -87,18 +87,18 @@ public class BonesDbContext(IConfiguration configuration)
     /// <summary>
     ///     Create models
     /// </summary>
-    /// <param name="modelBuilder"></param>
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /// <param name="builder"></param>
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
 
-        // Identity
-        modelBuilder.Entity<BonesUser>().ToTable("BonesUsers", "Identity");
-        modelBuilder.Entity<BonesUserRole>().ToTable("BonesUserRoles", "Identity");
-        modelBuilder.Entity<BonesUserLogin>().ToTable("BonesUserLogins", "Identity");
-        modelBuilder.Entity<BonesUserClaim>().ToTable("BonesUserClaims", "Identity");
-        modelBuilder.Entity<BonesUserToken>().ToTable("BonesUserTokens", "Identity");
-        modelBuilder.Entity<BonesRole>().ToTable("BonesRoles", "Identity");
-        modelBuilder.Entity<BonesRoleClaim>().ToTable("BonesRoleClaims", "Identity");
+        const string identitySchema = "Identity";
+        builder.Entity<BonesUser>().ToTable("BonesUsers", identitySchema);
+        builder.Entity<BonesUserRole>().ToTable("BonesUserRoles", identitySchema);
+        builder.Entity<BonesUserLogin>().ToTable("BonesUserLogins", identitySchema);
+        builder.Entity<BonesUserClaim>().ToTable("BonesUserClaims", identitySchema);
+        builder.Entity<BonesUserToken>().ToTable("BonesUserTokens", identitySchema);
+        builder.Entity<BonesRole>().ToTable("BonesRoles", identitySchema);
+        builder.Entity<BonesRoleClaim>().ToTable("BonesRoleClaims", identitySchema);
     }
 }

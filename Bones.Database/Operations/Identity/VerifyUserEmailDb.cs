@@ -2,7 +2,7 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<VerifyUserEmailDb.Command, CommandResponse>
+public sealed class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<VerifyUserEmailDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for verifying an email address for a user.
@@ -35,20 +35,18 @@ public class VerifyUserEmailDb(BonesDbContext dbContext) : IRequestHandler<Verif
             && verification.Token == request.Token
             && verification.ValidUntilDateTime > DateTimeOffset.UtcNow);
 
-        if (!validMatches.Any())
+        if (!await validMatches.AnyAsync(cancellationToken))
         {
             return new()
             {
                 Success = false,
-                FailureReason = "Supplied information is invalid or the verification time has expired."
+                FailureReason = "Supplied information is invalid or the token has expired."
             };
         }
 
         await validMatches.ExecuteDeleteAsync(cancellationToken);
 
-        BonesUser? acct = await dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.UserId,
-            cancellationToken);
-
+        BonesUser? acct = await dbContext.Users.FirstOrDefaultAsync(user => user.Id == request.UserId, cancellationToken);
         if (acct == null)
         {
             return new()

@@ -6,6 +6,4 @@ namespace Bones.Database.DbSets.Identity;
 ///     Model for the Identity.BonesUserTokens table.
 /// </summary>
 [Table("BonesUserTokens", Schema = "Identity")]
-public class BonesUserToken : IdentityUserToken<Guid>
-{
-}
+public class BonesUserToken : IdentityUserToken<Guid>;

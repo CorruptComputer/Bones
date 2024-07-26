@@ -22,4 +22,9 @@ public class ItemVersion
     public required Item Item { get; set; }
 
     public required List<ItemValue> Values { get; set; }
+
+    /// <summary>
+    ///   Disables viewing this item version, and when safe to do so it will be removed.
+    /// </summary>
+    public bool DeleteFlag { get; set; } = false;
 }

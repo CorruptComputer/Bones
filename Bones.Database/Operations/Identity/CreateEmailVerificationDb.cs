@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.Identity;
 
-public class CreateEmailVerificationDb(BonesDbContext dbContext) : IRequestHandler<CreateEmailVerificationDb.Command, CommandResponse>
+public sealed class CreateEmailVerificationDb(BonesDbContext dbContext) : IRequestHandler<CreateEmailVerificationDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for generating an email verification token and queuing an email to be sent.
@@ -26,11 +26,15 @@ public class CreateEmailVerificationDb(BonesDbContext dbContext) : IRequestHandl
 
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        BonesUser? user = dbContext.Users.FirstOrDefault(u => u.Id == request.UserId);
+        BonesUser? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken);
 
         if (user == null)
         {
-            throw new UnrecoverableException($"Unable to find user by ID: {request.UserId}");
+            return new()
+            {
+                Success = false,
+                FailureReason = $"Unable to find user by ID: {request.UserId}"
+            };
         }
 
         EntityEntry<UserEmailVerification> created = await dbContext.UserEmailVerifications.AddAsync(new()

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.Identity;
 
-public class CreateUserDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<CreateUserDb.Command, CommandResponse>
+public sealed class CreateUserDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<CreateUserDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for creating a user.

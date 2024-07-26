@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Queues;
 
-public class CreateQueueDb(BonesDbContext dbContext) : IRequestHandler<CreateQueueDb.Command, CommandResponse>
+public sealed class CreateQueueDb(BonesDbContext dbContext) : IRequestHandler<CreateQueueDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for creating a Queue.

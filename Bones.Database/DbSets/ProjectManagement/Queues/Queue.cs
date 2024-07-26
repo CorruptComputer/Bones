@@ -22,4 +22,9 @@ public class Queue
     public required string Name { get; set; }
 
     public List<Item> Items { get; set; } = [];
+
+    /// <summary>
+    ///   Disables viewing this queue, and when safe to do so it will be removed.
+    /// </summary>
+    public bool DeleteFlag { get; set; } = false;
 }

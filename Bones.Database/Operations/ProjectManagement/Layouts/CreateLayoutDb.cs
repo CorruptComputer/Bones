@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Layouts;
 
-public class CreateLayoutDb(BonesDbContext dbContext) : IRequestHandler<CreateLayoutDb.Command, CommandResponse>
+// TODO: LayoutVersions
+public sealed class CreateLayoutDb(BonesDbContext dbContext) : IRequestHandler<CreateLayoutDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for creating a layout.

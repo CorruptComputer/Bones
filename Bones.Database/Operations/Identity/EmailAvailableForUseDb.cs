@@ -2,7 +2,7 @@ using Bones.Database.DbSets.Identity;
 
 namespace Bones.Database.Operations.Identity;
 
-public class EmailAvailableForUseDb(BonesDbContext dbContext) : IRequestHandler<EmailAvailableForUseDb.Command, CommandResponse>
+public sealed class EmailAvailableForUseDb(BonesDbContext dbContext) : IRequestHandler<EmailAvailableForUseDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for checking if an email is available to use.
