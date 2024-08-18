@@ -12,19 +12,19 @@ public class CreateQueue(ISender sender) : IRequestHandler<CreateQueue.Command, 
     public record Command(string Name, Guid InitiativeId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "");
             }
 
             if (InitiativeId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

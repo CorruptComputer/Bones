@@ -15,24 +15,24 @@ public class CreateItem(ISender sender) : IRequestHandler<CreateItem.Command, Co
         : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "");
             }
 
             if (QueueId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
             if (LayoutVersionId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

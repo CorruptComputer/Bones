@@ -15,22 +15,22 @@ public sealed class CreateLayoutDb(BonesDbContext dbContext) : IRequestHandler<C
     public record Command(string Name, List<Guid> ItemFieldIds) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "");
             }
 
             foreach (Guid id in ItemFieldIds)
             {
                 if (id == Guid.Empty)
                 {
-                    return false;
+                    return (false, "");
                 }
             }
 
-            return true;
+            return (true, null);
         }
     }
 

@@ -1,11 +1,11 @@
 using Bones.Api.Features.ProjectManagement.Projects;
+using Bones.Database.DbSets.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
 
 public partial class ProjectManagementController
 {
-
     public record CreateProjectAsyncRequest(string Name);
 
     /// <summary>
@@ -18,7 +18,7 @@ public partial class ProjectManagementController
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateProjectAsync([FromBody] CreateProjectAsyncRequest request)
     {
-        CommandResponse response = await Sender.Send(new CreateProject.Command(request.Name));
+        CommandResponse response = await Sender.Send(new CreateProject.Command(request.Name, _user));
         if (!response.Success)
         {
             return BadRequest(response.FailureReason);

@@ -12,14 +12,14 @@ public sealed class CreateUserDb(BonesDbContext dbContext, ISender sender) : IRe
     public record Command(string Email) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Email))
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

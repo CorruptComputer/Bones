@@ -12,14 +12,14 @@ public class GetUserById(ISender sender) : IRequestHandler<GetUserById.Query, Qu
     public record Query(Guid UserId) : IValidatableRequest<QueryResponse<Response>>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (UserId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

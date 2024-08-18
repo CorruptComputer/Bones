@@ -1,4 +1,6 @@
+using Bones.Database.DbSets.Identity;
 using Bones.Database.Operations.ProjectManagement.Projects;
+using Bones.Database.Operations.ProjectManagement.Projects.CreateProjectDb;
 
 namespace Bones.Api.Features.ProjectManagement.Projects;
 
@@ -8,23 +10,23 @@ public class CreateProject(ISender sender) : IRequestHandler<CreateProject.Comma
     ///     DB Command for creating a Project.
     /// </summary>
     /// <param name="Name">Name of the project</param>
-    public record Command(string Name) : IValidatableRequest<CommandResponse>
+    public record Command(string Name, BonesUser RequestingUser) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new CreateProjectDb.Command(request.Name), cancellationToken);
+        return await sender.Send(new CreateProjectDbCommand(request.Name, request.RequestingUser), cancellationToken);
     }
 }

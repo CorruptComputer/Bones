@@ -11,14 +11,14 @@ public sealed class DeleteInitiativeDb(BonesDbContext dbContext) : IRequestHandl
     public record Command(Guid InitiativeId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (InitiativeId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

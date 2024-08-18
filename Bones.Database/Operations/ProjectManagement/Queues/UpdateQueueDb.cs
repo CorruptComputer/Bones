@@ -12,19 +12,19 @@ public sealed class UpdateQueueDb(BonesDbContext dbContext) : IRequestHandler<Up
     public record Command(Guid QueueId, string Name) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "Name is required.");
             }
 
             if (QueueId == Guid.Empty)
             {
-                return false;
+                return (false, "Queue id is required.");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

@@ -13,19 +13,19 @@ public class ChangeUserEmail(ISender sender) : IRequestHandler<ChangeUserEmail.C
     public record Command(Guid UserId, string Email) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (UserId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
             if (string.IsNullOrWhiteSpace(Email))
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

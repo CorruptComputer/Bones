@@ -1,3 +1,4 @@
+using Bones.Database.DbSets.Identity;
 using Bones.Database.DbSets.ProjectManagement.Initiatives;
 
 namespace Bones.Database.DbSets.ProjectManagement.Projects;
@@ -19,6 +20,8 @@ public class Project
     public required string Name { get; set; }
 
     public List<Initiative> Initiatives { get; set; } = [];
+    
+    public required BonesUser OwningUser { get; set; }
 
     /// <summary>
     ///   Disables access to this Project and schedules deletes for everything within,

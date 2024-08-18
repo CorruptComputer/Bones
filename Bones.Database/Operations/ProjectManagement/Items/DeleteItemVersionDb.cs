@@ -11,14 +11,14 @@ public sealed class DeleteItemVersionDb(BonesDbContext dbContext) : IRequestHand
     public record Command(Guid ItemVersionId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (ItemVersionId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

@@ -17,19 +17,19 @@ public sealed class CreateItemVersionDb(BonesDbContext dbContext) : IRequestHand
         : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (ItemID == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
             if (LayoutVersionId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

@@ -1,0 +1,25 @@
+<MudTextField T="string" Label="Email Address" @bind-value="@EmailAddress" InputType="InputType.Email" />
+<MudTextField T="string" Label="Password" Value="@Password" ValueChanged="PasswordChangedEvent" InputType="InputType.Password" />
+
+@if (LoginFlow)
+{
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@DoLogin">Login</MudButton>
+    <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="@GoToRegistration">Don't have an account? Click here to register.</MudButton>
+}
+else
+{
+    @if (!RegistrationSuccess)
+    {
+        <MudTextField T="string" Label="Password (again)" Value="@PasswordAgain" ValueChanged="PasswordAgainChangedEvent" InputType="InputType.Password" />
+    
+        <MudAlert Severity="Severity.Warning" hidden="@PasswordComplexEnough">Password must contain lowercase, uppercase, number, special, and be at least 8 characters long.</MudAlert>
+        <MudAlert Severity="Severity.Error" hidden="@PasswordsMatch">Passwords do not match!</MudAlert>
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@DoRegistrationAsync">Register</MudButton>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Success">Account created successfully, please check your email for a confirmation link.</MudAlert>
+    }
+    
+}

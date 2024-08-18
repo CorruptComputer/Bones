@@ -11,14 +11,14 @@ public sealed class GetUserByIdDb(BonesDbContext dbContext) : IRequestHandler<Ge
     public record Query(Guid UserId) : IValidatableRequest<QueryResponse<BonesUser>>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (UserId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

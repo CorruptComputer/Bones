@@ -11,14 +11,14 @@ public sealed class DeleteLayoutDb(BonesDbContext dbContext) : IRequestHandler<D
     public record Command(Guid LayoutId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (LayoutId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

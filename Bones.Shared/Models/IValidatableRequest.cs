@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Bones.Shared.Models;
 
 public interface IValidatableRequest<out TResponse> : IRequest<TResponse>
@@ -7,5 +9,5 @@ public interface IValidatableRequest<out TResponse> : IRequest<TResponse>
     ///   no DB or external calls should be made here, just look at the raw values.
     /// </summary>
     /// <returns>true if valid, false if invalid</returns>
-    public bool IsRequestValid();
+    public (bool valid, string? invalidReason) IsRequestValid();
 }

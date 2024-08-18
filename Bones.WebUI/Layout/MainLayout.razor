@@ -1,0 +1,48 @@
+﻿@using Bones.WebUI.Components
+@inherits LayoutComponentBase
+@inject IDialogService DialogService
+
+<MudThemeProvider/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.PersonPin" Color="Color.Inherit" OnClick="@OpenLoginDialogAsync" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_open" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Bones</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" href="/">Home</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" href="/counter">Counter</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" href="/weather">Weather</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+    <MudMainContent Class="pt-16 px-16">
+        <MudContainer Class="mt-6">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code
+{
+    private bool _open = false;
+
+    private void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+    
+    private Task OpenLoginDialogAsync()
+    {
+        DialogOptions options = new() { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<LoginDialog>("Simple Dialog", options);
+    }
+}

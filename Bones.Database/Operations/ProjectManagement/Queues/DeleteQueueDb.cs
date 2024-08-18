@@ -13,14 +13,14 @@ public sealed class DeleteQueueDb(BonesDbContext dbContext, ISender sender) : IR
     public record Command(Guid QueueId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (QueueId == Guid.Empty)
             {
-                return false;
+                return (false, "Queue id is required.");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

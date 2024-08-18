@@ -11,19 +11,19 @@ public class VerifyUserEmail(ISender sender) : IRequestHandler<VerifyUserEmail.C
     public record Command(Guid UserId, Guid Token) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (UserId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
             if (Token == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

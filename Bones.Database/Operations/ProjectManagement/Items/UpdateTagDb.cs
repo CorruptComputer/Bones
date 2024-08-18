@@ -12,19 +12,19 @@ public sealed class UpdateTagDb(BonesDbContext dbContext) : IRequestHandler<Upda
     public record Command(Guid TagId, string Name) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "");
             }
 
             if (TagId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

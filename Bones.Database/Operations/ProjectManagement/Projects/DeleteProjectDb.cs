@@ -13,14 +13,14 @@ public sealed class DeleteProjectDb(BonesDbContext dbContext, ISender sender) : 
     public record Command(Guid ProjectId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (ProjectId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

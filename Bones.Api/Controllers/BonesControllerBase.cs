@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
@@ -7,7 +8,7 @@ namespace Bones.Api.Controllers;
 ///     Base controller for the Bones API, everything should extend from this.
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 public class BonesControllerBase(ISender sender) : ControllerBase

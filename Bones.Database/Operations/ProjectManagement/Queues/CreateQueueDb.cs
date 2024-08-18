@@ -14,19 +14,19 @@ public sealed class CreateQueueDb(BonesDbContext dbContext) : IRequestHandler<Cr
     public record Command(string Name, Guid InitiativeId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "Name is required.");
             }
 
             if (InitiativeId == Guid.Empty)
             {
-                return false;
+                return (false, "Initiative id is required.");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

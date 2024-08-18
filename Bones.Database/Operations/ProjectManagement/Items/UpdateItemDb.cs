@@ -13,29 +13,29 @@ public sealed class UpdateItemDb(BonesDbContext dbContext) : IRequestHandler<Upd
     public record Command(Guid ItemId, string Name, Guid QueueId, List<Guid> TagIds) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return false;
+                return (false, "");
             }
 
             if (ItemId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
             if (QueueId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
             if (TagIds.Exists(tagId => tagId == Guid.Empty))
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 

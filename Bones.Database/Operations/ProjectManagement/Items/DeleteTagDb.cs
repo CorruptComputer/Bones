@@ -11,14 +11,14 @@ public sealed class DeleteTagDb(BonesDbContext dbContext) : IRequestHandler<Dele
     public record Command(Guid TagId) : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
-        public bool IsRequestValid()
+        public (bool valid, string? invalidReason) IsRequestValid()
         {
             if (TagId == Guid.Empty)
             {
-                return false;
+                return (false, "");
             }
 
-            return true;
+            return (true, null);
         }
     }
 
