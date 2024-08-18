@@ -4,9 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using Bones.Database;
 using Bones.Database.DbSets.Identity;
 using Bones.Database.Extensions;
-using Bones.Shared.Exceptions;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
+
 
 namespace Bones.Api;
 
@@ -22,18 +20,7 @@ public static class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddAuthentication().AddJwtBearer(options =>
-        {
-            options.Authority = builder.Configuration["Jwt:Authority"];
-            options.Configuration = new()
-            {
-                Issuer = builder.Configuration["Jwt:Issuer"],
-                SigningKeys = { 
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] 
-                        ?? throw new BonesException("Missing configuration: Jwt:Key"))) 
-                }
-            };
-        });
+        builder.Services.AddAuthentication();
         builder.Services.AddAuthorization();
         builder.Services.AddControllers();
         // builder.Services.AddOpenApi()
