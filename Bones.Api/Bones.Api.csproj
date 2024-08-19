@@ -8,6 +8,10 @@
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+
+        <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)/OpenApi</OpenApiDocumentsDirectory>
+        <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
+        <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
@@ -48,6 +52,24 @@
       </Compile>
       <Compile Update="Controllers\ProjectManagementController.Queues.cs">
         <DependentUpon>ProjectManagementController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AuthController.Register.cs">
+        <DependentUpon>AuthController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AuthController.Login.cs">
+        <DependentUpon>AuthController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AuthController.Refresh.cs">
+        <DependentUpon>AuthController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AuthController.ConfirmEmail.cs">
+        <DependentUpon>AuthController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AuthController.ResendConfirmationEmail.cs">
+        <DependentUpon>AuthController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AuthController.Info.cs">
+        <DependentUpon>AuthController.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

@@ -18,9 +18,7 @@ public class BonesDbContext(IConfiguration configuration)
     : IdentityDbContext<BonesUser, BonesRole, Guid, BonesUserClaim, BonesUserRole, BonesUserLogin, BonesRoleClaim, BonesUserToken>
 {
     private const string BonesDbConnectionStringKey = "BonesDb";
-
-    internal DbSet<UserEmailVerification> UserEmailVerifications { get; set; }
-
+    
     #region ProjectManagement
 
     #region Initiatives
@@ -33,6 +31,8 @@ public class BonesDbContext(IConfiguration configuration)
     internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
     internal DbSet<ItemValue> ItemValues { get; set; }
     internal DbSet<ItemVersion> ItemVersions { get; set; }
+    
+    internal DbSet<Tag> Tags { get; set; }
     #endregion
 
     #region Layouts
@@ -47,11 +47,8 @@ public class BonesDbContext(IConfiguration configuration)
     #region Queues
     internal DbSet<Queue> Queues { get; set; }
     #endregion
-
-
-
-
-    internal DbSet<Tag> Tags { get; set; }
+    
+    
     #endregion
 
 

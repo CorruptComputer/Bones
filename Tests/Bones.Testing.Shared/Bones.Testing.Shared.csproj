@@ -31,4 +31,8 @@
       <ProjectReference Include="..\..\Bones.Shared\Bones.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="TestOperations\Users\" />
+    </ItemGroup>
+
 </Project>

@@ -1,4 +1,3 @@
-using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Database;
@@ -56,8 +55,35 @@ public static class Program
         );
 
         builder.Services.AddDbContext<BonesDbContext>();
-        builder.Services.AddIdentityApiEndpoints<BonesUser>()
-            .AddEntityFrameworkStores<BonesDbContext>();
+        builder.Services.AddIdentityApiEndpoints<BonesUser>(options =>
+        {
+            options.User = new()
+            {
+                RequireUniqueEmail = true
+            };
+            
+            options.SignIn = new()
+            {
+                RequireConfirmedEmail = true
+            };
+
+            options.Lockout = new()
+            {
+                MaxFailedAccessAttempts = 3,
+                DefaultLockoutTimeSpan = TimeSpan.FromHours(1),
+                AllowedForNewUsers = true
+            };
+
+            options.Password = new()
+            {
+                RequireDigit = true,
+                RequireLowercase = true,
+                RequireUppercase = true,
+                RequireNonAlphanumeric = true,
+                RequiredLength = 8
+            };
+        })
+        .AddEntityFrameworkStores<BonesDbContext>();
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -90,7 +116,11 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
         
-        app.MapControllers();
+        app.UseRouting().UseEndpoints(configure =>
+        {
+            configure.MapControllers();
+        });
+        
         app.Run();
     }
 }

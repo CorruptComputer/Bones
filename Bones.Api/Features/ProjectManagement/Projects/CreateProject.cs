@@ -1,5 +1,4 @@
 using Bones.Database.DbSets.Identity;
-using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Database.Operations.ProjectManagement.Projects.CreateProjectDb;
 
 namespace Bones.Api.Features.ProjectManagement.Projects;

@@ -1,5 +1,4 @@
 using Bones.Api.Features.ProjectManagement.Projects;
-using Bones.Database.DbSets.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;

@@ -1,6 +1,5 @@
 using Bones.Database.DbSets.ProjectManagement.Items;
 using Bones.Database.DbSets.ProjectManagement.Layouts;
-using Bones.Database.DbSets.ProjectManagement.Queues;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Items;

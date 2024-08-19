@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Bones.Shared.Models;
 
 public interface IValidatableRequest<out TResponse> : IRequest<TResponse>
