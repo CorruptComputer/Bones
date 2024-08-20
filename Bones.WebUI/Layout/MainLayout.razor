@@ -1,4 +1,4 @@
-﻿@using Bones.WebUI.Components
+﻿@using Bones.WebUI.Components.Auth
 @inherits LayoutComponentBase
 @inject IDialogService DialogService
 
@@ -43,6 +43,6 @@
     {
         DialogOptions options = new() { CloseOnEscapeKey = true };
 
-        return DialogService.ShowAsync<LoginDialog>("Simple Dialog", options);
+        return DialogService.ShowAsync<LoginRegisterDialog>(null, options);
     }
 }

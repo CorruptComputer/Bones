@@ -1,4 +1,4 @@
-using Bones.Api.Features.Identity.ConfirmEmail;
+using Bones.Api.Features.Auth.ConfirmEmail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;

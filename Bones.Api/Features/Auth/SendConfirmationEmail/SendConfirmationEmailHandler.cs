@@ -5,7 +5,7 @@ using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace Bones.Api.Features.Identity.SendConfirmationEmail;
+namespace Bones.Api.Features.Auth.SendConfirmationEmail;
 
 public class SendConfirmationEmailHandler(UserManager<BonesUser> userManager, IEmailSender<BonesUser> emailSender, LinkGenerator linkGenerator, IConfiguration configuration) : IRequestHandler<SendConfirmationEmailCommand, CommandResponse>
 {

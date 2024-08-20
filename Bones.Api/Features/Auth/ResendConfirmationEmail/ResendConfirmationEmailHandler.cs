@@ -1,9 +1,9 @@
-using Bones.Api.Features.Identity.SendConfirmationEmail;
+using Bones.Api.Features.Auth.SendConfirmationEmail;
 using Bones.Database.DbSets.Identity;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Api.Features.Identity.ResendConfirmationEmail;
+namespace Bones.Api.Features.Auth.ResendConfirmationEmail;
 
 public class ResendConfirmationEmailHandler(UserManager<BonesUser> userManager,  ISender sender) : IRequestHandler<ResendConfirmationEmailCommand, CommandResponse>
 {

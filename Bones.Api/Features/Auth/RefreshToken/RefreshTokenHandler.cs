@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace Bones.Api.Features.Identity.RefreshToken;
+namespace Bones.Api.Features.Auth.RefreshToken;
 
 public class RefreshTokenHandler(SignInManager<BonesUser> signInManager, IOptionsMonitor<BearerTokenOptions> bearerTokenOptions, TimeProvider timeProvider) : IRequestHandler<RefreshTokenQuery, QueryResponse<ClaimsPrincipal>>
 {

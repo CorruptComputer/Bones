@@ -3,7 +3,7 @@ using Bones.Database.DbSets.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace Bones.Api.Features.Identity.ConfirmEmail;
+namespace Bones.Api.Features.Auth.ConfirmEmail;
 
 public class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmEmailQuery, QueryResponse<IdentityResult>>
 {

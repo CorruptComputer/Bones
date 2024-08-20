@@ -1,4 +1,4 @@
-using Bones.Api.Features.Identity.RegisterUser;
+using Bones.Api.Features.Auth.RegisterUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -12,8 +12,9 @@ public sealed partial class AuthController
     [HttpPost("register", Name = "RegisterAsync")]
     [ProducesResponseType<Created>(StatusCodes.Status201Created, Type = typeof(Created))]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblem))]
-    public async Task<Results<Created, ValidationProblem>> RegisterAsync([FromBody] RegisterUserQuery registration, HttpContext context)
+    public async Task<Results<Created, ValidationProblem>> RegisterAsync([FromBody] RegisterUserQuery registration)
     {
+        registration.Context = HttpContext;
         QueryResponse<IdentityResult> result = await Sender.Send(registration);
 
         if (result.Success)

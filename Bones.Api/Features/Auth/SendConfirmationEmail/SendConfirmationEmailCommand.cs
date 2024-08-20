@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.Identity;
 
-namespace Bones.Api.Features.Identity.SendConfirmationEmail;
+namespace Bones.Api.Features.Auth.SendConfirmationEmail;
 
 public class SendConfirmationEmailCommand : IValidatableRequest<CommandResponse>
 {

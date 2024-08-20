@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+/*using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Text;
@@ -172,18 +172,6 @@ public static class EndpointRouteBuilderExtensions
             });
         });
 
-        accountGroup.MapGet("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
-            (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider sp) =>
-        {
-            UserManager<TUser> userManager = sp.GetRequiredService<UserManager<TUser>>();
-            if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
-            {
-                return TypedResults.NotFound();
-            }
-
-            return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
-        });
-
         accountGroup.MapPost("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
             (ClaimsPrincipal claimsPrincipal, [FromBody] InfoRequest infoRequest, HttpContext context, [FromServices] IServiceProvider sp) =>
         {
@@ -303,4 +291,4 @@ public static class EndpointRouteBuilderExtensions
         };
     }
     
-}
+}*/

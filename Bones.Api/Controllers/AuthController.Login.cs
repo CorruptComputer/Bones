@@ -1,4 +1,4 @@
-using Bones.Api.Features.Identity.LoginUser;
+using Bones.Api.Features.Auth.LoginUser;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;

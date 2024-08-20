@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using Bones.Api.Features.Identity.SendConfirmationEmail;
+using Bones.Api.Features.Auth.SendConfirmationEmail;
 using Bones.Database.DbSets.Identity;
+using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Api.Features.Identity.RegisterUser;
+namespace Bones.Api.Features.Auth.RegisterUser;
 
 public class RegisterUserHandler(UserManager<BonesUser> userManager, IUserStore<BonesUser> userStore, ISender sender) : IRequestHandler<RegisterUserQuery, QueryResponse<IdentityResult>>
 {
@@ -49,7 +50,7 @@ public class RegisterUserHandler(UserManager<BonesUser> userManager, IUserStore<
         {
             Email = request.Email,
             User = user,
-            Context = request.Context
+            Context = request.Context ?? throw new BonesException("Context is null.")
         }, cancellationToken);
         
         return new()

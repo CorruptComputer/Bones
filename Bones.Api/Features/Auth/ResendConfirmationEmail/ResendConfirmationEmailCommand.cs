@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Bones.Api.Features.Identity.ResendConfirmationEmail;
+namespace Bones.Api.Features.Auth.ResendConfirmationEmail;
 
 public class ResendConfirmationEmailCommand : IValidatableRequest<CommandResponse>
 {

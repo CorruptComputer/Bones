@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Api.Features.Identity.RegisterUser;
+namespace Bones.Api.Features.Auth.RegisterUser;
 
 [JsonSerializable(typeof(RegisterUserQuery))]
 public sealed record RegisterUserQuery : IValidatableRequest<QueryResponse<IdentityResult>>
@@ -20,7 +20,7 @@ public sealed record RegisterUserQuery : IValidatableRequest<QueryResponse<Ident
     public required string Password { get; init; }
     
     [JsonIgnore]
-    public required HttpContext Context { get; set; }
+    public HttpContext? Context { get; set; }
     
     public (bool valid, string? invalidReason) IsRequestValid()
     {

@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Bones.Api.Features.Identity.RefreshToken;
+using Bones.Api.Features.Auth.RefreshToken;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;

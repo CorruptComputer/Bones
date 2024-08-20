@@ -1,35 +1,28 @@
+using System.Security.Claims;
+using Bones.Api.Features.Auth.GetUserInfo;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Bones.Api.Controllers;
 
-public class AuthController_Info
+public partial class AuthController
 {
-    accountGroup.MapGet("/info", async Task<Results<Ok<InfoResponse>, ValidationProblem, NotFound>>
-    (ClaimsPrincipal claimsPrincipal, [FromServices] IServiceProvider sp) =>
-    {
-        UserManager<TUser> userManager = sp.GetRequiredService<UserManager<TUser>>();
-        if (await userManager.GetUserAsync(claimsPrincipal) is not { } user)
-        {
-            return TypedResults.NotFound();
-        }
-
-        return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager));
-    });
-
     [HttpGet("info", Name = "GetInfoAsync")]
     [ProducesResponseType<Ok<GetUserInfoResponse>>(StatusCodes.Status200OK, Type = typeof(Ok<GetUserInfoResponse>))]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblem))]
     [ProducesResponseType<NotFound>(StatusCodes.Status404NotFound, Type = typeof(NotFound))]
-    public async Task<Results<Ok<GetUserInfoResponse>, ValidationProblem, NotFound>> GetInfoAsync(ClaimsPrincipal claimsPrincipal)
+    public async Task<Results<Ok<GetUserInfoResponse>, ValidationProblem, NotFound>> GetInfoAsync()
     {
-        QueryResponse<IdentityResult> result = await Sender.Send(new ConfirmEmailQuery()
+        QueryResponse<GetUserInfoResponse> result = await Sender.Send(new GetUserInfoQuery()
         {
-            UserId = userId,
-            Code = code,
-            ChangedEmail = changedEmail
+            ClaimsPrincipal = User
         });
 
         if (result is { Success: true, Result: not null })
         {
-            return TypedResults.Ok(await CreateInfoResponseAsync(user, userManager);
+            return TypedResults.Ok(result.Result);
         }
 
         return TypedResults.NotFound();

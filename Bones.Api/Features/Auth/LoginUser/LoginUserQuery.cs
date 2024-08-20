@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Api.Features.Identity.LoginUser;
+namespace Bones.Api.Features.Auth.LoginUser;
 
 [JsonSerializable(typeof(LoginUserQuery))]
 public sealed record LoginUserQuery : IValidatableRequest<QueryResponse<SignInResult>>

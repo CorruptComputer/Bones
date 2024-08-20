@@ -1,10 +1,15 @@
 using System.Text.RegularExpressions;
-using Bones.ApiClients;
+using Bones.WebUI.ApiClients;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
-namespace Bones.WebUI.Components;
+namespace Bones.WebUI.Components.Auth;
 
-public partial class LoginDialog(Bones_Api_v0Client apiClient)
+public partial class LoginRegisterDialog
 {
+    [CascadingParameter]
+    public required MudDialogInstance DialogInstance { get; set; }
+    
     private bool LoginFlow { get; set; } = true;
     
     private bool RegistrationSuccess { get; set; } = false;
@@ -53,7 +58,6 @@ public partial class LoginDialog(Bones_Api_v0Client apiClient)
 
     public async Task DoRegistrationAsync()
     {
-        // TODO:
         //   - Send this to the API
         //   - API should reply back with a user ID if successful
         //   - Tell the user to check their email for the confirmation link
@@ -62,7 +66,7 @@ public partial class LoginDialog(Bones_Api_v0Client apiClient)
             try
             {
                 RegistrationError = string.Empty;
-                await apiClient.CreateAccountAsync(new()
+                await ApiClient.RegisterAsync(new()
                 {
                     Email = EmailAddress,
                     Password = Password
@@ -70,13 +74,12 @@ public partial class LoginDialog(Bones_Api_v0Client apiClient)
 
                 RegistrationSuccess = true;
             }
-            catch (ApiException<string> ex)
+            catch (Exception ex)
             {
                 RegistrationSuccess = false;
-                RegistrationError = ex.Result;
+                RegistrationError = ex.Message;
             }
         }
-        
     }
     
     [GeneratedRegex(@"[0-9]")]
@@ -91,18 +94,19 @@ public partial class LoginDialog(Bones_Api_v0Client apiClient)
     [GeneratedRegex(@"[^a-zA-Z0-9]")]
     private static partial Regex PasswordContainsSpecial();
     
-    public void DoLogin()
+    public Task DoLoginAsync()
     {
-        // TODO:
         //   - Send this to the API
         //   - API should reply back with a token if successful
         //   - Set the token in the users session somehow and use that for all future API calls
         //   - Redirect back to home page
-        
+        return Task.CompletedTask;
     }
 
-    public void GoToRegistration()
+    public Task ToggleLoginFlow()
     {
-        LoginFlow = false;
+        LoginFlow = !LoginFlow;
+        DialogInstance.StateHasChanged();
+        return Task.CompletedTask;
     }
 }

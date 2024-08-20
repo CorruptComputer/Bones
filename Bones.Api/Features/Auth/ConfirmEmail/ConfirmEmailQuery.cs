@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Api.Features.Identity.ConfirmEmail;
+namespace Bones.Api.Features.Auth.ConfirmEmail;
 
 [JsonSerializable(typeof(ConfirmEmailQuery))]
 public sealed record ConfirmEmailQuery : IValidatableRequest<QueryResponse<IdentityResult>>

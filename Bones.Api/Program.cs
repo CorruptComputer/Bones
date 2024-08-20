@@ -1,8 +1,13 @@
+using System.Text.Json;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Bones.Api.Handlers;
 using Bones.Database;
 using Bones.Database.DbSets.Identity;
 using Bones.Database.Extensions;
+using Bones.Shared.Exceptions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace Bones.Api;
@@ -12,6 +17,9 @@ namespace Bones.Api;
 /// </summary>
 public static class Program
 {
+    // Because fuck you Microsoft IdentityConstants.BearerAndApplicationScheme is internal only for some probably dumb reason
+    private const string BearerAndApplicationScheme = "Identity.BearerAndApplication";
+    
     /// <summary>
     ///     The main character of the project.
     /// </summary>
@@ -19,49 +27,23 @@ public static class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddAuthentication();
-        builder.Services.AddAuthorization();
-        builder.Services.AddControllers();
-        // builder.Services.AddOpenApi()
-
-        if (builder.Environment.IsDevelopment())
-        {
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
+        builder.Services.AddAuthentication(BearerAndApplicationScheme)
+            .AddScheme<AuthenticationSchemeOptions, BonesIdentityHandler>
+                (BearerAndApplicationScheme, null, compositeOptions =>
             {
-                options.SwaggerDoc("v0", new()
-                {
-                    Version = "v0",
-                    Title = "Bones API",
-                    Description = "Its an API and it does stuff",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new()
-                    {
-                        Name = "GitHub Issues",
-                        Url = new("https://github.com/CorruptComputer/Bones/issues")
-                    },
-                    License = new()
-                    {
-                        Name = "MIT License",
-                        Url = new("https://github.com/CorruptComputer/Bones/blob/develop/LICENSE")
-                    }
-                });
-            });
-        }
-
-        builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
-            loggerConfig.ReadFrom.Configuration(builder.Configuration)
-                .ReadFrom.Services(serviceProvider)
-        );
-
-        builder.Services.AddDbContext<BonesDbContext>();
-        builder.Services.AddIdentityApiEndpoints<BonesUser>(options =>
+                compositeOptions.ForwardDefault = IdentityConstants.BearerScheme;
+                compositeOptions.ForwardAuthenticate = BearerAndApplicationScheme;
+            })
+            .AddBearerToken(IdentityConstants.BearerScheme)
+            .AddIdentityCookies();
+        
+        builder.Services.AddIdentityCore<BonesUser>(options =>
         {
             options.User = new()
             {
                 RequireUniqueEmail = true
             };
-            
+
             options.SignIn = new()
             {
                 RequireConfirmedEmail = true
@@ -82,9 +64,43 @@ public static class Program
                 RequireNonAlphanumeric = true,
                 RequiredLength = 8
             };
-        })
-        .AddEntityFrameworkStores<BonesDbContext>();
+        });
+        
+        builder.Services.AddAuthorization();
+        builder.Services.AddControllers();
+        // builder.Services.AddOpenApi()
 
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("develop", new()
+                {
+                    Version = "develop",
+                    Title = "Bones API",
+                    Description = "Its an API and it does stuff",
+                    Contact = new()
+                    {
+                        Name = "GitHub Issues",
+                        Url = new("https://github.com/CorruptComputer/Bones/issues")
+                    },
+                    License = new()
+                    {
+                        Name = "MIT License",
+                        Url = new("https://github.com/CorruptComputer/Bones/blob/develop/LICENSE")
+                    }
+                });
+            });
+        }
+
+        builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
+            loggerConfig.ReadFrom.Configuration(builder.Configuration)
+                .ReadFrom.Services(serviceProvider)
+        );
+
+        builder.Services.AddDbContext<BonesDbContext>();
+        
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {
@@ -101,7 +117,7 @@ public static class Program
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v0/swagger.json", "v0");
+                options.SwaggerEndpoint("/swagger/develop/swagger.json", "develop");
             });
 
             // Really clutters up the logs, but is useful sometimes
@@ -115,12 +131,15 @@ public static class Program
         app.UseStaticFiles();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.MapControllers();
         
-        app.UseRouting().UseEndpoints(configure =>
+        string frontEndUrl = app.Configuration["WebUIBaseUrl"] ?? throw new BonesException("WebUIBaseUrl missing from appsettings.");
+        app.UseCors(configurePolicy =>
         {
-            configure.MapControllers();
-        });
-        
+            configurePolicy.WithOrigins(frontEndUrl)
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }); 
         app.Run();
     }
 }

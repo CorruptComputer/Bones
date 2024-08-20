@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 
-namespace Bones.Api.Features.Identity.RefreshToken;
+namespace Bones.Api.Features.Auth.RefreshToken;
 
 [JsonSerializable(typeof(RefreshTokenQuery))]
 public sealed record RefreshTokenQuery : IValidatableRequest<QueryResponse<ClaimsPrincipal>>

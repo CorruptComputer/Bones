@@ -1,4 +1,4 @@
-using Bones.ApiClients;
+using Bones.WebUI.ApiClients;
 using Bones.WebUI.Exceptions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -11,15 +11,6 @@ public static class Program
     public static async Task Main(string[] args)
     {
         WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
-        
-        
-        
-        
-        
-        
-        
-        
-        
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
@@ -28,10 +19,11 @@ public static class Program
         {
             BaseAddress = new(builder.HostEnvironment.BaseAddress)
         });
-        builder.Services.AddSingleton(_ =>
+        
+        builder.Services.AddSingleton<IBonesApiClient, BonesApiClient>(_ =>
         {
             string apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? throw new BonesUiException("Missing ApiBaseUrl");
-            return new Bones_Api_v0Client(apiBaseUrl, new()
+            return new(new()
             {
                 BaseAddress = new(apiBaseUrl)
             });

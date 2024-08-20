@@ -1,7 +1,7 @@
 using Bones.Database.DbSets.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Api.Features.Identity.LoginUser;
+namespace Bones.Api.Features.Auth.LoginUser;
 
 public class LoginUserHandler(SignInManager<BonesUser> signInManager) : IRequestHandler<LoginUserQuery, QueryResponse<SignInResult>>
 {
