@@ -27,7 +27,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.1" />
     </ItemGroup>
 
-    <Target Name="CreateSwaggerJson" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+    <Target Name="CreateSwaggerJson" AfterTargets="Build" Condition="$(Configuration) == 'Debug' And $(BUILD_ENVIRONMENT) != 'GitHub'">
         <Exec Command="dotnet swagger tofile --output ./OpenApi/swagger.json $(OutputPath)$(AssemblyName).dll develop" WorkingDirectory="$(ProjectDir)" />
     </Target>
 

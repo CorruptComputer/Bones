@@ -89,6 +89,7 @@ public class BonesDbContext(IConfiguration configuration)
             
             optionsBuilder.UseNpgsql(connectionString, options =>
             {
+                options.MigrationsHistoryTable("__EFMigrationsHistory", "System");
                 options.MigrationsAssembly(typeof(BonesDbContext).Assembly.FullName);
                 options.EnableRetryOnFailure();
             });

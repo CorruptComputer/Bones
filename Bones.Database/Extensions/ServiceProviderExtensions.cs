@@ -22,7 +22,10 @@ public static class ServiceProviderExtensions
         if (!useInMemoryDb)
         {
             BonesDbContext db = scope.ServiceProvider.GetRequiredService<BonesDbContext>();
-            db.Database.Migrate();
+            if (db.Database.GetPendingMigrations().Any())
+            {
+                db.Database.Migrate();
+            }
         }
 
         // We don't need to await this, it's fine to just execute in the background
