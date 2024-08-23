@@ -25,8 +25,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           
-      - name: Build
-        run: dotnet tool restore
+      - name: Tool Restore
+        run: |
+          cd Bones.Api; 
+          dotnet tool restore; 
+          cd ..;
+          cd Bones.WebUI; 
+          dotnet tool restore; 
+          cd ..;
 
       - name: Build
         run: dotnet build --no-incremental
