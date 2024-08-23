@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Queues;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.Operations.ProjectManagement.Queues;
 

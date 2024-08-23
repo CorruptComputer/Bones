@@ -1,5 +1,5 @@
 using Autofac;
-using Bones.Shared.PipelineBehaviors;
+using Bones.Shared.Backend.PipelineBehaviors;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 

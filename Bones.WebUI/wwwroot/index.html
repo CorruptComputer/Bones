@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <link href="Bones.WebUI.styles.css" rel="stylesheet" />
+    <!--link href="Bones.WebUI.styles.css" rel="stylesheet" /-->
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
@@ -31,8 +31,8 @@
         <a class="dismiss">🗙</a>
     </div>
     
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js" autostart="false"></script>
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script type="module">
         import { BrotliDecode } from './decode.min.js';

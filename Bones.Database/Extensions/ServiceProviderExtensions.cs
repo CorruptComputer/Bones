@@ -1,3 +1,4 @@
+using Bones.Database.Operations.Setup;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,5 +24,9 @@ public static class ServiceProviderExtensions
             BonesDbContext db = scope.ServiceProvider.GetRequiredService<BonesDbContext>();
             db.Database.Migrate();
         }
+
+        // We don't need to await this, it's fine to just execute in the background
+        ISender sender = serviceProvider.GetRequiredService<ISender>();
+        sender.Send(new SetupDbHandler.Command());
     }
 }

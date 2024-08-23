@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Items;
-using Bones.Database.DbSets.ProjectManagement.Layouts;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Layouts;
@@ -53,17 +53,17 @@ public sealed class CreateLayoutDb(BonesDbContext dbContext) : IRequestHandler<C
             itemFields.Add(itemField);
         }
 
-        LayoutVersion initialVersion = new()
+        ItemLayoutVersion initialVersion = new()
         {
             Version = 1,
-            Layout = new()
+            ItemLayout = new()
             {
                 Name = request.Name
             },
             Fields = itemFields
         };
 
-        EntityEntry<LayoutVersion> created = await dbContext.LayoutVersions.AddAsync(initialVersion, cancellationToken);
+        EntityEntry<ItemLayoutVersion> created = await dbContext.ItemLayoutVersions.AddAsync(initialVersion, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

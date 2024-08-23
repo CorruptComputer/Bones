@@ -1,4 +1,5 @@
 using Bones.Api.Features.ProjectManagement.Projects;
+using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;

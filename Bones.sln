@@ -29,6 +29,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Shared.UnitTests", "Tests\Bones.Shared.UnitTests\Bones.Shared.UnitTests.csproj", "{3B29652D-C54D-4922-9E4A-B8B51CCCCD2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.WebUI", "Bones.WebUI\Bones.WebUI.csproj", "{B7B95847-5923-46E1-BEC5-D619018E7098}"
+	ProjectSection(ProjectDependencies) = postProject
+		{646BF7B1-446B-47A0-A156-13363CD2E957} = {646BF7B1-446B-47A0-A156-13363CD2E957}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Shared.Backend", "Bones.Shared.Backend\Bones.Shared.Backend.csproj", "{7D73C8BF-8052-4386-B9CA-816321E0EF6E}"
 EndProject
 
 Global
@@ -69,6 +74,10 @@ Global
 		{B7B95847-5923-46E1-BEC5-D619018E7098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7B95847-5923-46E1-BEC5-D619018E7098}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7B95847-5923-46E1-BEC5-D619018E7098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D73C8BF-8052-4386-B9CA-816321E0EF6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D73C8BF-8052-4386-B9CA-816321E0EF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D73C8BF-8052-4386-B9CA-816321E0EF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D73C8BF-8052-4386-B9CA-816321E0EF6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{39F577AE-482A-4D03-B128-C7AE4F846C29} = {AFD22481-8267-4E6C-89D9-AB37A3FE020C}

@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Items;
-using Bones.Database.DbSets.ProjectManagement.Layouts;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Items;
@@ -45,7 +45,7 @@ public sealed class CreateItemVersionDb(BonesDbContext dbContext) : IRequestHand
             };
         }
 
-        LayoutVersion? layoutVersion = await dbContext.LayoutVersions.Include(layoutVersion => layoutVersion.Fields).FirstOrDefaultAsync(lv => lv.Id == request.LayoutVersionId, cancellationToken);
+        ItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions.Include(layoutVersion => layoutVersion.Fields).FirstOrDefaultAsync(lv => lv.Id == request.LayoutVersionId, cancellationToken);
         if (layoutVersion == null)
         {
             return new()
@@ -97,7 +97,7 @@ public sealed class CreateItemVersionDb(BonesDbContext dbContext) : IRequestHand
         {
             Version = item.Versions.Count,
             Item = item,
-            Layout = layoutVersion,
+            ItemLayout = layoutVersion,
             Values = values
         };
 

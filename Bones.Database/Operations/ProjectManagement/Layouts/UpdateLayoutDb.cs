@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Layouts;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.Operations.ProjectManagement.Layouts;
 
@@ -31,7 +32,7 @@ public sealed class UpdateLayoutDb(BonesDbContext dbContext) : IRequestHandler<U
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        Layout? layout = await dbContext.Layouts.FirstOrDefaultAsync(p => p.Id == request.LayoutId, cancellationToken);
+        ItemLayout? layout = await dbContext.ItemLayouts.FirstOrDefaultAsync(p => p.Id == request.LayoutId, cancellationToken);
         if (layout == null)
         {
             return new()

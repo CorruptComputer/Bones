@@ -1,4 +1,5 @@
 using Bones.Database.Operations.ProjectManagement.Layouts;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.Api.Features.ProjectManagement.Layouts;
 

@@ -1,0 +1,23 @@
+﻿@page "/auth/confirm-email"
+@using Bones.Shared.Exceptions
+@layout MainLayout
+
+<PageTitle>Confirm Email</PageTitle>
+
+<h1>Confirm Email</h1>
+
+
+@switch (CurrentState)
+{
+    case State.Confirming:
+        <MudAlert Severity="Severity.Normal">Confirming...</MudAlert>
+        break;
+    case State.Success:
+        <MudAlert Severity="Severity.Success">Email address confirmed successfully, you may now log in.</MudAlert>
+        break;
+    case State.Failure:
+        <MudAlert Severity="Severity.Error">There was a problem confirming your email, please try again.</MudAlert>
+        break;
+    default:
+        throw new BonesException($"{nameof(CurrentState)} out of range: {CurrentState}");
+}

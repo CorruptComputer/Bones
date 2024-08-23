@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Projects;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Projects.CreateProjectDb;

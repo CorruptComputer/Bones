@@ -1,5 +1,7 @@
+using Bones.Shared.Exceptions;
 using Bones.WebUI.ApiClients;
-using Bones.WebUI.Exceptions;
+using Bones.WebUI.Infrastructure;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -15,20 +17,24 @@ public static class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services.AddMudServices();
-        builder.Services.AddScoped(_ => new HttpClient
-        {
-            BaseAddress = new(builder.HostEnvironment.BaseAddress)
-        });
+        builder.Services.AddSingleton<LocalStorageService>();
         
-        builder.Services.AddSingleton<IBonesApiClient, BonesApiClient>(_ =>
-        {
-            string apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? throw new BonesUiException("Missing ApiBaseUrl");
-            return new(new()
+        builder.Services.AddAuthorizationCore();
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddSingleton<BonesAuthenticationStateProvider>();
+        builder.Services.AddSingleton<AuthenticationStateProvider>(s => s.GetRequiredService<BonesAuthenticationStateProvider>());
+        builder.Services.AddScoped<CookieDelegatingHandler>();
+        builder.Services.AddScoped<UnauthorizedDelegatingHandler>();
+        
+        string apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? throw new BonesException("Missing ApiBaseUrl");
+        builder.Services.AddHttpClient(BonesApiClient.API_CLIENT_NAME, client =>
             {
-                BaseAddress = new(apiBaseUrl)
-            });
-        });
+                client.BaseAddress = new(apiBaseUrl);
+            })
+            .AddHttpMessageHandler<CookieDelegatingHandler>()
+            .AddHttpMessageHandler<UnauthorizedDelegatingHandler>();
 
+        builder.Services.AddSingleton<BonesApiClient>();
         await builder.Build().RunAsync();
     }
 }

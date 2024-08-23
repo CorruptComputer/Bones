@@ -1,5 +1,7 @@
-﻿@using System.Net.Http
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Net.Http
 @using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -9,4 +11,11 @@
 @using Bones.WebUI
 @using Bones.WebUI.ApiClients
 @using Bones.WebUI.Layout
+@using Bones.WebUI.Infrastructure
 @using MudBlazor
+
+<!-- Adding this here lets us use it on any page or component -->
+@inject BonesApiClient ApiClient
+@inject BonesAuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+@inject IDialogService DialogSvc

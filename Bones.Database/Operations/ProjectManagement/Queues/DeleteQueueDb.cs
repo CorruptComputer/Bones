@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.ProjectManagement.Items;
-using Bones.Database.DbSets.ProjectManagement.Queues;
+using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.Operations.ProjectManagement.Items;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.Operations.ProjectManagement.Queues;
 

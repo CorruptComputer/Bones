@@ -1,0 +1,17 @@
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        string baseRelativePath = NavManager.ToBaseRelativePath(NavManager.Uri);
+        string loginUrl = "/auth/login";
+
+        if (!string.IsNullOrWhiteSpace(baseRelativePath))
+        {
+            loginUrl += $"?returnUrl={Uri.EscapeDataString(baseRelativePath)}";
+        }
+        
+
+        NavManager.NavigateTo(loginUrl, true);
+    }
+}

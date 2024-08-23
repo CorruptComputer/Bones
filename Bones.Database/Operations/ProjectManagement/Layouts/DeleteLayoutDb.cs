@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Layouts;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.Operations.ProjectManagement.Layouts;
 
@@ -25,7 +26,7 @@ public sealed class DeleteLayoutDb(BonesDbContext dbContext) : IRequestHandler<D
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        Layout? layout = await dbContext.Layouts.Include(layout => layout.Versions).FirstOrDefaultAsync(p => p.Id == request.LayoutId, cancellationToken);
+        ItemLayout? layout = await dbContext.ItemLayouts.Include(layout => layout.Versions).FirstOrDefaultAsync(p => p.Id == request.LayoutId, cancellationToken);
         if (layout == null)
         {
             return new()
@@ -35,7 +36,7 @@ public sealed class DeleteLayoutDb(BonesDbContext dbContext) : IRequestHandler<D
             };
         }
 
-        foreach (LayoutVersion version in layout.Versions)
+        foreach (ItemLayoutVersion version in layout.Versions)
         {
             // TODO: send it
             version.DeleteFlag = true;

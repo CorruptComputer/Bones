@@ -1,0 +1,12 @@
+@using Bones.WebUI.Components.Auth
+@layout MainLayout
+@inherits LayoutComponentBase
+
+<AuthorizeView>
+    <Authorized>
+        @Body
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin></RedirectToLogin>
+    </NotAuthorized>
+</AuthorizeView>

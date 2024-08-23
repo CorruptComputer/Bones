@@ -1,13 +1,11 @@
-using System.Text.Json;
+using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Bones.Api.Handlers;
 using Bones.Database;
-using Bones.Database.DbSets.Identity;
+using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Extensions;
 using Bones.Shared.Exceptions;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 namespace Bones.Api;
@@ -17,9 +15,6 @@ namespace Bones.Api;
 /// </summary>
 public static class Program
 {
-    // Because fuck you Microsoft IdentityConstants.BearerAndApplicationScheme is internal only for some probably dumb reason
-    private const string BearerAndApplicationScheme = "Identity.BearerAndApplication";
-    
     /// <summary>
     ///     The main character of the project.
     /// </summary>
@@ -27,28 +22,27 @@ public static class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddAuthentication(BearerAndApplicationScheme)
-            .AddScheme<AuthenticationSchemeOptions, BonesIdentityHandler>
-                (BearerAndApplicationScheme, null, compositeOptions =>
-            {
-                compositeOptions.ForwardDefault = IdentityConstants.BearerScheme;
-                compositeOptions.ForwardAuthenticate = BearerAndApplicationScheme;
-            })
-            .AddBearerToken(IdentityConstants.BearerScheme)
-            .AddIdentityCookies();
-        
-        builder.Services.AddIdentityCore<BonesUser>(options =>
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
         {
-            options.User = new()
-            {
-                RequireUniqueEmail = true
-            };
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SameSite = SameSiteMode.Lax; // I don't feel like dealing with CSRF Tokens right now
 
-            options.SignIn = new()
-            {
-                RequireConfirmedEmail = true
-            };
-
+            options.Events.OnRedirectToAccessDenied = (context) => throw new AuthenticationFailedException(true, "Forbidden");
+            options.Events.OnRedirectToLogin = (context) => throw new AuthenticationFailedException(false, "Unauthorized");
+        });
+        
+        builder.Services.AddAuthorization();
+        builder.Services.AddControllers().AddJsonOptions(configure =>
+        {
+            configure.JsonSerializerOptions.WriteIndented = true;
+            configure.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
+        
+        builder.Services.AddIdentityApiEndpoints<BonesUser>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
             options.Lockout = new()
             {
                 MaxFailedAccessAttempts = 3,
@@ -64,10 +58,8 @@ public static class Program
                 RequireNonAlphanumeric = true,
                 RequiredLength = 8
             };
-        });
+        }).AddRoles<BonesRole>().AddEntityFrameworkStores<BonesDbContext>();
         
-        builder.Services.AddAuthorization();
-        builder.Services.AddControllers();
         // builder.Services.AddOpenApi()
 
         if (builder.Environment.IsDevelopment())
@@ -111,6 +103,15 @@ public static class Program
         WebApplication app = builder.Build();
         app.Services.MigrateBonesDb();
         
+        string frontEndUrl = app.Configuration["WebUIBaseUrl"] ?? throw new BonesException("WebUIBaseUrl missing from appsettings.");
+        app.UseCors(configurePolicy =>
+        {
+            configurePolicy.WithOrigins(frontEndUrl)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
+        
         if (app.Environment.IsDevelopment())
         {
             // app.MapOpenApi()
@@ -131,15 +132,14 @@ public static class Program
         app.UseStaticFiles();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.MapControllers();
-        
-        string frontEndUrl = app.Configuration["WebUIBaseUrl"] ?? throw new BonesException("WebUIBaseUrl missing from appsettings.");
-        app.UseCors(configurePolicy =>
+        app.UseRouting().UseEndpoints(configure =>
         {
-            configurePolicy.WithOrigins(frontEndUrl)
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        }); 
+            configure.MapGroup("Auth").WithTags("Auth").MapIdentityApi<BonesUser>();
+            configure.MapControllers();
+        });
+        
+        
+        
         app.Run();
     }
 }

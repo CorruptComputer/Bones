@@ -1,6 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Items;
-using Bones.Database.DbSets.ProjectManagement.Layouts;
-using Bones.Database.DbSets.ProjectManagement.Queues;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Items;
@@ -52,7 +51,7 @@ public sealed class CreateItemDb(BonesDbContext dbContext) : IRequestHandler<Cre
             };
         }
 
-        LayoutVersion? layoutVersion = await dbContext.LayoutVersions.Include(layoutVersion => layoutVersion.Fields).FirstOrDefaultAsync(lv => lv.Id == request.LayoutVersionId, cancellationToken);
+        ItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions.Include(layoutVersion => layoutVersion.Fields).FirstOrDefaultAsync(lv => lv.Id == request.LayoutVersionId, cancellationToken);
         if (layoutVersion == null)
         {
             return new()
@@ -109,7 +108,7 @@ public sealed class CreateItemDb(BonesDbContext dbContext) : IRequestHandler<Cre
                 Queue = queue,
                 AddedToQueueDateTime = DateTimeOffset.UtcNow
             },
-            Layout = layoutVersion,
+            ItemLayout = layoutVersion,
             Values = values
         };
 

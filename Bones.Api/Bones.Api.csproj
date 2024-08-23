@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
@@ -8,10 +7,6 @@
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-
-        <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)/OpenApi</OpenApiDocumentsDirectory>
-        <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
-        <OpenApiGenerateDocumentsOnBuild>true</OpenApiGenerateDocumentsOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,6 +26,10 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.1" />
     </ItemGroup>
+
+    <Target Name="CreateSwaggerJson" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+        <Exec Command="dotnet swagger tofile --output ./OpenApi/swagger.json $(OutputPath)$(AssemblyName).dll develop" WorkingDirectory="$(ProjectDir)" />
+    </Target>
 
     <ItemGroup>
       <ProjectReference Include="..\Bones.Database\Bones.Database.csproj" />
@@ -53,24 +52,9 @@
       <Compile Update="Controllers\ProjectManagementController.Queues.cs">
         <DependentUpon>ProjectManagementController.cs</DependentUpon>
       </Compile>
-      <Compile Update="Controllers\AuthController.Register.cs">
-        <DependentUpon>AuthController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\AuthController.Login.cs">
-        <DependentUpon>AuthController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\AuthController.Refresh.cs">
-        <DependentUpon>AuthController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\AuthController.ConfirmEmail.cs">
-        <DependentUpon>AuthController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\AuthController.ResendConfirmationEmail.cs">
-        <DependentUpon>AuthController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\AuthController.Info.cs">
-        <DependentUpon>AuthController.cs</DependentUpon>
-      </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="OpenApi\" />
+    </ItemGroup>
 </Project>

@@ -23,10 +23,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Bones.Shared\Bones.Shared.csproj" />
+      <ProjectReference Include="..\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="DbSets\DocumentationManagement\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 

@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.ProjectManagement.Initiatives;
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.Operations.ProjectManagement.Initiatives;
 
