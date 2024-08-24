@@ -34,12 +34,12 @@ jobs:
 
       - name: Restore Tools
         run: |
-          cd Backend\Bones.Api
+          cd Backend/Bones.Api
           dotnet tool restore
-          cd ..\..
-          cd Frontend\Bones.Api.Client
+          cd ../..
+          cd Frontend/Bones.Api.Client
           dotnet tool restore
-          cd ..\..
+          cd ../..
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
