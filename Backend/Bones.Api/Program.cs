@@ -26,6 +26,7 @@ public static class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        builder.Configuration.AddEnvironmentVariables();
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -129,15 +130,8 @@ public static class Program
 
         app.UseStaticFiles();
         app.UseAuthentication();
-        app.UseRouting().UseAuthorization().UseEndpoints(configure =>
-        {
-            //configure.MapGroup("AccountManagement").WithTags("AccountManagement").MapIdentityApi<BonesUser>().WithOpenApi(
-            //    apiOperation =>
-            //    {
-            //        return apiOperation;
-            //    });
-            configure.MapControllers().WithOpenApi();
-        });
+        app.UseAuthorization();
+        app.MapControllers();
 
         app.Run();
     }
