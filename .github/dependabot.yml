@@ -6,28 +6,47 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      microsoft:
+      Autofac:
+        patterns:
+          - "Autofac"
+          - "Autofac.*"
+      DnsClient:
+        patterns:
+          - "DnsClient"
+      FluentValidation:
+        patterns:
+          - "FluentValidation"
+          - "FluentValidation.*"
+      GeoJSON:
+        patterns:
+          - "GeoJSON.Text"
+      MediatR:
+        patterns:
+          - "MediatR"
+          - "MediatR.*"
+      Microsoft:
         patterns:
           - "Microsoft.*"
         exclude-patterns:
           - "Microsoft.NET.Test.Sdk"
-      mediatr:
+      MudBlazor:
         patterns:
-          - "MediatR"
-          - "MediatR.*"
-      postgresql:
+          - "MudBlazor"
+      Npgsql:
         patterns:
           - "Npgsql.EntityFrameworkCore.PostgreSQL"
-          - "Npgsql.EntityFrameworkCore.PostgreSQL.*"
-      autofac:
+          - "Npgsql.EntityFrameworkCore.PostgreSQL.Design"
+      NSwag:
         patterns:
-          - "Autofac"
-          - "Autofac.*"
-      serilog:
+          - "NSwag.ApiDescription.Client"
+      Serilog:
         patterns:
           - "Serilog"
           - "Serilog.*"
-      testing:
+      Swashbuckle:
+        patterns:
+          - "Swashbuckle.AspNetCore"
+      Testing:
         patterns:
           - "FluentAssertions"
           - "Microsoft.NET.Test.Sdk"
