@@ -1,6 +1,6 @@
 using Bones.Shared.Extensions;
 
-namespace Bones.Shared.UnitTests.Extensions;
+namespace Bones.Shared.Backend.UnitTests.Extensions;
 
 /// <summary>
 ///     Tests for the StringExtensions class

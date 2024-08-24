@@ -5,7 +5,10 @@ using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Extensions;
 using Bones.Shared.Exceptions;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi.Models;
 
 
 namespace Bones.Api;
@@ -15,6 +18,7 @@ namespace Bones.Api;
 /// </summary>
 public static class Program
 {
+    private const string CORS_POLICY_NAME = "BonesCorsPolicy";
     /// <summary>
     ///     The main character of the project.
     /// </summary>
@@ -22,7 +26,19 @@ public static class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+        string frontEndUrl = builder.Configuration["WebUIBaseUrl"] ?? throw new BonesException("WebUIBaseUrl missing from appsettings.");
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(CORS_POLICY_NAME, configurePolicy =>
+            {
+                configurePolicy.WithOrigins(frontEndUrl)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
+        });
+        
+        builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddCookie(options =>
         {
             options.Cookie.HttpOnly = true;
             options.Cookie.SameSite = SameSiteMode.Lax; // I don't feel like dealing with CSRF Tokens right now
@@ -59,32 +75,27 @@ public static class Program
                 RequiredLength = 8
             };
         }).AddRoles<BonesRole>().AddEntityFrameworkStores<BonesDbContext>();
-
-        // builder.Services.AddOpenApi()
-
-        if (builder.Environment.IsDevelopment())
+        
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(options =>
         {
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
+            options.SwaggerDoc("develop", new()
             {
-                options.SwaggerDoc("develop", new()
+                Version = "develop",
+                Title = "Bones API",
+                Description = "Its an API and it does stuff",
+                Contact = new()
                 {
-                    Version = "develop",
-                    Title = "Bones API",
-                    Description = "Its an API and it does stuff",
-                    Contact = new()
-                    {
-                        Name = "GitHub Issues",
-                        Url = new("https://github.com/CorruptComputer/Bones/issues")
-                    },
-                    License = new()
-                    {
-                        Name = "MIT License",
-                        Url = new("https://github.com/CorruptComputer/Bones/blob/develop/LICENSE")
-                    }
-                });
+                    Name = "GitHub Issues",
+                    Url = new("https://github.com/CorruptComputer/Bones/issues")
+                },
+                License = new()
+                {
+                    Name = "MIT License",
+                    Url = new("https://github.com/CorruptComputer/Bones/blob/develop/LICENSE")
+                }
             });
-        }
+        });
 
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
             loggerConfig.ReadFrom.Configuration(builder.Configuration)
@@ -102,24 +113,21 @@ public static class Program
 
         WebApplication app = builder.Build();
         app.Services.MigrateBonesDb();
-
-        string frontEndUrl = app.Configuration["WebUIBaseUrl"] ?? throw new BonesException("WebUIBaseUrl missing from appsettings.");
-        app.UseCors(configurePolicy =>
-        {
-            configurePolicy.WithOrigins(frontEndUrl)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials();
-        });
+        app.UseCors(CORS_POLICY_NAME);
 
         if (app.Environment.IsDevelopment())
         {
-            // app.MapOpenApi()
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/develop/swagger.json", "develop");
             });
+            
+            app.UseReDoc(c =>
+            {
+                c.DocumentTitle = "Bones API Documentation";
+                c.SpecUrl = "/swagger/develop/swagger.json";
+            });   
 
             // Really clutters up the logs, but is useful sometimes
             // app.UseSerilogRequestLogging()
@@ -131,11 +139,14 @@ public static class Program
 
         app.UseStaticFiles();
         app.UseAuthentication();
-        app.UseAuthorization();
-        app.UseRouting().UseEndpoints(configure =>
+        app.UseRouting().UseAuthorization().UseEndpoints(configure =>
         {
-            configure.MapGroup("Auth").WithTags("Auth").MapIdentityApi<BonesUser>();
-            configure.MapControllers();
+            configure.MapGroup("AccountManagement").WithTags("AccountManagement").MapIdentityApi<BonesUser>().WithOpenApi(
+                apiOperation =>
+                {
+                    return apiOperation;
+                });
+            configure.MapControllers().WithOpenApi();
         });
 
 

@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,6 +26,7 @@
         <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.2" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.7.1" />
     </ItemGroup>
 
     <Target Name="CreateSwaggerJson" AfterTargets="Build" Condition="$(Configuration) == 'Debug' And $(GITHUB_ACTION_BUILD) != 'true'">
@@ -34,24 +36,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Bones.Database\Bones.Database.csproj" />
       <ProjectReference Include="..\Bones.Shared\Bones.Shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Controllers\ProjectManagementController.Projects.cs">
-        <DependentUpon>ProjectManagementController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\ProjectManagementController.Initiatives.cs">
-        <DependentUpon>ProjectManagementController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\ProjectManagementController.Items.cs">
-        <DependentUpon>ProjectManagementController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\ProjectManagementController.Layouts.cs">
-        <DependentUpon>ProjectManagementController.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Controllers\ProjectManagementController.Queues.cs">
-        <DependentUpon>ProjectManagementController.cs</DependentUpon>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>

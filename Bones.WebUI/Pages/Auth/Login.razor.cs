@@ -25,7 +25,7 @@ public partial class Login
 
         try
         {
-            await ApiClient.AuthLoginAsync(true, true, new()
+            await ApiClient.AuthLoginAsync(true, false, new()
             {
                 Email = EmailAddress.Text,
                 Password = Password.Text
@@ -33,8 +33,8 @@ public partial class Login
 
             // Now refresh the Authentication State:
             // Ideally we would want to change this to something custom, but it'll work for now
-            InfoResponse me = await ApiClient.AuthManageInfoGetAsync();
-            await AuthStateProvider.SetCurrentUserAsync(me);
+            ApiResult<InfoResponse> me = await ApiClient.AuthManageInfoGetAsync();
+            await AuthStateProvider.SetCurrentUserAsync(me.Result);
 
             NavManager.NavigateTo(GetNavigationUrl());
         }

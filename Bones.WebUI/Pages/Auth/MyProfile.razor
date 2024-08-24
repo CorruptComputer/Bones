@@ -1,0 +1,12 @@
+@page "/Auth/MyProfile"
+<h3>MyProfile</h3>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudText @bind-value="@Email" />
+
+            <MudText @bind-value="@EmailConfirmed" />
+        </MudPaper>
+    </MudItem>
+</MudGrid>

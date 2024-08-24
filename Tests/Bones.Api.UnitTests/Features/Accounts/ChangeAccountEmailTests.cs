@@ -1,9 +1,0 @@
-namespace Bones.Api.UnitTests.Features.Accounts;
-
-/// <summary>
-///     Tests for the ChangeAccountEmail handler.
-/// </summary>
-public class ChangeAccountEmailTests : TestBase
-{
-    // TODO: write these
-}

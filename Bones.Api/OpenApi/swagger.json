@@ -14,10 +14,10 @@
     "version": "develop"
   },
   "paths": {
-    "/Auth/register": {
+    "/AccountManagement/register": {
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "requestBody": {
           "content": {
@@ -45,10 +45,10 @@
         }
       }
     },
-    "/Auth/login": {
+    "/AccountManagement/login": {
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "parameters": [
           {
@@ -89,10 +89,10 @@
         }
       }
     },
-    "/Auth/refresh": {
+    "/AccountManagement/refresh": {
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "requestBody": {
           "content": {
@@ -117,12 +117,12 @@
         }
       }
     },
-    "/Auth/confirmEmail": {
+    "/AccountManagement/confirmEmail": {
       "get": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
-        "operationId": "MapIdentityApi-Auth/confirmEmail",
+        "operationId": "MapIdentityApi-AccountManagement/confirmEmail",
         "parameters": [
           {
             "name": "userId",
@@ -153,10 +153,10 @@
         }
       }
     },
-    "/Auth/resendConfirmationEmail": {
+    "/AccountManagement/resendConfirmationEmail": {
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "requestBody": {
           "content": {
@@ -174,10 +174,10 @@
         }
       }
     },
-    "/Auth/forgotPassword": {
+    "/AccountManagement/forgotPassword": {
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "requestBody": {
           "content": {
@@ -205,10 +205,10 @@
         }
       }
     },
-    "/Auth/resetPassword": {
+    "/AccountManagement/resetPassword": {
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "requestBody": {
           "content": {
@@ -236,10 +236,10 @@
         }
       }
     },
-    "/Auth/manage/2fa": {
+    "/AccountManagement/manage/2fa": {
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "requestBody": {
           "content": {
@@ -277,10 +277,10 @@
         }
       }
     },
-    "/Auth/manage/info": {
+    "/AccountManagement/manage/info": {
       "get": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "responses": {
           "200": {
@@ -310,7 +310,7 @@
       },
       "post": {
         "tags": [
-          "Auth"
+          "AccountManagement"
         ],
         "requestBody": {
           "content": {
@@ -348,7 +348,43 @@
         }
       }
     },
-    "/api/ProjectManagement/create": {
+    "/AccountManagement/logout": {
+      "post": {
+        "tags": [
+          "AccountManagement"
+        ],
+        "operationId": "LogoutAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ProjectManagement/create": {
       "post": {
         "tags": [
           "ProjectManagement"
@@ -364,6 +400,29 @@
           }
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
           "201": {
             "description": "Created"
           },
@@ -531,6 +590,33 @@
           }
         },
         "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
       },
       "RefreshRequest": {
         "required": [

@@ -1,4 +1,5 @@
 using Bones.Database.Operations.Setup;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

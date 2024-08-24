@@ -1,4 +1,7 @@
 using System.Net.Mime;
+using Bones.Database.DbSets.AccountManagement;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
@@ -6,8 +9,12 @@ namespace Bones.Api.Controllers;
 /// <summary>
 ///     Base controller for the Bones API, everything should extend from this.
 /// </summary>
+[Authorize]
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType(StatusCodes.Status403Forbidden)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 public class BonesControllerBase(ISender sender) : ControllerBase
