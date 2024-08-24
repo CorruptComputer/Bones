@@ -29,7 +29,7 @@
         </PackageReference>
     </ItemGroup>
 
-    <Target Name="GenerateApiClients" BeforeTargets="BeforeBuild" Condition="$(Configuration) == 'Debug'">
+    <Target Name="GenerateApiClients" BeforeTargets="BeforeBuild" Condition="$(Configuration) == 'Debug' And $(GITHUB_ACTION_BUILD) != 'true'">
         <Message Text="Generating API Clients" Importance="High" />
         <Exec Command="dotnet nswag run nswag.json" />
     </Target>
