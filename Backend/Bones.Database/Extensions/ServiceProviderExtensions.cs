@@ -17,7 +17,7 @@ public static class ServiceProviderExtensions
     {
         using IServiceScope scope = serviceProvider.CreateScope();
         DatabaseConfiguration config = scope.ServiceProvider.GetRequiredService<DatabaseConfiguration>();
-        if (!config.UseInMemoryDb)
+        if (!(config.UseInMemoryDb ?? false))
         {
             BonesDbContext db = scope.ServiceProvider.GetRequiredService<BonesDbContext>();
             if (db.Database.GetPendingMigrations().Any())

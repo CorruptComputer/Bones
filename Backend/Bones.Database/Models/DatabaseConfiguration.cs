@@ -2,6 +2,6 @@ namespace Bones.Database.Models;
 
 public sealed record DatabaseConfiguration
 {
-    public required string ConnectionString { get; init; }
-    public required bool UseInMemoryDb { get; init; }
+    public string? ConnectionString { get; set; }
+    public bool? UseInMemoryDb { get; set; }
 }

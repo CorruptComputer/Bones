@@ -1,6 +1,6 @@
 namespace Bones.Backend.Models;
 
-public class BackendConfiguration
+public sealed record BackendConfiguration
 {
-    public required string BackgroundTasksUserEmail { get; set; }
+    public string? BackgroundTasksUserEmail { get; set; }
 }

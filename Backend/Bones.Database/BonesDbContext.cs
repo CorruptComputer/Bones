@@ -62,7 +62,7 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Should only be used for unit testing
-        if (dbConfig.UseInMemoryDb)
+        if (dbConfig.UseInMemoryDb ?? false)
         {
             // Name needs to be unique, else the tests will clobber each other
             optionsBuilder.UseInMemoryDatabase($"BonesInMemoryDb-{Guid.NewGuid()}",
