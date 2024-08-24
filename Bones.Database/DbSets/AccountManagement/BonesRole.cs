@@ -10,6 +10,6 @@ namespace Bones.Database.DbSets.AccountManagement;
 public class BonesRole : IdentityRole<Guid>
 {
     public bool IsSystemRole { get; set; } = false;
-    
+
     public BonesOrganization? Organization { get; set; }
 }

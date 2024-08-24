@@ -8,17 +8,17 @@ public partial class Login
 {
     [Parameter]
     public string? ReturnUrl { get; set; }
-    
-    public bool FormValid  { get; set; }
-    
-    public string[] ValidationErrors  { get; set; } = [];
+
+    public bool FormValid { get; set; }
+
+    public string[] ValidationErrors { get; set; } = [];
 
     private MudTextField<string> EmailAddress { get; set; } = new();
-    
+
     private MudTextField<string> Password { get; set; } = new();
-    
+
     private bool ErrorLoggingIn { get; set; } = false;
-    
+
     public async Task DoLoginAsync()
     {
         ErrorLoggingIn = false;
@@ -35,7 +35,7 @@ public partial class Login
             // Ideally we would want to change this to something custom, but it'll work for now
             InfoResponse me = await ApiClient.AuthManageInfoGetAsync();
             await AuthStateProvider.SetCurrentUserAsync(me);
-            
+
             NavManager.NavigateTo(GetNavigationUrl());
         }
         catch (Exception ex)
@@ -66,20 +66,20 @@ public partial class Login
         {
             return false;
         }
-        
+
         Uri parsedUri = new(uri, UriKind.RelativeOrAbsolute);
         if (parsedUri.IsAbsoluteUri || !string.IsNullOrEmpty(parsedUri.Host))
         {
             return false;
         }
-        
+
         return true;
     }
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
 }

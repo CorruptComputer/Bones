@@ -23,7 +23,7 @@ public class BonesDbContext(IConfiguration configuration)
     : IdentityDbContext<BonesUser, BonesRole, Guid, BonesUserClaim, BonesUserRole, BonesUserLogin, BonesRoleClaim, BonesUserToken>
 {
     private const string _bonesDbConnectionStringKey = "BonesDb";
-    
+
     #region AccountManagement
     // These are all added by the base class
     #endregion
@@ -37,11 +37,11 @@ public class BonesDbContext(IConfiguration configuration)
     internal DbSet<AssetValue> AssetValues { get; set; }
     internal DbSet<AssetVersion> AssetVersions { get; set; }
     #endregion
-    
+
     #region OrganizationManagement
     internal DbSet<BonesOrganization> Organizations { get; set; }
     #endregion
-    
+
     #region ProjectManagement
     internal DbSet<Initiative> Initiatives { get; set; }
     internal DbSet<Item> Items { get; set; }
@@ -86,7 +86,7 @@ public class BonesDbContext(IConfiguration configuration)
             {
                 throw new BonesException("Missing appsettings configuration for connection string: BonesDb");
             }
-            
+
             optionsBuilder.UseNpgsql(connectionString, options =>
             {
                 options.MigrationsHistoryTable("__EFMigrationsHistory", "System");
@@ -114,7 +114,7 @@ public class BonesDbContext(IConfiguration configuration)
         builder.Entity<BonesRole>().ToTable("BonesRoles", accountManagement);
         builder.Entity<BonesRoleClaim>().ToTable("BonesRoleClaims", accountManagement);
     }
-    
+
     public class DateTimeOffsetUtcConverter()
         : ValueConverter<DateTimeOffset, DateTimeOffset>(dto => dto.ToUniversalTime(), dto => dto);
 }

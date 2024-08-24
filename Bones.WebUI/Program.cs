@@ -18,14 +18,14 @@ public static class Program
 
         builder.Services.AddMudServices();
         builder.Services.AddSingleton<LocalStorageService>();
-        
+
         builder.Services.AddAuthorizationCore();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddSingleton<BonesAuthenticationStateProvider>();
         builder.Services.AddSingleton<AuthenticationStateProvider>(s => s.GetRequiredService<BonesAuthenticationStateProvider>());
         builder.Services.AddScoped<CookieDelegatingHandler>();
         builder.Services.AddScoped<UnauthorizedDelegatingHandler>();
-        
+
         string apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? throw new BonesException("Missing ApiBaseUrl");
         builder.Services.AddHttpClient(BonesApiClient.API_CLIENT_NAME, client =>
             {

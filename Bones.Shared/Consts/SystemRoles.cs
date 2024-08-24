@@ -6,7 +6,7 @@ public static class SystemRoles
 
     public static List<string> AllSystemRoles =>
     [
-        SYSTEM_ADMINISTRATORS 
+        SYSTEM_ADMINISTRATORS
     ];
 
 }

@@ -19,11 +19,11 @@ public class Asset
 
     [MaxLength(512)]
     public required string Name { get; set; }
-    
+
     public OwnershipType OwnerType { get; set; }
-    
+
     public BonesUser? OwningUser { get; set; }
-    
+
     public BonesOrganization? OwningOrganization { get; set; }
 
     /// <summary>

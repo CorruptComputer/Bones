@@ -19,7 +19,7 @@ public sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> us
         {
             const string defaultEmail = "admin@example.com";
             const string defaultPassword = "ChangeMe1!";
-            
+
             BonesUser userToCreate = new()
             {
                 UserName = defaultEmail,
@@ -28,17 +28,19 @@ public sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> us
                 EmailConfirmedDateTime = DateTimeOffset.Now,
                 PasswordExpired = true
             };
-            
+
             await userManager.CreateAsync(userToCreate, defaultPassword);
             createdAdminUser = await userManager.FindByEmailAsync(defaultEmail);
         }
-        
+
         // Create System Administrators role
         if (!await roleManager.RoleExistsAsync(SystemRoles.SYSTEM_ADMINISTRATORS))
         {
             BonesRole roleToCreate = new()
             {
-                Name = SystemRoles.SYSTEM_ADMINISTRATORS, NormalizedName = SystemRoles.SYSTEM_ADMINISTRATORS.ToUpperInvariant(), IsSystemRole = true
+                Name = SystemRoles.SYSTEM_ADMINISTRATORS,
+                NormalizedName = SystemRoles.SYSTEM_ADMINISTRATORS.ToUpperInvariant(),
+                IsSystemRole = true
             };
 
             await roleManager.CreateAsync(roleToCreate);
@@ -50,7 +52,7 @@ public sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> us
                 await roleManager.AddClaimAsync(createdRole, roleClaim);
             }
         }
-        
+
         if (createdAdminUser != null)
         {
             await userManager.AddToRoleAsync(createdAdminUser, SystemRoles.SYSTEM_ADMINISTRATORS);

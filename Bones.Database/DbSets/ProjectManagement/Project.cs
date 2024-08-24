@@ -23,9 +23,9 @@ public class Project
     public List<Initiative> Initiatives { get; set; } = [];
 
     public OwnershipType OwnerType { get; set; }
-    
+
     public BonesUser? OwningUser { get; set; }
-    
+
     public BonesOrganization? OwningOrganization { get; set; }
 
     /// <summary>

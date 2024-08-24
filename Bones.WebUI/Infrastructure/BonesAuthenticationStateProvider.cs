@@ -6,13 +6,13 @@ namespace Bones.WebUI.Infrastructure;
 
 public class BonesAuthenticationStateProvider(LocalStorageService localStorageService) : AuthenticationStateProvider
 {
-    
+
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         InfoResponse? currentUser = await GetCurrentUserAsync();
 
-        if(currentUser == null)
+        if (currentUser == null)
         {
             return new(new(new ClaimsIdentity()));
         }
@@ -27,7 +27,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     }
 
     public async Task SetCurrentUserAsync(InfoResponse? currentUser)
-    { 
+    {
         await localStorageService.SetItem(LocalStorageService.CURRENT_USER_KEY, currentUser);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());

@@ -21,7 +21,7 @@ public class ItemValue
     public Guid Id { get; set; }
 
     public required ItemField Field { get; set; }
-    
+
     public LocationType? LocationType { get; set; }
 
     public string? Value { get; private set; }
@@ -84,7 +84,7 @@ public class ItemValue
                     Value = value.ToString();
                     return true;
                 }
-                
+
                 return false;
             case FieldType.GeoLocation:
                 switch (LocationType)
@@ -122,7 +122,7 @@ public class ItemValue
                         {
                             return false;
                         }
-                        
+
                         return false;
                     default:
                         return false;
@@ -131,7 +131,7 @@ public class ItemValue
                 return false;
         }
     }
-    
+
     public T? GetValue<T>()
     {
         if (Value == null)
@@ -146,36 +146,36 @@ public class ItemValue
                 {
                     throw new BonesException("String value type must be string.");
                 }
-                
-                return (T?) Convert.ChangeType(Value, typeof(T));
+
+                return (T?)Convert.ChangeType(Value, typeof(T));
             case FieldType.Number:
                 if (!typeof(T).IsNumericType())
                 {
                     throw new BonesException("Number value type must be numeric.");
                 }
-                
-                return (T?) Convert.ChangeType(Value, typeof(T));
+
+                return (T?)Convert.ChangeType(Value, typeof(T));
             case FieldType.Boolean:
                 if (typeof(T) != typeof(bool))
                 {
                     throw new BonesException("Boolean value type must be bool.");
                 }
-                
-                return (T?) Convert.ChangeType(Value, typeof(T));
+
+                return (T?)Convert.ChangeType(Value, typeof(T));
             case FieldType.DateTime:
                 if (typeof(T) != typeof(DateTime) || typeof(T) != typeof(DateTimeOffset))
                 {
                     throw new BonesException("DateTime value type must be DateTime or DateTimeOffset.");
                 }
-                
-                return (T?) Convert.ChangeType(Value, typeof(T));
+
+                return (T?)Convert.ChangeType(Value, typeof(T));
             case FieldType.ValueList:
                 if (typeof(T) != typeof(string))
                 {
                     throw new BonesException("ValueList value type must be string.");
                 }
-                
-                return (T?) Convert.ChangeType(Value, typeof(T));
+
+                return (T?)Convert.ChangeType(Value, typeof(T));
             case FieldType.GeoLocation:
                 switch (LocationType)
                 {
@@ -184,20 +184,20 @@ public class ItemValue
                         {
                             throw new BonesException("GeoLocation StreetAddress value type must be string.");
                         }
-                
-                        return (T?) Convert.ChangeType(Value, typeof(T));
+
+                        return (T?)Convert.ChangeType(Value, typeof(T));
                     case Shared.Backend.Enums.LocationType.Point:
                         if (typeof(T) != typeof(Point))
                         {
                             throw new BonesException("GeoLocation Point value type must be Point.");
                         }
-                
+
                         try
                         {
                             Point? point = JsonSerializer.Deserialize<Point?>(Value);
                             if (point is not null)
                             {
-                                return (T?) Convert.ChangeType(point, typeof(T));
+                                return (T?)Convert.ChangeType(point, typeof(T));
                             }
                         }
                         catch
@@ -212,14 +212,14 @@ public class ItemValue
                             FeatureCollection? featureCollection = JsonSerializer.Deserialize<FeatureCollection?>(Value);
                             if (featureCollection is not null)
                             {
-                                return (T?) Convert.ChangeType(featureCollection, typeof(T));
+                                return (T?)Convert.ChangeType(featureCollection, typeof(T));
                             }
                         }
                         catch
                         {
                             return default;
                         }
-                        
+
                         return default;
                     default:
                         return default;

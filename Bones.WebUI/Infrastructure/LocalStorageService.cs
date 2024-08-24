@@ -6,7 +6,7 @@ namespace Bones.WebUI.Infrastructure;
 public sealed class LocalStorageService(IJSRuntime jsRuntime)
 {
     public const string CURRENT_USER_KEY = "InfoResponse";
-    
+
     public async Task<T?> GetItemAsync<T>(string key)
     {
         string? json = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);

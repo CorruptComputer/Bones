@@ -20,17 +20,17 @@ public class CreateUserTests : TestBase
     //public async Task ValidEmail_ShouldSuccessAndCreateEmailVerification(string email)
     //{
     //    CommandResponse createAccount = await Sender.Send(new CreateUser.Command(email, "Test123!"));
-//
+    //
     //    createAccount.FailureReason.Should().BeNull();
     //    createAccount.Success.Should().BeTrue();
     //    createAccount.Id.Should().NotBeNull();
-//
+    //
     //    IEnumerable<UserEmailVerification> verifications =
     //        await Sender.Send(new GetEmailVerificationForUser.Query(createAccount.Id!.Value));
-//
+    //
     //    verifications.Count().Should().Be(1);
     //}
-//
+    //
     ///// <summary>
     /////     Invalid emails should not have the account created.
     ///// </summary>
@@ -48,10 +48,10 @@ public class CreateUserTests : TestBase
     //public async Task InvalidEmail_ShouldFail(string email)
     //{
     //    CommandResponse createAccount = await Sender.Send(new CreateUser.Command(email, "Test123!"));
-//
+    //
     //    createAccount.Success.Should().BeFalse();
     //}
-//
+    //
     ///// <summary>
     /////     Duplicate emails should not allow the account to be created.
     ///// </summary>
@@ -61,7 +61,7 @@ public class CreateUserTests : TestBase
     //    const string duplicateEmail = "duplicate@example.com";
     //    CommandResponse createAccount = await Sender.Send(new CreateUser.Command(duplicateEmail, "Test123!"));
     //    createAccount.Success.Should().BeTrue();
-//
+    //
     //    CommandResponse duplicateAccount = await Sender.Send(new CreateUser.Command(duplicateEmail, "Test123!"));
     //    duplicateAccount.Success.Should().BeFalse();
     //}

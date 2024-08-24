@@ -6,10 +6,10 @@ public partial class ConfirmEmail
 {
     [Parameter]
     public string? UserId { get; set; }
-    
+
     [Parameter]
     public string? Code { get; set; }
-    
+
     [Parameter]
     public string? ChangedEmail { get; set; }
 
@@ -19,19 +19,19 @@ public partial class ConfirmEmail
         Success,
         Failure
     }
-    
+
     public State CurrentState { get; set; } = State.Confirming;
-    
+
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrEmpty(UserId) 
+        if (string.IsNullOrEmpty(UserId)
             || !Guid.TryParse(UserId, out _)
             || string.IsNullOrEmpty(Code))
         {
             CurrentState = State.Failure;
             return;
         }
-        
+
         try
         {
             await ApiClient.AuthConfirmEmailAsync(UserId, Code, ChangedEmail);

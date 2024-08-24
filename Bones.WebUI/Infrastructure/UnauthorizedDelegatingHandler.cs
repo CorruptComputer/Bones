@@ -12,7 +12,7 @@ public class UnauthorizedDelegatingHandler(BonesAuthenticationStateProvider auth
         {
             var currentUser = await authenticationStateProvider.GetCurrentUserAsync();
 
-            if(currentUser != null)
+            if (currentUser != null)
             {
                 await authenticationStateProvider.SetCurrentUserAsync(null);
             }

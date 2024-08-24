@@ -30,7 +30,7 @@ public static class Program
             options.Events.OnRedirectToAccessDenied = (context) => throw new AuthenticationFailedException(true, "Forbidden");
             options.Events.OnRedirectToLogin = (context) => throw new AuthenticationFailedException(false, "Unauthorized");
         });
-        
+
         builder.Services.AddAuthorization();
         builder.Services.AddControllers().AddJsonOptions(configure =>
         {
@@ -38,7 +38,7 @@ public static class Program
             configure.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-        
+
         builder.Services.AddIdentityApiEndpoints<BonesUser>(options =>
         {
             options.User.RequireUniqueEmail = true;
@@ -59,7 +59,7 @@ public static class Program
                 RequiredLength = 8
             };
         }).AddRoles<BonesRole>().AddEntityFrameworkStores<BonesDbContext>();
-        
+
         // builder.Services.AddOpenApi()
 
         if (builder.Environment.IsDevelopment())
@@ -92,7 +92,7 @@ public static class Program
         );
 
         builder.Services.AddDbContext<BonesDbContext>();
-        
+
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {
@@ -102,7 +102,7 @@ public static class Program
 
         WebApplication app = builder.Build();
         app.Services.MigrateBonesDb();
-        
+
         string frontEndUrl = app.Configuration["WebUIBaseUrl"] ?? throw new BonesException("WebUIBaseUrl missing from appsettings.");
         app.UseCors(configurePolicy =>
         {
@@ -111,7 +111,7 @@ public static class Program
                 .AllowAnyHeader()
                 .AllowCredentials();
         });
-        
+
         if (app.Environment.IsDevelopment())
         {
             // app.MapOpenApi()
@@ -128,7 +128,7 @@ public static class Program
         {
             app.UseHttpsRedirection();
         }
-        
+
         app.UseStaticFiles();
         app.UseAuthentication();
         app.UseAuthorization();
@@ -137,9 +137,9 @@ public static class Program
             configure.MapGroup("Auth").WithTags("Auth").MapIdentityApi<BonesUser>();
             configure.MapControllers();
         });
-        
-        
-        
+
+
+
         app.Run();
     }
 }

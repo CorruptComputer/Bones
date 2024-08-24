@@ -23,6 +23,6 @@ public class BonesUser : IdentityUser<Guid>
     public bool PasswordExpired { get; set; } = false;
 
     public List<Project> Projects { get; set; } = [];
-    
+
     public List<Asset> Assets { get; set; } = [];
 }

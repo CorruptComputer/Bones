@@ -23,5 +23,5 @@ public class AssetField
     public List<AssetFieldListEntry> PossibleValues { get; set; } = [];
 
     public required FieldType Type { get; set; }
-    
+
 }

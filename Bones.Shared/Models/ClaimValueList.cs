@@ -8,13 +8,13 @@ public class ClaimValueList : List<string>
     {
         return JsonSerializer.Serialize(this);
     }
-        
-    public static implicit operator string (ClaimValueList value)
+
+    public static implicit operator string(ClaimValueList value)
     {
         return value.ToString();
     }
 
-    public static implicit operator ClaimValueList? (string value)
+    public static implicit operator ClaimValueList?(string value)
     {
         return JsonSerializer.Deserialize<ClaimValueList>(value);
     }

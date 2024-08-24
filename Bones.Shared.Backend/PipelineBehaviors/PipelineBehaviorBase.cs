@@ -9,7 +9,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
 {
     protected abstract (bool success, string? failReason) GetResult(TResponse response);
     protected abstract TResponse GetFailedResponse(string failReason);
-    
+
     // I don't really like using these, but in this case it's safer to do so.
     // Logging the request could potentially log a password,
     // so if it's built in release mode we need to make sure that's not possible.
@@ -18,7 +18,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
 #else
     private readonly bool _debugLog = false;
 #endif
-    
+
     private Stopwatch? _stopwatch = null;
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)

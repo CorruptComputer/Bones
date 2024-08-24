@@ -16,13 +16,13 @@ public class CreateEmailVerificationDbTests : TestBase
     //    // Setup
     //    CommandResponse createAccount = await Sender.Send(new CreateUserDb.Command("valid@example.com"));
     //    createAccount.Id.Should().NotBeNull();
-//
+    //
     //    // Test
     //    CommandResponse createEmailVerification =
     //        await Sender.Send(new CreateEmailVerification.Command(createAccount.Id!.Value));
     //    createEmailVerification.Success.Should().BeTrue();
     //    createEmailVerification.Id.Should().NotBeNull();
-//
+    //
     //    IEnumerable<UserEmailVerification> verifications =
     //        await Sender.Send(new GetEmailVerificationForUser.Query(createAccount.Id!.Value));
     //    verifications.Count().Should().Be(1);

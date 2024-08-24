@@ -19,10 +19,10 @@ public class BonesOrganization
 
     [MaxLength(512)]
     public required string Name { get; set; }
-    
+
     public required List<BonesRole> Roles { get; set; }
-    
+
     public required List<Project> Projects { get; set; }
-    
+
     public required List<Asset> Assets { get; set; }
 }

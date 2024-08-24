@@ -6,15 +6,15 @@ namespace Bones.WebUI.Pages.Auth;
 public partial class Register
 {
     private bool RegistrationSuccess { get; set; } = false;
-    
+
     public bool RegistrationApiError { get; set; } = false;
-    
-    public bool FormValid  { get; set; }
-    
-    public string[] ValidationErrors  { get; set; } = [];
+
+    public bool FormValid { get; set; }
+
+    public string[] ValidationErrors { get; set; } = [];
 
     private MudTextField<string> EmailAddress { get; set; } = new();
-    
+
     private MudTextField<string> Password { get; set; } = new();
     private MudTextField<string> PasswordAgain { get; set; } = new();
 
@@ -42,8 +42,8 @@ public partial class Register
             RegistrationApiError = true;
         }
     }
-    
-    
+
+
 
     private IEnumerable<string> PasswordStrengthCheck()
     {
@@ -57,22 +57,22 @@ public partial class Register
         {
             yield return "Password be at least 8 characters long.";
         }
-        
+
         if (!StandardRegexes.PasswordContainsUpper().IsMatch(Password.Text))
         {
             yield return "Password must contain at least one capital letter";
         }
-        
+
         if (!StandardRegexes.PasswordContainsLower().IsMatch(Password.Text))
         {
             yield return "Password must contain at least one lowercase letter";
         }
-        
+
         if (!StandardRegexes.PasswordContainsNumber().IsMatch(Password.Text))
         {
             yield return "Password must contain at least one digit";
         }
-        
+
         if (!StandardRegexes.PasswordContainsSpecial().IsMatch(Password.Text))
         {
             yield return "Password must contain at least one special character";
@@ -85,7 +85,7 @@ public partial class Register
         {
             return "Passwords don't match";
         }
-        
+
         return null;
     }
 }
