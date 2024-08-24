@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+
+        <IsPackable>false</IsPackable>
+        <IsPublishable>false</IsPublishable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog" Version="4.0.1" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="TestOperations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Backend\Bones.Api\Bones.Api.csproj" />
+      <ProjectReference Include="..\..\..\Backend\Bones.Database\Bones.Database.csproj" />
+      <ProjectReference Include="..\..\..\Backend\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
+      <ProjectReference Include="..\..\Bones.Testing.Shared\Bones.Testing.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

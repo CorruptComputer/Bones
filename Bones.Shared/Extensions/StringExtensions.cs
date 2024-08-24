@@ -1,4 +1,5 @@
 using System.Net.Mail;
+using System.Text;
 using DnsClient;
 using DnsClient.Protocol;
 
@@ -45,5 +46,29 @@ public static class StringExtensions
         {
             return false;
         }
+    }
+
+    public static string Base64UrlSafeEncode(this string text)
+    {
+        return Convert.ToBase64String(Encoding.UTF8.GetBytes(text))
+            .TrimEnd('=')
+            .Replace('+', '-')
+            .Replace('/', '_');
+    }
+
+
+    public static string Base64UrlSafeDecode(this string text)
+    {
+        text = text.Replace('_', '/').Replace('-', '+');
+        switch (text.Length % 4)
+        {
+            case 2:
+                text += "==";
+                break;
+            case 3:
+                text += "=";
+                break;
+        }
+        return Encoding.UTF8.GetString(Convert.FromBase64String(text));
     }
 }
