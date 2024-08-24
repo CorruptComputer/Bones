@@ -37,7 +37,9 @@ jobs:
           cd ../..
 
       - name: Build
-        run: dotnet build --no-incremental
+        run: |
+          dotnet build --no-incremental
+          git diff --quiet || exit 1
 
       - name: Test
         run: dotnet test --no-build
