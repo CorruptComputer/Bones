@@ -17,8 +17,8 @@ jobs:
     name: .NET Build & Test
     runs-on: ubuntu-latest
     env:
-      Database__UseInMemoryDb: true
-      GITHUB_ACTION_BUILD: true
+      DatabaseConfiguration__UseInMemoryDb: true
+      GITHUB_ACTION_BUILD: 'true'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
