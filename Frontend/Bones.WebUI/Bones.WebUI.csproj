@@ -35,4 +35,8 @@
       <ProjectReference Include="..\Bones.Api.Client\Bones.Api.Client.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Remove="wwwroot\appsettings.Development.json" Condition="$(Configuration) == 'Release'" />
+    </ItemGroup>
+
 </Project>
