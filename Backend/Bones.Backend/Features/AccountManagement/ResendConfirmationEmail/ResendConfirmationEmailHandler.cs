@@ -1,7 +1,6 @@
 using Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Models;
-using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.ResendConfirmationEmail;

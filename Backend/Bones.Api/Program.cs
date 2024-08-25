@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -35,6 +36,20 @@ public static class Program
             containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration));
             containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration));
         });
+
+        // In Development this is set by Properties/launchSettings.json
+        // so only need to include this for Production.
+        if (!builder.Environment.IsDevelopment())
+        {
+            builder.WebHost.UseKestrel().ConfigureKestrel(kestrelServerOptions =>
+            {
+                kestrelServerOptions.AddServerHeader = false;
+                kestrelServerOptions.Listen(IPAddress.Any, 8443, options =>
+                {
+                    options.UseHttps();
+                });
+            });
+        }
 
         builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddCookie(options =>
         {
@@ -102,6 +117,7 @@ public static class Program
 
         using IServiceScope scope = app.Services.CreateScope();
         ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();
+        
         app.UseCors(configurePolicy =>
         {
             configurePolicy

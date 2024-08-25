@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Backend.Features.AccountManagement.ConfirmEmail;
-using Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 using Bones.Backend.Features.AccountManagement.RegisterUser;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Models;
