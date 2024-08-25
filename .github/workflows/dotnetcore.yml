@@ -50,13 +50,13 @@ jobs:
           dotnet publish Frontend/Bones.WebUI/Bones.WebUI.csproj --configuration Release --property PublishDir=~/publish-client
       
       - name: Upload Server Build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: server-linux-x64
           path: ~/publish-server
           
       - name: Upload Client Build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: client
           path: ~/publish-client
