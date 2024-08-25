@@ -121,7 +121,9 @@ public static class Program
         app.UseCors(configurePolicy =>
         {
             configurePolicy
-                .WithOrigins(apiConfig.WebUIBaseUrl ?? throw new BonesException("ApiConfiguration:WebUIBaseUrl missing from appsettings."))
+                .WithOrigins(
+                    apiConfig.WebUIBaseUrl ?? throw new BonesException("ApiConfiguration:WebUIBaseUrl missing from appsettings."),
+                    apiConfig.ApiBaseUrl ?? throw new BonesException("ApiConfiguration:ApiBaseUrl missing from appsettings."))
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
