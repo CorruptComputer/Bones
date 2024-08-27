@@ -1,6 +1,8 @@
 namespace Bones.Backend.Tasks.Startup;
 
-public abstract class StartupTaskBase<T>(ILogger<T> logger) : TaskBase<T>(logger)
+public abstract class StartupTaskBase<T>(ILogger<T> logger, ISender sender) : TaskBase<T>(logger, sender)
 {
-    protected override TimeSpan? Interval { get; init; } = null;
+    protected override TimeSpan? Interval { get; } = null;
+
+    protected override Task<bool> ShouldTaskRunAsync(CancellationToken cancellationToken) => Task.FromResult(IsEnabled);
 }

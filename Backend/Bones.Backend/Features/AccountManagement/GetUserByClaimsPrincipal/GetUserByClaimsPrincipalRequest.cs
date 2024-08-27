@@ -4,7 +4,4 @@ using Bones.Shared.Backend.Models;
 
 namespace Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
 
-public sealed record GetUserByClaimsPrincipalRequest : IRequest<QueryResponse<BonesUser>>
-{
-    public ClaimsPrincipal? ClaimsPrincipal { get; set; }
-}
+public sealed record GetUserByClaimsPrincipalRequest(ClaimsPrincipal? ClaimsPrincipal) : IRequest<QueryResponse<BonesUser>>;

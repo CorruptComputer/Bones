@@ -56,7 +56,6 @@ public static class StringExtensions
             .Replace('/', '_');
     }
 
-
     public static string Base64UrlSafeDecode(this string text)
     {
         text = text.Replace('_', '/').Replace('-', '+');

@@ -2,6 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.System;
 using Bones.Database.Models;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -47,6 +48,12 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     internal DbSet<WorkItemLayoutVersion> WorkItemLayoutVersions { get; set; }
     internal DbSet<WorkItemValue> WorkItemValues { get; set; }
     internal DbSet<WorkItemVersion> WorkItemVersions { get; set; }
+    #endregion
+
+    #region System
+
+
+    internal DbSet<TaskError> TaskErrors { get; set; }
     #endregion
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

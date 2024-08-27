@@ -15,21 +15,19 @@ public class BonesApiModule(IConfiguration config) : Module
     /// <inheritdoc />
     protected override void Load(ContainerBuilder builder)
     {
-        MediatRConfigurationBuilder mediatrConfig = MediatRConfigurationBuilder
-            .Create(ThisAssembly)
-            .WithAllOpenGenericHandlerTypesRegistered()
-            .WithCustomPipelineBehaviors([
-                typeof(CommandBehavior<>),
-                typeof(QueryBehavior<,>)
-            ]);
+        //MediatRConfigurationBuilder mediatrConfig = MediatRConfigurationBuilder
+        //    .Create(ThisAssembly)
+        //    .WithAllOpenGenericHandlerTypesRegistered()
+        //    .WithCustomPipelineBehaviors([
+        //        typeof(CommandBehavior<>),
+        //        typeof(QueryBehavior<,>)
+        //    ]);
 
-        builder.RegisterMediatR(mediatrConfig.Build());
+        //builder.RegisterMediatR(mediatrConfig.Build());
 
-        ApiConfiguration? apiConfig = config.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>();
-        if (apiConfig is null)
-        {
-            throw new BonesException($"Missing '{nameof(ApiConfiguration)}' configuration section.");
-        }
+        ApiConfiguration apiConfig = config.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>()
+                                     ?? throw new BonesException($"Missing '{nameof(ApiConfiguration)}' configuration section.");
+
         builder.RegisterInstance(apiConfig);
     }
 }

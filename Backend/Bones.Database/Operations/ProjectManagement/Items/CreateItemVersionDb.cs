@@ -9,16 +9,16 @@ public sealed class CreateItemVersionDb(BonesDbContext dbContext) : IRequestHand
     /// <summary>
     ///     DB Command for creating an ItemVersion.
     /// </summary>
-    /// <param name="ItemID">Internal ID of the item</param>
+    /// <param name="ItemId">Internal ID of the item</param>
     /// <param name="LayoutVersionId">Internal ID of the layout version this item is using</param>
     /// <param name="Values">Internal ID of the queue</param>
-    public record Command(Guid ItemID, Guid LayoutVersionId, Dictionary<string, object> Values)
+    public record Command(Guid ItemId, Guid LayoutVersionId, Dictionary<string, object> Values)
         : IValidatableRequest<CommandResponse>
     {
         /// <inheritdoc />
         public (bool valid, string? invalidReason) IsRequestValid()
         {
-            if (ItemID == Guid.Empty)
+            if (ItemId == Guid.Empty)
             {
                 return (false, "");
             }
@@ -35,7 +35,7 @@ public sealed class CreateItemVersionDb(BonesDbContext dbContext) : IRequestHand
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        WorkItem? item = await dbContext.WorkItems.Include(item => item.Versions).FirstOrDefaultAsync(i => i.Id == request.ItemID, cancellationToken);
+        WorkItem? item = await dbContext.WorkItems.Include(item => item.Versions).FirstOrDefaultAsync(i => i.Id == request.ItemId, cancellationToken);
         if (item == null)
         {
             return new()

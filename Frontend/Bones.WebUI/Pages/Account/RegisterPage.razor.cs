@@ -1,9 +1,9 @@
 using Bones.Shared;
 using MudBlazor;
 
-namespace Bones.WebUI.Pages.Auth;
+namespace Bones.WebUI.Pages.Account;
 
-public partial class Register
+public partial class RegisterPage
 {
     private bool RegistrationSuccess { get; set; } = false;
 
@@ -18,16 +18,17 @@ public partial class Register
     private MudTextField<string> Password { get; set; } = new();
     private MudTextField<string> PasswordAgain { get; set; } = new();
 
-    public Task DoRegistrationAsync()
+    public async Task DoRegistrationAsync()
     {
         try
         {
-            //RegistrationApiError = false;
-            //await ApiClient.AuthRegisterAsync(new()
-            //{
-            //    Email = EmailAddress.Text,
-            //    Password = Password.Text
-            //});
+            RegistrationApiError = false;
+
+            await ApiClient.RegisterAsync(new()
+            {
+                Email = EmailAddress.Text,
+                Password = Password.Text
+            });
 
             RegistrationSuccess = true;
         }
@@ -37,8 +38,6 @@ public partial class Register
             RegistrationSuccess = false;
             RegistrationApiError = true;
         }
-
-        return Task.CompletedTask;
     }
 
 

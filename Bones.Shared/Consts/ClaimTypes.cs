@@ -5,7 +5,8 @@ public static class ClaimTypes
 {
     public static class User
     {
-
+        public const string EMAIL = "UserEmail";
+        public const string DISPLAY_NAME = "UserDisplayName";
     }
 
     public static class Role

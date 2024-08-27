@@ -1,4 +1,5 @@
-@page "/Auth/MyProfile"
+@attribute [Route(FrontEndUrls.Account.MY_PROFILE)]
+
 <h3>MyProfile</h3>
 
 <MudGrid>
@@ -6,7 +7,7 @@
         <MudPaper Class="pa-4">
             <MudText @bind-value="@Email" />
 
-            <MudText @bind-value="@EmailConfirmed" />
+            <MudText @bind-value="@DisplayName" />
         </MudPaper>
     </MudItem>
 </MudGrid>

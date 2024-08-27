@@ -1,9 +1,11 @@
+using System.Text.Json;
+using Bones.Api.Client;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Bones.WebUI.Pages.Auth;
+namespace Bones.WebUI.Pages.Account;
 
-public partial class Login
+public partial class LoginPage
 {
     [Parameter]
     public string? ReturnUrl { get; set; }
@@ -18,32 +20,31 @@ public partial class Login
 
     private bool ErrorLoggingIn { get; set; } = false;
 
-    public Task DoLoginAsync()
+    public async Task DoLoginAsync()
     {
         ErrorLoggingIn = false;
 
         try
         {
-            //await ApiClient.Login(true, false, new()
-            //{
-            //    Email = EmailAddress.Text,
-            //    Password = Password.Text
-            //});
+            // We won't get anything useful back in the response, instead the browser will be told to save the login as a cookie with the headers
+            // if this fails it'll throw an exception
+            await ApiClient.LoginAsync(new()
+            {
+                Email = EmailAddress.Text,
+                Password = Password.Text
+            });
 
-            //// Now refresh the Authentication State:
-            //// Ideally we would want to change this to something custom, but it'll work for now
-            //ApiResult<InfoResponse> me = await ApiClient.AuthManageInfoGetAsync();
-            //await AuthStateProvider.SetCurrentUserAsync(me.Result);
+            // Now refresh the Authentication State:
+            GetMyBasicInfoResponseActionResult me = await ApiClient.GetMyBasicInfoAsync();
+            await AuthStateProvider.SetCurrentUserAsync(me.Value, CancellationToken.None);
 
             NavManager.NavigateTo(GetNavigationUrl());
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error while registering user");
+            Logger.LogError(ex, "Error while logging in");
             ErrorLoggingIn = true;
         }
-
-        return Task.CompletedTask;
     }
 
     private string GetNavigationUrl()

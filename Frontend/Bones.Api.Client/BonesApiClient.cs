@@ -4,9 +4,9 @@ using System.Text.Json.Serialization;
 namespace Bones.Api.Client;
 
 public class BonesApiClient(IHttpClientFactory httpClientFactory)
-    : AutoGenBonesApiClient(httpClientFactory.CreateClient(API_CLIENT_NAME))
+    : AutoGenBonesApiClient(httpClientFactory.CreateClient(HTTP_CLIENT_NAME))
 {
-    public const string API_CLIENT_NAME = "BonesApiClient";
+    public const string HTTP_CLIENT_NAME = "BonesApiClient";
 }
 
 public partial class AutoGenBonesApiClient

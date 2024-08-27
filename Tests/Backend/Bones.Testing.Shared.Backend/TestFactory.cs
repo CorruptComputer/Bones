@@ -4,9 +4,9 @@ using Bones.Api;
 using Bones.Backend;
 using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Shared.Backend.Consts;
 using Bones.Shared.Backend.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -71,8 +71,11 @@ internal static class TestFactory
                     .ReadFrom.Services(serviceProvider)
             );
 
-            services.AddIdentityCore<BonesUser>(options => options.OverwriteWith(Identity.IdentityOptions))
-                .AddRoles<BonesRole>().AddEntityFrameworkStores<BonesDbContext>();
+            services.AddIdentity<BonesUser, BonesRole>(options => options.AddBonesIdentityOptions())
+                .AddSignInManager()
+                .AddDefaultTokenProviders()
+                .AddRoles<BonesRole>()
+                .AddEntityFrameworkStores<BonesDbContext>();
 
             services.AddDbContext<BonesDbContext>();
         });

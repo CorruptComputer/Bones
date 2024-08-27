@@ -4,16 +4,22 @@ namespace Bones.Shared.Backend.Extensions;
 
 public static class IdentityOptionsExtensions
 {
-    public static IdentityOptions OverwriteWith(this IdentityOptions thisOptions, IdentityOptions newOptions)
+    public static IdentityOptions AddBonesIdentityOptions(this IdentityOptions options)
     {
-        // There are more, but we aren't overriding the defaults on those
-        // See: Bones.Shared.Backend.Consts.Identity.IdentityOptions
+        options.User.RequireUniqueEmail = true;
 
-        thisOptions.User = newOptions.User;
-        thisOptions.SignIn = newOptions.SignIn;
-        thisOptions.Lockout = newOptions.Lockout;
-        thisOptions.Password = newOptions.Password;
+        options.SignIn.RequireConfirmedEmail = true;
 
-        return thisOptions;
+        options.Lockout.MaxFailedAccessAttempts = 3;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
+        options.Lockout.AllowedForNewUsers = true;
+
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequiredLength = 8;
+
+        return options;
     }
 }

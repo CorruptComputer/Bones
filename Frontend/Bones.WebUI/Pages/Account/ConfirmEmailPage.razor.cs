@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Bones.WebUI.Pages.Auth;
+namespace Bones.WebUI.Pages.Account;
 
-public partial class ConfirmEmail
+public partial class ConfirmEmailPage
 {
     [Parameter]
     public string? UserId { get; set; }
@@ -22,25 +22,24 @@ public partial class ConfirmEmail
 
     public State CurrentState { get; set; } = State.Confirming;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(UserId)
-            || !Guid.TryParse(UserId, out _)
+            || !Guid.TryParse(UserId, out Guid parsedUserId)
             || string.IsNullOrEmpty(Code))
         {
             CurrentState = State.Failure;
-            return Task.CompletedTask;
+            return;
         }
 
         try
         {
-            //await ApiClient.AuthConfirmEmailAsync(UserId, Code, ChangedEmail);
+            await ApiClient.ConfirmEmailAsync(parsedUserId, Code, ChangedEmail);
             CurrentState = State.Success;
         }
         catch (Exception)
         {
             CurrentState = State.Failure;
         }
-        return Task.CompletedTask;
     }
 }

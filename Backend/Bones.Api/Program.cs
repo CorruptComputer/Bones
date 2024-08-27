@@ -1,4 +1,3 @@
-using System.Net;
 using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -7,9 +6,7 @@ using Bones.Backend;
 using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Extensions;
-using Bones.Shared.Backend.Consts;
 using Bones.Shared.Backend.Extensions;
-using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
@@ -26,7 +23,11 @@ public static class Program
     /// <param name="args">Arg, I'm a pirate.</param>
     public static void Main(string[] args)
     {
-        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        WebApplication.CreateBuilder(args).BuildBonesApi().RunBonesApi();
+    }
+
+    private static WebApplication BuildBonesApi(this WebApplicationBuilder builder)
+    {
         builder.Configuration.AddEnvironmentVariables();
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -37,49 +38,29 @@ public static class Program
             containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration));
         });
 
-        // In Development this is set by Properties/launchSettings.json
-        // so only need to include this for Production.
-        if (!builder.Environment.IsDevelopment())
+        builder.WebHost.UseKestrel().ConfigureKestrel(kestrelServerOptions =>
         {
-            builder.WebHost.UseKestrel().ConfigureKestrel(kestrelServerOptions =>
-            {
-                kestrelServerOptions.AddServerHeader = false;
-                kestrelServerOptions.Listen(IPAddress.Any, 8443, options =>
-                {
-                    options.UseHttps();
-                });
-            });
-        }
-
-        builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddCookie(options =>
-        {
-            options.Cookie.HttpOnly = true;
-            options.Cookie.SameSite = SameSiteMode.Lax; // I don't feel like dealing with CSRF Tokens right now
-
-            options.Events.OnRedirectToAccessDenied = (context) => throw new AuthenticationFailedException(true, "Forbidden");
-            options.Events.OnRedirectToLogin = (context) => throw new AuthenticationFailedException(false, "Unauthorized");
+            kestrelServerOptions.AddServerHeader = false;
         });
 
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy(AuthorizationPolicy.SYSTEM_ADMINISTRATOR, policy =>
-            {
-                policy.RequireRole(SystemRoles.SYSTEM_ADMINISTRATORS);
-                policy.RequireClaim(ClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
-            });
-        });
+        builder.Services.AddAuthorization();
+        //.AddPolicy(AuthorizationPolicy.SYSTEM_ADMINISTRATOR, policy =>
+        //{
+        //    policy.RequireRole(SystemRoles.SYSTEM_ADMINISTRATORS);
+        //    policy.RequireClaim(ClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
+        //});
+
+        builder.Services.AddIdentity<BonesUser, BonesRole>(options => options.AddBonesIdentityOptions())
+            .AddSignInManager()
+            .AddDefaultTokenProviders()
+            .AddRoles<BonesRole>()
+            .AddEntityFrameworkStores<BonesDbContext>();
 
         builder.Services.AddControllers().AddJsonOptions(configure =>
         {
-            configure.JsonSerializerOptions.WriteIndented = true;
             configure.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-
-        builder.Services.AddIdentityCore<BonesUser>(options => options.OverwriteWith(Identity.IdentityOptions))
-            .AddRoles<BonesRole>().AddEntityFrameworkStores<BonesDbContext>();
-
-        builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
@@ -107,17 +88,19 @@ public static class Program
                 .ReadFrom.Services(serviceProvider)
         );
 
-        builder.Services.AddHostedService<BackgroundTaskScheduler>();
+        //builder.Services.AddHostedService<BackgroundTaskScheduler>();
         builder.Services.AddDbContext<BonesDbContext>();
 
+        return builder.Build();
+    }
 
-
-        WebApplication app = builder.Build();
+    private static void RunBonesApi(this WebApplication app)
+    {
         app.Services.MigrateBonesDb();
 
         using IServiceScope scope = app.Services.CreateScope();
         ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();
-        
+
         app.UseCors(configurePolicy =>
         {
             configurePolicy
@@ -146,7 +129,6 @@ public static class Program
             app.UseHttpsRedirection();
         }
 
-        app.UseStaticFiles();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

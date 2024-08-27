@@ -1,23 +1,37 @@
+using Bones.Database;
+
 namespace Bones.Backend.Tasks;
 
-public abstract class TaskBase<T>(ILogger<T> logger) : BackgroundService
+public abstract class TaskBase<T>(ILogger<T> logger, ISender sender) : BackgroundService
 {
-    protected abstract TimeSpan? Interval { get; init; }
+    protected readonly ISender Sender = sender;
+    protected abstract TimeSpan? Interval { get; }
+
+    protected bool IsEnabled { get; set; } = true;
+
+    protected abstract Task<bool> ShouldTaskRunAsync(CancellationToken cancellationToken);
 
     protected abstract Task RunTaskAsync(CancellationToken cancellationToken);
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        using PeriodicTimer timer = new(Interval ?? TimeSpan.MaxValue);
+        while (!cancellationToken.IsCancellationRequested
+               && await timer.WaitForNextTickAsync(cancellationToken))
         {
-            if (logger.IsEnabled(LogLevel.Information))
+            if (!await ShouldTaskRunAsync(cancellationToken))
             {
-                logger.LogInformation("{Name} started at: {Time}", typeof(T).Name, DateTimeOffset.Now);
+                continue;
             }
 
             try
             {
-                await RunTaskAsync(stoppingToken);
+                if (logger.IsEnabled(LogLevel.Information))
+                {
+                    logger.LogInformation("{Name} started at: {Time}", typeof(T).Name, DateTimeOffset.Now);
+                }
+
+                await RunTaskAsync(cancellationToken);
 
                 if (logger.IsEnabled(LogLevel.Information))
                 {
@@ -26,16 +40,22 @@ public abstract class TaskBase<T>(ILogger<T> logger) : BackgroundService
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "{Time} | {Name} has unhandled exception: {ExceptionMessage}\n{ExceptionStackTrace}", DateTimeOffset.Now, typeof(T).Name, ex.Message, ex.StackTrace);
+                // TODO: add to TaskErrors table
+                IsEnabled = false;
+                logger.LogError(ex,
+                    "{Time} | {Name} has unhandled exception: {ExceptionMessage}\n{ExceptionStackTrace}",
+                    DateTimeOffset.Now, typeof(T).Name, ex.Message, ex.StackTrace);
             }
+            finally
+            {
+                // Startup only task
+                if (Interval is null)
+                {
+                    IsEnabled = false;
 
-            if (!Interval.HasValue)
-            {
-                await CancellationTokenSource.CreateLinkedTokenSource(stoppingToken).CancelAsync();
-            }
-            else
-            {
-                await Task.Delay(Interval.Value.Milliseconds, stoppingToken);
+                    // Lets also cancel it to clear this from memory
+                    await CancellationTokenSource.CreateLinkedTokenSource(cancellationToken).CancelAsync();
+                }
             }
         }
     }

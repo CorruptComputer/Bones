@@ -13,12 +13,12 @@
         <MudButtonGroup Color="Color.Secondary" Variant="Variant.Filled">
             <AuthorizeView>
                 <Authorized>
-                    <MudButton Href="/Auth/MyProfile">My Profile</MudButton>
-                    <MudButton Href="/Auth/Logout">Logout</MudButton>
+                    <MudButton Href="@FrontEndUrls.Account.MY_PROFILE">My Profile</MudButton>
+                    <MudButton Href="@FrontEndUrls.Account.LOGOUT">Logout</MudButton>
                 </Authorized>
                 <NotAuthorized>
-                    <MudButton Href="/Auth/Login">Login</MudButton>
-                    <MudButton Href="/Auth/Register">Register</MudButton>
+                    <MudButton Href="@FrontEndUrls.Account.LOGIN">Login</MudButton>
+                    <MudButton Href="@FrontEndUrls.Account.REGISTER">Register</MudButton>
                 </NotAuthorized>
             </AuthorizeView>
         </MudButtonGroup>
@@ -29,7 +29,7 @@
             <MudText Typo="Typo.h6">Bones</MudText>
         </MudDrawerHeader>
         <MudNavMenu>
-            <MudNavLink Match="NavLinkMatch.All" href="/">Home</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.HOME">Home</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="/RequiresLogin">Requires Login</MudNavLink>
         </MudNavMenu>
     </MudDrawer>

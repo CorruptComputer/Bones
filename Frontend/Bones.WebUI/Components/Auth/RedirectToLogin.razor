@@ -1,17 +1,16 @@
-
+<!-- Adding this here lets us use it on any page or component -->
 
 @code {
     protected override void OnInitialized()
     {
         string baseRelativePath = NavManager.ToBaseRelativePath(NavManager.Uri);
-        string loginUrl = "/auth/login";
+        string loginUrl = FrontEndUrls.Account.LOGIN;
 
         if (!string.IsNullOrWhiteSpace(baseRelativePath))
         {
             loginUrl += $"?returnUrl={Uri.EscapeDataString(baseRelativePath)}";
         }
         
-
         NavManager.NavigateTo(loginUrl, true);
     }
 }

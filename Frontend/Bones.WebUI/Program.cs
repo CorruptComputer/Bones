@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Bones.Api.Client;
 using Bones.Shared.Exceptions;
 using Bones.WebUI.Infrastructure;
@@ -23,18 +24,22 @@ public static class Program
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddSingleton<BonesAuthenticationStateProvider>();
         builder.Services.AddSingleton<AuthenticationStateProvider>(s => s.GetRequiredService<BonesAuthenticationStateProvider>());
-        builder.Services.AddScoped<CookieDelegatingHandler>();
-        builder.Services.AddScoped<UnauthorizedDelegatingHandler>();
+
+        builder.Services.AddTransient<CookieDelegatingHandler>();
+        builder.Services.AddTransient<UnauthorizedDelegatingHandler>();
 
         string apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? throw new BonesException("Missing ApiBaseUrl");
-        builder.Services.AddHttpClient(BonesApiClient.API_CLIENT_NAME, client =>
+        builder.Services.AddHttpClient(BonesApiClient.HTTP_CLIENT_NAME, client =>
             {
                 client.BaseAddress = new(apiBaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             })
             .AddHttpMessageHandler<CookieDelegatingHandler>()
             .AddHttpMessageHandler<UnauthorizedDelegatingHandler>();
 
-        builder.Services.AddSingleton<BonesApiClient>();
+        builder.Services.AddTransient<BonesApiClient>();
+
         await builder.Build().RunAsync();
     }
 }

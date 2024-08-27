@@ -43,19 +43,19 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build
-          
-      - name: Publish
+
+      - name: Publish Client and Server
         run: |
           dotnet publish Backend/Bones.Api/Bones.Api.csproj --configuration Release --runtime linux-x64 --self-contained true --property PublishDir=~/publish-server
           dotnet publish Frontend/Bones.WebUI/Bones.WebUI.csproj --configuration Release --property PublishDir=~/publish-client
-      
-      - name: Upload Server Build
+
+      - name: Upload Server Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: server-linux-x64
           path: ~/publish-server
-          
-      - name: Upload Client Build
+
+      - name: Upload Client Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: client

@@ -35,7 +35,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -74,7 +74,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -84,7 +84,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -130,7 +130,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -140,7 +140,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -170,7 +170,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -180,7 +180,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -200,7 +200,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AccountManagement/my/basic-info": {
+      "get": {
+        "tags": [
+          "AccountManagement"
+        ],
+        "operationId": "GetMyBasicInfoAsync",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyBasicInfoResponseActionResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -224,15 +254,22 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringActionResult"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/StringActionResult"
                 }
               }
             }
@@ -253,6 +290,48 @@
           "name": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmptyResponse": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "EmptyResponseActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
+            "$ref": "#/components/schemas/EmptyResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMyBasicInfoResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMyBasicInfoResponseActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
+            "$ref": "#/components/schemas/GetMyBasicInfoResponse"
           }
         },
         "additionalProperties": false
@@ -297,6 +376,19 @@
         "type": "object",
         "properties": {
           "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
             "type": "string",
             "nullable": true
           }

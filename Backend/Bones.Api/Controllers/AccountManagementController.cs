@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using Bones.Api.Models;
 using Bones.Backend.Features.AccountManagement.ConfirmEmail;
+using Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
 using Bones.Backend.Features.AccountManagement.RegisterUser;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Models;
@@ -12,7 +14,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace Bones.Api.Controllers;
 
 /// <summary>
-/// 
+///   Handles everything related to user accounts
 /// </summary>
 /// <param name="signInManager"></param>
 /// <param name="sender"></param>
@@ -21,10 +23,20 @@ namespace Bones.Api.Controllers;
 /// </remarks>
 public sealed class AccountManagementController(SignInManager<BonesUser> signInManager, ISender sender) : BonesControllerBase(sender)
 {
+    /// <summary>
+    ///   Request to register a new user
+    /// </summary>
+    /// <param name="Email">Email, must be valid and unique</param>
+    /// <param name="Password">Password, must pass validation (1 upper, 1 lower, 1 number, 1 special character, and at least 8 characters long)</param>
     public sealed record RegisterUserApiRequest([Required] string Email, [Required] string Password);
 
+    /// <summary>
+    ///   Registers a new user if all validations pass
+    /// </summary>
+    /// <param name="registration">Request to register a new user</param>
+    /// <returns>200 OK if created, 400 BadRequest otherwise with the reason why its failing</returns>
     [HttpPost("register", Name = "RegisterAsync")]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ActionResult<Dictionary<string, string[]>>>(StatusCodes.Status400BadRequest)]
     [AllowAnonymous]
     public async Task<ActionResult> RegisterAsync([FromBody] RegisterUserApiRequest registration)
@@ -36,14 +48,26 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
             return BadRequest(ReadErrorsFromIdentityResult(result.Result ?? IdentityResult.Failed()));
         }
 
-        return Ok();
+        return Ok(EmptyResponse.Value);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Email"></param>
+    /// <param name="Password"></param>
+    /// <param name="TwoFactorCode"></param>
+    /// <param name="TwoFactorRecoveryCode"></param>
     public sealed record LoginUserApiRequest([Required] string Email, [Required] string Password, string? TwoFactorCode, string? TwoFactorRecoveryCode);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="login"></param>
+    /// <returns></returns>
     [HttpPost("login", Name = "LoginAsync")]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
     public async Task<ActionResult> LoginAsync([FromBody] LoginUserApiRequest login)
     {
@@ -65,15 +89,22 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
 
         if (!result.Succeeded)
         {
-            return Unauthorized();
+            return Unauthorized(EmptyResponse.Value);
         }
 
-        return Ok();
+        return Ok(EmptyResponse.Value);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="code"></param>
+    /// <param name="changedEmail"></param>
+    /// <returns></returns>
     [HttpGet("confirm-email", Name = "ConfirmEmailAsync")]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
     public async Task<ActionResult> ConfirmEmailAsync([FromQuery][Required] Guid userId, [FromQuery][Required] string code, [FromQuery] string? changedEmail)
     {
@@ -81,17 +112,26 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
 
         if (!result.Success || !(result.Result?.Succeeded ?? false))
         {
-            return Unauthorized();
+            return Unauthorized(EmptyResponse.Value);
         }
 
-        return Ok();
+        return Ok(EmptyResponse.Value);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Email"></param>
     public sealed record ResendConfirmationEmailApiRequest([Required] string Email);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="resendRequest"></param>
+    /// <returns></returns>
     [HttpPost("resend-confirmation-email", Name = "ResendConfirmationEmailAsync")]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
     public async Task<ActionResult> ResendConfirmationEmailAsync([FromBody][Required] ResendConfirmationEmailApiRequest resendRequest)
     {
@@ -99,15 +139,18 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
 
         if (!result.Success)
         {
-            return Unauthorized();
+            return Unauthorized(EmptyResponse.Value);
         }
 
-        return Ok();
+        return Ok(EmptyResponse.Value);
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("logout", Name = "LogoutAsync")]
-    [ProducesResponseType<ActionResult>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
     [AllowAnonymous]
     public ActionResult LogoutAsync()
     {
@@ -118,7 +161,33 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
             Expires = DateTimeOffset.Now.AddDays(-1)
         });
 
-        return Ok();
+        return Ok(EmptyResponse.Value);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Email"></param>
+    /// <param name="DisplayName"></param>
+    public record GetMyBasicInfoResponse(string? Email, string? DisplayName);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("my/basic-info", Name = "GetMyBasicInfoAsync")]
+    [ProducesResponseType<ActionResult<GetMyBasicInfoResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult> GetMyBasicInfoAsync()
+    {
+        QueryResponse<BonesUser> user = await Sender.Send(new GetUserByClaimsPrincipalRequest(User));
+
+        if (!user.Success || user.Result == null)
+        {
+            return Unauthorized(EmptyResponse.Value);
+        }
+
+        return Ok(new GetMyBasicInfoResponse(user.Result.Email, user.Result.DisplayName));
     }
 
     private static Dictionary<string, string[]> ReadErrorsFromIdentityResult(IdentityResult result)

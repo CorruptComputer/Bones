@@ -10,6 +10,8 @@ namespace Bones.Database.DbSets.AccountManagement;
 [Table("BonesUsers", Schema = "AccountManagement")]
 public class BonesUser : IdentityUser<Guid>
 {
+    public string? DisplayName { get; set; }
+
     /// <summary>
     ///     When the account was created.
     /// </summary>

@@ -1,5 +1,7 @@
 using System.Security.Claims;
+using Bones.Api.Client;
 using Microsoft.AspNetCore.Components.Authorization;
+using ClaimTypes = Bones.Shared.Consts.ClaimTypes;
 
 namespace Bones.WebUI.Infrastructure;
 
@@ -7,7 +9,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
 {
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        object? currentUser = await GetCurrentUserAsync(CancellationToken.None);
+        GetMyBasicInfoResponse? currentUser = await GetCurrentUserAsync(CancellationToken.None);
 
         if (currentUser == null)
         {
@@ -15,7 +17,8 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         }
 
         Claim[] claims = [
-            //new(ClaimTypes.Email, currentUser.Email)
+            new(ClaimTypes.User.EMAIL, currentUser.Email),
+            new(ClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
         ];
 
         AuthenticationState? authenticationState = new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));
@@ -23,15 +26,15 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         return authenticationState;
     }
 
-    public async Task SetCurrentUserAsync(object? currentUser, CancellationToken cancellationToken)
+    public async Task SetCurrentUserAsync(GetMyBasicInfoResponse? currentUser, CancellationToken cancellationToken)
     {
         await localStorageService.SetItemAsync(LocalStorageService.CURRENT_USER_KEY, currentUser, cancellationToken);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
-    public Task<object?> GetCurrentUserAsync(CancellationToken cancellationToken)
+    public Task<GetMyBasicInfoResponse?> GetCurrentUserAsync(CancellationToken cancellationToken)
     {
-        return localStorageService.GetItemAsync<object>(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
+        return localStorageService.GetItemAsync<GetMyBasicInfoResponse>(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
     }
 }

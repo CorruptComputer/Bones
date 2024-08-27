@@ -1,0 +1,15 @@
+@attribute [Route(FrontEndUrls.Account.LOGOUT)]
+
+<h3>Logout</h3>
+
+<p>Logging you out now...</p>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ApiClient.LogoutAsync();
+        await AuthStateProvider.SetCurrentUserAsync(null, CancellationToken.None);
+
+        NavManager.NavigateTo("/");
+    }
+}
