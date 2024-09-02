@@ -1,5 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.AssetManagement.AssetFields;
+using Bones.Database.DbSets.AssetManagement.AssetLayouts;
+using Bones.Database.DbSets.AssetManagement.Assets;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.System;
@@ -56,6 +58,10 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     internal DbSet<TaskError> TaskErrors { get; set; }
     #endregion
 
+    /// <summary>
+    ///   Configure how certain Types are treated
+    /// </summary>
+    /// <param name="configurationBuilder"></param>
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.Properties<DateTimeOffset>().HaveConversion<DateTimeOffsetUtcConverter>();
@@ -110,6 +116,6 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
         builder.Entity<BonesRoleClaim>().ToTable("BonesRoleClaims", accountManagement);
     }
 
-    public class DateTimeOffsetUtcConverter()
+    internal class DateTimeOffsetUtcConverter()
         : ValueConverter<DateTimeOffset, DateTimeOffset>(dto => dto.ToUniversalTime(), dto => dto);
 }

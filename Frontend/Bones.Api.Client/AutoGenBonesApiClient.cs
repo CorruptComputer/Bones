@@ -55,6 +55,10 @@ namespace Bones.Api.Client
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Registers a new user if all validations pass
+        /// </summary>
+        /// <param name="body">Request to register a new user</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EmptyResponseActionResult> RegisterAsync(RegisterUserApiRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
@@ -140,6 +144,10 @@ namespace Bones.Api.Client
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Logs in a user, returns the active token as a cookie header if successful
+        /// </summary>
+        /// <param name="body">Request to login</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EmptyResponseActionResult> LoginAsync(LoginUserApiRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
@@ -225,6 +233,9 @@ namespace Bones.Api.Client
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirms a users email address
+        /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EmptyResponseActionResult> ConfirmEmailAsync(System.Guid userId, string code, string changedEmail = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
@@ -561,9 +572,13 @@ namespace Bones.Api.Client
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new project for the current user
+        /// </summary>
+        /// <param name="body">The name for the project</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<StringActionResult> CreateProjectAsync(CreateProjectAsyncRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<EmptyResponseActionResult> CreateMyProjectAsync(CreateMyProjectRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -571,7 +586,7 @@ namespace Bones.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateProjectAsyncRequest), JsonSerializerSettings);
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateMyProjectRequest), JsonSerializerSettings);
                     var content_ = new System.Net.Http.ByteArrayContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
@@ -580,8 +595,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "ProjectManagement/create"
-                    urlBuilder_.Append("ProjectManagement/create");
+                    // Operation Path: "ProjectManagement/my/create"
+                    urlBuilder_.Append("ProjectManagement/my/create");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -608,7 +623,7 @@ namespace Bones.Api.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<StringActionResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<EmptyResponseActionResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -760,15 +775,24 @@ namespace Bones.Api.Client
 
     }
 
+    /// <summary>
+    /// Request to create a new project for the current user
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record CreateProjectAsyncRequest
+    public partial record CreateMyProjectRequest
     {
+        /// <summary>
+        /// Name of the project to create
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string Name { get; set; }
 
     }
 
+    /// <summary>
+    /// The response body is empty, this is a workaround for the limitations of the API client.
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record EmptyResponse
     {
@@ -811,30 +835,58 @@ namespace Bones.Api.Client
 
     }
 
+    /// <summary>
+    /// Request to login
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record LoginUserApiRequest
     {
+        /// <summary>
+        /// The users email address
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]
         public string Email { get; set; }
 
+        /// <summary>
+        /// The users password
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("password")]
         public string Password { get; set; }
 
+        /// <summary>
+        /// If they have 2fa, include the code here
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("twoFactorCode")]
         public string TwoFactorCode { get; set; }
+
+        /// <summary>
+        /// If they have 2fa and can't use their authenticator, include a recovery code here
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("twoFactorRecoveryCode")]
         public string TwoFactorRecoveryCode { get; set; }
 
     }
 
+    /// <summary>
+    /// Request to register a new user
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record RegisterUserApiRequest
     {
+        /// <summary>
+        /// Email, must be valid and unique
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]
         public string Email { get; set; }
+
+        /// <summary>
+        /// Password, must pass validation (1 upper, 1 lower, 1 number, 1 special character, and at least 8 characters long)
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("password")]
         public string Password { get; set; }

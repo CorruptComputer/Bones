@@ -1,5 +1,5 @@
 using Bones.Database.Operations.ProjectManagement.Queues;
-using Bones.Shared.Backend.Models;
+using Bones.Database.Operations.ProjectManagement.Queues.CreateQueueDb;
 
 namespace Bones.Backend.Features.ProjectManagement.Queues;
 
@@ -32,6 +32,6 @@ public class CreateQueue(ISender sender) : IRequestHandler<CreateQueue.Command, 
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new CreateQueueDb.Command(request.Name, request.InitiativeId), cancellationToken);
+        return await sender.Send(new CreateQueueDbHandler.Command(request.Name, request.InitiativeId), cancellationToken);
     }
 }

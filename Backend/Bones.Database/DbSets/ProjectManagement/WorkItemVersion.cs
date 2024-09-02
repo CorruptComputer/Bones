@@ -13,12 +13,24 @@ public class WorkItemVersion
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
+    /// <summary>
+    ///   The layout version this work item version uses
+    /// </summary>
     public required WorkItemLayoutVersion WorkItemLayout { get; set; }
 
+    /// <summary>
+    ///   The version number for this item version
+    /// </summary>
     public required long Version { get; set; }
 
+    /// <summary>
+    ///   The parent work item that this version belongs to
+    /// </summary>
     public required WorkItem WorkItem { get; set; }
 
+    /// <summary>
+    ///   The field values that this version has
+    /// </summary>
     public required List<WorkItemValue> Values { get; set; }
 
     /// <summary>

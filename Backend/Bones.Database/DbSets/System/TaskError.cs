@@ -13,9 +13,18 @@ public class TaskError
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
+    /// <summary>
+    ///   The time this error occurred at
+    /// </summary>
     public required DateTimeOffset ErrorTime { get; set; }
 
+    /// <summary>
+    ///   The error message
+    /// </summary>
     public required string ErrorMessage { get; set; }
 
+    /// <summary>
+    ///   The stacktrace of the error
+    /// </summary>
     public required string StackTrace { get; set; }
 }

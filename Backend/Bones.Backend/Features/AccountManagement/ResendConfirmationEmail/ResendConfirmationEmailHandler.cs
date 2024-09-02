@@ -1,11 +1,10 @@
 using Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.ResendConfirmationEmail;
 
-public class ResendConfirmationEmailHandler(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<ResendConfirmationEmailRequest, CommandResponse>
+internal class ResendConfirmationEmailHandler(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<ResendConfirmationEmailRequest, CommandResponse>
 {
     public async Task<CommandResponse> Handle(ResendConfirmationEmailRequest request, CancellationToken cancellationToken)
     {

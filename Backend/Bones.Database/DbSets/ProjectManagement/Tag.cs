@@ -13,6 +13,9 @@ public class Tag
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
+    /// <summary>
+    ///   The name of the tag
+    /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
 }

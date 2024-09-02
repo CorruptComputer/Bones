@@ -20,10 +20,19 @@ public class WorkItemValue
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
+    /// <summary>
+    ///   The parent field this value belongs to
+    /// </summary>
     public required WorkItemField Field { get; set; }
 
+    /// <summary>
+    ///   The location type
+    /// </summary>
     public LocationType? LocationType { get; set; }
 
+    /// <summary>
+    ///   The value
+    /// </summary>
     public string? Value { get; private set; }
 
     /// <summary>
@@ -31,6 +40,12 @@ public class WorkItemValue
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    /// <summary>
+    ///   Tries to set the value, checking that the type is valid
+    /// </summary>
+    /// <param name="value"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public bool TrySetValue<T>(T? value)
     {
         if (value == null)
@@ -132,6 +147,12 @@ public class WorkItemValue
         }
     }
 
+    /// <summary>
+    ///   Gets the value, checking that the type is valid
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="BonesException"></exception>
     public T? GetValue<T>()
     {
         if (Value == null)

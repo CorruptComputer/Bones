@@ -19,8 +19,10 @@
         "tags": [
           "AccountManagement"
         ],
+        "summary": "Registers a new user if all validations pass",
         "operationId": "RegisterAsync",
         "requestBody": {
+          "description": "Request to register a new user",
           "content": {
             "application/json": {
               "schema": {
@@ -58,8 +60,10 @@
         "tags": [
           "AccountManagement"
         ],
+        "summary": "Logs in a user, returns the active token as a cookie header if successful",
         "operationId": "LoginAsync",
         "requestBody": {
+          "description": "Request to login",
           "content": {
             "application/json": {
               "schema": {
@@ -97,11 +101,13 @@
         "tags": [
           "AccountManagement"
         ],
+        "summary": "Confirms a users email address",
         "operationId": "ConfirmEmailAsync",
         "parameters": [
           {
             "name": "userId",
             "in": "query",
+            "description": "",
             "required": true,
             "schema": {
               "type": "string",
@@ -111,6 +117,7 @@
           {
             "name": "code",
             "in": "query",
+            "description": "",
             "required": true,
             "schema": {
               "type": "string"
@@ -119,6 +126,7 @@
           {
             "name": "changedEmail",
             "in": "query",
+            "description": "",
             "schema": {
               "type": "string"
             }
@@ -153,8 +161,10 @@
         "tags": [
           "AccountManagement"
         ],
+        "summary": "",
         "operationId": "ResendConfirmationEmailAsync",
         "requestBody": {
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -193,6 +203,7 @@
         "tags": [
           "AccountManagement"
         ],
+        "summary": "",
         "operationId": "LogoutAsync",
         "responses": {
           "200": {
@@ -213,6 +224,7 @@
         "tags": [
           "AccountManagement"
         ],
+        "summary": "",
         "operationId": "GetMyBasicInfoAsync",
         "responses": {
           "200": {
@@ -238,17 +250,19 @@
         }
       }
     },
-    "/ProjectManagement/create": {
+    "/ProjectManagement/my/create": {
       "post": {
         "tags": [
           "ProjectManagement"
         ],
-        "operationId": "CreateProjectAsync",
+        "summary": "Creates a new project for the current user",
+        "operationId": "CreateMyProjectAsync",
         "requestBody": {
+          "description": "The name for the project",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateProjectAsyncRequest"
+                "$ref": "#/components/schemas/CreateMyProjectRequest"
               }
             }
           }
@@ -259,7 +273,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringActionResult"
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
                 }
               }
             }
@@ -284,19 +298,22 @@
         "type": "object",
         "additionalProperties": false
       },
-      "CreateProjectAsyncRequest": {
+      "CreateMyProjectRequest": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
+            "description": "Name of the project to create",
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Request to create a new project for the current user"
       },
       "EmptyResponse": {
         "type": "object",
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "The response body is empty, this is a workaround for the limitations of the API client."
       },
       "EmptyResponseActionResult": {
         "type": "object",
@@ -315,14 +332,17 @@
         "properties": {
           "email": {
             "type": "string",
+            "description": "",
             "nullable": true
           },
           "displayName": {
             "type": "string",
+            "description": "",
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": ""
       },
       "GetMyBasicInfoResponseActionResult": {
         "type": "object",
@@ -341,46 +361,56 @@
         "properties": {
           "email": {
             "type": "string",
+            "description": "The users email address",
             "nullable": true
           },
           "password": {
             "type": "string",
+            "description": "The users password",
             "nullable": true
           },
           "twoFactorCode": {
             "type": "string",
+            "description": "If they have 2fa, include the code here",
             "nullable": true
           },
           "twoFactorRecoveryCode": {
             "type": "string",
+            "description": "If they have 2fa and can't use their authenticator, include a recovery code here",
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Request to login"
       },
       "RegisterUserApiRequest": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
+            "description": "Email, must be valid and unique",
             "nullable": true
           },
           "password": {
             "type": "string",
+            "description": "Password, must pass validation (1 upper, 1 lower, 1 number, 1 special character, and at least 8 characters long)",
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Request to register a new user"
       },
       "ResendConfirmationEmailApiRequest": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
+            "description": "",
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": ""
       },
       "StringActionResult": {
         "type": "object",

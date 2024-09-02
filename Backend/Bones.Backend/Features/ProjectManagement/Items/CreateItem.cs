@@ -1,5 +1,4 @@
-using Bones.Database.Operations.ProjectManagement.Items;
-using Bones.Shared.Backend.Models;
+using Bones.Database.Operations.ProjectManagement.WorkItems;
 
 namespace Bones.Backend.Features.ProjectManagement.Items;
 

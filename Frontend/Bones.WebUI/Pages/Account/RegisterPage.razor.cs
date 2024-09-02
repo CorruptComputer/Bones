@@ -50,7 +50,7 @@ public partial class RegisterPage
             yield break;
         }
 
-        if (Password.Text.Length >= 8)
+        if (Password.Text.Length <= 8)
         {
             yield return "Password be at least 8 characters long.";
         }

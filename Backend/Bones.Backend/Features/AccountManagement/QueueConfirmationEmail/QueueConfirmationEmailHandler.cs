@@ -1,14 +1,12 @@
-using System.Text.Encodings.Web;
 using Bones.Backend.Models;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Shared.Backend.Models;
 using Bones.Shared.Consts;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 
-public class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager, BackendConfiguration config) : IRequestHandler<QueueConfirmationEmailRequest, CommandResponse>
+internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager, BackendConfiguration config) : IRequestHandler<QueueConfirmationEmailRequest, CommandResponse>
 {
     public async Task<CommandResponse> Handle(QueueConfirmationEmailRequest request, CancellationToken cancellationToken)
     {
@@ -39,9 +37,6 @@ public class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager, B
 
         // TODO: Add to DB here
 
-        return new()
-        {
-            Success = true
-        };
+        return CommandResponse.Pass();
     }
 }

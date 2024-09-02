@@ -15,12 +15,24 @@ public class WorkItemField
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
+    /// <summary>
+    ///   The name of the work item field
+    /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
 
+    /// <summary>
+    ///   Is this field required to have a value?
+    /// </summary>
     public bool IsRequired { get; set; } = false;
 
-    public List<WorkItemFieldListEntry> PossibleValues { get; set; } = [];
+    /// <summary>
+    ///   If this field is a ValueList type, these are the possible values it can have
+    /// </summary>
+    public List<WorkItemFieldListEntry>? PossibleValues { get; set; }
 
+    /// <summary>
+    ///   The type for this field
+    /// </summary>
     public required FieldType Type { get; set; }
 }

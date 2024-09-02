@@ -1,3 +1,7 @@
+using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.OrganizationManagement;
+using Bones.Shared.Backend.Enums;
+
 namespace Bones.Database.DbSets.ProjectManagement;
 
 /// <summary>
@@ -13,8 +17,16 @@ public class WorkItemLayout
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; init; }
 
+    /// <summary>
+    ///   The name for this layout
+    /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
+    
+    /// <summary>
+    ///   Parent project for this layout
+    /// </summary>
+    public required Project Project { get; set; }
 
     /// <summary>
     ///   The versions for this layout

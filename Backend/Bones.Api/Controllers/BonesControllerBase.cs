@@ -7,6 +7,7 @@ namespace Bones.Api.Controllers;
 /// <summary>
 ///     Base controller for the Bones API, everything should extend from this.
 /// </summary>
+/// <param name="sender">MediatR sender</param>
 [Authorize]
 [ApiController]
 [Route("[controller]")]

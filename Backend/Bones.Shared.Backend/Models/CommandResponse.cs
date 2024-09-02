@@ -9,6 +9,8 @@ namespace Bones.Shared.Backend.Models;
 [JsonSerializable(typeof(CommandResponse))]
 public sealed record CommandResponse
 {
+    private CommandResponse() { }
+
     /// <summary>
     ///     Was the command successful?
     /// </summary>
@@ -24,12 +26,22 @@ public sealed record CommandResponse
     /// </summary>
     public string? FailureReason { get; init; }
 
+    /// <summary>
+    ///   Creates a successful response, optionally with an ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public static CommandResponse Pass(Guid? id = null) => new()
     {
         Success = false,
         Id = id
     };
 
+    /// <summary>
+    ///   Creates a failure response, optionally with the reason why it failed.
+    /// </summary>
+    /// <param name="failureReason"></param>
+    /// <returns></returns>
     public static CommandResponse Fail(string? failureReason = null) => new()
     {
         Success = false,

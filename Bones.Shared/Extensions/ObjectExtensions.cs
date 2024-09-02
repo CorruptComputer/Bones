@@ -1,7 +1,16 @@
 namespace Bones.Shared.Extensions;
 
+/// <summary>
+///   Extensions to object
+/// </summary>
 public static class ObjectExtensions
 {
+    /// <summary>
+    ///   Checks if the objects type is a numeric type:
+    ///   byte, ushort, short, uint, int, ulong, long, double, decimal, or float
+    /// </summary>
+    /// <param name="o"></param>
+    /// <returns></returns>
     public static bool IsNumericType(this object o)
     {
         return Type.GetTypeCode(o.GetType()) switch

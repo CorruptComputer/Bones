@@ -23,6 +23,9 @@ public class WorkItemLayoutVersion
     /// </summary>
     public required long Version { get; init; }
 
+    /// <summary>
+    ///   The fields this layout version has
+    /// </summary>
     public List<WorkItemField> Fields { get; init; } = [];
 
     /// <summary>

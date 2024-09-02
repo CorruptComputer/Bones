@@ -9,6 +9,10 @@
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     </PropertyGroup>
 
+    <PropertyGroup Condition="$(Configuration) == 'Debug'">
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
@@ -28,6 +32,14 @@
     <ItemGroup>
       <Folder Include="DbSets\DocumentationManagement\" />
       <Folder Include="Migrations\" />
+      <Folder Include="Operations\AssetManagement\AssetFields\" />
+      <Folder Include="Operations\AssetManagement\AssetLayouts\GetAssetLayoutDetailsById\" />
+      <Folder Include="Operations\AssetManagement\AssetLayouts\GetAssetLayoutsByOwnerDb\" />
+      <Folder Include="Operations\AssetManagement\AssetLayouts\QueueDeleteAssetLayoutById\" />
+      <Folder Include="Operations\AssetManagement\Assets\" />
+      <Folder Include="Operations\ProjectManagement\WorkItemFields\CreateWorkItemFieldDb\" />
+      <Folder Include="Operations\ProjectManagement\WorkItemFields\QueueDeleteWorkItemFieldByIdDb\" />
+      <Folder Include="Operations\ProjectManagement\WorkItemFields\UpdateWorkItemFieldByIdDb\" />
     </ItemGroup>
 
 </Project>

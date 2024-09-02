@@ -1,5 +1,5 @@
 using Bones.Database.Models;
-using Bones.Database.Operations.Setup;
+using Bones.Database.Operations.Setup.SetupDb;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bones.Database.Extensions;
@@ -26,8 +26,7 @@ public static class ServiceProviderExtensions
             }
         }
 
-        // We don't need to await this, it's fine to just execute in the background
         ISender sender = serviceProvider.GetRequiredService<ISender>();
-        sender.Send(new SetupDbHandler.Command());
+        sender.Send(new SetupDbCommand()).Wait();
     }
 }

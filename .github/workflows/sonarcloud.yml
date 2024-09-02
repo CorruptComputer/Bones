@@ -14,8 +14,8 @@ env:
   DOTNET_VERSION: '8.0.x'
 
 jobs:
-  test:
-    name: Test
+  scan:
+    name: SonarCloud Scan
     runs-on: ubuntu-latest
     env:
       DatabaseConfiguration__UseInMemoryDb: true

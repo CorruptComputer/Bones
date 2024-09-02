@@ -13,12 +13,21 @@ public class Queue
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
+    /// <summary>
+    ///   The initiative this queue belongs to
+    /// </summary>
     public required Initiative Initiative { get; set; }
 
+    /// <summary>
+    ///   The name of the queue
+    /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
 
-    public List<WorkItem> Items { get; set; } = [];
+    /// <summary>
+    ///   The work items in this queue
+    /// </summary>
+    public List<WorkItem> WorkItems { get; set; } = [];
 
     /// <summary>
     ///   Disables viewing this queue, and when safe to do so it will be removed.

@@ -2,7 +2,7 @@ using FluentValidation.Results;
 
 namespace Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
 
-public sealed class GetUserByClaimsPrincipalRequestValidator : AbstractValidator<GetUserByClaimsPrincipalRequest>
+internal sealed class GetUserByClaimsPrincipalRequestValidator : AbstractValidator<GetUserByClaimsPrincipalRequest>
 {
     public override Task<ValidationResult> ValidateAsync(ValidationContext<GetUserByClaimsPrincipalRequest> context, CancellationToken cancellation = new())
     {

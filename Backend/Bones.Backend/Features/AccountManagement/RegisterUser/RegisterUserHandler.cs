@@ -1,13 +1,12 @@
 using Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Shared.Backend.Models;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.RegisterUser;
 
-public class RegisterUserHandler(UserManager<BonesUser> userManager, IUserEmailStore<BonesUser> userStore, ISender sender) : IRequestHandler<RegisterUserRequest, QueryResponse<IdentityResult>>
+internal class RegisterUserHandler(UserManager<BonesUser> userManager, IUserEmailStore<BonesUser> userStore, ISender sender) : IRequestHandler<RegisterUserRequest, QueryResponse<IdentityResult>>
 {
     public async Task<QueryResponse<IdentityResult>> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
     {

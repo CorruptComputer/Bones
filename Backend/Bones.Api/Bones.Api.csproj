@@ -7,7 +7,9 @@
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="$(Configuration) == 'Debug'">
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
@@ -41,5 +43,11 @@
 
     <ItemGroup>
       <Content Remove="appsettings.Development.json" Condition="$(Configuration) == 'Release'" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Controllers\ProjectManagementController.My.cs">
+        <DependentUpon>ProjectManagementController.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

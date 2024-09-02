@@ -1,5 +1,3 @@
-using Bones.Api.Client;
-
 namespace Bones.WebUI.Infrastructure;
 
 public class UnauthorizedDelegatingHandler(BonesAuthenticationStateProvider authenticationStateProvider)

@@ -14,12 +14,13 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace Bones.Api.Controllers;
 
 /// <summary>
-///   Handles everything related to user accounts
+///   Handles everything related to User Accounts
 /// </summary>
-/// <param name="signInManager"></param>
-/// <param name="sender"></param>
+/// <param name="signInManager">Sign in manager, registered and managed by AspNetCore Identity</param>
+/// <param name="sender">MediatR sender</param>
 /// <remarks>
-///   See: https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
+///   Created using this as a reference:
+///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
 /// </remarks>
 public sealed class AccountManagementController(SignInManager<BonesUser> signInManager, ISender sender) : BonesControllerBase(sender)
 {
@@ -52,19 +53,19 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     }
 
     /// <summary>
-    /// 
+    ///   Request to login
     /// </summary>
-    /// <param name="Email"></param>
-    /// <param name="Password"></param>
-    /// <param name="TwoFactorCode"></param>
-    /// <param name="TwoFactorRecoveryCode"></param>
+    /// <param name="Email">The users email address</param>
+    /// <param name="Password">The users password</param>
+    /// <param name="TwoFactorCode">If they have 2fa, include the code here</param>
+    /// <param name="TwoFactorRecoveryCode">If they have 2fa and can't use their authenticator, include a recovery code here</param>
     public sealed record LoginUserApiRequest([Required] string Email, [Required] string Password, string? TwoFactorCode, string? TwoFactorRecoveryCode);
 
     /// <summary>
-    /// 
+    ///   Logs in a user, returns the active token as a cookie header if successful
     /// </summary>
-    /// <param name="login"></param>
-    /// <returns></returns>
+    /// <param name="login">Request to login</param>
+    /// <returns>200 OK if successful, 401 Unauthorized otherwise</returns>
     [HttpPost("login", Name = "LoginAsync")]
     [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
@@ -96,7 +97,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     }
 
     /// <summary>
-    /// 
+    ///   Confirms a users email address
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="code"></param>

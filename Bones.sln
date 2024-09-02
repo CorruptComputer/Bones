@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AFD22481
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C1C3F97D-6CB5-4A9B-A088-8DC828824C3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.UnitTests", "Tests\Backend\Bones.Api.UnitTests\Bones.Api.UnitTests.csproj", "{39F577AE-482A-4D03-B128-C7AE4F846C29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Backend.UnitTests", "Tests\Backend\Bones.Backend.UnitTests\Bones.Backend.UnitTests.csproj", "{39F577AE-482A-4D03-B128-C7AE4F846C29}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Database.UnitTests", "Tests\Backend\Bones.Database.UnitTests\Bones.Database.UnitTests.csproj", "{4096CB64-8296-4193-B004-1C95D52FDBD7}"
 EndProject
@@ -35,16 +35,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Shared.Backend.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Testing.Shared.Backend", "Tests\Backend\Bones.Testing.Shared.Backend\Bones.Testing.Shared.Backend.csproj", "{CFB559B0-C8D7-4D43-B58D-0075876F7A79}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{6A496C70-12AE-454B-AA6E-DE4565EB0499}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Testing.Shared", "Tests\Bones.Testing.Shared\Bones.Testing.Shared.csproj", "{C4168260-D19D-4919-B100-CCA86C9A6B68}"
 EndProject
 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Shared", "Bones.Shared\Bones.Shared.csproj", "{83C0F78F-F035-40B3-A349-50E13938F545}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Backend", "Backend\Bones.Backend\Bones.Backend.csproj", "{5311F839-CD12-4BBD-B233-725F3A3D8184}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client.IntegrationTests", "Tests\Frontend\Bones.Api.Client.IntegrationTests\Bones.Api.Client.IntegrationTests.csproj", "{8E3B505C-40C0-4B89-97B9-743694BE92AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client", "Frontend\Bones.Api.Client\Bones.Api.Client.csproj", "{12C73BFE-490F-48E3-B409-0092CD242612}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -102,10 +98,6 @@ Global
 		{5311F839-CD12-4BBD-B233-725F3A3D8184}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5311F839-CD12-4BBD-B233-725F3A3D8184}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5311F839-CD12-4BBD-B233-725F3A3D8184}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E3B505C-40C0-4B89-97B9-743694BE92AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E3B505C-40C0-4B89-97B9-743694BE92AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E3B505C-40C0-4B89-97B9-743694BE92AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E3B505C-40C0-4B89-97B9-743694BE92AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{12C73BFE-490F-48E3-B409-0092CD242612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{12C73BFE-490F-48E3-B409-0092CD242612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12C73BFE-490F-48E3-B409-0092CD242612}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -121,10 +113,8 @@ Global
 		{4096CB64-8296-4193-B004-1C95D52FDBD7} = {C1C3F97D-6CB5-4A9B-A088-8DC828824C3D}
 		{3B29652D-C54D-4922-9E4A-B8B51CCCCD2A} = {C1C3F97D-6CB5-4A9B-A088-8DC828824C3D}
 		{CFB559B0-C8D7-4D43-B58D-0075876F7A79} = {C1C3F97D-6CB5-4A9B-A088-8DC828824C3D}
-		{6A496C70-12AE-454B-AA6E-DE4565EB0499} = {AFD22481-8267-4E6C-89D9-AB37A3FE020C}
 		{C4168260-D19D-4919-B100-CCA86C9A6B68} = {AFD22481-8267-4E6C-89D9-AB37A3FE020C}
 		{5311F839-CD12-4BBD-B233-725F3A3D8184} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
-		{8E3B505C-40C0-4B89-97B9-743694BE92AE} = {6A496C70-12AE-454B-AA6E-DE4565EB0499}
 		{12C73BFE-490F-48E3-B409-0092CD242612} = {2BF99936-90E9-4855-869C-F31C3C694647}
 	EndGlobalSection
 EndGlobal

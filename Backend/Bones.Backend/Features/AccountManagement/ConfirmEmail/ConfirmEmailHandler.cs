@@ -1,11 +1,10 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Shared.Backend.Models;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.ConfirmEmail;
 
-public class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmEmailRequest, QueryResponse<IdentityResult>>
+internal class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmEmailRequest, QueryResponse<IdentityResult>>
 {
     public async Task<QueryResponse<IdentityResult>> Handle(ConfirmEmailRequest request, CancellationToken cancellationToken)
     {
@@ -14,10 +13,10 @@ public class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestH
             return IdentityResult.Failed();
         }
 
-        string decodedCode;
+        string token;
         try
         {
-            decodedCode = request.Code.Base64UrlSafeDecode();
+            token = request.Code.Base64UrlSafeDecode();
         }
         catch (Exception)
         {
@@ -25,19 +24,18 @@ public class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestH
         }
 
         IdentityResult result;
-
         if (string.IsNullOrEmpty(request.ChangedEmail))
         {
-            result = await userManager.ConfirmEmailAsync(user, decodedCode);
+            result = await userManager.ConfirmEmailAsync(user, token);
         }
         else
         {
-            // As with Identity UI, email and user name are one and the same. So when we update the email,
-            // we need to update the user name.
-            result = await userManager.ChangeEmailAsync(user, request.ChangedEmail, decodedCode);
+            // Email and username are one and the same.
+            result = await userManager.ChangeEmailAsync(user, request.ChangedEmail, token);
 
             if (result.Succeeded)
             {
+                // So when we update the email, we need to update the username.
                 result = await userManager.SetUserNameAsync(user, request.ChangedEmail);
             }
         }

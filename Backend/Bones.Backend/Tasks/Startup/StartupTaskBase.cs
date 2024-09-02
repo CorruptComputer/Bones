@@ -1,6 +1,6 @@
 namespace Bones.Backend.Tasks.Startup;
 
-public abstract class StartupTaskBase<T>(ILogger<T> logger, ISender sender) : TaskBase<T>(logger, sender)
+internal abstract class StartupTaskBase<T>(ILogger<T> logger, ISender sender) : TaskBase<T>(logger, sender)
 {
     protected override TimeSpan? Interval { get; } = null;
 

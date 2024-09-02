@@ -1,13 +1,28 @@
 using System.Diagnostics;
-using Bones.Shared.Backend.Models;
 using Serilog.Events;
 
 namespace Bones.Shared.Backend.PipelineBehaviors;
 
+/// <summary>
+///   Base pipeline behavior for MediatR
+/// </summary>
+/// <typeparam name="TRequest"></typeparam>
+/// <typeparam name="TResponse"></typeparam>
 public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
+    /// <summary>
+    ///   Gets the basic result info from the response
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
     protected abstract (bool success, string? failReason) GetResult(TResponse response);
+    
+    /// <summary>
+    ///   Generate a failure response with the provided type
+    /// </summary>
+    /// <param name="failReason"></param>
+    /// <returns></returns>
     protected abstract TResponse GetFailedResponse(string failReason);
 
     // I don't really like using these, but in this case it's safer to do so.
@@ -21,25 +36,23 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
 
     private Stopwatch? _stopwatch = null;
 
+    /// <summary>
+    ///   This is called before MediatR sends the request to its handler, we pass the request along with next()
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="next"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         StartDebugLog(request);
         Exception? exception = null;
-        TResponse? response = default;
+        TResponse? response;
 
         try
         {
-            if (request is IValidatableRequest<TResponse> val)
-            {
-                (bool valid, string? invalidReason) = val.IsRequestValid();
-                if (!valid)
-                {
-                    response = GetFailedResponse(invalidReason ?? string.Empty);
-                }
-            }
-
-            // Skip if set by invalid above
-            response ??= await next();
+            // Send it to the handler
+            response = await next();
         }
         catch (Exception e)
         {

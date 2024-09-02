@@ -1,12 +1,15 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Api.Models;
 using Bones.Backend;
+using Bones.Backend.Extensions;
 using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Extensions;
 using Bones.Shared.Backend.Extensions;
+using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
@@ -43,12 +46,11 @@ public static class Program
             kestrelServerOptions.AddServerHeader = false;
         });
 
-        builder.Services.AddAuthorization();
-        //.AddPolicy(AuthorizationPolicy.SYSTEM_ADMINISTRATOR, policy =>
-        //{
-        //    policy.RequireRole(SystemRoles.SYSTEM_ADMINISTRATORS);
-        //    policy.RequireClaim(ClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
-        //});
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy(AuthorizationPolicy.SYSTEM_ADMINISTRATOR, policy =>
+            {
+                policy.RequireClaim(ClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
+            });
 
         builder.Services.AddIdentity<BonesUser, BonesRole>(options => options.AddBonesIdentityOptions())
             .AddSignInManager()
@@ -81,6 +83,9 @@ public static class Program
                     Url = new("https://github.com/CorruptComputer/Bones/blob/develop/LICENSE")
                 }
             });
+            
+            string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
 
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
@@ -88,7 +93,7 @@ public static class Program
                 .ReadFrom.Services(serviceProvider)
         );
 
-        //builder.Services.AddHostedService<BackgroundTaskScheduler>();
+        builder.Services.RegisterBackgroundTasks();
         builder.Services.AddDbContext<BonesDbContext>();
 
         return builder.Build();

@@ -2,8 +2,16 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Shared.Backend.Extensions;
 
+/// <summary>
+///   Extensions for IdentityOptions
+/// </summary>
 public static class IdentityOptionsExtensions
 {
+    /// <summary>
+    ///   Sets the IdentityOptions with the configuration used by the API.
+    /// </summary>
+    /// <param name="options"></param>
+    /// <returns></returns>
     public static IdentityOptions AddBonesIdentityOptions(this IdentityOptions options)
     {
         options.User.RequireUniqueEmail = true;
@@ -19,7 +27,7 @@ public static class IdentityOptionsExtensions
         options.Password.RequireUppercase = true;
         options.Password.RequireNonAlphanumeric = true;
         options.Password.RequiredLength = 8;
-
+        
         return options;
     }
 }

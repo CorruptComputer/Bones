@@ -1,8 +1,6 @@
-using Bones.Database;
-
 namespace Bones.Backend.Tasks;
 
-public abstract class TaskBase<T>(ILogger<T> logger, ISender sender) : BackgroundService
+internal abstract class TaskBase<T>(ILogger<T> logger, ISender sender) : BackgroundService
 {
     protected readonly ISender Sender = sender;
     protected abstract TimeSpan? Interval { get; }
