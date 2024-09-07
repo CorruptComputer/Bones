@@ -2,7 +2,7 @@ namespace Bones.Database.Operations.ProjectManagement.WorkItems.CreateWorkItemVe
 
 internal sealed class CreateWorkItemVersionDbCommandValidator : AbstractValidator<CreateWorkItemVersionDbCommand>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<CreateWorkItemVersionDbCommand> context, CancellationToken cancellation = new CancellationToken())
+    public override Task<ValidationResult> ValidateAsync(ValidationContext<CreateWorkItemVersionDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.WorkItemId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.WorkItemLayoutVersionId).NotNull().NotEqual(Guid.Empty);

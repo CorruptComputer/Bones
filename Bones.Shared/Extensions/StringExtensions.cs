@@ -164,4 +164,20 @@ public static class StringExtensions
         const string vowels = "AEIOU";
         return vowels.Contains(char.ToUpper(c));
     }
+    
+    /// <summary>
+    ///   Converts the string into a stream
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task<Stream> ToStreamAsync(this string str, CancellationToken cancellationToken = default)
+    {
+        MemoryStream stream = new();
+        StreamWriter writer = new(stream);
+        await writer.WriteAsync(str);
+        await writer.FlushAsync(cancellationToken);
+        stream.Position = 0;
+        return stream;
+    }
 }

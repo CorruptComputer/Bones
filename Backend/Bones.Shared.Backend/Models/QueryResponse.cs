@@ -9,24 +9,14 @@ namespace Bones.Shared.Backend.Models;
 /// <typeparam name="TResult"></typeparam>
 [Serializable]
 [JsonSerializable(typeof(QueryResponse<>))]
-public sealed record QueryResponse<TResult>
+public sealed record QueryResponse<TResult> : BonesResponseBase
 {
     private QueryResponse() { }
-
-    /// <summary>
-    ///     Was the command successful?
-    /// </summary>
-    public required bool Success { get; init; } = false;
-
+    
     /// <summary>
     ///     If the query was successful, this should have some data in it.
     /// </summary>
     public TResult? Result { get; init; }
-
-    /// <summary>
-    ///     If the command failed, why?
-    /// </summary>
-    public string? FailureReason { get; init; } = null;
     
     /// <summary>
     ///   Creates a successful response, with the required result
@@ -48,6 +38,17 @@ public sealed record QueryResponse<TResult>
     {
         Success = false,
         FailureReason = failureReason
+    };
+    
+    /// <summary>
+    ///   Creates a forbidden response.
+    /// </summary>
+    /// <returns></returns>
+    public static QueryResponse<TResult> Forbid() => new()
+    {
+        Success = false,
+        FailureReason = "Forbidden.",
+        Forbidden = true
     };
 
     /// <summary>

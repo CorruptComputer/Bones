@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Identity;
-using ClaimTypes = Bones.Shared.Consts.ClaimTypes;
 
 namespace Bones.Database.Operations.Setup.SetupSystemAdminUserAndRole;
 
@@ -46,7 +45,7 @@ internal sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> 
             BonesRole? createdRole = await roleManager.FindByNameAsync(SystemRoles.SYSTEM_ADMINISTRATORS);
             if (createdRole != null)
             {
-                Claim roleClaim = new(ClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
+                Claim roleClaim = new(BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
                 await roleManager.AddClaimAsync(createdRole, roleClaim);
             }
         }

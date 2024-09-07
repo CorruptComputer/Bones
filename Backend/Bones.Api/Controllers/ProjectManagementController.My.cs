@@ -1,5 +1,5 @@
 using Bones.Api.Models;
-using Bones.Backend.Features.ProjectManagement.Projects;
+using Bones.Backend.Features.ProjectManagement.Projects.CreateProject;
 using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +23,7 @@ public sealed partial class ProjectManagementController
     [ProducesResponseType<ActionResult<string>>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateMyProjectAsync([FromBody] CreateMyProjectRequest request)
     {
-        CommandResponse response = await Sender.Send(new CreateProject.Command(request.Name, User));
+        CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, User));
         if (!response.Success)
         {
             return BadRequest(response.FailureReason);

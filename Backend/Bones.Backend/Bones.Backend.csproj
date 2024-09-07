@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <Folder Include="Features\ProjectManagement\Initiatives\" />
-      <Folder Include="Features\ProjectManagement\Projects\CreateProject\" />
       <Folder Include="Managers\" />
     </ItemGroup>
 

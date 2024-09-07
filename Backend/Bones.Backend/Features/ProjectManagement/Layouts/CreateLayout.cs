@@ -34,6 +34,6 @@ public class CreateLayout(ISender sender) : IRequestHandler<CreateLayout.Command
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new CreateWorkItemLayoutDbHandler.Command(request.Name, request.ItemFieldIds), cancellationToken);
+        return await sender.Send(new CreateWorkItemLayoutDbCommand(request.Name, request.ItemFieldIds), cancellationToken);
     }
 }

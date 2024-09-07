@@ -1,4 +1,3 @@
-using Bones.Database.Operations.ProjectManagement.Tags;
 using Bones.Database.Operations.ProjectManagement.Tags.CreateTagDb;
 
 namespace Bones.Backend.Features.ProjectManagement.Items;
@@ -26,6 +25,6 @@ public class CreateTag(ISender sender) : IRequestHandler<CreateTag.Command, Comm
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new CreateTagDbHandler.Command(request.Name), cancellationToken);
+        return await sender.Send(new CreateTagDbCommand(request.Name), cancellationToken);
     }
 }

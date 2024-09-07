@@ -6,9 +6,9 @@ namespace Bones.Shared.Backend.PipelineBehaviors;
 public class CommandBehavior<TRequest> : PipelineBehaviorBase<TRequest, CommandResponse> where TRequest : notnull
 {
     /// <inheritdoc />
-    protected override (bool success, string? failReason) GetResult(CommandResponse response)
+    protected override (bool success, string? failReason, bool forbidden) GetResult(CommandResponse response)
     {
-        return (response.Success, response.FailureReason);
+        return (response.Success, response.FailureReason, response.Forbidden);
     }
 
     /// <inheritdoc />

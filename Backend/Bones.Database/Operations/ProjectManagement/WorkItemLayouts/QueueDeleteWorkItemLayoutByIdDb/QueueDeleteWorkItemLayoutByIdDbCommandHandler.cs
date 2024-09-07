@@ -2,7 +2,7 @@ namespace Bones.Database.Operations.ProjectManagement.WorkItemLayouts.QueueDelet
 
 internal sealed class QueueDeleteWorkItemLayoutByIdDbCommandHandler : AbstractValidator<QueueDeleteWorkItemLayoutByIdDbCommand>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<QueueDeleteWorkItemLayoutByIdDbCommand> context, CancellationToken cancellation = new CancellationToken())
+    public override Task<ValidationResult> ValidateAsync(ValidationContext<QueueDeleteWorkItemLayoutByIdDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.LayoutId).NotNull().NotEqual(Guid.Empty);
         

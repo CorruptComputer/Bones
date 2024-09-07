@@ -28,3 +28,8 @@ sudo su postgres
 initdb -D /var/lib/postgres/data --auth-local=trust --locale=C.UTF-8 --encoding=UTF8
 createdb BonesDb
 ```
+
+When running it you'll want to run them in this order:
+- Bones.BackgroundService
+- Bones.API
+- Bones.WebUI

@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using Bones.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,9 @@ namespace Bones.Api.Controllers;
 [Route("[controller]")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
+[ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status403Forbidden)]
+[ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status500InternalServerError)]
 public class BonesControllerBase(ISender sender) : ControllerBase
 {
     /// <summary>

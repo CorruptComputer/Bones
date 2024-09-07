@@ -2,7 +2,7 @@ namespace Bones.Database.Operations.ProjectManagement.WorkItemLayouts.UpdateWork
 
 internal sealed class UpdateWorkItemLayoutByIdDbCommandValidator : AbstractValidator<UpdateWorkItemLayoutByIdDbCommand>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<UpdateWorkItemLayoutByIdDbCommand> context, CancellationToken cancellation = new CancellationToken())
+    public override Task<ValidationResult> ValidateAsync(ValidationContext<UpdateWorkItemLayoutByIdDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.LayoutId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.NewName).NotNull().NotEmpty();

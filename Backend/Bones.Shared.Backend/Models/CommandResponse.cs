@@ -7,25 +7,15 @@ namespace Bones.Shared.Backend.Models;
 /// </summary>
 [Serializable]
 [JsonSerializable(typeof(CommandResponse))]
-public sealed record CommandResponse
+public sealed record CommandResponse : BonesResponseBase
 {
     private CommandResponse() { }
-
-    /// <summary>
-    ///     Was the command successful?
-    /// </summary>
-    public required bool Success { get; init; }
-
+    
     /// <summary>
     ///     If an ID was generated for something by the command, it can optionally be returned here.
     /// </summary>
     public Guid? Id { get; init; }
-
-    /// <summary>
-    ///     If the command failed, why?
-    /// </summary>
-    public string? FailureReason { get; init; }
-
+    
     /// <summary>
     ///   Creates a successful response, optionally with an ID.
     /// </summary>
@@ -46,5 +36,16 @@ public sealed record CommandResponse
     {
         Success = false,
         FailureReason = failureReason
+    };
+    
+    /// <summary>
+    ///   Creates a forbidden response.
+    /// </summary>
+    /// <returns></returns>
+    public static CommandResponse Forbid() => new()
+    {
+        Success = false,
+        FailureReason = "Forbidden.",
+        Forbidden = true
     };
 }

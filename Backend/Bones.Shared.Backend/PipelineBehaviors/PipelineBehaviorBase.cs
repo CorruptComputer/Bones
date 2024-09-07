@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Bones.Shared.Exceptions;
 using Serilog.Events;
 
 namespace Bones.Shared.Backend.PipelineBehaviors;
@@ -16,7 +17,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
     /// </summary>
     /// <param name="response"></param>
     /// <returns></returns>
-    protected abstract (bool success, string? failReason) GetResult(TResponse response);
+    protected abstract (bool success, string? failReason, bool forbidden) GetResult(TResponse response);
     
     /// <summary>
     ///   Generate a failure response with the provided type
@@ -54,15 +55,22 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
             // Send it to the handler
             response = await next();
         }
-        catch (Exception e)
+        catch (Exception e) when (e is not ForbiddenAccessException)
         {
+            Log.Error(e, "Uncaught Exception [{RequestName}] | ExceptionMessage = {Message}", typeof(TRequest).FullName, e.Message);
+            
             exception = e;
             response = GetFailedResponse(e.Message);
-
-            Log.Error($"Uncaught Exception [{typeof(TRequest).FullName}] | ExceptionMessage = {exception.Message}");
         }
 
-        (bool success, string? failReason) = GetResult(response);
+        (bool success, string? failReason, bool forbidden) = GetResult(response);
+
+        if (forbidden)
+        {
+            // Stop the whole call stack here, we don't want anything with this request to go any further.
+            // The API Controller should catch this and return a forbidden status code.
+            throw new ForbiddenAccessException();
+        }
 
         StopDebugLog(request, success, failReason, exception);
 

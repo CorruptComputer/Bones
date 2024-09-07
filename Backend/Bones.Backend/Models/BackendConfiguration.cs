@@ -1,8 +1,12 @@
 namespace Bones.Backend.Models;
 
-public sealed class BackendConfiguration
+/// <summary>
+///   Configuration for the backend of the project
+/// </summary>
+public sealed record BackendConfiguration
 {
-    public string? BackgroundTasksUserEmail { get; set; }
-
+    /// <summary>
+    ///   Base URL for the Web UI
+    /// </summary>
     public string? WebUIBaseUrl { get; set; }
 }

@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Bones.Api.Handlers;
 using Bones.Api.Models;
 using Bones.Backend;
 using Bones.Database;
@@ -44,10 +45,12 @@ public static class Program
             kestrelServerOptions.AddServerHeader = false;
         });
 
+        builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+
         builder.Services.AddAuthorizationBuilder()
             .AddPolicy(AuthorizationPolicy.SYSTEM_ADMINISTRATOR, policy =>
             {
-                policy.RequireClaim(ClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
+                policy.RequireClaim(BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
             });
 
         builder.Services.AddIdentity<BonesUser, BonesRole>(options => options.AddBonesIdentityOptions())
@@ -98,8 +101,6 @@ public static class Program
 
     private static void RunBonesApi(this WebApplication app)
     {
-        
-
         using IServiceScope scope = app.Services.CreateScope();
         ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();
 

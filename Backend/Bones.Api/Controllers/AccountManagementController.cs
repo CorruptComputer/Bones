@@ -68,7 +68,6 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <returns>200 OK if successful, 401 Unauthorized otherwise</returns>
     [HttpPost("login", Name = "LoginAsync")]
     [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
     public async Task<ActionResult> LoginAsync([FromBody] LoginUserApiRequest login)
     {
@@ -105,7 +104,6 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <returns></returns>
     [HttpGet("confirm-email", Name = "ConfirmEmailAsync")]
     [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
     public async Task<ActionResult> ConfirmEmailAsync([FromQuery][Required] Guid userId, [FromQuery][Required] string code, [FromQuery] string? changedEmail)
     {
@@ -132,7 +130,6 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <returns></returns>
     [HttpPost("resend-confirmation-email", Name = "ResendConfirmationEmailAsync")]
     [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
     public async Task<ActionResult> ResendConfirmationEmailAsync([FromBody][Required] ResendConfirmationEmailApiRequest resendRequest)
     {
@@ -178,7 +175,6 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <returns></returns>
     [HttpGet("my/basic-info", Name = "GetMyBasicInfoAsync")]
     [ProducesResponseType<ActionResult<GetMyBasicInfoResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> GetMyBasicInfoAsync()
     {
         QueryResponse<BonesUser> user = await Sender.Send(new GetUserByClaimsPrincipalRequest(User));

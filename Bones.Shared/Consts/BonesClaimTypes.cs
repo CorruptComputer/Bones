@@ -3,7 +3,7 @@ namespace Bones.Shared.Consts;
 /// <summary>
 ///   All the claim types used in the app
 /// </summary>
-public static class ClaimTypes
+public static class BonesClaimTypes
 {
     /// <summary>
     ///   Claim types for users
@@ -42,6 +42,11 @@ public static class ClaimTypes
         /// </summary>
         public static class Organization
         {
+            /// <summary>
+            ///   Full administrator privileges over the organization, they can access everything within.
+            /// </summary>
+            public const string ORGANIZATION_ADMINISTRATOR = "OrganizationAdministrator";
+            
             /// <summary>
             ///   Gets the claim type for permissions that should apply organization wide
             /// </summary>

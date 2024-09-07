@@ -1,4 +1,3 @@
-using Bones.Database.Models;
 using Bones.Database.Operations.Setup.SetupDb;
 using Microsoft.Extensions.DependencyInjection;
 

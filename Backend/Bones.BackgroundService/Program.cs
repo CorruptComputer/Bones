@@ -9,8 +9,15 @@ using Bones.Shared.Backend.Extensions;
 
 namespace Bones.BackgroundService;
 
+/// <summary>
+///   Idk its a thing and it does stuff
+/// </summary>
 public static class Program
 {
+    /// <summary>
+    ///   Gets it going
+    /// </summary>
+    /// <param name="args"></param>
     public static async Task Main(string[] args)
     {
         using CancellationTokenSource cts = new();

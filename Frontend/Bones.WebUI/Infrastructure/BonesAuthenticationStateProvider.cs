@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Bones.Api.Client;
+using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components.Authorization;
-using ClaimTypes = Bones.Shared.Consts.ClaimTypes;
 
 namespace Bones.WebUI.Infrastructure;
 
@@ -17,8 +17,8 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         }
 
         Claim[] claims = [
-            new(ClaimTypes.User.EMAIL, currentUser.Email),
-            new(ClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
+            new(BonesClaimTypes.User.EMAIL, currentUser.Email),
+            new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
         ];
 
         AuthenticationState? authenticationState = new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));

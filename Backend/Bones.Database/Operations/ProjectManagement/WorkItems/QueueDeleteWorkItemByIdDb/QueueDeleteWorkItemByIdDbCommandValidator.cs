@@ -2,7 +2,7 @@ namespace Bones.Database.Operations.ProjectManagement.WorkItems.QueueDeleteWorkI
 
 internal class QueueDeleteWorkItemByIdDbCommandValidator : AbstractValidator<QueueDeleteWorkItemByIdDbCommand>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<QueueDeleteWorkItemByIdDbCommand> context, CancellationToken cancellation = new CancellationToken())
+    public override Task<ValidationResult> ValidateAsync(ValidationContext<QueueDeleteWorkItemByIdDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.WorkItemId).NotNull().NotEqual(Guid.Empty);
         
