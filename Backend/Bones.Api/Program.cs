@@ -4,10 +4,8 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Api.Models;
 using Bones.Backend;
-using Bones.Backend.Extensions;
 using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Extensions;
 using Bones.Shared.Backend.Extensions;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
@@ -93,7 +91,6 @@ public static class Program
                 .ReadFrom.Services(serviceProvider)
         );
 
-        builder.Services.RegisterBackgroundTasks();
         builder.Services.AddDbContext<BonesDbContext>();
 
         return builder.Build();
@@ -101,7 +98,7 @@ public static class Program
 
     private static void RunBonesApi(this WebApplication app)
     {
-        app.Services.MigrateBonesDb();
+        
 
         using IServiceScope scope = app.Services.CreateScope();
         ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();

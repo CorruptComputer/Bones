@@ -1,4 +1,4 @@
-using Bones.Database.Operations.ProjectManagement.WorkItems;
+using Bones.Database.Operations.ProjectManagement.WorkItems.CreateWorkItemDb;
 
 namespace Bones.Backend.Features.ProjectManagement.Items;
 
@@ -39,6 +39,6 @@ public class CreateItem(ISender sender) : IRequestHandler<CreateItem.Command, Co
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new CreateItemDb.Command(request.Name, request.QueueId, request.LayoutVersionId, request.Values), cancellationToken);
+        return await sender.Send(new CreateWorkItemDbHandler.Command(request.Name, request.QueueId, request.LayoutVersionId, request.Values), cancellationToken);
     }
 }

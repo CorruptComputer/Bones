@@ -1,53 +1,21 @@
-using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.ProjectManagement.WorkItemLayouts;
 
 namespace Bones.Database.Operations.ProjectManagement.WorkItemLayouts.UpdateWorkItemLayoutByIdDb;
 
-public sealed class UpdateWorkItemLayoutByIdDbHandler(BonesDbContext dbContext) : IRequestHandler<UpdateWorkItemLayoutByIdDbHandler.Command, CommandResponse>
+internal sealed class UpdateWorkItemLayoutByIdDbHandler(BonesDbContext dbContext) : IRequestHandler<UpdateWorkItemLayoutByIdDbCommand, CommandResponse>
 {
-    /// <summary>
-    ///     DB Command for updating a Layout.
-    /// </summary>
-    /// <param name="LayoutId">Internal ID of the layout</param>
-    /// <param name="Name">The new name of the layout</param>
-    public record Command(Guid LayoutId, string Name) : IValidatableRequest<CommandResponse>
-    {
-        /// <inheritdoc />
-        public (bool valid, string? invalidReason) IsRequestValid()
-        {
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                return (false, "");
-            }
-
-            if (LayoutId == Guid.Empty)
-            {
-                return (false, "");
-            }
-
-            return (true, null);
-        }
-    }
-
-    /// <inheritdoc />
-    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(UpdateWorkItemLayoutByIdDbCommand request, CancellationToken cancellationToken)
     {
         WorkItemLayout? layout = await dbContext.WorkItemLayouts.FirstOrDefaultAsync(p => p.Id == request.LayoutId, cancellationToken);
         if (layout == null)
         {
-            return new()
-            {
-                Success = false,
-                FailureReason = "Invalid LayoutId."
-            };
+            return CommandResponse.Fail("Invalid LayoutId.");
         }
 
-        layout.Name = request.Name;
+        layout.Name = request.NewName;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new()
-        {
-            Success = true
-        };
+        return CommandResponse.Pass();
     }
 }

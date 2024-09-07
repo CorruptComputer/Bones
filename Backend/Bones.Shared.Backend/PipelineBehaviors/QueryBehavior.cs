@@ -14,10 +14,6 @@ public class QueryBehavior<TRequest, TValue> : PipelineBehaviorBase<TRequest, Qu
     /// <inheritdoc />
     protected override QueryResponse<TValue> GetFailedResponse(string failReason)
     {
-        return new()
-        {
-            Success = false,
-            FailureReason = failReason
-        };
+        return QueryResponse<TValue>.Fail(failReason);
     }
 }

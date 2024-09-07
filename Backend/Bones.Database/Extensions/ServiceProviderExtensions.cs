@@ -10,23 +10,14 @@ namespace Bones.Database.Extensions;
 public static class ServiceProviderExtensions
 {
     /// <summary>
-    ///     Migrates the DB up to the latest version
+    ///     Sets up the database, migrating if needed and setting up initial settings
     /// </summary>
     /// <param name="serviceProvider"></param>
-    public static void MigrateBonesDb(this IServiceProvider serviceProvider)
+    /// <param name="cancellationToken"></param>
+    public static async Task SetupDatabase(this IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {
         using IServiceScope scope = serviceProvider.CreateScope();
-        DatabaseConfiguration config = scope.ServiceProvider.GetRequiredService<DatabaseConfiguration>();
-        if (!(config.UseInMemoryDb ?? false))
-        {
-            BonesDbContext db = scope.ServiceProvider.GetRequiredService<BonesDbContext>();
-            if (db.Database.GetPendingMigrations().Any())
-            {
-                db.Database.Migrate();
-            }
-        }
-
-        ISender sender = serviceProvider.GetRequiredService<ISender>();
-        sender.Send(new SetupDbCommand()).Wait();
+        ISender sender = scope.ServiceProvider.GetRequiredService<ISender>();
+        await sender.Send(new SetupDbCommand(), cancellationToken);
     }
 }

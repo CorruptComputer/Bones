@@ -12,10 +12,6 @@ internal sealed class GetUserByClaimsPrincipalHandler(UserManager<BonesUser> use
             return await userManager.GetUserAsync(request.ClaimsPrincipal);
         }
 
-        return new()
-        {
-            Success = false,
-            FailureReason = "Claims Principal was null"
-        };
+        return QueryResponse<BonesUser>.Fail("Claims Principal was null");
     }
 }

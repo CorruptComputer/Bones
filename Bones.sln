@@ -5,7 +5,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		LICENSE = LICENSE
 		.gitignore = .gitignore
-		cloudflare-build.sh = cloudflare-build.sh
 	EndProjectSection
 EndProject
 
@@ -46,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client", "Fronten
 	ProjectSection(ProjectDependencies) = postProject
 		{646BF7B1-446B-47A0-A156-13363CD2E957} = {646BF7B1-446B-47A0-A156-13363CD2E957}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.BackgroundService", "Backend\Bones.BackgroundService\Bones.BackgroundService.csproj", "{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}"
 EndProject
 
 Global
@@ -102,6 +103,10 @@ Global
 		{12C73BFE-490F-48E3-B409-0092CD242612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12C73BFE-490F-48E3-B409-0092CD242612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12C73BFE-490F-48E3-B409-0092CD242612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{646BF7B1-446B-47A0-A156-13363CD2E957} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
@@ -116,5 +121,6 @@ Global
 		{C4168260-D19D-4919-B100-CCA86C9A6B68} = {AFD22481-8267-4E6C-89D9-AB37A3FE020C}
 		{5311F839-CD12-4BBD-B233-725F3A3D8184} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
 		{12C73BFE-490F-48E3-B409-0092CD242612} = {2BF99936-90E9-4855-869C-F31C3C694647}
+		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
 	EndGlobalSection
 EndGlobal

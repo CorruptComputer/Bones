@@ -33,7 +33,7 @@ public sealed record CommandResponse
     /// <returns></returns>
     public static CommandResponse Pass(Guid? id = null) => new()
     {
-        Success = false,
+        Success = true,
         Id = id
     };
 

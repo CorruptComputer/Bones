@@ -11,6 +11,8 @@ namespace Bones.Shared.Backend.Models;
 [JsonSerializable(typeof(QueryResponse<>))]
 public sealed record QueryResponse<TResult>
 {
+    private QueryResponse() { }
+
     /// <summary>
     ///     Was the command successful?
     /// </summary>
@@ -25,6 +27,28 @@ public sealed record QueryResponse<TResult>
     ///     If the command failed, why?
     /// </summary>
     public string? FailureReason { get; init; } = null;
+    
+    /// <summary>
+    ///   Creates a successful response, with the required result
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public static QueryResponse<TResult> Pass(TResult result) => new()
+    {
+        Success = true,
+        Result = result
+    };
+
+    /// <summary>
+    ///   Creates a failure response, optionally with the reason why it failed.
+    /// </summary>
+    /// <param name="failureReason"></param>
+    /// <returns></returns>
+    public static QueryResponse<TResult> Fail(string? failureReason = null) => new()
+    {
+        Success = false,
+        FailureReason = failureReason
+    };
 
     /// <summary>
     ///     Translates a QueryResponse&lt;TResult&gt; into a TResult?
