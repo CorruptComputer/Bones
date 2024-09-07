@@ -9,4 +9,4 @@ namespace Bones.Backend.Features.AccountManagement.QueueForgotPasswordEmail;
 /// <param name="User"></param>
 /// <param name="Email"></param>
 /// <param name="Code"></param>
-public sealed record QueueForgotPasswordRequest([Required] BonesUser User, [Required] string Email, [Required] string Code) : IRequest<CommandResponse>;
+public sealed record QueueForgotPasswordEmailCommand([Required] BonesUser User, [Required] string Email, [Required] string Code) : IRequest<CommandResponse>;

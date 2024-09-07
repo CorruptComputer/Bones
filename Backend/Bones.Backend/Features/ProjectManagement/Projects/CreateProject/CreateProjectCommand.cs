@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using Bones.Database.DbSets.AccountManagement;
 
 namespace Bones.Backend.Features.ProjectManagement.Projects.CreateProject;
 
@@ -6,4 +6,6 @@ namespace Bones.Backend.Features.ProjectManagement.Projects.CreateProject;
 ///     DB Command for creating a Project.
 /// </summary>
 /// <param name="Name">Name of the project</param>
-public record CreateProjectCommand(string Name, ClaimsPrincipal RequestingUser, Guid? OrganizationId = null) : IRequest<CommandResponse>;
+/// <param name="RequestingUser">The user requesting this project be created</param>
+/// <param name="OrganizationId">Optionally, the organization this project should belong to.</param>
+public record CreateProjectCommand(string Name, BonesUser RequestingUser, Guid? OrganizationId = null) : IRequest<CommandResponse>;

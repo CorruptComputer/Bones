@@ -13,7 +13,7 @@ internal sealed class UserHasProjectPermissionHandler(UserManager<BonesUser> use
 {
     public async Task<QueryResponse<bool>> Handle(UserHasProjectPermissionQuery request, CancellationToken cancellationToken)
     {
-        Project? project = await sender.Send(new GetProjectByIdDbCommand(request.ProjectId), cancellationToken);
+        Project? project = await sender.Send(new GetProjectByIdDbQuery(request.ProjectId), cancellationToken);
 
         if (project is null)
         {

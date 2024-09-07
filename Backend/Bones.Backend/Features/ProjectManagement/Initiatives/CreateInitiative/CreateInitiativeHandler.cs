@@ -9,7 +9,7 @@ internal sealed class CreateInitiativeHandler(ISender sender) : IRequestHandler<
     public async Task<CommandResponse> Handle(CreateInitiativeCommand request, CancellationToken cancellationToken)
     {
         // TODO: Validate user permission here
-        BonesUser? user = await sender.Send(new GetUserByClaimsPrincipalRequest(request.RequestingUser), cancellationToken);
+        BonesUser? user = await sender.Send(new GetUserByClaimsPrincipalQuery(request.RequestingUser), cancellationToken);
         
         if (user is null)
         {

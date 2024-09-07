@@ -23,7 +23,7 @@ public sealed partial class ProjectManagementController
     [ProducesResponseType<ActionResult<string>>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateMyProjectAsync([FromBody] CreateMyProjectRequest request)
     {
-        CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, User));
+        CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, await GetCurrentBonesUserAsync()));
         if (!response.Success)
         {
             return BadRequest(response.FailureReason);

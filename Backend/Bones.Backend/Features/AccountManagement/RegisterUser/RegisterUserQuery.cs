@@ -7,4 +7,4 @@ namespace Bones.Backend.Features.AccountManagement.RegisterUser;
 /// </summary>
 /// <param name="Email">Their email address</param>
 /// <param name="Password">Their desired password</param>
-public sealed record RegisterUserRequest(string Email, string Password) : IRequest<QueryResponse<IdentityResult>>;
+public sealed record RegisterUserQuery(string Email, string Password) : IRequest<QueryResponse<IdentityResult>>;

@@ -4,15 +4,15 @@ using FluentValidation.Results;
 
 namespace Bones.Backend.Features.AccountManagement.RegisterUser;
 
-internal class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequest>
+internal class RegisterUserQueryValidator : AbstractValidator<RegisterUserQuery>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<RegisterUserRequest> context, CancellationToken cancellation = default)
+    public override Task<ValidationResult> ValidateAsync(ValidationContext<RegisterUserQuery> context, CancellationToken cancellation = default)
     {
         RuleFor(request => request.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
         {
             if (!await email.IsValidEmailAsync(cancel))
             {
-                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserRequest.Email), "Email domain is invalid"));
+                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Email), "Email domain is invalid"));
             }
         });
         
@@ -20,22 +20,22 @@ internal class RegisterUserRequestValidator : AbstractValidator<RegisterUserRequ
         {
             if (!StandardRegexes.PasswordContainsUpper().IsMatch(password))
             {
-                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserRequest.Password), "Password must contain at least one capital letter"));
+                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Password), "Password must contain at least one capital letter"));
             }
 
             if (!StandardRegexes.PasswordContainsLower().IsMatch(password))
             {
-                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserRequest.Password), "Password must contain at least one lowercase letter"));
+                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Password), "Password must contain at least one lowercase letter"));
             }
 
             if (!StandardRegexes.PasswordContainsNumber().IsMatch(password))
             {
-                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserRequest.Password), "Password must contain at least one digit"));
+                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Password), "Password must contain at least one digit"));
             }
 
             if (!StandardRegexes.PasswordContainsSpecial().IsMatch(password))
             {
-                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserRequest.Password), "Password must contain at least one special character"));
+                ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Password), "Password must contain at least one special character"));
             }
         });
         

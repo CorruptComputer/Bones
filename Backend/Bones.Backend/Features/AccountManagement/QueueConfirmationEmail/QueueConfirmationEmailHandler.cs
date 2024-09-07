@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 
-internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager, BackendConfiguration config) : IRequestHandler<QueueConfirmationEmailRequest, CommandResponse>
+internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager, BackendConfiguration config) : IRequestHandler<QueueConfirmationEmailCommand, CommandResponse>
 {
-    public async Task<CommandResponse> Handle(QueueConfirmationEmailRequest request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(QueueConfirmationEmailCommand request, CancellationToken cancellationToken)
     {
         if (config.WebUIBaseUrl is null)
         {

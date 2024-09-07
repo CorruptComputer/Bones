@@ -1,8 +1,6 @@
-using Bones.Api.Models;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Handlers;
 

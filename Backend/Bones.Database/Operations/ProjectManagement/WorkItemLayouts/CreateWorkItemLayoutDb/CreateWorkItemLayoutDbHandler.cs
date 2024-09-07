@@ -9,7 +9,7 @@ internal sealed class CreateWorkItemLayoutDbHandler(BonesDbContext dbContext, IS
 {
     public async Task<CommandResponse> Handle(CreateWorkItemLayoutDbCommand request, CancellationToken cancellationToken)
     {
-        Project? project = await sender.Send(new GetProjectByIdDbCommand(request.ProjectId), cancellationToken);
+        Project? project = await sender.Send(new GetProjectByIdDbQuery(request.ProjectId), cancellationToken);
 
         if (project == null)
         {

@@ -2,13 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
 using Bones.Backend.Features.AccountManagement.ConfirmEmail;
 using Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
+using Bones.Backend.Features.AccountManagement.QueueResendConfirmationEmail;
 using Bones.Backend.Features.AccountManagement.RegisterUser;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ResendConfirmationEmailRequest = Bones.Backend.Features.AccountManagement.ResendConfirmationEmail.ResendConfirmationEmailRequest;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Bones.Api.Controllers;
@@ -42,7 +42,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     [AllowAnonymous]
     public async Task<ActionResult> RegisterAsync([FromBody] RegisterUserApiRequest registration)
     {
-        QueryResponse<IdentityResult> result = await Sender.Send(new RegisterUserRequest(registration.Email, registration.Password));
+        QueryResponse<IdentityResult> result = await Sender.Send(new RegisterUserQuery(registration.Email, registration.Password));
 
         if (!result.Success || !(result.Result?.Succeeded ?? false))
         {
@@ -107,7 +107,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     [AllowAnonymous]
     public async Task<ActionResult> ConfirmEmailAsync([FromQuery][Required] Guid userId, [FromQuery][Required] string code, [FromQuery] string? changedEmail)
     {
-        QueryResponse<IdentityResult> result = await Sender.Send(new ConfirmEmailRequest(userId, code, changedEmail));
+        QueryResponse<IdentityResult> result = await Sender.Send(new ConfirmEmailQuery(userId, code, changedEmail));
 
         if (!result.Success || !(result.Result?.Succeeded ?? false))
         {
@@ -133,7 +133,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     [AllowAnonymous]
     public async Task<ActionResult> ResendConfirmationEmailAsync([FromBody][Required] ResendConfirmationEmailApiRequest resendRequest)
     {
-        CommandResponse result = await Sender.Send(new ResendConfirmationEmailRequest(resendRequest.Email));
+        CommandResponse result = await Sender.Send(new QueueResendConfirmationEmailCommand(resendRequest.Email));
 
         if (!result.Success)
         {
@@ -177,7 +177,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     [ProducesResponseType<ActionResult<GetMyBasicInfoResponse>>(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetMyBasicInfoAsync()
     {
-        QueryResponse<BonesUser> user = await Sender.Send(new GetUserByClaimsPrincipalRequest(User));
+        QueryResponse<BonesUser> user = await Sender.Send(new GetUserByClaimsPrincipalQuery(User));
 
         if (!user.Success || user.Result == null)
         {

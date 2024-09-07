@@ -8,4 +8,4 @@ namespace Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 /// <param name="User"></param>
 /// <param name="Email"></param>
 /// <param name="IsChange"></param>
-public sealed record QueueConfirmationEmailRequest(BonesUser User, string Email, bool IsChange = false) : IRequest<CommandResponse>;
+public sealed record QueueConfirmationEmailCommand(BonesUser User, string Email, bool IsChange = false) : IRequest<CommandResponse>;

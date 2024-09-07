@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
 
-internal sealed class GetUserByClaimsPrincipalHandler(UserManager<BonesUser> userManager) : IRequestHandler<GetUserByClaimsPrincipalRequest, QueryResponse<BonesUser>>
+internal sealed class GetUserByClaimsPrincipalHandler(UserManager<BonesUser> userManager) : IRequestHandler<GetUserByClaimsPrincipalQuery, QueryResponse<BonesUser>>
 {
-    public async Task<QueryResponse<BonesUser>> Handle(GetUserByClaimsPrincipalRequest request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<BonesUser>> Handle(GetUserByClaimsPrincipalQuery request, CancellationToken cancellationToken)
     {
         if (request.ClaimsPrincipal != null)
         {

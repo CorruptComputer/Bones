@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.ConfirmEmail;
 
-internal class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmEmailRequest, QueryResponse<IdentityResult>>
+internal class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmEmailQuery, QueryResponse<IdentityResult>>
 {
-    public async Task<QueryResponse<IdentityResult>> Handle(ConfirmEmailRequest request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<IdentityResult>> Handle(ConfirmEmailQuery request, CancellationToken cancellationToken)
     {
         if (await userManager.FindByIdAsync(request.UserId.ToString()) is not { } user)
         {

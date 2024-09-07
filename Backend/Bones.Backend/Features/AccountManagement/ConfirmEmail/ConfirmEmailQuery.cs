@@ -8,4 +8,4 @@ namespace Bones.Backend.Features.AccountManagement.ConfirmEmail;
 /// <param name="UserId"></param>
 /// <param name="Code"></param>
 /// <param name="ChangedEmail"></param>
-public sealed record ConfirmEmailRequest(Guid UserId, string Code, string? ChangedEmail) : IRequest<QueryResponse<IdentityResult>>;
+public sealed record ConfirmEmailQuery(Guid UserId, string Code, string? ChangedEmail) : IRequest<QueryResponse<IdentityResult>>;

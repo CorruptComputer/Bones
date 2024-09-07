@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.RegisterUser;
 
-internal class RegisterUserHandler(UserManager<BonesUser> userManager, IUserEmailStore<BonesUser> userStore, ISender sender) : IRequestHandler<RegisterUserRequest, QueryResponse<IdentityResult>>
+internal class RegisterUserHandler(UserManager<BonesUser> userManager, IUserEmailStore<BonesUser> userStore, ISender sender) : IRequestHandler<RegisterUserQuery, QueryResponse<IdentityResult>>
 {
-    public async Task<QueryResponse<IdentityResult>> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<IdentityResult>> Handle(RegisterUserQuery request, CancellationToken cancellationToken)
     {
         if (!userManager.SupportsUserEmail)
         {
             throw new BonesException($"{nameof(RegisterUserHandler)} requires a user store with email support.");
         }
 
-        if (string.IsNullOrEmpty(request.Email) || !await request.Email.IsValidEmailAsync())
+        if (string.IsNullOrEmpty(request.Email) || !await request.Email.IsValidEmailAsync(cancellationToken))
         {
             return IdentityResult.Failed(userManager.ErrorDescriber.InvalidEmail(request.Email));
         }
@@ -29,7 +29,7 @@ internal class RegisterUserHandler(UserManager<BonesUser> userManager, IUserEmai
 
         if (result.Succeeded)
         {
-            await sender.Send(new QueueConfirmationEmailRequest(user, request.Email), cancellationToken);
+            await sender.Send(new QueueConfirmationEmailCommand(user, request.Email), cancellationToken);
         }
 
         return result;

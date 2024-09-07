@@ -2,7 +2,6 @@ using Bones.Api.Models;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Validations.Rules;
 
 namespace Bones.Api.Controllers;
 
