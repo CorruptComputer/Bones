@@ -1,4 +1,4 @@
-# Bones [![.NET Build & Test](https://github.com/CorruptComputer/Bones/actions/workflows/dotnetcore.yml/badge.svg?branch=develop)](https://github.com/CorruptComputer/Bones/actions/workflows/dotnetcore.yml)
+# Bones [![.NET Build & Test](https://github.com/CorruptComputer/Bones/actions/workflows/build-and-test.yml/badge.svg?branch=develop)](https://github.com/CorruptComputer/Bones/actions/workflows/build-and-test.yml)
 This is just something I'm working on in my spare time. 
 I will not be accepting any public pull requests to here.
 
