@@ -1,0 +1,51 @@
+name: Build Server Artifacts
+
+on:
+  push:
+    branches:
+      - 'develop'
+  pull_request:
+    branches:
+      - '*'
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  server:
+    name: Publish Client
+    runs-on: ubuntu-latest
+    env:
+      DatabaseConfiguration__UseInMemoryDb: true
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Tools
+        run: |
+          cd Backend/Bones.Api
+          dotnet tool restore
+          cd ../..
+
+      - name: Publish Client and Server
+        run: |
+          dotnet publish Backend/Bones.Api/Bones.Api.csproj --configuration Release --runtime linux-x64 --self-contained true --property PublishDir=~/publish-api
+          dotnet publish Backend/Bones.BackgroundService/Bones.BackgroundService.csproj --configuration Release --runtime linux-x64 --self-contained true --property PublishDir=~/publish-background-service
+
+      - name: Upload API Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-linux-x64
+          path: ~/publish-api
+
+      - name: Upload Background Service Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: background-service-linux-x64
+          path: ~/publish-background-service

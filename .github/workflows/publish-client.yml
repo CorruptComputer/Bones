@@ -1,0 +1,44 @@
+name: Build Client Artifact
+
+on:
+  push:
+    branches:
+      - 'develop'
+  pull_request:
+    branches:
+      - '*'
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  client:
+    name: Publish Client
+    runs-on: ubuntu-latest
+    env:
+      DatabaseConfiguration__UseInMemoryDb: true
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Tools
+        run: |
+          cd Frontend/Bones.Api.Client
+          dotnet tool restore
+          cd ../..
+
+      - name: Publish
+        run: |
+          dotnet publish Frontend/Bones.WebUI/Bones.WebUI.csproj --configuration Release --property PublishDir=~/publish
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webui-wasm-client
+          path: ~/publish

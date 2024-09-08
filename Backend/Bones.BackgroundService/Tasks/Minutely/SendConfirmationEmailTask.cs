@@ -1,6 +1,6 @@
 namespace Bones.BackgroundService.Tasks.Minutely;
 
-internal class SendConfirmationEmailTask(ILogger<SendConfirmationEmailTask> logger, ISender sender) : MinutelyTaskBase<SendConfirmationEmailTask>(logger, sender)
+internal class SendConfirmationEmailTask(ISender sender) : MinutelyTaskBase(sender)
 {
     protected override Task<bool> ShouldTaskRunAsync(CancellationToken cancellationToken)
     {
@@ -11,7 +11,7 @@ internal class SendConfirmationEmailTask(ILogger<SendConfirmationEmailTask> logg
 
         // TODO: Check if there are any emails in the queue
 
-        return Task.FromResult(false);
+        return Task.FromResult(true);
     }
 
     protected override Task RunTaskAsync(CancellationToken cancellationToken)

@@ -27,11 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\" />
-      <Folder Include="Infrastructure\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Bones.Testing.Shared.Backend\Bones.Testing.Shared.Backend.csproj" />
     </ItemGroup>
 

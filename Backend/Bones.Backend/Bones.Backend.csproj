@@ -25,6 +25,12 @@
 
     <ItemGroup>
       <Folder Include="Features\ProjectManagement\Initiatives\" />
+      <Folder Include="Features\ProjectManagement\Projects\DeleteProjectById\" />
+      <Folder Include="Features\ProjectManagement\Projects\GetProjectById\" />
+      <Folder Include="Features\ProjectManagement\Projects\GetProjectsByOwner\" />
+      <Folder Include="Features\ProjectManagement\Projects\UpdateProject\" />
+      <Folder Include="Features\ProjectManagement\Tags\" />
+      <Folder Include="Features\ProjectManagement\WorkItemFields\" />
       <Folder Include="Managers\" />
     </ItemGroup>
 

@@ -35,7 +35,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
     private readonly bool _debugLog = false;
 #endif
 
-    private Stopwatch? _stopwatch = null;
+    private Stopwatch? _stopwatch;
 
     /// <summary>
     ///   This is called before MediatR sends the request to its handler, we pass the request along with next()

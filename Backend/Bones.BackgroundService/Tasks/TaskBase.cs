@@ -1,11 +1,15 @@
+using Serilog.Events;
+
 namespace Bones.BackgroundService.Tasks;
 
-internal abstract class TaskBase<T>(ILogger<T> logger, ISender sender) : Microsoft.Extensions.Hosting.BackgroundService
+internal abstract class TaskBase(ISender sender) : Microsoft.Extensions.Hosting.BackgroundService
 {
     protected readonly ISender Sender = sender;
-    protected abstract TimeSpan? Interval { get; }
+    protected abstract TimeSpan Interval { get; }
 
     protected bool IsEnabled { get; set; } = true;
+    
+    protected abstract bool IsStartupOnlyTask { get; set; }
 
     protected abstract Task<bool> ShouldTaskRunAsync(CancellationToken cancellationToken);
 
@@ -13,7 +17,7 @@ internal abstract class TaskBase<T>(ILogger<T> logger, ISender sender) : Microso
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        using PeriodicTimer timer = new(Interval ?? TimeSpan.MaxValue);
+        using PeriodicTimer timer = new(Interval);
         while (!cancellationToken.IsCancellationRequested
                && await timer.WaitForNextTickAsync(cancellationToken))
         {
@@ -24,34 +28,33 @@ internal abstract class TaskBase<T>(ILogger<T> logger, ISender sender) : Microso
 
             try
             {
-                if (logger.IsEnabled(LogLevel.Information))
+                if (Log.IsEnabled(LogEventLevel.Information))
                 {
-                    logger.LogInformation("{Name} started at: {Time}", typeof(T).Name, DateTimeOffset.Now);
+                    Log.Information("{Name} started at: {Time}", GetType().Name, DateTimeOffset.Now);
                 }
 
                 await RunTaskAsync(cancellationToken);
 
-                if (logger.IsEnabled(LogLevel.Information))
+                if (Log.IsEnabled(LogEventLevel.Information))
                 {
-                    logger.LogInformation("{Name} finished at: {Time}", typeof(T).Name, DateTimeOffset.Now);
+                    Log.Information("{Name} finished at: {Time}", GetType().Name, DateTimeOffset.Now);
                 }
             }
             catch (Exception ex)
             {
                 // TODO: add to TaskErrors table
                 IsEnabled = false;
-                logger.LogError(ex,
+                Log.Error(ex,
                     "{Time} | {Name} has unhandled exception: {ExceptionMessage}\n{ExceptionStackTrace}",
-                    DateTimeOffset.Now, typeof(T).Name, ex.Message, ex.StackTrace);
+                    DateTimeOffset.Now, GetType().Name, ex.Message, ex.StackTrace);
             }
             finally
             {
-                // Startup only task
-                if (Interval is null)
+                if (IsStartupOnlyTask)
                 {
                     IsEnabled = false;
 
-                    // Lets also cancel it to clear this from memory
+                    // Lets also cancel it
                     await CancellationTokenSource.CreateLinkedTokenSource(cancellationToken).CancelAsync();
                 }
             }
