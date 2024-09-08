@@ -14,7 +14,7 @@ env:
 
 jobs:
   server:
-    name: Publish Client
+    name: Publish Server
     runs-on: ubuntu-latest
     env:
       DatabaseConfiguration__UseInMemoryDb: true
