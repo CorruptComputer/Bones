@@ -15,12 +15,12 @@ public partial class ConfirmEmailPage
 
     public enum State
     {
-        Confirming,
+        Unknown,
         Success,
         Failure
     }
 
-    public State CurrentState { get; set; } = State.Confirming;
+    public State CurrentState { get; set; } = State.Unknown;
 
     protected override async Task OnInitializedAsync()
     {

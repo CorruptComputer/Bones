@@ -1,18 +1,20 @@
 using Bones.Backend.Models;
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueue;
 using Bones.Shared.Consts;
+using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
 
-internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager, BackendConfiguration config) : IRequestHandler<QueueConfirmationEmailCommand, CommandResponse>
+internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager, BackendConfiguration config, ISender sender) : IRequestHandler<QueueConfirmationEmailCommand, CommandResponse>
 {
     public async Task<CommandResponse> Handle(QueueConfirmationEmailCommand request, CancellationToken cancellationToken)
     {
         if (config.WebUIBaseUrl is null)
         {
-            throw new ApplicationException("BackendConfiguration:WebUIBaseUrl is null in appsettings");
+            throw new BonesException("BackendConfiguration:WebUIBaseUrl is null in appsettings");
         }
 
         string code = request.IsChange
@@ -34,9 +36,7 @@ internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager,
         {
             builder.Query += $"&changedEmail={request.Email}";
         }
-
-        // TODO: Add to DB here
-
-        return CommandResponse.Pass();
+        
+        return await sender.Send(new AddConfirmationEmailToQueueDbCommand(request.Email, builder.ToString()), cancellationToken);
     }
 }

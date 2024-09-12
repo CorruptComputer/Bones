@@ -4,4 +4,4 @@ namespace Bones.Shared.Exceptions;
 ///     Exceptions from the Bones application.
 /// </summary>
 /// <param name="message">What went wrong.</param>
-public class BonesException(string message) : ApplicationException(message);
+public class BonesException(string message) : Exception(message);

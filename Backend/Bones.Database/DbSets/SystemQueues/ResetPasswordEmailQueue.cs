@@ -1,4 +1,4 @@
-namespace Bones.Database.DbSets.System;
+namespace Bones.Database.DbSets.SystemQueues;
 
 /// <summary>
 /// 

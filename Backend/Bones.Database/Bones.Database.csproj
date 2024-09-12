@@ -40,6 +40,8 @@
       <Folder Include="Operations\ProjectManagement\WorkItemFields\CreateWorkItemFieldDb\" />
       <Folder Include="Operations\ProjectManagement\WorkItemFields\QueueDeleteWorkItemFieldByIdDb\" />
       <Folder Include="Operations\ProjectManagement\WorkItemFields\UpdateWorkItemFieldByIdDb\" />
+      <Folder Include="Operations\SystemQueues\GetConfirmationEmailsInQueueDb\" />
+      <Folder Include="Operations\SystemQueues\GetFailedConfirmationEmailsInQueueDb\" />
     </ItemGroup>
 
 </Project>

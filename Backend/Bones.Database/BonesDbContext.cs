@@ -8,6 +8,7 @@ using Bones.Database.DbSets.ProjectManagement.WorkItemFields;
 using Bones.Database.DbSets.ProjectManagement.WorkItemLayouts;
 using Bones.Database.DbSets.ProjectManagement.WorkItems;
 using Bones.Database.DbSets.System;
+using Bones.Database.DbSets.SystemQueues;
 using Bones.Database.Models;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -56,9 +57,13 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     #endregion
 
     #region System
-
-
+    // See also this.OnConfiguring(), "__EFMigrationsHistory" is here too
     internal DbSet<TaskError> TaskErrors { get; set; }
+    #endregion
+    
+    #region SystemQueues
+    internal DbSet<ConfirmationEmailDeadQueue> ConfirmationEmailDeadQueue { get; set; }
+    internal DbSet<ConfirmationEmailQueue> ConfirmationEmailQueue { get; set; }
     #endregion
 
     /// <summary>

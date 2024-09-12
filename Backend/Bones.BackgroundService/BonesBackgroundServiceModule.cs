@@ -1,5 +1,6 @@
 using Autofac;
 using Bones.Backend.Models;
+using Bones.BackgroundService.Models;
 using Bones.Shared.Backend.PipelineBehaviors;
 using Bones.Shared.Exceptions;
 using MediatR.Extensions.Autofac.DependencyInjection;
@@ -25,10 +26,10 @@ public class BonesBackgroundServiceModule(IConfiguration config) : Module
 
         builder.RegisterMediatR(mediatrConfig.Build());
 
-        BackendConfiguration? backgroundTasksConfig = config.GetSection(nameof(BackendConfiguration)).Get<BackendConfiguration>();
+        BackgroundServiceConfiguration? backgroundTasksConfig = config.GetSection(nameof(BackgroundServiceConfiguration)).Get<BackgroundServiceConfiguration>();
         if (backgroundTasksConfig is null)
         {
-            throw new BonesException($"Missing '{nameof(BackendConfiguration)}' configuration section.");
+            throw new BonesException($"Missing '{nameof(BackgroundServiceConfiguration)}' configuration section.");
         }
         builder.RegisterInstance(backgroundTasksConfig);
     }
