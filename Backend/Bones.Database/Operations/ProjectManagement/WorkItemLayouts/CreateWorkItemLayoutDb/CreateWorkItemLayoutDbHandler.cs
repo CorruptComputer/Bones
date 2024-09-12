@@ -15,13 +15,13 @@ internal sealed class CreateWorkItemLayoutDbHandler(BonesDbContext dbContext, IS
         {
             return CommandResponse.Fail("Project not found");
         }
-        
+
         WorkItemLayout workItemLayout = new()
         {
             Name = request.Name,
             Project = project
         };
-        
+
         EntityEntry<WorkItemLayout> createdLayout = await dbContext.WorkItemLayouts.AddAsync(workItemLayout, cancellationToken);
         WorkItemLayoutVersion initialVersion = new()
         {
@@ -31,7 +31,7 @@ internal sealed class CreateWorkItemLayoutDbHandler(BonesDbContext dbContext, IS
 
         createdLayout.Entity.Versions.Add(initialVersion);
         await dbContext.SaveChangesAsync(cancellationToken);
-        
+
         return CommandResponse.Pass(createdLayout.Entity.Id);
     }
 }

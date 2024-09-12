@@ -9,7 +9,7 @@ public enum OwnershipType
     ///   A user
     /// </summary>
     User = 0,
-    
+
     /// <summary>
     ///   An organization
     /// </summary>

@@ -25,7 +25,7 @@ public class ApiExceptionHandler : IExceptionHandler
             httpContext.Response.Body = await "{}".ToStreamAsync(cancellationToken);
             return true;
         }
-        
+
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         httpContext.Response.ContentType = "application/json";
         httpContext.Response.Body = await "{}".ToStreamAsync(cancellationToken);

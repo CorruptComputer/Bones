@@ -84,7 +84,7 @@ public static class Program
                     Url = new("https://github.com/CorruptComputer/Bones/blob/develop/LICENSE")
                 }
             });
-            
+
             string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });

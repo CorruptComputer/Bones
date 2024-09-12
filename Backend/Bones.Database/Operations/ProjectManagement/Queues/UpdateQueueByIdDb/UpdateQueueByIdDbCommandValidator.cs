@@ -6,7 +6,7 @@ internal class UpdateQueueByIdDbCommandValidator : AbstractValidator<UpdateQueue
     {
         RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.NewName).NotNull().NotEmpty();
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

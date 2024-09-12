@@ -26,7 +26,7 @@ internal sealed class UserHasProjectPermissionHandler(UserManager<BonesUser> use
         }
 
         bool? organizationPermission = await sender.Send(
-            new UserHasOrganizationPermissionQuery(project.OwningOrganization.Id, request.User, request.Claim), 
+            new UserHasOrganizationPermissionQuery(project.OwningOrganization.Id, request.User, request.Claim),
             cancellationToken);
 
         if (organizationPermission == true)
@@ -43,14 +43,14 @@ internal sealed class UserHasProjectPermissionHandler(UserManager<BonesUser> use
             }
 
             string neededClaim = BonesClaimTypes.Role.Organization.Project.GetProjectClaimType(project.Id, request.Claim);
-            
+
             IList<Claim> claims = await roleManager.GetClaimsAsync(role);
             if (claims.Any(claim => claim.Type == neededClaim && claim.Value == ClaimValues.YES))
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 }

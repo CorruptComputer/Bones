@@ -7,7 +7,7 @@ internal class CreateAssetLayoutDbCommandValidator : AbstractValidator<CreateAss
         RuleFor(x => x.OwnershipType).NotNull().IsInEnum();
         RuleFor(x => x.OwnerId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.Name).NotNull().NotEmpty();
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

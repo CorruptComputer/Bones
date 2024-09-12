@@ -5,7 +5,7 @@ internal sealed class QueueDeleteWorkItemLayoutByIdDbCommandHandler : AbstractVa
     public override Task<ValidationResult> ValidateAsync(ValidationContext<QueueDeleteWorkItemLayoutByIdDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.LayoutId).NotNull().NotEqual(Guid.Empty);
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

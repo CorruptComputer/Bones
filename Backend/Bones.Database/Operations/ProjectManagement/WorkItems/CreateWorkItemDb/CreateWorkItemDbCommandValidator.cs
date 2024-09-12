@@ -11,7 +11,7 @@ internal sealed class CreateWorkItemDbCommandValidator : AbstractValidator<Creat
         {
             dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
         });
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

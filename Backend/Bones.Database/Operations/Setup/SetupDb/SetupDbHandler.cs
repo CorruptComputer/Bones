@@ -11,7 +11,7 @@ internal sealed class SetupDbHandler(BonesDbContext dbContext, DatabaseConfigura
         {
             await dbContext.Database.MigrateAsync(cancellationToken);
         }
-        
+
         await sender.Send(new SetupSystemAdminUserAndRoleCommand(), cancellationToken);
 
         return CommandResponse.Pass();

@@ -6,7 +6,7 @@ internal sealed class UpdateTagByIdDbCommandValidator : AbstractValidator<Update
     {
         RuleFor(x => x.TagId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.Name).NotNull().NotEmpty();
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

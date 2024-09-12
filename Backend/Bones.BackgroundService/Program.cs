@@ -23,7 +23,7 @@ public static class Program
         using CancellationTokenSource cts = new();
         await Host.CreateApplicationBuilder(args).BuildBonesBackgroundService().RunBonesBackgroundService(cts.Token);
     }
-    
+
     private static IHost BuildBonesBackgroundService(this HostApplicationBuilder builder)
     {
         builder.Configuration.AddEnvironmentVariables();
@@ -38,7 +38,7 @@ public static class Program
         builder.Services.AddIdentityCore<BonesUser>(options => options.AddBonesIdentityOptions())
             .AddRoles<BonesRole>()
             .AddEntityFrameworkStores<BonesDbContext>();
-        
+
 
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
             loggerConfig.ReadFrom.Configuration(builder.Configuration)

@@ -60,7 +60,7 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     // See also this.OnConfiguring(), "__EFMigrationsHistory" is here too
     internal DbSet<TaskError> TaskErrors { get; set; }
     #endregion
-    
+
     #region SystemQueues
     internal DbSet<ConfirmationEmailDeadQueue> ConfirmationEmailDeadQueue { get; set; }
     internal DbSet<ConfirmationEmailQueue> ConfirmationEmailQueue { get; set; }

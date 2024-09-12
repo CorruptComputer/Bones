@@ -20,7 +20,7 @@ internal class CreateAssetLayoutDbHandler(BonesDbContext dbContext) : IRequestHa
             {
                 return CommandResponse.Fail("User does not exist");
             }
-            
+
             newLayout = new()
             {
                 Name = request.Name,
@@ -35,7 +35,7 @@ internal class CreateAssetLayoutDbHandler(BonesDbContext dbContext) : IRequestHa
             {
                 return CommandResponse.Fail("Organization does not exist");
             }
-            
+
             newLayout = new()
             {
                 Name = request.Name,
@@ -48,7 +48,7 @@ internal class CreateAssetLayoutDbHandler(BonesDbContext dbContext) : IRequestHa
         {
             return CommandResponse.Fail("Something went wrong");
         }
-        
+
         EntityEntry<AssetLayout> added = dbContext.AssetLayouts.Add(newLayout);
         // Go ahead and just create a default version 0 with no fields added
         added.Entity.Versions.Add(new()
@@ -57,7 +57,7 @@ internal class CreateAssetLayoutDbHandler(BonesDbContext dbContext) : IRequestHa
             Fields = [],
             Version = 0
         });
-        
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return CommandResponse.Pass(added.Entity.Id);

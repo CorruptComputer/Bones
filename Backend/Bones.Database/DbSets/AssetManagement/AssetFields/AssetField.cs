@@ -22,7 +22,7 @@ public class AssetField
     /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
-    
+
     /// <summary>
     ///   The type of owner this asset field has
     /// </summary>

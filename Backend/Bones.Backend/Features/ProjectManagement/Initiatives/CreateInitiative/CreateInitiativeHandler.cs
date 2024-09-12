@@ -10,10 +10,10 @@ internal sealed class CreateInitiativeHandler(ISender sender) : IRequestHandler<
     {
         // TODO: Validate user permission here
         BonesUser? user = await sender.Send(new GetUserByClaimsPrincipalQuery(request.RequestingUser), cancellationToken);
-        
+
         if (user is null)
         {
-            return CommandResponse.Fail("User could not be found");    
+            return CommandResponse.Fail("User could not be found");
         }
 
         return await sender.Send(new CreateInitiativeDbCommand(request.Name, request.ProjectId), cancellationToken);

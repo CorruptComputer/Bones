@@ -13,7 +13,7 @@ internal class SetupBackgroundTaskUserTask(ISender sender) : StartupTaskBase(sen
         // If its not set, check if any users in the DB have the configured email
         //   If none exist with that email, create the user
         //   If it exists, do nothing
-        
+
         return Task.CompletedTask;
     }
 }

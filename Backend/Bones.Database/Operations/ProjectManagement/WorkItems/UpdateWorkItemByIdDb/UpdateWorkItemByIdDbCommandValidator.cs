@@ -8,7 +8,7 @@ internal sealed class UpdateWorkItemByIdDbCommandValidator : AbstractValidator<U
         RuleFor(x => x.Name).NotNull().NotEmpty();
         RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
         RuleForEach(x => x.TagIds).NotNull().NotEqual(Guid.Empty);
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

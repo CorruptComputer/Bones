@@ -15,7 +15,7 @@ internal sealed class UserHasOrganizationPermissionQueryValidator : AbstractVali
                 ctx.AddFailure("Claim contains '|', this means you probably called GetOrganizationWideClaimType(). Don't do that, just pass in the claim name.");
             }
         });
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

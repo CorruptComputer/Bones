@@ -6,7 +6,7 @@ internal class CreateQueueDbCommandValidator : AbstractValidator<CreateQueueDbCo
     {
         RuleFor(x => x.Name).NotNull().NotEmpty();
         RuleFor(x => x.InitiativeId).NotNull().NotEqual(Guid.Empty);
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

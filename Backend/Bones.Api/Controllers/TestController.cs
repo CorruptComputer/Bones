@@ -23,7 +23,7 @@ public class TestController(ISender sender) : BonesControllerBase(sender)
     {
         throw new BonesException("Meep Merp");
     }
-    
+
     /// <summary>
     ///   Throws a ForbiddenAccessException to test the ApiExceptionHandler
     /// </summary>

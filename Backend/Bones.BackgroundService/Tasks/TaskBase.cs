@@ -8,7 +8,7 @@ internal abstract class TaskBase(ISender sender) : Microsoft.Extensions.Hosting.
     protected abstract TimeSpan Interval { get; }
 
     protected bool IsEnabled { get; set; } = true;
-    
+
     protected abstract bool IsStartupOnlyTask { get; set; }
 
     protected abstract Task<bool> ShouldTaskRunAsync(CancellationToken cancellationToken);

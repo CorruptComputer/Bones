@@ -17,10 +17,10 @@ internal sealed class UserHasOrganizationPermissionHandler(UserManager<BonesUser
         {
             return QueryResponse<bool>.Fail("Organization not found");
         }
-        
+
         string adminClaim = BonesClaimTypes.Role.Organization.GetOrganizationWideClaimType(organization.Id, BonesClaimTypes.Role.Organization.ORGANIZATION_ADMINISTRATOR);
         string neededClaim = BonesClaimTypes.Role.Organization.GetOrganizationWideClaimType(organization.Id, request.Claim);
-        
+
         foreach (string roleName in await userManager.GetRolesAsync(request.User))
         {
             BonesRole? role = await roleManager.FindByNameAsync(roleName);
@@ -28,14 +28,14 @@ internal sealed class UserHasOrganizationPermissionHandler(UserManager<BonesUser
             {
                 return QueryResponse<bool>.Fail("Role not found");
             }
-            
+
             IList<Claim> claims = await roleManager.GetClaimsAsync(role);
             if (claims.Any(claim => (claim.Type == adminClaim || claim.Type == neededClaim) && claim.Value == ClaimValues.YES))
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 }

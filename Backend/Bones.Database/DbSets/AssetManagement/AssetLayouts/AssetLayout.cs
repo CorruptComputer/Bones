@@ -22,7 +22,7 @@ public class AssetLayout
     /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
-    
+
     /// <summary>
     ///   The type of owner this asset layout has
     /// </summary>

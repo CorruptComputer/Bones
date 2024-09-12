@@ -9,12 +9,12 @@ public enum StringValueMatchingType
     ///   Exact match, case matters
     /// </summary>
     Exact,
-    
+
     /// <summary>
     ///   Case-insensitive
     /// </summary>
     CaseInvariant,
-    
+
     /// <summary>
     ///   Case-insensitive soundex matching
     /// </summary>

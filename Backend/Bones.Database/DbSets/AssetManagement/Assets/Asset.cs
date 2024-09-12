@@ -26,7 +26,7 @@ public class Asset
     /// <summary>
     ///   The type of owner this asset has
     /// </summary>
-    
+
     public OwnershipType OwnerType { get; set; }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class Asset
     ///   If the OwnerType is an Organization, the organization that owns this asset
     /// </summary>
     public BonesOrganization? OwningOrganization { get; set; }
-    
+
     /// <summary>
     ///   The versions for this asset
     /// </summary>

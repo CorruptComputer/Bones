@@ -2,5 +2,5 @@ namespace Bones.Database.Operations.ProjectManagement.Projects.UpdateProjectById
 
 internal sealed class UpdateProjectByIdDbCommandValidator : AbstractValidator<UpdateProjectByIdDbCommand>
 {
-    
+
 }

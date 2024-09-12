@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Database.Operations.Setup.SetupSystemAdminUserAndRole;
 
-internal sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager) 
+internal sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager)
     : IRequestHandler<SetupSystemAdminUserAndRoleCommand, CommandResponse>
 {
     public async Task<CommandResponse> Handle(SetupSystemAdminUserAndRoleCommand request, CancellationToken cancellationToken)

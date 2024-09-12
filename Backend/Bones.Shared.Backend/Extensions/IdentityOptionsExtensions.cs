@@ -27,7 +27,7 @@ public static class IdentityOptionsExtensions
         options.Password.RequireUppercase = true;
         options.Password.RequireNonAlphanumeric = true;
         options.Password.RequiredLength = 8;
-        
+
         return options;
     }
 }

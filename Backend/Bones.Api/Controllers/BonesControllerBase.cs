@@ -35,7 +35,7 @@ public class BonesControllerBase(ISender sender) : ControllerBase
     protected async Task<BonesUser> GetCurrentBonesUserAsync()
     {
         BonesUser? user = await Sender.Send(new GetUserByClaimsPrincipalQuery(User));
-        
+
         // I don't think this should really happen, if their claims principal was invalid the auth should have stopped the request already
         return user ?? throw new ForbiddenAccessException();
     }

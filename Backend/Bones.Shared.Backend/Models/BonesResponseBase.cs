@@ -23,7 +23,7 @@ public record BonesResponseBase
     ///   Was this command blocked due to insufficient permissions?
     /// </summary>
     public bool Forbidden { get; init; } = false;
-    
+
     /// <summary>
     ///     If the command failed, why?
     /// </summary>

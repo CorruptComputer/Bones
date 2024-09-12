@@ -2,5 +2,5 @@ namespace Bones.Backend.Features.ProjectManagement.Initiatives.QueueDeleteInitia
 
 internal sealed class QueueDeleteInitiativeByIdCommandValidator : AbstractValidator<QueueDeleteInitiativeByIdCommand>
 {
-    
+
 }

@@ -12,12 +12,12 @@ namespace Bones.Shared.Backend.Models;
 public sealed record QueryResponse<TResult> : BonesResponseBase
 {
     private QueryResponse() { }
-    
+
     /// <summary>
     ///     If the query was successful, this should have some data in it.
     /// </summary>
     public TResult? Result { get; init; }
-    
+
     /// <summary>
     ///   Creates a successful response, with the required result
     /// </summary>
@@ -39,7 +39,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
         Success = false,
         FailureReason = failureReason
     };
-    
+
     /// <summary>
     ///   Creates a forbidden response.
     /// </summary>

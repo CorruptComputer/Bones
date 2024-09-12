@@ -18,7 +18,7 @@ public class WorkItemLayout
     /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
-    
+
     /// <summary>
     ///   Parent project for this layout
     /// </summary>

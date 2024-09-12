@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
         services.RegisterStartupTasks();
         services.RegisterMinutelyTasks();
     }
-    
+
     private static void RegisterStartupTasks(this IServiceCollection services)
     {
         services.AddHostedService<SetupBackgroundTaskUserTask>();

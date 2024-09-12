@@ -6,7 +6,7 @@ internal class UpdateInitiativeByIdDbCommandValidator : AbstractValidator<Update
     {
         RuleFor(x => x.InitiativeId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.NewName).NotNull().NotEmpty();
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

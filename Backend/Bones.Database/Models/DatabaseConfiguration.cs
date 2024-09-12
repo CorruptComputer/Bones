@@ -9,7 +9,7 @@ public sealed record DatabaseConfiguration
     ///   Connection string to use with the Postgres DB
     /// </summary>
     public string? ConnectionString { get; set; }
-    
+
     /// <summary>
     ///   Use an in-memory DB instead of Postgres
     /// </summary>

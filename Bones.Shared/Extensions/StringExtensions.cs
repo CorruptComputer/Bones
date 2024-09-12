@@ -81,7 +81,7 @@ public static class StringExtensions
         }
         return Encoding.UTF8.GetString(Convert.FromBase64String(text));
     }
-    
+
     private static readonly List<char> SoundexCharsToRemove = ['Y', 'H', 'W'];
 
     private static readonly Dictionary<char, int> SoundexMappings = new()
@@ -93,7 +93,7 @@ public static class StringExtensions
         { 'M', 5 }, { 'N', 5 },
         { 'R', 6 }
     };
-    
+
     /// <summary>
     ///   Do these strings match using soundex?
     /// </summary>
@@ -158,13 +158,13 @@ public static class StringExtensions
 
         return soundex.ToString().PadRight(4, '0')[..4];
     }
-    
+
     private static bool IsVowel(char c)
     {
         const string vowels = "AEIOU";
         return vowels.Contains(char.ToUpper(c));
     }
-    
+
     /// <summary>
     ///   Converts the string into a stream
     /// </summary>

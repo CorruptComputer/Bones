@@ -5,7 +5,7 @@ internal sealed class CreateInitiativeDbCommandValidator : AbstractValidator<Cre
     public override Task<ValidationResult> ValidateAsync(ValidationContext<CreateInitiativeDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

@@ -28,7 +28,7 @@ public class Initiative
     ///   The child queues for this initiative 
     /// </summary>
     public List<Queue> Queues { get; set; } = [];
-    
+
     /// <summary>
     ///   Disables access to this Initiative and schedules deletes for everything within,
     ///   when all items using it are deleted it will be removed.

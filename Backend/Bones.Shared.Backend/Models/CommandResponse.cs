@@ -10,12 +10,12 @@ namespace Bones.Shared.Backend.Models;
 public sealed record CommandResponse : BonesResponseBase
 {
     private CommandResponse() { }
-    
+
     /// <summary>
     ///     If an ID was generated for something by the command, it can optionally be returned here.
     /// </summary>
     public Guid? Id { get; init; }
-    
+
     /// <summary>
     ///   Creates a successful response, optionally with an ID.
     /// </summary>
@@ -37,7 +37,7 @@ public sealed record CommandResponse : BonesResponseBase
         Success = false,
         FailureReason = failureReason
     };
-    
+
     /// <summary>
     ///   Creates a forbidden response.
     /// </summary>

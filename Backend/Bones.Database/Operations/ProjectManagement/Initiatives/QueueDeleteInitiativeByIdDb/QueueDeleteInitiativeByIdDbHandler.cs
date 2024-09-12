@@ -8,7 +8,7 @@ internal sealed class QueueDeleteInitiativeByIdDbHandler(BonesDbContext dbContex
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(QueueDeleteInitiativeByIdDbCommand request, CancellationToken cancellationToken)
     {
-        Initiative? initiative = await dbContext.Initiatives.Include(initiative =>  initiative.Queues).FirstOrDefaultAsync(i => i.Id == request.InitiativeId, cancellationToken);
+        Initiative? initiative = await dbContext.Initiatives.Include(initiative => initiative.Queues).FirstOrDefaultAsync(i => i.Id == request.InitiativeId, cancellationToken);
         if (initiative == null)
         {
             return CommandResponse.Fail("Invalid ProjectId.");

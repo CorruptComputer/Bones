@@ -2,5 +2,5 @@ namespace Bones.Backend.Features.ProjectManagement.WorkItems.CreateWorkItemVersi
 
 internal sealed class CreateWorkItemVersionCommandValidator : AbstractValidator<CreateWorkItemVersionCommand>
 {
-    
+
 }

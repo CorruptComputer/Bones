@@ -2,5 +2,5 @@ namespace Bones.Database.Operations.ProjectManagement.Projects.QueueDeleteProjec
 
 internal sealed class QueueDeleteProjectByIdDbCommandValidator : AbstractValidator<QueueDeleteProjectByIdDbCommand>
 {
-    
+
 }

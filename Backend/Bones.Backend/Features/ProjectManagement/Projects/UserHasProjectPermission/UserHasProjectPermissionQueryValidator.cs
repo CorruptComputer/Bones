@@ -15,7 +15,7 @@ internal sealed class UserHasProjectPermissionQueryValidator : AbstractValidator
                 ctx.AddFailure("Claim contains '|', this means you probably called GetProjectClaimType(). Don't do that, just pass in the claim name.");
             }
         });
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

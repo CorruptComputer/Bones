@@ -10,7 +10,7 @@ internal sealed class CreateWorkItemVersionDbCommandValidator : AbstractValidato
         {
             dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
         });
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

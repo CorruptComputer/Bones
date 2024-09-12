@@ -14,7 +14,7 @@ public static class BonesClaimTypes
         ///   Claim type for their email address
         /// </summary>
         public const string EMAIL = "UserEmail";
-        
+
         /// <summary>
         ///   Claim type for their display name
         /// </summary>
@@ -46,7 +46,7 @@ public static class BonesClaimTypes
             ///   Full administrator privileges over the organization, they can access everything within.
             /// </summary>
             public const string ORGANIZATION_ADMINISTRATOR = "OrganizationAdministrator";
-            
+
             /// <summary>
             ///   Gets the claim type for permissions that should apply organization wide
             /// </summary>
@@ -57,7 +57,7 @@ public static class BonesClaimTypes
             {
                 return $"O{organizationId}|{permissionName}";
             }
-            
+
             /// <summary>
             ///   Project level claim types for organization roles
             /// </summary>
@@ -67,22 +67,22 @@ public static class BonesClaimTypes
                 ///   Claim type for if a user can view a project
                 /// </summary>
                 public const string VIEW_PROJECT = "ViewProject";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can create a project
                 /// </summary>
                 public const string CREATE_PROJECT = "CreateProject";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can delete a project
                 /// </summary>
                 public const string DELETE_PROJECT = "DeleteProject";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can view the project settings
                 /// </summary>
                 public const string VIEW_PROJECT_SETTINGS = "ViewProjectSettings";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can edit the project settings
                 /// </summary>
@@ -109,28 +109,28 @@ public static class BonesClaimTypes
                 ///   Claim type for if a user can view an initiative
                 /// </summary>
                 public const string VIEW_INITIATIVE = "ViewInitiative";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can create an initiative
                 /// </summary>
                 public const string CREATE_INITIATIVE = "CreateInitive";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can delete an initiative
                 /// </summary>
                 public const string DELETE_INITIATIVE = "DeleteInitive";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can view the initiatives settings
                 /// </summary>
                 public const string VIEW_INITIATIVE_SETTINGS = "ViewInitiativeSettings";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can edit the initiatives settings
                 /// </summary>
                 public const string EDIT_INITIATIVE_SETTINGS = "EditInitiativeSettings";
 
-                
+
                 /// <summary>
                 ///   Gets the claim type for permissions that should apply to this initiative
                 /// </summary>
@@ -142,7 +142,7 @@ public static class BonesClaimTypes
                     return $"I{initiativeId}|{permissionName}";
                 }
             }
-            
+
             /// <summary>
             ///   Queue level claim types for organization roles
             /// </summary>
@@ -152,22 +152,22 @@ public static class BonesClaimTypes
                 ///   Claim type for if a user can view a queue
                 /// </summary>
                 public const string VIEW_QUEUE = "ViewQueue";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can create a queue
                 /// </summary>
                 public const string CREATE_QUEUE = "CreateQueue";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can delete a queue
                 /// </summary>
                 public const string DELETE_QUEUE = "DeleteQueue";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can view the queues settings
                 /// </summary>
                 public const string VIEW_QUEUE_SETTINGS = "ViewQueueSettings";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can edit the queues settings
                 /// </summary>
@@ -184,7 +184,7 @@ public static class BonesClaimTypes
                     return $"Q{queueId}|{permissionName}";
                 }
             }
-            
+
             /// <summary>
             ///   Work Item level claim types for organization roles
             /// </summary>
@@ -194,23 +194,23 @@ public static class BonesClaimTypes
                 ///   Claim type for if a user can view a work item
                 /// </summary>
                 public const string VIEW_WORK_ITEM = "ViewWorkItem";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can create a work item
                 /// </summary>
                 public const string CREATE_WORK_ITEM = "CreateWorkItem";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can delete a work item
                 /// </summary>
                 public const string DELETE_WORK_ITEM = "DeleteWorkItem";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can edit a work item
                 /// </summary>
                 public const string EDIT_WORK_ITEM = "EditWorkItem";
             }
-            
+
             /// <summary>
             ///   Asset level claim types for organization roles
             /// </summary>
@@ -220,17 +220,17 @@ public static class BonesClaimTypes
                 ///   Claim type for if a user can view an asset
                 /// </summary>
                 public const string VIEW_ASSET = "ViewAsset";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can create an asset
                 /// </summary>
                 public const string CREATE_ASSET = "CreateAsset";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can delete an asset
                 /// </summary>
                 public const string DELETE_ASSET = "DeleteAsset";
-                
+
                 /// <summary>
                 ///   Claim type for if a user can edit an asset
                 /// </summary>

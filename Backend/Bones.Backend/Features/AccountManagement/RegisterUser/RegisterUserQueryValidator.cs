@@ -15,7 +15,7 @@ internal class RegisterUserQueryValidator : AbstractValidator<RegisterUserQuery>
                 ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Email), "Email domain is invalid"));
             }
         });
-        
+
         RuleFor(request => request.Password).NotNull().MinimumLength(8).Custom((password, ctx) =>
         {
             if (!StandardRegexes.PasswordContainsUpper().IsMatch(password))
@@ -38,7 +38,7 @@ internal class RegisterUserQueryValidator : AbstractValidator<RegisterUserQuery>
                 ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Password), "Password must contain at least one special character"));
             }
         });
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

@@ -33,12 +33,12 @@ public class BonesOrganization
     ///   The projects associated with this organization
     /// </summary>
     public required List<Project> Projects { get; set; }
-    
+
     /// <summary>
     ///   The assets associated with this organization
     /// </summary>
     public required List<Asset> Assets { get; set; }
-    
+
     /// <summary>
     ///   The asset layouts associated with this organization
     /// </summary>

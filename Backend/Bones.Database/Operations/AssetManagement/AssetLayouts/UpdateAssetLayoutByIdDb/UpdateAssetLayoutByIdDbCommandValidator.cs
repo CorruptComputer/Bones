@@ -6,7 +6,7 @@ internal class UpdateAssetLayoutByIdDbCommandValidator : AbstractValidator<Updat
     {
         RuleFor(x => x.AssetLayoutId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.NewName).NotNull().NotEmpty();
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

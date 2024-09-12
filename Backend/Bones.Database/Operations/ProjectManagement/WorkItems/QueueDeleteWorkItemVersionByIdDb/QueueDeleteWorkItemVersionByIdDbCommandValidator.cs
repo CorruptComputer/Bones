@@ -5,7 +5,7 @@ internal class QueueDeleteWorkItemVersionByIdDbCommandValidator : AbstractValida
     public override Task<ValidationResult> ValidateAsync(ValidationContext<QueueDeleteWorkItemVersionByIdDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.WorkItemVersionId).NotNull().NotEqual(Guid.Empty);
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

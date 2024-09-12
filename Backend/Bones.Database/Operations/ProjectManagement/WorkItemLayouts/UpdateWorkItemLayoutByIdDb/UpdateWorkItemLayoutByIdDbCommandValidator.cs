@@ -6,7 +6,7 @@ internal sealed class UpdateWorkItemLayoutByIdDbCommandValidator : AbstractValid
     {
         RuleFor(x => x.LayoutId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.NewName).NotNull().NotEmpty();
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

@@ -12,7 +12,7 @@ public enum FieldType
     ///   Should just be a <see cref="string" />
     /// </summary>
     String = 0,
-    
+
     /// <summary>
     ///   Any numeric type should work for this:
     ///   <see cref="int" />,
@@ -21,17 +21,17 @@ public enum FieldType
     ///   etc.
     /// </summary>
     Number = 1,
-    
+
     /// <summary>
     ///   Should just be a <see cref="bool" />
     /// </summary>
     Boolean = 2,
-    
+
     /// <summary>
     ///   Should be either a <see cref="DateTime" />, or <see cref="DateTimeOffset"/>
     /// </summary>
     DateTime = 3,
-    
+
     /// <summary>
     ///   The value will just be a <see cref="string" />, however it will be validated against a list of allowed values
     /// </summary>

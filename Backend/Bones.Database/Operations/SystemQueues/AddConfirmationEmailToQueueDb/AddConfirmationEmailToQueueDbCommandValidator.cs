@@ -16,7 +16,7 @@ internal sealed class AddConfirmationEmailToQueueDbCommandValidator : AbstractVa
                 ctx.AddFailure("Please provide a valid URL.");
             }
         });
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

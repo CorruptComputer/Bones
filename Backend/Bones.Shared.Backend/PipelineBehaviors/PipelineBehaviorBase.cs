@@ -18,7 +18,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
     /// <param name="response"></param>
     /// <returns></returns>
     protected abstract (bool success, string? failReason, bool forbidden) GetResult(TResponse response);
-    
+
     /// <summary>
     ///   Generate a failure response with the provided type
     /// </summary>
@@ -58,7 +58,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
         catch (Exception e) when (e is not ForbiddenAccessException)
         {
             Log.Error(e, "Uncaught Exception [{RequestName}] | ExceptionMessage = {Message}", typeof(TRequest).FullName, e.Message);
-            
+
             exception = e;
             response = GetFailedResponse(e.Message);
         }

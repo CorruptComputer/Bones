@@ -24,8 +24,8 @@ internal sealed class CreateProjectDbHandler(BonesDbContext dbContext) : IReques
             project.OwnerType = OwnershipType.Organization;
             project.OwningOrganization = request.Organization;
         }
-        
-        
+
+
         EntityEntry<Project> created = await dbContext.Projects.AddAsync(project, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);

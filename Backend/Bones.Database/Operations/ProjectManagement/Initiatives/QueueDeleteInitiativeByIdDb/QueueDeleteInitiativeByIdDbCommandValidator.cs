@@ -5,7 +5,7 @@ internal class QueueDeleteInitiativeByIdDbCommandValidator : AbstractValidator<Q
     public override Task<ValidationResult> ValidateAsync(ValidationContext<QueueDeleteInitiativeByIdDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.InitiativeId).NotNull().NotEqual(Guid.Empty);
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

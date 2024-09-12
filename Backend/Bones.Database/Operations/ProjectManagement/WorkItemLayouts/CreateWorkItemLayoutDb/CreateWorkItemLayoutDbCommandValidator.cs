@@ -6,7 +6,7 @@ internal sealed class CreateWorkItemLayoutDbCommandValidator : AbstractValidator
     {
         RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.Name).NotNull().NotEmpty();
-        
+
         return base.ValidateAsync(context, cancellation);
     }
 }

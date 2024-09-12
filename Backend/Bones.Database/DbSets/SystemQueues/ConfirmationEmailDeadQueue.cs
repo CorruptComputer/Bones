@@ -12,7 +12,7 @@ public class ConfirmationEmailDeadQueue
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///   The time this queue item was created at in this dead queue
     /// </summary>
@@ -27,22 +27,22 @@ public class ConfirmationEmailDeadQueue
     ///   Number of times this has failed and retried.
     /// </summary>
     public required int RetryCount { get; set; }
-    
+
     /// <summary>
     ///   The last time this was tried and failed
     /// </summary>
     public required DateTimeOffset LastTry { get; set; }
-    
+
     /// <summary>
     ///   The reason it has failed each time
     /// </summary>
     public required List<string> FailureReasons { get; set; }
-    
+
     /// <summary>
     ///   Who is this email going to
     /// </summary>
     public required string EmailTo { get; set; }
-    
+
     /// <summary>
     ///   What is the link to set for the confirmation
     /// </summary>
