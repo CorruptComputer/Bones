@@ -1,17 +1,25 @@
 using Bones.Database.DbSets.SystemQueues;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueue;
+namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
 
 internal sealed class AddConfirmationEmailToQueueDbHandler(BonesDbContext dbContext) : IRequestHandler<AddConfirmationEmailToQueueDbCommand, CommandResponse>
 {
     public async Task<CommandResponse> Handle(AddConfirmationEmailToQueueDbCommand request, CancellationToken cancellationToken)
     {
+        if (await dbContext.ConfirmationEmailQueue.AnyAsync(x => x.EmailTo == request.EmailTo, cancellationToken))
+        {
+            return CommandResponse.Fail("Email address already in queue for confirmation");
+        }
+        
         EntityEntry<ConfirmationEmailQueue> created = await dbContext.ConfirmationEmailQueue.AddAsync(new()
         {
+            User = request.RequestingUser,
             EmailTo = request.EmailTo,
             ConfirmationLink = request.ConfirmationLink
         }, cancellationToken);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return CommandResponse.Pass(created.Entity.Id);
     }

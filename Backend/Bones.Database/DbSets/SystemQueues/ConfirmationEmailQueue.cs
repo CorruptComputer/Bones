@@ -1,3 +1,5 @@
+using Bones.Database.DbSets.AccountManagement;
+
 namespace Bones.Database.DbSets.SystemQueues;
 
 /// <summary>
@@ -32,6 +34,11 @@ public class ConfirmationEmailQueue
     ///   The reason it has failed each time
     /// </summary>
     public List<string> FailureReasons { get; set; } = [];
+    
+    /// <summary>
+    ///   The user this request is for
+    /// </summary>
+    public required BonesUser User { get; set; }
 
     /// <summary>
     ///   Who is this email going to

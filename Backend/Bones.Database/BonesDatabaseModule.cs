@@ -5,13 +5,14 @@ using Bones.Shared.Exceptions;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bones.Database;
 
 /// <summary>
 ///     Autofac module for the Bones database
 /// </summary>
-public class BonesDatabaseModule(IConfiguration config) : Module
+public class BonesDatabaseModule(IConfiguration config, IServiceCollection services) : Module
 {
     /// <inheritdoc />
     protected override void Load(ContainerBuilder builder)
@@ -25,6 +26,8 @@ public class BonesDatabaseModule(IConfiguration config) : Module
             ]);
 
         builder.RegisterMediatR(mediatrConfig.Build());
+        
+        services.AddValidatorsFromAssembly(ThisAssembly, includeInternalTypes: true);
 
         DatabaseConfiguration? backgroundTasksConfig = config.GetSection(nameof(DatabaseConfiguration)).Get<DatabaseConfiguration>();
         if (backgroundTasksConfig is null)

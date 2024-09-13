@@ -28,6 +28,17 @@ public sealed record CommandResponse : BonesResponseBase
     };
 
     /// <summary>
+    ///   Creates a failure response, optionally with the reasons why it failed.
+    /// </summary>
+    /// <param name="failureReasons"></param>
+    /// <returns></returns>
+    public static CommandResponse Fail(Dictionary<string, string[]> failureReasons) => new()
+    {
+        Success = false,
+        FailureReasons = failureReasons
+    };
+    
+    /// <summary>
     ///   Creates a failure response, optionally with the reason why it failed.
     /// </summary>
     /// <param name="failureReason"></param>
@@ -35,7 +46,10 @@ public sealed record CommandResponse : BonesResponseBase
     public static CommandResponse Fail(string? failureReason = null) => new()
     {
         Success = false,
-        FailureReason = failureReason
+        FailureReasons = string.IsNullOrEmpty(failureReason) ? null : new()
+        {
+            { "Failure", [ failureReason ] }
+        }
     };
 
     /// <summary>
@@ -45,7 +59,10 @@ public sealed record CommandResponse : BonesResponseBase
     public static CommandResponse Forbid() => new()
     {
         Success = false,
-        FailureReason = "Forbidden.",
+        FailureReasons = new()
+        {
+            {"Forbidden", [ "Forbidden." ] }
+        },
         Forbidden = true
     };
 }

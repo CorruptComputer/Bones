@@ -4,7 +4,7 @@ using FluentValidation.Results;
 
 namespace Bones.Backend.Features.AccountManagement.RegisterUser;
 
-internal class RegisterUserQueryValidator : AbstractValidator<RegisterUserQuery>
+internal sealed class RegisterUserQueryValidator : AbstractValidator<RegisterUserQuery>
 {
     public override Task<ValidationResult> ValidateAsync(ValidationContext<RegisterUserQuery> context, CancellationToken cancellation = default)
     {

@@ -1,4 +1,4 @@
-namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueue;
+namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
 
 internal sealed class AddConfirmationEmailToQueueDbCommandValidator : AbstractValidator<AddConfirmationEmailToQueueDbCommand>
 {

@@ -19,10 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="TestOperations\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\..\Backend\Bones.Api\Bones.Api.csproj" />
       <ProjectReference Include="..\..\..\Backend\Bones.Database\Bones.Database.csproj" />
       <ProjectReference Include="..\..\..\Backend\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />

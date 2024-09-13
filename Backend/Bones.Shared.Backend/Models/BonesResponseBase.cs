@@ -27,5 +27,5 @@ public record BonesResponseBase
     /// <summary>
     ///     If the command failed, why?
     /// </summary>
-    public string? FailureReason { get; init; }
+    public Dictionary<string, string[]>? FailureReasons { get; init; }
 }

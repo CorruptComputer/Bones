@@ -453,7 +453,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringActionResult"
+                  "$ref": "#/components/schemas/StringStringArrayDictionaryActionResult"
                 }
               }
             }
@@ -683,19 +683,6 @@
         },
         "additionalProperties": false,
         "description": ""
-      },
-      "StringActionResult": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ActionResult"
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       },
       "StringStringArrayDictionaryActionResult": {
         "type": "object",

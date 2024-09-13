@@ -20,13 +20,13 @@ public sealed partial class ProjectManagementController
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpPost("my/create", Name = "CreateMyProjectAsync")]
     [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult<string>>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ActionResult<Dictionary<string, string[]>>>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateMyProjectAsync([FromBody] CreateMyProjectRequest request)
     {
         CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, await GetCurrentBonesUserAsync()));
         if (!response.Success)
         {
-            return BadRequest(response.FailureReason);
+            return BadRequest(response.FailureReasons);
         }
 
         return Ok(string.Empty);

@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using Bones.Shared.Exceptions;
+using FluentValidation;
+using FluentValidation.Results;
 using Serilog.Events;
 
 namespace Bones.Shared.Backend.PipelineBehaviors;
@@ -9,7 +11,7 @@ namespace Bones.Shared.Backend.PipelineBehaviors;
 /// </summary>
 /// <typeparam name="TRequest"></typeparam>
 /// <typeparam name="TResponse"></typeparam>
-public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> requestValidators) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
     /// <summary>
@@ -17,14 +19,14 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
     /// </summary>
     /// <param name="response"></param>
     /// <returns></returns>
-    protected abstract (bool success, string? failReason, bool forbidden) GetResult(TResponse response);
+    protected abstract (bool success, Dictionary<string, string[]>? failReason, bool forbidden) GetResult(TResponse response);
 
     /// <summary>
     ///   Generate a failure response with the provided type
     /// </summary>
     /// <param name="failReason"></param>
     /// <returns></returns>
-    protected abstract TResponse GetFailedResponse(string failReason);
+    protected abstract TResponse GetFailedResponse(Dictionary<string, string[]> failReason);
 
     // I don't really like using these, but in this case it's safer to do so.
     // Logging the request could potentially log a password,
@@ -52,18 +54,50 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
 
         try
         {
-            // Send it to the handler
-            response = await next();
+            if (!requestValidators.Any())
+            {
+                response = await next();
+            }
+            else
+            {
+                ValidationContext<TRequest> context = new ValidationContext<TRequest>(request);
+                Dictionary<string, string[]> errors = requestValidators
+                    .Select(x => x.Validate(context))
+                    .SelectMany(x => x.Errors)
+                    .Where(x => x != null)
+                    .GroupBy(
+                        x => x.PropertyName,
+                        x => x.ErrorMessage,
+                        (propertyName, errorMessages) => new
+                        {
+                            Key = propertyName,
+                            Values = errorMessages.Distinct().ToArray(),
+                        })
+                    .ToDictionary(x => x.Key, x => x.Values);
+                
+                if (errors.Count != 0)
+                {
+                    response = GetFailedResponse(errors);
+                }
+                else
+                {
+                    // Send it to the handler
+                    response = await next();
+                }
+            }
         }
         catch (Exception e) when (e is not ForbiddenAccessException)
         {
             Log.Error(e, "Uncaught Exception [{RequestName}] | ExceptionMessage = {Message}", typeof(TRequest).FullName, e.Message);
 
             exception = e;
-            response = GetFailedResponse(e.Message);
+            response = GetFailedResponse(new()
+            {
+                { "Internal Error", [ e.Message ] }
+            });
         }
 
-        (bool success, string? failReason, bool forbidden) = GetResult(response);
+        (bool success, Dictionary<string, string[]>? failReasons, bool forbidden) = GetResult(response);
 
         if (forbidden)
         {
@@ -72,7 +106,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
             throw new ForbiddenAccessException();
         }
 
-        StopDebugLog(request, success, failReason, exception);
+        StopDebugLog(request, success, failReasons, exception);
 
         return response;
     }
@@ -88,7 +122,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
         _stopwatch = Stopwatch.StartNew();
     }
 
-    private void StopDebugLog(TRequest request, bool success, string? failReason, Exception? exception)
+    private void StopDebugLog(TRequest request, bool success, Dictionary<string, string[]>? failReasons, Exception? exception)
     {
         if (!_debugLog || _stopwatch == null)
         {
@@ -107,6 +141,6 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse> : IPipelineBehav
 
         Log.Debug(success
             ? $"Succeeded [{typeof(TRequest).FullName}] in {_stopwatch.ElapsedMilliseconds}ms"
-            : $"Failed [{typeof(TRequest).FullName}] in {_stopwatch.ElapsedMilliseconds}ms | Reason = {failReason ?? "(none)"}");
+            : $"Failed [{typeof(TRequest).FullName}] in {_stopwatch.ElapsedMilliseconds}ms | Reasons = {failReasons?.ToString() ?? "(none)"}");
     }
 }

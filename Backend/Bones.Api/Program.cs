@@ -36,8 +36,8 @@ public static class Program
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {
             containerBuilder.RegisterModule(new BonesApiModule(builder.Configuration));
-            containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration));
-            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration));
+            containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration, builder.Services));
+            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
         });
 
         builder.WebHost.UseKestrel().ConfigureKestrel(kestrelServerOptions =>

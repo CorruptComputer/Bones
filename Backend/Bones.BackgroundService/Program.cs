@@ -31,8 +31,8 @@ public static class Program
         builder.ConfigureContainer(new AutofacServiceProviderFactory(), containerBuilder =>
         {
             containerBuilder.RegisterModule(new BonesBackgroundServiceModule(builder.Configuration));
-            containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration));
-            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration));
+            containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration, builder.Services));
+            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
         });
 
         builder.Services.AddIdentityCore<BonesUser>(options => options.AddBonesIdentityOptions())

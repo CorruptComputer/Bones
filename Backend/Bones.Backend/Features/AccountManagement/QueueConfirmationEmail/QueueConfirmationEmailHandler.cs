@@ -1,6 +1,6 @@
 using Bones.Backend.Models;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueue;
+using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
@@ -37,6 +37,6 @@ internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager,
             builder.Query += $"&changedEmail={request.Email}";
         }
 
-        return await sender.Send(new AddConfirmationEmailToQueueDbCommand(request.Email, builder.ToString()), cancellationToken);
+        return await sender.Send(new AddConfirmationEmailToQueueDbCommand(request.Email, builder.ToString(), request.User), cancellationToken);
     }
 }

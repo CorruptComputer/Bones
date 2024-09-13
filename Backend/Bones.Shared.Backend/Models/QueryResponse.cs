@@ -30,6 +30,17 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     };
 
     /// <summary>
+    ///   Creates a failure response, optionally with the reasons why it failed.
+    /// </summary>
+    /// <param name="failureReasons"></param>
+    /// <returns></returns>
+    public static QueryResponse<TResult> Fail(Dictionary<string, string[]>? failureReasons = null) => new()
+    {
+        Success = false,
+        FailureReasons = failureReasons
+    };
+    
+    /// <summary>
     ///   Creates a failure response, optionally with the reason why it failed.
     /// </summary>
     /// <param name="failureReason"></param>
@@ -37,7 +48,10 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     public static QueryResponse<TResult> Fail(string? failureReason = null) => new()
     {
         Success = false,
-        FailureReason = failureReason
+        FailureReasons = string.IsNullOrEmpty(failureReason) ? null : new()
+        {
+            { "Failure", [ failureReason ] }
+        }
     };
 
     /// <summary>
@@ -47,7 +61,10 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     public static QueryResponse<TResult> Forbid() => new()
     {
         Success = false,
-        FailureReason = "Forbidden.",
+        FailureReasons = new()
+        {
+            {"Forbidden", [ "Forbidden." ] }
+        },
         Forbidden = true
     };
 

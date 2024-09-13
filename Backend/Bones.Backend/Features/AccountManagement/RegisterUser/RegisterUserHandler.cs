@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.RegisterUser;
 
-internal class RegisterUserHandler(UserManager<BonesUser> userManager, IUserEmailStore<BonesUser> userStore, ISender sender) : IRequestHandler<RegisterUserQuery, QueryResponse<IdentityResult>>
+internal class RegisterUserHandler(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<RegisterUserQuery, QueryResponse<IdentityResult>>
 {
     public async Task<QueryResponse<IdentityResult>> Handle(RegisterUserQuery request, CancellationToken cancellationToken)
     {
@@ -22,8 +22,11 @@ internal class RegisterUserHandler(UserManager<BonesUser> userManager, IUserEmai
 
         BonesUser user = new();
 
-        await userStore.SetUserNameAsync(user, request.Email, cancellationToken);
-        await userStore.SetEmailAsync(user, request.Email, cancellationToken);
+        await userManager.SetUserNameAsync(user, request.Email);
+        await userManager.SetEmailAsync(user, request.Email);
+
+        bool test = userManager.Users.Any();
+        List<BonesUser> users = userManager.Users.ToList();
 
         IdentityResult result = await userManager.CreateAsync(user, request.Password);
 

@@ -34,7 +34,6 @@ internal static class TestFactory
     private static IServiceProvider GetTestServiceProvider()
     {
         IHost host = CreateTestHost();
-
         return host.Services.CreateScope().ServiceProvider;
     }
 
@@ -48,28 +47,29 @@ internal static class TestFactory
 
             configBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string?>>()
             {
-                new("ApiConfiguration:WebUIBaseUrl", "http://localhost:9080"),
-                new("BackendConfiguration:BackgroundTasksUserEmail", string.Empty),
+                //new("ApiConfiguration:WebUIBaseUrl", "http://localhost:9080"),
+                //new("BackgroundService:BackgroundTasksUserEmail", string.Empty),
+                new("BackendConfiguration:WebUIBaseUrl", "http://localhost:9080"),
                 new("DatabaseConfiguration:ConnectionString", string.Empty),
                 new("DatabaseConfiguration:UseInMemoryDb", "true"),
             });
         });
-
+        
         hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-        hostBuilder.ConfigureContainer<ContainerBuilder>((context, containerBuilder) =>
-        {
-            containerBuilder.RegisterModule(new BonesApiModule(context.Configuration));
-            containerBuilder.RegisterModule(new BonesBackendModule(context.Configuration));
-            containerBuilder.RegisterModule(new BonesDatabaseModule(context.Configuration));
-            containerBuilder.RegisterModule<UnitTestModule>();
-        });
-
         hostBuilder.ConfigureServices((context, services) =>
         {
             services.AddSerilog((serviceProvider, loggerConfig) =>
                 loggerConfig.ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(serviceProvider)
             );
+            
+            hostBuilder.ConfigureContainer<ContainerBuilder>((containerCtx, containerBuilder) =>
+            {
+                //containerBuilder.RegisterModule(new BonesApiModule(containerCtx.Configuration));
+                containerBuilder.RegisterModule(new BonesBackendModule(containerCtx.Configuration, services));
+                containerBuilder.RegisterModule(new BonesDatabaseModule(containerCtx.Configuration, services));
+                containerBuilder.RegisterModule<UnitTestModule>();
+            });
 
             services.AddIdentity<BonesUser, BonesRole>(options => options.AddBonesIdentityOptions())
                 .AddSignInManager()
