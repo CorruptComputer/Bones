@@ -39,7 +39,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
         Success = false,
         FailureReasons = failureReasons
     };
-    
+
     /// <summary>
     ///   Creates a failure response, optionally with the reason why it failed.
     /// </summary>

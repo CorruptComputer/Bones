@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 
 
-public record GetMostRecentlyCreatedUserQuery: IRequest<QueryResponse<BonesUser>>;
+public record GetMostRecentlyCreatedUserQuery : IRequest<QueryResponse<BonesUser>>;
 
 public class GetMostRecentlyCreatedUser(UserManager<BonesUser> userManager) : IRequestHandler<GetMostRecentlyCreatedUserQuery, QueryResponse<BonesUser>>
 {

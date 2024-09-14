@@ -12,12 +12,12 @@ internal sealed class AddConfirmationEmailToQueueDbHandler(BonesDbContext dbCont
         {
             return CommandResponse.Fail("Invalid email address");
         }
-        
+
         if (await dbContext.ConfirmationEmailQueue.AnyAsync(x => x.EmailTo == request.EmailTo, cancellationToken))
         {
             return CommandResponse.Fail("Email address already in queue for confirmation");
         }
-        
+
         EntityEntry<ConfirmationEmailQueue> created = await dbContext.ConfirmationEmailQueue.AddAsync(new()
         {
             EmailTo = request.EmailTo,

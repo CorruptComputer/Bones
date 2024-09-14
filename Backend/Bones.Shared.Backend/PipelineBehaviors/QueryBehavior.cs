@@ -4,7 +4,7 @@ using FluentValidation;
 namespace Bones.Shared.Backend.PipelineBehaviors;
 
 /// <inheritdoc />
-public class QueryBehavior<TRequest, TValue>(IEnumerable<IValidator<TRequest>> requestValidators) 
+public class QueryBehavior<TRequest, TValue>(IEnumerable<IValidator<TRequest>> requestValidators)
     : PipelineBehaviorBase<TRequest, QueryResponse<TValue>>(requestValidators) where TRequest : notnull
 {
     /// <inheritdoc />

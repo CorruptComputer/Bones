@@ -13,7 +13,7 @@ namespace Bones.Backend.UnitTests.Features.AccountManagement;
 public class QueueConfirmationEmailTests : TestBase
 {
     private readonly QueueConfirmationEmailCommandValidator _validator = new();
-    
+
     /// <summary>
     ///     Checks that the handlers stops this.
     /// </summary>
@@ -21,7 +21,7 @@ public class QueueConfirmationEmailTests : TestBase
     public async Task QueueConfirmationEmail_ShouldFailWhenAlreadyInQueue()
     {
         RegisterUserQuery createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
-        
+
         QueryResponse<IdentityResult> result = await Sender.Send(createUserRequest);
         result.Success.Should().BeTrue();
         result.Result?.Succeeded.Should().BeTrue();
@@ -29,7 +29,7 @@ public class QueueConfirmationEmailTests : TestBase
         List<BonesUser>? allUsers = await Sender.Send(new GetAllUsersQuery());
         BonesUser? createdUser = allUsers?.Find(u => u.Email == createUserRequest.Email);
         createdUser.Should().NotBeNull();
-        
+
         ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(createUserRequest.Email));
         confirmation.Should().NotBeNull();
         confirmation?.ConfirmationLink.Should().NotBeNullOrEmpty();

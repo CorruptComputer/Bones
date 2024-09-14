@@ -14,7 +14,7 @@ namespace Bones.Database.UnitTests.Operations.SystemQueues;
 public class AddConfirmationEmailToQueueDbTests : TestBase
 {
     private readonly AddConfirmationEmailToQueueDbCommandValidator _validator = new();
-    
+
     /// <summary>
     ///     Checks that the handler stops this.
     /// </summary>
@@ -37,7 +37,7 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
         confirmationResult.Success.Should().BeFalse();
     }
-    
+
     /// <summary>
     ///     Checks that the handler stops this.
     /// </summary>
@@ -45,18 +45,18 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
     public async Task ValidRequest_ShouldFailWhenAlreadyInQueue()
     {
         const string emailAddress = "DuplicateConfirmation@example.com";
-        
+
         AddConfirmationEmailToQueueDbCommand confirmationEmailCommand = new(emailAddress, "http://localhost/confirm-pls");
         TestValidationResult<AddConfirmationEmailToQueueDbCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
         confirmationResult.Success.Should().BeTrue();
-        
+
         CommandResponse confirmationResult2 = await Sender.Send(confirmationEmailCommand);
         confirmationResult2.Success.Should().BeFalse();
     }
-    
+
     /// <summary>
     ///     Checks that the handler stops this.
     /// </summary>
@@ -64,7 +64,7 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
     public async Task ValidRequest_ShouldPass()
     {
         const string emailAddress = "IAmAValidEmail@example.com";
-        
+
         AddConfirmationEmailToQueueDbCommand confirmationEmailCommand = new(emailAddress, "http://localhost/confirm-pls");
         TestValidationResult<AddConfirmationEmailToQueueDbCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();

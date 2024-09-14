@@ -54,7 +54,7 @@ internal static class TestFactory
                 new("DatabaseConfiguration:UseInMemoryDb", "true"),
             });
         });
-        
+
         hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         hostBuilder.ConfigureServices((context, services) =>
         {
@@ -62,7 +62,7 @@ internal static class TestFactory
                 loggerConfig.ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(serviceProvider)
             );
-            
+
             hostBuilder.ConfigureContainer<ContainerBuilder>((containerCtx, containerBuilder) =>
             {
                 //containerBuilder.RegisterModule(new BonesApiModule(containerCtx.Configuration));

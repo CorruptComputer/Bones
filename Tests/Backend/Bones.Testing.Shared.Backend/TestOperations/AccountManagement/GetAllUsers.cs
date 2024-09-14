@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 
 
-public record GetAllUsersQuery: IRequest<QueryResponse<List<BonesUser>>>;
+public record GetAllUsersQuery : IRequest<QueryResponse<List<BonesUser>>>;
 
 public class GetAllUsers(UserManager<BonesUser> userManager) : IRequestHandler<GetAllUsersQuery, QueryResponse<List<BonesUser>>>
 {

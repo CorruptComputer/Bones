@@ -14,7 +14,7 @@ internal sealed class AddConfirmationEmailToQueueDbCommandValidator : AbstractVa
                 ctx.AddFailure(new ValidationFailure(nameof(AddConfirmationEmailToQueueDbCommand.EmailTo), "Email domain is invalid"));
             }
         });
-        
+
         RuleFor(x => x.ConfirmationLink).NotNull().NotEmpty().Custom((str, ctx) =>
         {
             try

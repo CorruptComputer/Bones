@@ -16,7 +16,7 @@ namespace Bones.Backend.UnitTests.Features.AccountManagement;
 public class RegisterUserTests : TestBase
 {
     private readonly RegisterUserQueryValidator _validator = new();
-    
+
     /// <summary>
     ///     Checks that the validator and handler both validate the email address.
     /// </summary>
@@ -34,15 +34,15 @@ public class RegisterUserTests : TestBase
     public async Task InvalidEmail_ShouldFail(string email)
     {
         RegisterUserQuery request = new(email, "abcdEFGH1!");
-        
+
         TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldHaveValidationErrorFor(x => x.Email);
-        
+
         QueryResponse<IdentityResult> result = await Sender.Send(request);
         result.Success.Should().BeFalse();
         result.Result?.Succeeded.Should().BeFalse();
     }
-    
+
     /// <summary>
     ///     Checks that the validator and handler both validate the password.
     /// </summary>
@@ -59,12 +59,12 @@ public class RegisterUserTests : TestBase
         RegisterUserQuery request = new("InvalidPassword@example.com", password);
         TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldHaveValidationErrorFor(x => x.Password);
-        
+
         QueryResponse<IdentityResult> result = await Sender.Send(request);
         result.Success.Should().BeFalse();
         result.Result?.Succeeded.Should().BeFalse();
     }
-    
+
     /// <summary>
     ///     Checks that the validator and handler both pass this.
     /// </summary>
@@ -72,15 +72,15 @@ public class RegisterUserTests : TestBase
     public async Task ValidEmailAndPassword_ShouldSucceed()
     {
         RegisterUserQuery request = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
-        
+
         TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldNotHaveAnyValidationErrors();
-        
+
         QueryResponse<IdentityResult> result = await Sender.Send(request);
         result.Success.Should().BeTrue();
         result.Result?.Succeeded.Should().BeTrue();
     }
-    
+
     /// <summary>
     ///     Checks that the handler actually queues a confirmation email for the new account
     /// </summary>
@@ -90,7 +90,7 @@ public class RegisterUserTests : TestBase
         RegisterUserQuery request = new("RegisteringUserQueueConfirmationEmail@example.com", "abcdEFGH1!");
         TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldNotHaveAnyValidationErrors();
-        
+
         QueryResponse<IdentityResult> result = await Sender.Send(request);
         result.Success.Should().BeTrue();
         result.Result?.Succeeded.Should().BeTrue();
@@ -98,12 +98,12 @@ public class RegisterUserTests : TestBase
         List<BonesUser>? allUsers = await Sender.Send(new GetAllUsersQuery());
         BonesUser? createdUser = allUsers?.Find(u => u.Email == request.Email);
         createdUser.Should().NotBeNull();
-        
+
         ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(request.Email));
         confirmation.Should().NotBeNull();
         confirmation?.ConfirmationLink.Should().NotBeNullOrEmpty();
     }
-    
+
     /// <summary>
     ///     Checks that the validator passes this and the handler fails it.
     /// </summary>
@@ -111,19 +111,19 @@ public class RegisterUserTests : TestBase
     public async Task DuplicateEmail_ShouldFail()
     {
         RegisterUserQuery request = new("DuplicateEmail@example.com", "abcdEFGH1!");
-        
+
         // Do it
         TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldNotHaveAnyValidationErrors();
-        
+
         QueryResponse<IdentityResult> result = await Sender.Send(request);
         result.Success.Should().BeTrue();
         result.Result?.Succeeded.Should().BeTrue();
-        
+
         // Do it again
         TestValidationResult<RegisterUserQuery> validationResult2 = await _validator.TestValidateAsync(request);
         validationResult2.ShouldNotHaveAnyValidationErrors();
-        
+
         QueryResponse<IdentityResult> result2 = await Sender.Send(request);
         result2.Success.Should().BeFalse();
         result2.Result?.Succeeded.Should().BeFalse();

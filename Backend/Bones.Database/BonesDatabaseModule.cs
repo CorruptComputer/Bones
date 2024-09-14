@@ -26,7 +26,7 @@ public class BonesDatabaseModule(IConfiguration config, IServiceCollection servi
             ]);
 
         builder.RegisterMediatR(mediatrConfig.Build());
-        
+
         services.AddValidatorsFromAssembly(ThisAssembly, includeInternalTypes: true);
 
         DatabaseConfiguration? backgroundTasksConfig = config.GetSection(nameof(DatabaseConfiguration)).Get<DatabaseConfiguration>();

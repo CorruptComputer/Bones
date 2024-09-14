@@ -74,7 +74,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
                             Values = errorMessages.Distinct().ToArray(),
                         })
                     .ToDictionary(x => x.Key, x => x.Values);
-                
+
                 if (errors.Count != 0)
                 {
                     response = GetFailedResponse(errors);
