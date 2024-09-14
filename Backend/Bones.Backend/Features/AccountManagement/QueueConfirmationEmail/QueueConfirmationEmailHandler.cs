@@ -37,6 +37,6 @@ internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager,
             builder.Query += $"&changedEmail={request.Email}";
         }
 
-        return await sender.Send(new AddConfirmationEmailToQueueDbCommand(request.Email, builder.ToString(), request.User), cancellationToken);
+        return await sender.Send(new AddConfirmationEmailToQueueDbCommand(request.Email, builder.ToString()), cancellationToken);
     }
 }

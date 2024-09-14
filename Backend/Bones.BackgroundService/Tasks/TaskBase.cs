@@ -15,13 +15,13 @@ internal abstract class TaskBase(ISender sender) : Microsoft.Extensions.Hosting.
 
     protected abstract Task RunTaskAsync(CancellationToken cancellationToken);
 
-    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using PeriodicTimer timer = new(Interval);
-        while (!cancellationToken.IsCancellationRequested
-               && await timer.WaitForNextTickAsync(cancellationToken))
+        while (!stoppingToken.IsCancellationRequested
+               && await timer.WaitForNextTickAsync(stoppingToken))
         {
-            if (!await ShouldTaskRunAsync(cancellationToken))
+            if (!await ShouldTaskRunAsync(stoppingToken))
             {
                 continue;
             }
@@ -33,7 +33,7 @@ internal abstract class TaskBase(ISender sender) : Microsoft.Extensions.Hosting.
                     Log.Information("{Name} started at: {Time}", GetType().Name, DateTimeOffset.Now);
                 }
 
-                await RunTaskAsync(cancellationToken);
+                await RunTaskAsync(stoppingToken);
 
                 if (Log.IsEnabled(LogEventLevel.Information))
                 {
@@ -55,7 +55,7 @@ internal abstract class TaskBase(ISender sender) : Microsoft.Extensions.Hosting.
                     IsEnabled = false;
 
                     // Lets also cancel it
-                    await CancellationTokenSource.CreateLinkedTokenSource(cancellationToken).CancelAsync();
+                    await CancellationTokenSource.CreateLinkedTokenSource(stoppingToken).CancelAsync();
                 }
             }
         }

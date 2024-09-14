@@ -30,11 +30,11 @@ public class QueueConfirmationEmailTests : TestBase
         BonesUser? createdUser = allUsers?.Find(u => u.Email == createUserRequest.Email);
         createdUser.Should().NotBeNull();
         
-        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserIdQuery(createdUser?.Id ?? throw new()));
+        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(createUserRequest.Email));
         confirmation.Should().NotBeNull();
         confirmation?.ConfirmationLink.Should().NotBeNullOrEmpty();
 
-        QueueConfirmationEmailCommand confirmationEmailCommand = new(createdUser, createUserRequest.Email);
+        QueueConfirmationEmailCommand confirmationEmailCommand = new(createdUser ?? throw new(), createUserRequest.Email);
         TestValidationResult<QueueConfirmationEmailCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 

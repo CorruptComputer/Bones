@@ -88,9 +88,8 @@ public class RegisterUserTests : TestBase
     public async Task RegisteringUser_ShouldQueueConfirmationEmail()
     {
         RegisterUserQuery request = new("RegisteringUserQueueConfirmationEmail@example.com", "abcdEFGH1!");
-        
-        //TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
-        //validationResult.ShouldNotHaveAnyValidationErrors();
+        TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
+        validationResult.ShouldNotHaveAnyValidationErrors();
         
         QueryResponse<IdentityResult> result = await Sender.Send(request);
         result.Success.Should().BeTrue();
@@ -99,8 +98,8 @@ public class RegisterUserTests : TestBase
         List<BonesUser>? allUsers = await Sender.Send(new GetAllUsersQuery());
         BonesUser? createdUser = allUsers?.Find(u => u.Email == request.Email);
         createdUser.Should().NotBeNull();
-        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserIdQuery(createdUser?.Id ?? throw new()));
         
+        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(request.Email));
         confirmation.Should().NotBeNull();
         confirmation?.ConfirmationLink.Should().NotBeNullOrEmpty();
     }

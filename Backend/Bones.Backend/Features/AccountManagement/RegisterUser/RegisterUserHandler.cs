@@ -25,9 +25,6 @@ internal class RegisterUserHandler(UserManager<BonesUser> userManager, ISender s
         await userManager.SetUserNameAsync(user, request.Email);
         await userManager.SetEmailAsync(user, request.Email);
 
-        bool test = userManager.Users.Any();
-        List<BonesUser> users = userManager.Users.ToList();
-
         IdentityResult result = await userManager.CreateAsync(user, request.Password);
 
         if (result.Succeeded)
