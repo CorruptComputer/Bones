@@ -30,6 +30,7 @@ public class BonesUser : IdentityUser<Guid>
 
     /// <summary>
     ///   If their password is expired, we don't want to allow them to login.
+    ///   TODO: Make this actually do something
     /// </summary>
     public bool PasswordExpired { get; set; } = false;
 

@@ -5,12 +5,15 @@ namespace Bones.WebUI.Pages.Account;
 public partial class ConfirmEmailPage
 {
     [Parameter]
+    [SupplyParameterFromQuery]
     public string? UserId { get; set; }
 
     [Parameter]
+    [SupplyParameterFromQuery]
     public string? Code { get; set; }
 
     [Parameter]
+    [SupplyParameterFromQuery]
     public string? ChangedEmail { get; set; }
 
     public enum State

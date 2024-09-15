@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Bones.Api;
 using Bones.Backend;
 using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;

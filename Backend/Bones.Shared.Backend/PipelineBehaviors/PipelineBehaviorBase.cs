@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Bones.Shared.Exceptions;
 using FluentValidation;
-using FluentValidation.Results;
 using Serilog.Events;
 
 namespace Bones.Shared.Backend.PipelineBehaviors;

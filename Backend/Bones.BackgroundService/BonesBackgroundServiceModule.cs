@@ -1,5 +1,4 @@
 using Autofac;
-using Bones.Backend.Models;
 using Bones.BackgroundService.Models;
 using Bones.Shared.Backend.PipelineBehaviors;
 using Bones.Shared.Exceptions;

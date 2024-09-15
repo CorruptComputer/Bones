@@ -2,14 +2,10 @@ using Bones.Backend.Features.AccountManagement.RegisterUser;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.SystemQueues;
 using Bones.Shared.Backend.Models;
-using Bones.Shared.Consts;
 using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
-using FluentValidation;
 using FluentValidation.TestHelper;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bones.Backend.UnitTests.Features.AccountManagement;
 

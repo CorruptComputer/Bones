@@ -1,10 +1,11 @@
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.Operations.AccountManagement.SetEmailConfirmedDateTimeDb;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.Features.AccountManagement.ConfirmEmail;
 
-internal class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmEmailQuery, QueryResponse<IdentityResult>>
+internal class ConfirmEmailHandler(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<ConfirmEmailQuery, QueryResponse<IdentityResult>>
 {
     public async Task<QueryResponse<IdentityResult>> Handle(ConfirmEmailQuery request, CancellationToken cancellationToken)
     {
@@ -27,6 +28,11 @@ internal class ConfirmEmailHandler(UserManager<BonesUser> userManager) : IReques
         if (string.IsNullOrEmpty(request.ChangedEmail))
         {
             result = await userManager.ConfirmEmailAsync(user, token);
+
+            if (result.Succeeded)
+            {
+                await sender.Send(new SetEmailConfirmedDateTimeDbCommand(user, DateTimeOffset.Now), cancellationToken);
+            }
         }
         else
         {

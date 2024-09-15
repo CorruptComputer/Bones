@@ -1,13 +1,7 @@
-using Bones.Backend.Features.AccountManagement.QueueConfirmationEmail;
-using Bones.Backend.Features.AccountManagement.RegisterUser;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.SystemQueues;
 using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;
-using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 using FluentValidation.TestHelper;
-using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Database.UnitTests.Operations.SystemQueues;
 

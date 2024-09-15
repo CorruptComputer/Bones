@@ -1,5 +1,3 @@
-using Bones.Database.DbSets.AccountManagement;
-
 namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
 
 /// <summary>
