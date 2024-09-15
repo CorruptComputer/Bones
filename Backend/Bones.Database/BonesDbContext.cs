@@ -64,6 +64,9 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     #region SystemQueues
     internal DbSet<ConfirmationEmailDeadQueue> ConfirmationEmailDeadQueue { get; set; }
     internal DbSet<ConfirmationEmailQueue> ConfirmationEmailQueue { get; set; }
+    
+    internal DbSet<ForgotPasswordEmailDeadQueue> ResetPasswordEmailDeadQueue { get; set; }
+    internal DbSet<ForgotPasswordEmailQueue> ResetPasswordEmailQueue { get; set; }
     #endregion
 
     /// <summary>

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
 using Bones.Backend.Features.AccountManagement.ConfirmEmail;
 using Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
+using Bones.Backend.Features.AccountManagement.QueueForgotPasswordEmail;
 using Bones.Backend.Features.AccountManagement.QueueResendConfirmationEmail;
 using Bones.Backend.Features.AccountManagement.RegisterUser;
 using Bones.Database.DbSets.AccountManagement;
@@ -124,7 +125,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     public sealed record ResendConfirmationEmailApiRequest([Required] string Email);
 
     /// <summary>
-    /// 
+    ///   Re-queues the confirmation email to send
     /// </summary>
     /// <param name="resendRequest"></param>
     /// <returns></returns>
@@ -139,6 +140,21 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
         {
             return Unauthorized(EmptyResponse.Value);
         }
+
+        return Ok(EmptyResponse.Value);
+    }
+    
+    /// <summary>
+    ///   Queues a forgot password email
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    [HttpPost("forgot-password", Name = "ForgotPasswordAsync")]
+    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<ActionResult> ForgotPasswordAsync([FromQuery][Required] string email)
+    {
+        await Sender.Send(new QueueForgotPasswordEmailCommand(email));
 
         return Ok(EmptyResponse.Value);
     }

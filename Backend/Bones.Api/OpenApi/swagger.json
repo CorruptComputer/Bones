@@ -231,7 +231,7 @@
         "tags": [
           "AccountManagement"
         ],
-        "summary": "",
+        "summary": "Re-queues the confirmation email to send",
         "operationId": "ResendConfirmationEmailAsync",
         "requestBody": {
           "description": "",
@@ -244,6 +244,68 @@
           },
           "required": true
         },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AccountManagement/forgot-password": {
+      "post": {
+        "tags": [
+          "AccountManagement"
+        ],
+        "summary": "Queues a forgot password email",
+        "operationId": "ForgotPasswordAsync",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "401": {
             "description": "Unauthorized",
