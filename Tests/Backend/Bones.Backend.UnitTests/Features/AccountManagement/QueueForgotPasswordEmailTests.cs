@@ -1,12 +1,10 @@
 using Bones.Backend.Features.AccountManagement.QueueForgotPasswordEmail;
 using Bones.Backend.Features.AccountManagement.RegisterUser;
-using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.SystemQueues;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 using FluentValidation.TestHelper;
-using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Backend.UnitTests.Features.AccountManagement;
 
@@ -22,6 +20,7 @@ public class QueueForgotPasswordEmailTests : TestBase
     {
         RegisterUserQuery createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
         await Sender.Send(createUserRequest);
+        await Sender.Send(new ConfirmUserByEmailCommand(createUserRequest.Email));
 
         QueueForgotPasswordEmailCommand forgotPasswordCommand = new(createUserRequest.Email);
 
