@@ -16,8 +16,13 @@ public static class StringExtensions
     /// <param name="str">The string to check.</param>
     /// <param name="cancellationToken"></param>
     /// <returns>true if valid, false otherwise.</returns>
-    public static async Task<bool> IsValidEmailAsync(this string str, CancellationToken cancellationToken = default)
+    public static async Task<bool> IsValidEmailAsync(this string? str, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(str))
+        {
+            return false;
+        }
+
         str = str.Trim();
 
         try

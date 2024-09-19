@@ -41,12 +41,12 @@ public static class FrontEndUrls
         ///   Register page
         /// </summary>
         public const string REGISTER = $"{_account}/Register";
-        
+
         /// <summary>
         ///   Confirm email page
         /// </summary>
         public const string FORGOT_PASSWORD = $"{_account}/ForgotPassword";
-        
+
         /// <summary>
         ///   Confirm email page
         /// </summary>

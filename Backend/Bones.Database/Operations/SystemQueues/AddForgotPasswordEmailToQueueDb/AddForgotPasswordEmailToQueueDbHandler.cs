@@ -1,28 +1,27 @@
 using Bones.Database.DbSets.SystemQueues;
-using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
 using Bones.Shared.Extensions;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Bones.Database.Operations.SystemQueues.AddResetPasswordEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.AddForgotPasswordEmailToQueueDb;
 
-internal sealed class AddForgotPasswordEmailToQueueDbHandler(BonesDbContext dbContext) : IRequestHandler<AddConfirmationEmailToQueueDbCommand, CommandResponse>
+internal sealed class AddForgotPasswordEmailToQueueDbHandler(BonesDbContext dbContext) : IRequestHandler<AddForgotPasswordEmailToQueueDbCommand, CommandResponse>
 {
-    public async Task<CommandResponse> Handle(AddConfirmationEmailToQueueDbCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(AddForgotPasswordEmailToQueueDbCommand request, CancellationToken cancellationToken)
     {
         if (!await request.EmailTo.IsValidEmailAsync(cancellationToken))
         {
             return CommandResponse.Fail("Invalid email address");
         }
 
-        if (await dbContext.ConfirmationEmailQueue.AnyAsync(x => x.EmailTo == request.EmailTo, cancellationToken))
+        if (await dbContext.ForgotPasswordEmailQueue.AnyAsync(x => x.EmailTo == request.EmailTo, cancellationToken))
         {
-            return CommandResponse.Fail("Email address already in queue for confirmation");
+            return CommandResponse.Fail("Email address already in queue for reset");
         }
 
-        EntityEntry<ConfirmationEmailQueue> created = await dbContext.ConfirmationEmailQueue.AddAsync(new()
+        EntityEntry<ForgotPasswordEmailQueue> created = await dbContext.ForgotPasswordEmailQueue.AddAsync(new()
         {
             EmailTo = request.EmailTo,
-            ConfirmationLink = request.ConfirmationLink
+            PasswordResetLink = request.PasswordResetLink
         }, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);

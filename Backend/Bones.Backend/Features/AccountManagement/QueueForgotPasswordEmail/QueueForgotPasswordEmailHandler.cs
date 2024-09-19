@@ -1,8 +1,6 @@
-using System.Text;
-using System.Text.Encodings.Web;
 using Bones.Backend.Models;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.SystemQueues.AddResetPasswordEmailToQueueDb;
+using Bones.Database.Operations.SystemQueues.AddForgotPasswordEmailToQueueDb;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
@@ -14,13 +12,12 @@ internal class QueueForgotPasswordEmailHandler(UserManager<BonesUser> userManage
 {
     public async Task<CommandResponse> Handle(QueueForgotPasswordEmailCommand request, CancellationToken cancellationToken)
     {
-        if (config.WebUIBaseUrl is null)
+        if (string.IsNullOrEmpty(config.WebUIBaseUrl))
         {
-            throw new BonesException("BackendConfiguration:WebUIBaseUrl is null in appsettings");
+            throw new BonesException("BackendConfiguration:WebUIBaseUrl is not set in appsettings");
         }
-        
-        BonesUser? user = await userManager.FindByEmailAsync(request.Email);
 
+        BonesUser? user = await userManager.FindByEmailAsync(request.Email);
         if (user is not null && await userManager.IsEmailConfirmedAsync(user))
         {
             string? code = await userManager.GeneratePasswordResetTokenAsync(user);

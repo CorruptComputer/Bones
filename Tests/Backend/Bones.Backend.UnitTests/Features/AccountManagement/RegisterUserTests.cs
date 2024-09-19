@@ -18,6 +18,7 @@ public class RegisterUserTests : TestBase
     /// </summary>
     /// <param name="email">The email address to test.</param>
     [Theory]
+    [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
     [InlineData("\t")]
@@ -27,9 +28,9 @@ public class RegisterUserTests : TestBase
     [InlineData("InvalidEmail@example")]
     [InlineData("InvalidEmail@")]
     [InlineData("InvalidEmail")]
-    public async Task InvalidEmail_ShouldFail(string email)
+    public async Task InvalidEmail_ShouldFail(string? email)
     {
-        RegisterUserQuery request = new(email, "abcdEFGH1!");
+        RegisterUserQuery request = new(email!, "abcdEFGH1!");
 
         TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldHaveValidationErrorFor(x => x.Email);
@@ -44,15 +45,16 @@ public class RegisterUserTests : TestBase
     /// </summary>
     /// <param name="password">The password to test.</param>
     [Theory]
+    [InlineData(null)]
     [InlineData("")]
     [InlineData("aA1!")] // Not long enough
     [InlineData("abcdefgh1!")] // No caps
     [InlineData("ABCDEFGH1!")] // No lowercase
     [InlineData("abcdEFGH!")] // No number
     [InlineData("abcdEFGH1")] // No special char
-    public async Task InvalidPassword_ShouldFail(string password)
+    public async Task InvalidPassword_ShouldFail(string? password)
     {
-        RegisterUserQuery request = new("InvalidPassword@example.com", password);
+        RegisterUserQuery request = new("InvalidPassword@example.com", password!);
         TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldHaveValidationErrorFor(x => x.Password);
 

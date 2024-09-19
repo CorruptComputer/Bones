@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Bones.Database.DbSets.AccountManagement;
 
 namespace Bones.Backend.Features.AccountManagement.QueueForgotPasswordEmail;
 

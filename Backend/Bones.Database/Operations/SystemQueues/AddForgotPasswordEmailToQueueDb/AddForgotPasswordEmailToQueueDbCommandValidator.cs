@@ -1,22 +1,21 @@
-using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
 using Bones.Shared.Extensions;
 using FluentValidation.Results;
 
-namespace Bones.Database.Operations.SystemQueues.AddResetPasswordEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.AddForgotPasswordEmailToQueueDb;
 
-internal sealed class AddForgotPasswordEmailToQueueDbCommandValidator : AbstractValidator<AddConfirmationEmailToQueueDbCommand>
+internal sealed class AddForgotPasswordEmailToQueueDbCommandValidator : AbstractValidator<AddForgotPasswordEmailToQueueDbCommand>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<AddConfirmationEmailToQueueDbCommand> context, CancellationToken cancellation = new CancellationToken())
+    public override Task<ValidationResult> ValidateAsync(ValidationContext<AddForgotPasswordEmailToQueueDbCommand> context, CancellationToken cancellation = new())
     {
         RuleFor(x => x.EmailTo).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
         {
             if (!await email.IsValidEmailAsync(cancel))
             {
-                ctx.AddFailure(new ValidationFailure(nameof(AddConfirmationEmailToQueueDbCommand.EmailTo), "Email domain is invalid"));
+                ctx.AddFailure(new ValidationFailure(nameof(AddForgotPasswordEmailToQueueDbCommand.EmailTo), "Email domain is invalid"));
             }
         });
 
-        RuleFor(x => x.ConfirmationLink).NotNull().NotEmpty().Custom((str, ctx) =>
+        RuleFor(x => x.PasswordResetLink).NotNull().NotEmpty().Custom((str, ctx) =>
         {
             try
             {
@@ -24,7 +23,7 @@ internal sealed class AddForgotPasswordEmailToQueueDbCommandValidator : Abstract
             }
             catch (UriFormatException)
             {
-                ctx.AddFailure(new ValidationFailure(nameof(AddConfirmationEmailToQueueDbCommand.ConfirmationLink), "Confirmation link is invalid"));
+                ctx.AddFailure(new ValidationFailure(nameof(AddForgotPasswordEmailToQueueDbCommand.PasswordResetLink), "Reset link is invalid"));
             }
         });
 

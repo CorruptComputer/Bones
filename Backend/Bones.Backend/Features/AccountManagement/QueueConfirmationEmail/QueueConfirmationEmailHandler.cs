@@ -12,9 +12,9 @@ internal class QueueConfirmationEmailHandler(UserManager<BonesUser> userManager,
 {
     public async Task<CommandResponse> Handle(QueueConfirmationEmailCommand request, CancellationToken cancellationToken)
     {
-        if (config.WebUIBaseUrl is null)
+        if (string.IsNullOrEmpty(config.WebUIBaseUrl))
         {
-            throw new BonesException("BackendConfiguration:WebUIBaseUrl is null in appsettings");
+            throw new BonesException("BackendConfiguration:WebUIBaseUrl is not set in appsettings");
         }
 
         string code = request.IsChange

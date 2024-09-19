@@ -143,7 +143,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
 
         return Ok(EmptyResponse.Value);
     }
-    
+
     /// <summary>
     ///   Queues a forgot password email
     /// </summary>

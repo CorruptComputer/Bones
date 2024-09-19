@@ -59,7 +59,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
             }
             else
             {
-                ValidationContext<TRequest> context = new ValidationContext<TRequest>(request);
+                ValidationContext<TRequest> context = new(request);
                 Dictionary<string, string[]> errors = requestValidators
                     .Select(x => x.Validate(context))
                     .SelectMany(x => x.Errors)

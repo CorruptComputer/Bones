@@ -18,6 +18,11 @@ internal sealed class RegisterUserQueryValidator : AbstractValidator<RegisterUse
 
         RuleFor(request => request.Password).NotNull().MinimumLength(8).Custom((password, ctx) =>
         {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return;
+            }
+
             if (!StandardRegexes.PasswordContainsUpper().IsMatch(password))
             {
                 ctx.AddFailure(new ValidationFailure(nameof(RegisterUserQuery.Password), "Password must contain at least one capital letter"));
