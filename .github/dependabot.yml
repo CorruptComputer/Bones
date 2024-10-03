@@ -45,7 +45,7 @@ updates:
           - "Serilog.*"
       Swashbuckle:
         patterns:
-          - "Swashbuckle.AspNetCore"
+          - "Swashbuckle.*"
       Testing:
         patterns:
           - "FluentAssertions"
