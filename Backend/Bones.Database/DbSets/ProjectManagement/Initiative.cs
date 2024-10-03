@@ -1,3 +1,5 @@
+using Bones.Database.DbSets.WorkItemManagement;
+
 namespace Bones.Database.DbSets.ProjectManagement;
 
 /// <summary>
@@ -27,7 +29,7 @@ public class Initiative
     /// <summary>
     ///   The child queues for this initiative 
     /// </summary>
-    public List<Queue> Queues { get; set; } = [];
+    public List<WorkItemQueue> Queues { get; set; } = [];
 
     /// <summary>
     ///   Disables access to this Initiative and schedules deletes for everything within,

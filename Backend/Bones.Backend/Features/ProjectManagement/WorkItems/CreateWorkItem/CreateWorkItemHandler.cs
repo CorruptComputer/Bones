@@ -1,4 +1,4 @@
-using Bones.Database.Operations.ProjectManagement.WorkItems.CreateWorkItemDb;
+using Bones.Database.Operations.WorkItemManagement.WorkItems.CreateWorkItemDb;
 
 namespace Bones.Backend.Features.ProjectManagement.WorkItems.CreateWorkItem;
 

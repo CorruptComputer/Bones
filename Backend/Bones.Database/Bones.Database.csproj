@@ -32,16 +32,14 @@
     <ItemGroup>
       <Folder Include="DbSets\DocumentationManagement\" />
       <Folder Include="Migrations\" />
-      <Folder Include="Operations\AssetManagement\AssetFields\" />
-      <Folder Include="Operations\AssetManagement\AssetLayouts\GetAssetLayoutDetailsById\" />
-      <Folder Include="Operations\AssetManagement\AssetLayouts\GetAssetLayoutsByOwnerDb\" />
-      <Folder Include="Operations\AssetManagement\AssetLayouts\QueueDeleteAssetLayoutById\" />
-      <Folder Include="Operations\AssetManagement\Assets\" />
-      <Folder Include="Operations\ProjectManagement\WorkItemFields\CreateWorkItemFieldDb\" />
-      <Folder Include="Operations\ProjectManagement\WorkItemFields\QueueDeleteWorkItemFieldByIdDb\" />
-      <Folder Include="Operations\ProjectManagement\WorkItemFields\UpdateWorkItemFieldByIdDb\" />
+      <Folder Include="Operations\AssetManagement\" />
+      <Folder Include="Operations\GenericItem\ItemFields\" />
+      <Folder Include="Operations\GenericItem\ItemLayouts\GetItemLayoutDetailsByIdDb\" />
+      <Folder Include="Operations\GenericItem\ItemLayouts\GetItemLayoutsByProjectDb\" />
+      <Folder Include="Operations\GenericItem\ItemLayouts\QueueDeleteItemLayoutByIdDb\" />
       <Folder Include="Operations\SystemQueues\GetConfirmationEmailsInQueueDb\" />
       <Folder Include="Operations\SystemQueues\GetFailedConfirmationEmailsInQueueDb\" />
+      <Folder Include="Operations\WorkItemManagement\" />
     </ItemGroup>
 
 </Project>

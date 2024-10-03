@@ -1,4 +1,4 @@
-using Bones.Database.Operations.ProjectManagement.Queues.CreateQueueDb;
+using Bones.Database.Operations.WorkItemManagement.WorkItemQueues.CreateQueueDb;
 
 namespace Bones.Backend.Features.ProjectManagement.Queues.CreateQueue;
 

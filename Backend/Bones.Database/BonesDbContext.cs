@@ -1,14 +1,13 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement.AssetFields;
-using Bones.Database.DbSets.AssetManagement.AssetLayouts;
-using Bones.Database.DbSets.AssetManagement.Assets;
+using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.GenericItems.ItemFields;
+using Bones.Database.DbSets.GenericItems.ItemLayouts;
+using Bones.Database.DbSets.GenericItems.Items;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.DbSets.ProjectManagement.WorkItemFields;
-using Bones.Database.DbSets.ProjectManagement.WorkItemLayouts;
-using Bones.Database.DbSets.ProjectManagement.WorkItems;
 using Bones.Database.DbSets.System;
 using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Models;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -29,12 +28,22 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
 
     #region AssetManagement
     internal DbSet<Asset> Assets { get; set; }
-    internal DbSet<AssetField> AssetFields { get; set; }
-    internal DbSet<AssetFieldListEntry> AssetFieldListEntries { get; set; }
-    internal DbSet<AssetLayout> AssetLayouts { get; set; }
-    internal DbSet<AssetLayoutVersion> AssetLayoutVersions { get; set; }
-    internal DbSet<AssetValue> AssetValues { get; set; }
-    internal DbSet<AssetVersion> AssetVersions { get; set; }
+    #endregion
+
+    #region DocumentationManagement
+    // TODO
+    #endregion
+
+    #region GenericItems
+    internal DbSet<ItemField> ItemFields { get; set; }
+    internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
+
+    internal DbSet<ItemLayout> ItemLayouts { get; set; }
+    internal DbSet<ItemLayoutVersion> ItemLayoutVersions { get; set; }
+
+    internal DbSet<Item> Items { get; set; }
+    internal DbSet<ItemValue> ItemValues { get; set; }
+    internal DbSet<ItemVersion> ItemVersions { get; set; }
     #endregion
 
     #region OrganizationManagement
@@ -43,17 +52,7 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
 
     #region ProjectManagement
     internal DbSet<Initiative> Initiatives { get; set; }
-    internal DbSet<Tag> Tags { get; set; }
     internal DbSet<Project> Projects { get; set; }
-    internal DbSet<Queue> Queues { get; set; }
-
-    internal DbSet<WorkItem> WorkItems { get; set; }
-    internal DbSet<WorkItemField> WorkItemFields { get; set; }
-    internal DbSet<WorkItemFieldListEntry> WorkItemFieldListEntries { get; set; }
-    internal DbSet<WorkItemLayout> WorkItemLayouts { get; set; }
-    internal DbSet<WorkItemLayoutVersion> WorkItemLayoutVersions { get; set; }
-    internal DbSet<WorkItemValue> WorkItemValues { get; set; }
-    internal DbSet<WorkItemVersion> WorkItemVersions { get; set; }
     #endregion
 
     #region System
@@ -67,6 +66,12 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
 
     internal DbSet<ForgotPasswordEmailDeadQueue> ForgotPasswordEmailDeadQueue { get; set; }
     internal DbSet<ForgotPasswordEmailQueue> ForgotPasswordEmailQueue { get; set; }
+    #endregion
+
+    #region WorkItemManagement
+    internal DbSet<WorkItemQueue> WorkItemQueues { get; set; }
+
+    internal DbSet<WorkItem> WorkItems { get; set; }
     #endregion
 
     /// <summary>

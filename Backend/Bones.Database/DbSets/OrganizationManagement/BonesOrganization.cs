@@ -1,6 +1,4 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement.AssetLayouts;
-using Bones.Database.DbSets.AssetManagement.Assets;
 using Bones.Database.DbSets.ProjectManagement;
 
 namespace Bones.Database.DbSets.OrganizationManagement;
@@ -33,14 +31,4 @@ public class BonesOrganization
     ///   The projects associated with this organization
     /// </summary>
     public required List<Project> Projects { get; set; }
-
-    /// <summary>
-    ///   The assets associated with this organization
-    /// </summary>
-    public required List<Asset> Assets { get; set; }
-
-    /// <summary>
-    ///   The asset layouts associated with this organization
-    /// </summary>
-    public required List<AssetLayout> AssetLayouts { get; set; }
 }

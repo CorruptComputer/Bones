@@ -1,5 +1,3 @@
-using Bones.Database.DbSets.AssetManagement.AssetLayouts;
-using Bones.Database.DbSets.AssetManagement.Assets;
 using Bones.Database.DbSets.ProjectManagement;
 using Microsoft.AspNetCore.Identity;
 
@@ -38,14 +36,4 @@ public class BonesUser : IdentityUser<Guid>
     ///   The projects that the user owns.
     /// </summary>
     public List<Project> Projects { get; set; } = [];
-
-    /// <summary>
-    ///   The assets that the user owns.
-    /// </summary>
-    public List<Asset> Assets { get; set; } = [];
-
-    /// <summary>
-    ///   The asset layouts associated with this user
-    /// </summary>
-    public List<AssetLayout> AssetLayouts { get; set; } = [];
 }

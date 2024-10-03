@@ -1,4 +1,4 @@
-using Bones.Database.Operations.ProjectManagement.WorkItems.CreateWorkItemVersionDb;
+using Bones.Database.Operations.WorkItemManagement.WorkItems.CreateWorkItemVersionDb;
 
 namespace Bones.Backend.Features.ProjectManagement.WorkItems.CreateWorkItemVersion;
 

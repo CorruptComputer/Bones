@@ -1,5 +1,6 @@
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.Operations.ProjectManagement.Queues.QueueDeleteQueueByIdDb;
+using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Database.Operations.WorkItemManagement.WorkItemQueues.QueueDeleteQueueByIdDb;
 
 namespace Bones.Database.Operations.ProjectManagement.Initiatives.QueueDeleteInitiativeByIdDb;
 
@@ -14,7 +15,7 @@ internal sealed class QueueDeleteInitiativeByIdDbHandler(BonesDbContext dbContex
             return CommandResponse.Fail("Invalid ProjectId.");
         }
 
-        foreach (Queue queue in initiative.Queues)
+        foreach (WorkItemQueue queue in initiative.Queues)
         {
             await sender.Send(new QueueDeleteQueueByIdDbCommand(queue.Id), cancellationToken);
         }
