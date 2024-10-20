@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
 using Bones.Backend.Features.AccountManagement.ConfirmEmail;
-using Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
 using Bones.Backend.Features.AccountManagement.QueueForgotPasswordEmail;
 using Bones.Backend.Features.AccountManagement.QueueResendConfirmationEmail;
 using Bones.Backend.Features.AccountManagement.RegisterUser;
@@ -86,6 +85,10 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
             {
                 result = await signInManager.TwoFactorRecoveryCodeSignInAsync(login.TwoFactorRecoveryCode);
             }
+            else
+            {
+                return Unauthorized(EmptyResponse.Value);
+            }
         }
 
         if (!result.Succeeded)
@@ -119,22 +122,16 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Email"></param>
-    public sealed record ResendConfirmationEmailApiRequest([Required] string Email);
-
-    /// <summary>
     ///   Re-queues the confirmation email to send
     /// </summary>
-    /// <param name="resendRequest"></param>
+    /// <param name="email"></param>
     /// <returns></returns>
     [HttpPost("resend-confirmation-email", Name = "ResendConfirmationEmailAsync")]
     [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<ActionResult> ResendConfirmationEmailAsync([FromBody][Required] ResendConfirmationEmailApiRequest resendRequest)
+    public async Task<ActionResult> ResendConfirmationEmailAsync([FromQuery][Required] string email)
     {
-        CommandResponse result = await Sender.Send(new QueueResendConfirmationEmailCommand(resendRequest.Email));
+        CommandResponse result = await Sender.Send(new QueueResendConfirmationEmailCommand(email));
 
         if (!result.Success)
         {
@@ -183,48 +180,20 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// </summary>
     /// <param name="Email"></param>
     /// <param name="DisplayName"></param>
-    public record GetMyBasicInfoResponse(string? Email, string? DisplayName);
+    public record GetMyBasicInfoResponse(string Email, string DisplayName);
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
     [HttpGet("my/basic-info", Name = "GetMyBasicInfoAsync")]
-    [ProducesResponseType<ActionResult<GetMyBasicInfoResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<GetMyBasicInfoResponse>(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetMyBasicInfoAsync()
     {
-        QueryResponse<BonesUser> user = await Sender.Send(new GetUserByClaimsPrincipalQuery(User));
+        BonesUser user = await GetCurrentBonesUserAsync();
 
-        if (!user.Success || user.Result == null)
-        {
-            return Unauthorized(EmptyResponse.Value);
-        }
-
-        return Ok(new GetMyBasicInfoResponse(user.Result.Email, user.Result.DisplayName));
-    }
-
-    private static Dictionary<string, string[]> ReadErrorsFromIdentityResult(IdentityResult result)
-    {
-        Dictionary<string, string[]> errorDictionary = new();
-
-        foreach (IdentityError error in result.Errors)
-        {
-            string[] newDescriptions;
-
-            if (errorDictionary.TryGetValue(error.Code, out string[]? descriptions))
-            {
-                newDescriptions = new string[descriptions.Length + 1];
-                Array.Copy(descriptions, newDescriptions, descriptions.Length);
-                newDescriptions[descriptions.Length] = error.Description;
-            }
-            else
-            {
-                newDescriptions = [error.Description];
-            }
-
-            errorDictionary[error.Code] = newDescriptions;
-        }
-
-        return errorDictionary;
+        return Ok(new GetMyBasicInfoResponse(
+            user.Email ?? string.Empty,
+            user.DisplayName ?? user.Email ?? string.Empty));
     }
 }

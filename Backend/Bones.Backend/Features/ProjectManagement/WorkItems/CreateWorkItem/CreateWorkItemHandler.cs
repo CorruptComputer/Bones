@@ -6,6 +6,6 @@ internal sealed class CreateWorkItemHandler(ISender sender) : IRequestHandler<Cr
 {
     public async Task<CommandResponse> Handle(CreateWorkItemCommand request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new CreateWorkItemDbCommand(request.Name, request.QueueId, request.WorkItemLayoutVersionId, request.Values), cancellationToken);
+        return await sender.Send(new CreateWorkItemDbCommand(request.Name, request.QueueId, request.ItemLayoutId), cancellationToken);
     }
 }

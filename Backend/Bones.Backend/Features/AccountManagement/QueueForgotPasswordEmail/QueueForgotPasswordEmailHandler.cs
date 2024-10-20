@@ -20,7 +20,7 @@ internal class QueueForgotPasswordEmailHandler(UserManager<BonesUser> userManage
         BonesUser? user = await userManager.FindByEmailAsync(request.Email);
         if (user is not null && await userManager.IsEmailConfirmedAsync(user))
         {
-            string? code = await userManager.GeneratePasswordResetTokenAsync(user);
+            string code = await userManager.GeneratePasswordResetTokenAsync(user);
             code = code.Base64UrlSafeEncode();
 
             // Generate ResetPassword URL

@@ -10,10 +10,10 @@ public partial class MyProfilePage
 
     protected override async Task OnInitializedAsync()
     {
-        GetMyBasicInfoResponseActionResult response = await ApiClient.GetMyBasicInfoAsync();
+        GetMyBasicInfoResponse response = await ApiClient.GetMyBasicInfoAsync();
 
-        Email = response.Value.Email ?? string.Empty;
-        DisplayName = response.Value.DisplayName ?? string.Empty;
+        Email = response.Email ?? string.Empty;
+        DisplayName = response.DisplayName ?? string.Empty;
 
         await base.OnInitializedAsync();
     }

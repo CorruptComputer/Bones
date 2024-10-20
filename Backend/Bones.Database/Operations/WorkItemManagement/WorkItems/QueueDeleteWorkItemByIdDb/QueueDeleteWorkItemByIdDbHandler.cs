@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems.Items;
+using Bones.Database.DbSets.GenericItems.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.WorkItemManagement.WorkItems.QueueDeleteWorkItemVersionByIdDb;
 
@@ -18,7 +18,7 @@ internal sealed class QueueDeleteWorkItemByIdDbHandler(BonesDbContext dbContext,
             return CommandResponse.Fail("Invalid ItemId.");
         }
 
-        foreach (ItemVersion version in workItem.Item.Versions)
+        foreach (GenericItemVersion version in workItem.Item.Versions)
         {
             await sender.Send(new QueueDeleteWorkItemVersionByIdDbCommand(version.Id), cancellationToken);
         }

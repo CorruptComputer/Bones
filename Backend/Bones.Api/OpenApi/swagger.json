@@ -233,17 +233,17 @@
         ],
         "summary": "Re-queues the confirmation email to send",
         "operationId": "ResendConfirmationEmailAsync",
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ResendConfirmationEmailApiRequest"
-              }
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -444,7 +444,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetMyBasicInfoResponseActionResult"
+                  "$ref": "#/components/schemas/GetMyBasicInfoResponse"
                 }
               }
             }
@@ -678,18 +678,6 @@
         "additionalProperties": false,
         "description": ""
       },
-      "GetMyBasicInfoResponseActionResult": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ActionResult"
-          },
-          "value": {
-            "$ref": "#/components/schemas/GetMyBasicInfoResponse"
-          }
-        },
-        "additionalProperties": false
-      },
       "LoginUserApiRequest": {
         "type": "object",
         "properties": {
@@ -733,18 +721,6 @@
         },
         "additionalProperties": false,
         "description": "Request to register a new user"
-      },
-      "ResendConfirmationEmailApiRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": ""
       },
       "StringStringArrayDictionaryActionResult": {
         "type": "object",

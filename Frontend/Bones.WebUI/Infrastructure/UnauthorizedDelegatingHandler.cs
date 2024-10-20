@@ -9,7 +9,7 @@ public class UnauthorizedDelegatingHandler(BonesAuthenticationStateProvider auth
 
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
-            await authenticationStateProvider.SetCurrentUserAsync(null, cancellationToken);
+            await authenticationStateProvider.ClearCurrentUserAsync(cancellationToken);
         }
 
         return response;

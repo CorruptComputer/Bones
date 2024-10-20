@@ -1,8 +1,8 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems.ItemFields;
-using Bones.Database.DbSets.GenericItems.ItemLayouts;
-using Bones.Database.DbSets.GenericItems.Items;
+using Bones.Database.DbSets.GenericItems.GenericItemFields;
+using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
+using Bones.Database.DbSets.GenericItems.GenericItems;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.System;
@@ -35,15 +35,15 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     #endregion
 
     #region GenericItems
-    internal DbSet<ItemField> ItemFields { get; set; }
-    internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
+    internal DbSet<GenericItemField> ItemFields { get; set; }
+    internal DbSet<GenericItemFieldListEntry> ItemFieldListEntries { get; set; }
 
-    internal DbSet<ItemLayout> ItemLayouts { get; set; }
-    internal DbSet<ItemLayoutVersion> ItemLayoutVersions { get; set; }
+    internal DbSet<GenericItemLayout> ItemLayouts { get; set; }
+    internal DbSet<GenericItemLayoutVersion> ItemLayoutVersions { get; set; }
 
-    internal DbSet<Item> Items { get; set; }
-    internal DbSet<ItemValue> ItemValues { get; set; }
-    internal DbSet<ItemVersion> ItemVersions { get; set; }
+    internal DbSet<GenericItem> Items { get; set; }
+    internal DbSet<GenericItemValue> ItemValues { get; set; }
+    internal DbSet<GenericItemVersion> ItemVersions { get; set; }
     #endregion
 
     #region OrganizationManagement

@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems.Items;
+using Bones.Database.DbSets.GenericItems.GenericItems;
 using Bones.Database.DbSets.ProjectManagement;
 
 namespace Bones.Database.DbSets.AssetManagement;
@@ -30,7 +30,7 @@ public class Asset
     /// <summary>
     ///   The generic item for this asset
     /// </summary>
-    public required Item Item { get; set; }
+    public required GenericItem Item { get; set; }
 
     /// <summary>
     ///   Disables access to this Asset and schedules deletes for everything within,

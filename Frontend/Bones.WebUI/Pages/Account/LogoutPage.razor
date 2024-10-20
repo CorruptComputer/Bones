@@ -8,7 +8,7 @@
     protected override async Task OnInitializedAsync()
     {
         await ApiClient.LogoutAsync();
-        await AuthStateProvider.SetCurrentUserAsync(null, CancellationToken.None);
+        await AuthStateProvider.ClearCurrentUserAsync(CancellationToken.None);
 
         NavManager.NavigateTo("/");
     }

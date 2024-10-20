@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems.ItemLayouts;
+using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Shared.Backend.Enums;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -17,14 +17,14 @@ internal class CreateItemLayoutDbHandler(BonesDbContext dbContext) : IRequestHan
             return CommandResponse.Fail("Project does not exist");
         }
 
-        ItemLayout newLayout = new()
+        GenericItemLayout newLayout = new()
         {
             Name = request.Name,
             ProjectId = project.Id,
             EnabledFor = Enum.GetValues<ItemLayoutUse>().ToList(),
         };
 
-        EntityEntry<ItemLayout> added = await dbContext.ItemLayouts.AddAsync(newLayout, cancellationToken);
+        EntityEntry<GenericItemLayout> added = await dbContext.ItemLayouts.AddAsync(newLayout, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

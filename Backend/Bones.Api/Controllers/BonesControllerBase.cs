@@ -4,6 +4,7 @@ using Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
@@ -38,5 +39,35 @@ public class BonesControllerBase(ISender sender) : ControllerBase
 
         // I don't think this should really happen, if their claims principal was invalid the auth should have stopped the request already
         return user ?? throw new ForbiddenAccessException();
+    }
+
+    /// <summary>
+    ///   Gets the errors from an IdentityResult in a format that we can return.
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    protected static Dictionary<string, string[]> ReadErrorsFromIdentityResult(IdentityResult result)
+    {
+        Dictionary<string, string[]> errorDictionary = new();
+
+        foreach (IdentityError error in result.Errors)
+        {
+            string[] newDescriptions;
+
+            if (errorDictionary.TryGetValue(error.Code, out string[]? descriptions))
+            {
+                newDescriptions = new string[descriptions.Length + 1];
+                Array.Copy(descriptions, newDescriptions, descriptions.Length);
+                newDescriptions[descriptions.Length] = error.Description;
+            }
+            else
+            {
+                newDescriptions = [error.Description];
+            }
+
+            errorDictionary[error.Code] = newDescriptions;
+        }
+
+        return errorDictionary;
     }
 }

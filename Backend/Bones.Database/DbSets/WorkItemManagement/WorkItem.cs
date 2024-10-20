@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems.Items;
+using Bones.Database.DbSets.GenericItems.GenericItems;
 
 namespace Bones.Database.DbSets.WorkItemManagement;
 
@@ -28,7 +28,7 @@ public class WorkItem
     /// <summary>
     ///   The generic item for this work item
     /// </summary>
-    public required Item Item { get; set; }
+    public required GenericItem Item { get; set; }
 
     /// <summary>
     ///   Disables viewing this item, and when safe to do so it will be removed.

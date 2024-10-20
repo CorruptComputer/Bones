@@ -31,11 +31,17 @@ public partial class LoginPage
             {
                 Email = EmailAddress.Text,
                 Password = Password.Text
-            });
+            }).ConfigureAwait(true);
 
             // Now refresh the Authentication State:
-            GetMyBasicInfoResponseActionResult me = await ApiClient.GetMyBasicInfoAsync();
-            await AuthStateProvider.SetCurrentUserAsync(me.Value, CancellationToken.None);
+            GetMyBasicInfoResponse? me = await ApiClient.GetMyBasicInfoAsync().ConfigureAwait(true);
+            if (me == null)
+            {
+                ErrorLoggingIn = true;
+                return;
+            }
+
+            await AuthStateProvider.SetCurrentUserAsync(me, CancellationToken.None);
 
             NavManager.NavigateTo(GetNavigationUrl());
         }

@@ -6,11 +6,7 @@ internal sealed class CreateWorkItemDbCommandValidator : AbstractValidator<Creat
     {
         RuleFor(x => x.Name).NotNull().NotEmpty();
         RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
-        RuleFor(x => x.WorkItemLayoutVersionId).NotNull().NotEqual(Guid.Empty);
-        RuleFor(x => x.Values).NotNull().ChildRules(dict =>
-        {
-            dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
-        });
+        RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
 
         return base.ValidateAsync(context, cancellation);
     }

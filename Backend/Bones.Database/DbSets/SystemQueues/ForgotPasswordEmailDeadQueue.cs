@@ -41,10 +41,12 @@ public class ForgotPasswordEmailDeadQueue
     /// <summary>
     ///   Who is this email going to
     /// </summary>
+    [MaxLength(512)]
     public required string EmailTo { get; set; }
 
     /// <summary>
     ///   What is the link to set for the reset
     /// </summary>
+    [MaxLength(4096)]
     public required string PasswordResetLink { get; set; }
 }

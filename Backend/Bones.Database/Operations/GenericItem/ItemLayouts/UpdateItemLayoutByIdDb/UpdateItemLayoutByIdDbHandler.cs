@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems.ItemLayouts;
+using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
 
 namespace Bones.Database.Operations.GenericItem.ItemLayouts.UpdateItemLayoutByIdDb;
 
@@ -6,7 +6,7 @@ internal class UpdateItemLayoutByIdDbHandler(BonesDbContext dbContext) : IReques
 {
     public async Task<CommandResponse> Handle(UpdateItemLayoutByIdDbCommand request, CancellationToken cancellationToken)
     {
-        ItemLayout? layout = await dbContext.ItemLayouts.FindAsync([request.ItemLayoutId], cancellationToken);
+        GenericItemLayout? layout = await dbContext.ItemLayouts.FindAsync([request.ItemLayoutId], cancellationToken);
 
         if (layout == null)
         {

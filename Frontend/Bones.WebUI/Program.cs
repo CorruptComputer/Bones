@@ -28,7 +28,15 @@ public static class Program
         builder.Services.AddTransient<CookieDelegatingHandler>();
         builder.Services.AddTransient<UnauthorizedDelegatingHandler>();
 
-        string apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? throw new BonesException("Missing ApiBaseUrl");
+        string thisHost = new Uri(builder.HostEnvironment.BaseAddress).Authority;
+        string? apiBaseUrl = builder.Configuration["ApiBaseUrl"]
+            ?.Replace("{{THIS_HOST}}", thisHost);
+
+        if (string.IsNullOrWhiteSpace(apiBaseUrl))
+        {
+            throw new BonesException("Missing ApiBaseUrl");
+        }
+
         builder.Services.AddHttpClient(BonesApiClient.HTTP_CLIENT_NAME, client =>
             {
                 client.BaseAddress = new(apiBaseUrl);

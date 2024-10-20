@@ -21,10 +21,12 @@ public class TaskError
     /// <summary>
     ///   The error message
     /// </summary>
+    [MaxLength(512)]
     public required string ErrorMessage { get; set; }
 
     /// <summary>
     ///   The stacktrace of the error
     /// </summary>
+    // ReSharper disable once EntityFramework.ModelValidation.UnlimitedStringLength
     public required string StackTrace { get; set; }
 }

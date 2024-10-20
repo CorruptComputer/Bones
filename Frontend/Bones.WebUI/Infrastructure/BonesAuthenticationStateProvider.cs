@@ -17,8 +17,8 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         }
 
         Claim[] claims = [
-            new(BonesClaimTypes.User.EMAIL, currentUser.Email),
-            new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
+            new(BonesClaimTypes.User.EMAIL, currentUser.Email ?? string.Empty),
+            new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName ?? currentUser.Email ?? string.Empty)
         ];
 
         AuthenticationState authenticationState = new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));
@@ -26,9 +26,16 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         return authenticationState;
     }
 
-    public async Task SetCurrentUserAsync(GetMyBasicInfoResponse? currentUser, CancellationToken cancellationToken)
+    public async Task SetCurrentUserAsync(GetMyBasicInfoResponse currentUser, CancellationToken cancellationToken)
     {
         await localStorageService.SetItemAsync(LocalStorageService.CURRENT_USER_KEY, currentUser, cancellationToken);
+
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
+
+    public async Task ClearCurrentUserAsync(CancellationToken cancellationToken)
+    {
+        await localStorageService.RemoveItemAsync(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }

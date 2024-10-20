@@ -406,10 +406,10 @@ namespace Bones.Api.Client
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<EmptyResponseActionResult> ResendConfirmationEmailAsync(ResendConfirmationEmailApiRequest body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<EmptyResponseActionResult> ResendConfirmationEmailAsync(string email, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (body == null)
-                throw new System.ArgumentNullException("body");
+            if (email == null)
+                throw new System.ArgumentNullException("email");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -417,10 +417,7 @@ namespace Bones.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(ResendConfirmationEmailApiRequest), JsonSerializerSettings);
-                    var content_ = new System.Net.Http.ByteArrayContent(json_);
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -428,6 +425,9 @@ namespace Bones.Api.Client
                 
                     // Operation Path: "AccountManagement/resend-confirmation-email"
                     urlBuilder_.Append("AccountManagement/resend-confirmation-email");
+                    urlBuilder_.Append('?');
+                    urlBuilder_.Append(System.Uri.EscapeDataString("email")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(email, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    urlBuilder_.Length--;
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -727,7 +727,7 @@ namespace Bones.Api.Client
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<GetMyBasicInfoResponseActionResult> GetMyBasicInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<GetMyBasicInfoResponse> GetMyBasicInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -798,7 +798,7 @@ namespace Bones.Api.Client
                         else
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<GetMyBasicInfoResponseActionResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<GetMyBasicInfoResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1261,12 +1261,6 @@ namespace Bones.Api.Client
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record ActionResult
-    {
-
-    }
-
     /// <summary>
     /// Request to create a new project for the current user
     /// </summary>
@@ -1282,24 +1276,15 @@ namespace Bones.Api.Client
 
     }
 
-    /// <summary>
-    /// The response body is empty, this is a workaround for the limitations of the API client.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record EmptyResponse
-    {
-
-    }
-
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record EmptyResponseActionResult
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("result")]
-        public ActionResult Result { get; set; }
+        public object Result { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public EmptyResponse Value { get; set; }
+        public object Value { get; set; }
 
     }
 
@@ -1312,18 +1297,6 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("displayName")]
         public string DisplayName { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record GetMyBasicInfoResponseActionResult
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("result")]
-        public ActionResult Result { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public GetMyBasicInfoResponse Value { get; set; }
 
     }
 
@@ -1386,23 +1359,14 @@ namespace Bones.Api.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record ResendConfirmationEmailApiRequest
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("email")]
-        public string Email { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record StringStringArrayDictionaryActionResult
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("result")]
-        public ActionResult Result { get; set; }
+        public object Result { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public System.Collections.Generic.IDictionary<string, System.Collections.Generic.ICollection<string>> Value { get; set; }
+        public System.Collections.Generic.IDictionary<string, System.Collections.Generic.IEnumerable<string>> Value { get; set; }
 
     }
 

@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.GenericItems.ItemFields;
-using Bones.Database.DbSets.GenericItems.ItemLayouts;
-using Bones.Database.DbSets.GenericItems.Items;
+using Bones.Database.DbSets.GenericItems.GenericItemFields;
+using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
+using Bones.Database.DbSets.GenericItems.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -16,7 +16,7 @@ internal sealed class CreateWorkItemVersionDbHandler(BonesDbContext dbContext) :
             return CommandResponse.Fail("Invalid WorkItem ID.");
         }
 
-        ItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions.Include(layoutVersion => layoutVersion.Fields).FirstOrDefaultAsync(lv => lv.Id == request.WorkItemLayoutVersionId, cancellationToken);
+        GenericItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions.Include(layoutVersion => layoutVersion.Fields).FirstOrDefaultAsync(lv => lv.Id == request.WorkItemLayoutVersionId, cancellationToken);
         if (layoutVersion == null)
         {
             return CommandResponse.Fail("Invalid LayoutVersionId.");
@@ -27,24 +27,24 @@ internal sealed class CreateWorkItemVersionDbHandler(BonesDbContext dbContext) :
             return CommandResponse.Fail("Invalid values provided.");
         }
 
-        List<ItemValue> values = [];
+        List<GenericItemValue> values = [];
 
         foreach ((string? key, object? value) in request.Values)
         {
-            ItemField? field = layoutVersion.Fields.Find(f => f.Name == key);
+            GenericItemField? field = layoutVersion.Fields.Find(f => f.Name == key);
             if (field == null)
             {
                 return CommandResponse.Fail($"Invalid field name provided: {key}");
             }
 
-            ItemValue workItemValue = new() { Field = field };
-            bool valid = workItemValue.TrySetValue(value);
+            GenericItemValue workGenericItemValue = new() { Field = field };
+            bool valid = workGenericItemValue.TrySetValue(value);
             if (!valid)
             {
                 return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(field.Type)}' field '{key}': {value}");
             }
 
-            values.Add(workItemValue);
+            values.Add(workGenericItemValue);
         }
 
         workItem.Item.Versions.Add(new()
@@ -52,7 +52,7 @@ internal sealed class CreateWorkItemVersionDbHandler(BonesDbContext dbContext) :
             ItemId = workItem.Item.Id,
             Version = ++workItem.Item.CurrentVersion,
             CreateDateTime = DateTimeOffset.Now,
-            ItemLayoutVersion = layoutVersion,
+            GenericItemLayoutVersion = layoutVersion,
             Values = values
         });
 
