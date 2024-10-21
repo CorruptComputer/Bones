@@ -49,4 +49,18 @@ public class ForgotPasswordEmailDeadQueue
     /// </summary>
     [MaxLength(4096)]
     public required string PasswordResetLink { get; set; }
+
+    internal static ForgotPasswordEmailDeadQueue FromForgotPasswordEmailQueue(ForgotPasswordEmailQueue queueItem)
+    {
+        return new()
+        {
+            OriginalCreated = queueItem.Created,
+            PasswordResetLink = queueItem.PasswordResetLink,
+            RetryCount = queueItem.RetryCount,
+            LastTry = queueItem.LastTry ?? DateTimeOffset.Now,
+            DeadQueueCreated = DateTimeOffset.Now,
+            EmailTo = queueItem.EmailTo,
+            FailureReasons = queueItem.FailureReasons
+        };
+    }
 }

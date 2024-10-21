@@ -5,9 +5,32 @@
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
-            <MudText @bind-value="@Email" />
+            <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+                <MudTextField T="string" Label="Create DateTime" Disabled="true" @ref="@CreateDateTime"/>
+                <div class="d-flex align-center justify-space-between">
+                    <MudTextField T="string" Label="Email" Disabled="true" @ref="@Email"/>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@GoToChangeEmail">Change Email</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@GoToChangePassword">Change Password</MudButton>
+                </div>
+                <MudTextField T="string" Label="Email Confirmed" Disabled="true" @ref="@EmailConfirmed"/>
+                <MudTextField T="string" Label="Email Confirmed DateTime" Disabled="true" @ref="@EmailConfirmedDateTime"/>
 
-            <MudText @bind-value="@DisplayName" />
+                <MudTextField T="string" Label="Display Name" @ref="@DisplayName"
+                              Required="true"
+                              RequiredError="Display name is required!"/>
+
+                <div class="d-flex align-center justify-space-between">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@UpdateProfileAsync">Update Profile</MudButton>
+                </div>
+            </MudForm>
         </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        @foreach (string error in ValidationErrors)
+        {
+        <MudItem Class="pa-2">
+            <MudAlert Severity="Severity.Error">@error</MudAlert>
+        </MudItem>
+        }
     </MudItem>
 </MudGrid>

@@ -1,15 +1,17 @@
-using System.Net;
 using System.Net.Mail;
 using Bones.BackgroundService.Models;
 using Bones.Database.DbSets.SystemQueues;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.AnyConfirmationEmailsInQueueDb;
 using Bones.Database.Operations.SystemQueues.ConfirmationEmail.GetConfirmationEmailsInQueueDb;
 using Bones.Database.Operations.SystemQueues.ConfirmationEmail.IncrementFailedConfirmationEmailById;
 using Bones.Database.Operations.SystemQueues.ConfirmationEmail.RemoveConfirmationEmailFromQueueByIdDb;
+using Bones.Database.Operations.SystemQueues.ForgotPassword.AnyForgotPasswordEmailsInQueueDb;
+using Bones.Database.Operations.SystemQueues.ForgotPassword.GetConfirmationEmailsInQueueDb;
+using Bones.Database.Operations.SystemQueues.ForgotPassword.IncrementFailedConfirmationEmailById;
+using Bones.Database.Operations.SystemQueues.ForgotPassword.RemoveConfirmationEmailFromQueueByIdDb;
 
 namespace Bones.BackgroundService.Tasks.Minutely;
 
-internal class SendConfirmationEmailTask(ISender sender, BackgroundServiceConfiguration configuration) : MinutelyTaskBase(sender)
+internal class SendForgotPasswordEmailTask(ISender sender, BackgroundServiceConfiguration configuration) : MinutelyTaskBase(sender)
 {
     protected override async Task<bool> ShouldTaskRunAsync(CancellationToken cancellationToken)
     {
@@ -25,12 +27,12 @@ internal class SendConfirmationEmailTask(ISender sender, BackgroundServiceConfig
             return false;
         }
 
-        return await Sender.Send(new AnyConfirmationEmailsInQueueDbQuery(), cancellationToken);
+        return await Sender.Send(new AnyForgotPasswordEmailsInQueueDbQuery(), cancellationToken);
     }
 
     protected override async Task RunTaskAsync(CancellationToken cancellationToken)
     {
-        List<ConfirmationEmailQueue>? emailsInQueue = await Sender.Send(new GetConfirmationEmailsInQueueDbQuery(), cancellationToken);
+        List<ForgotPasswordEmailQueue>? emailsInQueue = await Sender.Send(new GetForgotPasswordEmailsInQueueDbQuery(), cancellationToken);
 
         if (emailsInQueue is null)
         {
@@ -40,24 +42,23 @@ internal class SendConfirmationEmailTask(ISender sender, BackgroundServiceConfig
         Log.Information("{Count} confirmation emails in queue, ready to send.", emailsInQueue.Count);
 
         using SmtpClient client = new(configuration.SmtpServer, configuration.SmtpPort ?? 25);
-        foreach (ConfirmationEmailQueue emailToSend in emailsInQueue)
+        foreach (ForgotPasswordEmailQueue emailToSend in emailsInQueue)
         {
             try
             {
                 MailMessage message = new(
                     configuration.BackgroundServiceUserEmail!,
                     emailToSend.EmailTo,
-                    "Confirmation Email",
-                    emailToSend.ConfirmationLink);
+                    "Password Reset Email",
+                    emailToSend.PasswordResetLink);
 
-                client.Credentials = new NetworkCredential(configuration.SmtpUser, configuration.SmtpPassword);
                 client.Send(message);
 
-                await Sender.Send(new RemoveConfirmationEmailFromQueueByIdDbCommand(emailToSend.Id), cancellationToken);
+                await Sender.Send(new RemoveForgotPasswordEmailFromQueueByIdDbCommand(emailToSend.Id), cancellationToken);
             }
             catch (Exception ex)
             {
-                await Sender.Send(new IncrementFailedConfirmationEmailByIdCommand(emailToSend.Id, ex.Message), cancellationToken);
+                await Sender.Send(new IncrementFailedForgotPasswordEmailByIdCommand(emailToSend.Id, ex.Message), cancellationToken);
             }
         }
     }

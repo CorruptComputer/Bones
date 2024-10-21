@@ -37,8 +37,8 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <param name="registration">Request to register a new user</param>
     /// <returns>200 OK if created, 400 BadRequest otherwise with the reason why its failing</returns>
     [HttpPost("register", Name = "RegisterAsync")]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ActionResult<Dictionary<string, string[]>>>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     [AllowAnonymous]
     public async Task<ActionResult> RegisterAsync([FromBody] RegisterUserApiRequest registration)
     {
@@ -67,7 +67,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <param name="login">Request to login</param>
     /// <returns>200 OK if successful, 401 Unauthorized otherwise</returns>
     [HttpPost("login", Name = "LoginAsync")]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [AllowAnonymous]
     public async Task<ActionResult> LoginAsync([FromBody] LoginUserApiRequest login)
     {
@@ -107,7 +107,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <param name="changedEmail"></param>
     /// <returns></returns>
     [HttpGet("confirm-email", Name = "ConfirmEmailAsync")]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [AllowAnonymous]
     public async Task<ActionResult> ConfirmEmailAsync([FromQuery][Required] Guid userId, [FromQuery][Required] string code, [FromQuery] string? changedEmail)
     {
@@ -127,7 +127,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <param name="email"></param>
     /// <returns></returns>
     [HttpPost("resend-confirmation-email", Name = "ResendConfirmationEmailAsync")]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [AllowAnonymous]
     public async Task<ActionResult> ResendConfirmationEmailAsync([FromQuery][Required] string email)
     {
@@ -147,7 +147,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// <param name="email"></param>
     /// <returns></returns>
     [HttpPost("forgot-password", Name = "ForgotPasswordAsync")]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [AllowAnonymous]
     public async Task<ActionResult> ForgotPasswordAsync([FromQuery][Required] string email)
     {
@@ -161,7 +161,7 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
     /// </summary>
     /// <returns></returns>
     [HttpPost("logout", Name = "LogoutAsync")]
-    [ProducesResponseType<ActionResult<EmptyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [AllowAnonymous]
     public ActionResult LogoutAsync()
     {
@@ -195,5 +195,35 @@ public sealed class AccountManagementController(SignInManager<BonesUser> signInM
         return Ok(new GetMyBasicInfoResponse(
             user.Email ?? string.Empty,
             user.DisplayName ?? user.Email ?? string.Empty));
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Email"></param>
+    /// <param name="EmailConfirmed"></param>
+    /// <param name="EmailConfirmedDateTime"></param>
+    /// <param name="DisplayName"></param>
+    /// <param name="CreateDateTime"></param>
+    public record GetMyProfileResponse(string Email, bool EmailConfirmed, DateTimeOffset? EmailConfirmedDateTime, string DisplayName, DateTimeOffset CreateDateTime);
+
+    /// <summary>
+    ///   Returns a users own full profile info
+    /// </summary>
+    /// <returns><see cref="GetMyProfileResponse"/></returns>
+    [HttpGet("my/profile", Name = "GetMyProfileAsync")]
+    [ProducesResponseType<GetMyProfileResponse>(StatusCodes.Status200OK)]
+    public async Task<ActionResult> GetMyProfileAsync()
+    {
+        BonesUser user = await GetCurrentBonesUserAsync();
+
+
+        return Ok(new GetMyProfileResponse(
+            user.Email ?? string.Empty,
+            user.EmailConfirmed,
+            user.EmailConfirmedDateTime,
+            user.DisplayName ?? user.Email ?? string.Empty,
+            user.CreateDateTime
+        ));
     }
 }

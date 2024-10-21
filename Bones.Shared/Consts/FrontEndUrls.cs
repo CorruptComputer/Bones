@@ -20,6 +20,16 @@ public static class FrontEndUrls
         /// <summary>
         ///   Confirm email page
         /// </summary>
+        public const string CHANGE_EMAIL = $"{_account}/ChangeEmail";
+
+        /// <summary>
+        ///   Confirm email page
+        /// </summary>
+        public const string CHANGE_PASSWORD = $"{_account}/ChangePassword";
+
+        /// <summary>
+        ///   Confirm email page
+        /// </summary>
         public const string CONFIRM_EMAIL = $"{_account}/ConfirmEmail";
 
         /// <summary>
@@ -51,5 +61,18 @@ public static class FrontEndUrls
         ///   Confirm email page
         /// </summary>
         public const string RESET_PASSWORD = $"{_account}/ResetPassword";
+    }
+
+    /// <summary>
+    ///   System Admin pages
+    /// </summary>
+    public static class SystemAdmin
+    {
+        private const string _systemAdmin = "/SystemAdmin";
+
+        /// <summary>
+        ///   Confirm email page
+        /// </summary>
+        public const string DASHBOARD = $"{_systemAdmin}/Dashboard";
     }
 }

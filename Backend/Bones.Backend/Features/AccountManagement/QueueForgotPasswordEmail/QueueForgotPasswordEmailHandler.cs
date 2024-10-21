@@ -1,6 +1,6 @@
 using Bones.Backend.Models;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.SystemQueues.AddForgotPasswordEmailToQueueDb;
+using Bones.Database.Operations.SystemQueues.ForgotPassword.AddForgotPasswordEmailToQueueDb;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;

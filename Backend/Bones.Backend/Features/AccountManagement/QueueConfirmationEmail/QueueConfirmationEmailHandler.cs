@@ -1,6 +1,6 @@
 using Bones.Backend.Models;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
+using Bones.Database.Operations.SystemQueues.ConfirmationEmail.AddConfirmationEmailToQueueDb;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;

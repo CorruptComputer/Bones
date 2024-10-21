@@ -1,7 +1,7 @@
 using Bones.Shared.Extensions;
 using FluentValidation.Results;
 
-namespace Bones.Database.Operations.SystemQueues.AddForgotPasswordEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ForgotPassword.AddForgotPasswordEmailToQueueDb;
 
 internal sealed class AddForgotPasswordEmailToQueueDbCommandValidator : AbstractValidator<AddForgotPasswordEmailToQueueDbCommand>
 {

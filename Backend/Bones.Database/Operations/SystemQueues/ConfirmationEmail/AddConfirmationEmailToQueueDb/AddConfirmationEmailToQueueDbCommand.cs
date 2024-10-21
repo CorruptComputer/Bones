@@ -1,4 +1,4 @@
-namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ConfirmationEmail.AddConfirmationEmailToQueueDb;
 
 /// <summary>
 ///   Adds an email confirmation to the queue

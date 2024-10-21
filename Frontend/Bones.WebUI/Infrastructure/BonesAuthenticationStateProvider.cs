@@ -18,7 +18,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
 
         Claim[] claims = [
             new(BonesClaimTypes.User.EMAIL, currentUser.Email ?? string.Empty),
-            new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName ?? currentUser.Email ?? string.Empty)
+            new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName ?? string.Empty)
         ];
 
         AuthenticationState authenticationState = new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));

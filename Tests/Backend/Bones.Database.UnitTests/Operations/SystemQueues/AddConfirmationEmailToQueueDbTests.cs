@@ -1,4 +1,4 @@
-using Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
+using Bones.Database.Operations.SystemQueues.ConfirmationEmail.AddConfirmationEmailToQueueDb;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;
 using FluentValidation.TestHelper;

@@ -4,7 +4,8 @@ You'll want to install Mailhog and run it, emails from the background service wi
 
 https://github.com/mailhog/MailHog
 
-  
+Make sure you don't have anything else running on port 1025, for me ProtonMail bridge defaulted to that port so I had to change it.
+
 
 ### Api Setup:
 

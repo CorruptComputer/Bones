@@ -1,7 +1,7 @@
 using Bones.Shared.Extensions;
 using FluentValidation.Results;
 
-namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ConfirmationEmail.AddConfirmationEmailToQueueDb;
 
 internal sealed class AddConfirmationEmailToQueueDbCommandValidator : AbstractValidator<AddConfirmationEmailToQueueDbCommand>
 {

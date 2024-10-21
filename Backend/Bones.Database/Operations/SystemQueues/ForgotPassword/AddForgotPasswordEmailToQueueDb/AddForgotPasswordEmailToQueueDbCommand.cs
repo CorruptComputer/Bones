@@ -1,4 +1,4 @@
-namespace Bones.Database.Operations.SystemQueues.AddForgotPasswordEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ForgotPassword.AddForgotPasswordEmailToQueueDb;
 
 /// <summary>
 ///   Adds an email confirmation to the queue

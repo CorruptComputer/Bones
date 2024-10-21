@@ -10,6 +10,11 @@ internal sealed class SetupDbHandler(BonesDbContext dbContext, DatabaseConfigura
         if (!(config.UseInMemoryDb ?? false) && (await dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
         {
             await dbContext.Database.MigrateAsync(cancellationToken);
+            Log.Information("Migration complete.");
+        }
+        else
+        {
+            Log.Information("Database is up to date.");
         }
 
         await sender.Send(new SetupSystemAdminUserAndRoleCommand(), cancellationToken);

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Development/Overview.md",
+                "file": "Development/Development Environment Setup.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Overview"
+              "title": "Development Environment Setup"
             }
           }
         ]
@@ -166,9 +166,9 @@
   },
   "active": "63538227fcb0a17d",
   "lastOpenFiles": [
-    "Development/Project Relations.svg",
     "Development/Overview.md",
     "Development/Development Environment Setup.md",
+    "Development/Project Relations.svg",
     "Development/Untitled",
     "Development",
     "Welcome.md"

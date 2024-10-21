@@ -2,7 +2,7 @@ using Bones.Database.DbSets.SystemQueues;
 using Bones.Shared.Extensions;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Bones.Database.Operations.SystemQueues.AddConfirmationEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ConfirmationEmail.AddConfirmationEmailToQueueDb;
 
 internal sealed class AddConfirmationEmailToQueueDbHandler(BonesDbContext dbContext) : IRequestHandler<AddConfirmationEmailToQueueDbCommand, CommandResponse>
 {

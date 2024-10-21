@@ -2,7 +2,7 @@ using Bones.Database.DbSets.SystemQueues;
 using Bones.Shared.Extensions;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Bones.Database.Operations.SystemQueues.AddForgotPasswordEmailToQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ForgotPassword.AddForgotPasswordEmailToQueueDb;
 
 internal sealed class AddForgotPasswordEmailToQueueDbHandler(BonesDbContext dbContext) : IRequestHandler<AddForgotPasswordEmailToQueueDbCommand, CommandResponse>
 {

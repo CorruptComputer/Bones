@@ -49,4 +49,18 @@ public class ConfirmationEmailDeadQueue
     /// </summary>
     [MaxLength(4096)]
     public required string ConfirmationLink { get; set; }
+
+    internal static ConfirmationEmailDeadQueue FromConfirmationEmailQueue(ConfirmationEmailQueue queueItem)
+    {
+        return new()
+        {
+            OriginalCreated = queueItem.Created,
+            ConfirmationLink = queueItem.ConfirmationLink,
+            RetryCount = queueItem.RetryCount,
+            LastTry = queueItem.LastTry ?? DateTimeOffset.Now,
+            DeadQueueCreated = DateTimeOffset.Now,
+            EmailTo = queueItem.EmailTo,
+            FailureReasons = queueItem.FailureReasons
+        };
+    }
 }

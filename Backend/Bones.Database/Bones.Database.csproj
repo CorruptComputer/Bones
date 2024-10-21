@@ -37,8 +37,7 @@
       <Folder Include="Operations\GenericItem\ItemLayouts\GetItemLayoutDetailsByIdDb\" />
       <Folder Include="Operations\GenericItem\ItemLayouts\GetItemLayoutsByProjectDb\" />
       <Folder Include="Operations\GenericItem\ItemLayouts\QueueDeleteItemLayoutByIdDb\" />
-      <Folder Include="Operations\SystemQueues\GetConfirmationEmailsInQueueDb\" />
-      <Folder Include="Operations\SystemQueues\GetFailedConfirmationEmailsInQueueDb\" />
+      <Folder Include="Operations\SystemQueues\ConfirmationEmail\" />
       <Folder Include="Operations\WorkItemManagement\" />
     </ItemGroup>
 
