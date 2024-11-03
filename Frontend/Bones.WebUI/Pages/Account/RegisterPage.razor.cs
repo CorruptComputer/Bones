@@ -3,14 +3,29 @@ using MudBlazor;
 
 namespace Bones.WebUI.Pages.Account;
 
+/// <summary>
+///   The page for registering user accounts 
+/// </summary>
 public partial class RegisterPage
 {
+    /// <summary>
+    ///   Was the registration finished successfully?
+    /// </summary>
     private bool RegistrationSuccess { get; set; } = false;
 
+    /// <summary>
+    ///   Did the request to the API result in an error?
+    /// </summary>
     public bool RegistrationApiError { get; set; } = false;
 
+    /// <summary>
+    ///   Is the form valid?
+    /// </summary>
     public bool FormValid { get; set; }
 
+    /// <summary>
+    ///   The issues with the users inputs
+    /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
     private MudTextField<string> EmailAddress { get; set; } = new();
@@ -18,6 +33,9 @@ public partial class RegisterPage
     private MudTextField<string> Password { get; set; } = new();
     private MudTextField<string> PasswordAgain { get; set; } = new();
 
+    /// <summary>
+    ///   Send the request to register to the API, if it errors tell the user what went wrong.
+    /// </summary>
     public async Task DoRegistrationAsync()
     {
         try

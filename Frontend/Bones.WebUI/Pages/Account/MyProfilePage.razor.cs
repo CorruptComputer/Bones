@@ -5,11 +5,21 @@ using MudBlazor;
 
 namespace Bones.WebUI.Pages.Account;
 
+/// <summary>
+///   The user can view and update their profile here
+/// </summary>
 public partial class MyProfilePage
 {
     private bool ProfileUpdateSuccess { get; set; } = false;
+
+    /// <summary>
+    ///   Is the form valid?
+    /// </summary>
     public bool FormValid { get; set; }
 
+    /// <summary>
+    ///   The issues with the users input
+    /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
     private MudTextField<string> Email { get; set; } = new();
@@ -22,7 +32,7 @@ public partial class MyProfilePage
 
     private MudTextField<string> CreateDateTime { get; set; } = new();
 
-
+    /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         GetMyProfileResponse response = await ApiClient.GetMyProfileAsync();
@@ -38,6 +48,9 @@ public partial class MyProfilePage
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    ///   Updates the users profile with the info provided
+    /// </summary>
     public async Task UpdateProfileAsync()
     {
         string? displayName = DisplayName.Text;
@@ -51,11 +64,17 @@ public partial class MyProfilePage
         await Task.Run(() => Thread.Sleep(1));
     }
 
+    /// <summary>
+    ///   Redirects the user to the change email page
+    /// </summary>
     public void GoToChangeEmail()
     {
         NavManager.NavigateTo(FrontEndUrls.Account.CHANGE_EMAIL);
     }
 
+    /// <summary>
+    ///   Redirects the user to the change password page
+    /// </summary>
     public void GoToChangePassword()
     {
         NavManager.NavigateTo(FrontEndUrls.Account.CHANGE_PASSWORD);

@@ -1,8 +1,13 @@
 namespace Bones.WebUI.Infrastructure;
 
+/// <summary>
+///   Handles unauthorized responses from the API
+/// </summary>
+/// <param name="authenticationStateProvider"></param>
 public class UnauthorizedDelegatingHandler(BonesAuthenticationStateProvider authenticationStateProvider)
     : DelegatingHandler
 {
+    /// <inheritdoc />
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         HttpResponseMessage response = await base.SendAsync(request, cancellationToken);

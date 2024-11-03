@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+#
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2A5FCFB-6AD5-4EA6-8C14-081F7824EE90}"
@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client", "Fronten
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.BackgroundService", "Backend\Bones.BackgroundService\Bones.BackgroundService.csproj", "{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.WebUI.Leaflet", "Frontend\Bones.WebUI.Leaflet\Bones.WebUI.Leaflet.csproj", "{72CC087C-C908-4082-A19A-A1C60EE2BE0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72CC087C-C908-4082-A19A-A1C60EE2BE0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72CC087C-C908-4082-A19A-A1C60EE2BE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72CC087C-C908-4082-A19A-A1C60EE2BE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72CC087C-C908-4082-A19A-A1C60EE2BE0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,5 +129,6 @@ Global
 		{5311F839-CD12-4BBD-B233-725F3A3D8184} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
 		{12C73BFE-490F-48E3-B409-0092CD242612} = {2BF99936-90E9-4855-869C-F31C3C694647}
 		{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
+		{72CC087C-C908-4082-A19A-A1C60EE2BE0F} = {2BF99936-90E9-4855-869C-F31C3C694647}
 	EndGlobalSection
 EndGlobal

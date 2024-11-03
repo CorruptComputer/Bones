@@ -1,0 +1,21 @@
+@page "/TestMapPage"
+@using Bones.WebUI.Components.Leaflet
+@layout MainLayout
+
+<PageTitle>Test Map Page</PageTitle>
+<MudText Typo="Typo.h5">Test Map Page</MudText>
+
+<MudItem xs="12" sm="7">
+    <MudPaper Class="pa-4">
+        <div style="height: 590px; width: 680px;">
+            <LeafletMap Map="Map"/>
+        </div>
+        <div class="btn-group mb-2" role="group">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="(e => Map.ZoomInAsync(e))">Zoom in</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="(e => Map.ZoomOutAsync(e))">Zoom out</MudButton>
+            <DrawZoneToggleButton ButtonText="Draw Rectangle" DrawHandler="DrawHandler" OnToggleCallback="DrawHandler.OnDrawRectangleToggle" />
+            <DrawZoneToggleButton ButtonText="Draw Circle" DrawHandler="DrawHandler" OnToggleCallback="DrawHandler.OnDrawCircleToggle" />
+            <DrawZoneToggleButton ButtonText="Draw Polygon" DrawHandler="DrawHandler" OnToggleCallback="DrawHandler.OnDrawPolygonToggle" />
+        </div>
+    </MudPaper>
+</MudItem>

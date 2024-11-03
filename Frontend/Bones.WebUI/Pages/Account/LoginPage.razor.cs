@@ -4,13 +4,25 @@ using MudBlazor;
 
 namespace Bones.WebUI.Pages.Account;
 
+/// <summary>
+///   Page to login
+/// </summary>
 public partial class LoginPage
 {
+    /// <summary>
+    ///   The URL to send them to after login is successful
+    /// </summary>
     [Parameter]
     public string? ReturnUrl { get; set; }
 
+    /// <summary>
+    ///   Is the form valid?
+    /// </summary>
     public bool FormValid { get; set; }
 
+    /// <summary>
+    ///   The issues with the users input
+    /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
     private MudTextField<string> EmailAddress { get; set; } = new();
@@ -19,6 +31,9 @@ public partial class LoginPage
 
     private bool ErrorLoggingIn { get; set; } = false;
 
+    /// <summary>
+    ///   Sends the request to login, checks that it was successful, and redirects them somewhere else.
+    /// </summary>
     public async Task DoLoginAsync()
     {
         ErrorLoggingIn = false;
@@ -67,7 +82,7 @@ public partial class LoginPage
     /// </summary>
     /// <param name="uri"></param>
     /// <returns></returns>
-    private bool IsSafeRedirect(string uri)
+    private static bool IsSafeRedirect(string uri)
     {
         if (Uri.IsWellFormedUriString(uri, UriKind.Absolute))
         {

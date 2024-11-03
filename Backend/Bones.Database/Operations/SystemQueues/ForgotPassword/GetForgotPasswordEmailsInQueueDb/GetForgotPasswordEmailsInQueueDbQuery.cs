@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.SystemQueues;
 
-namespace Bones.Database.Operations.SystemQueues.ForgotPassword.GetConfirmationEmailsInQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ForgotPassword.GetForgotPasswordEmailsInQueueDb;
 
 /// <summary>
 ///   Checks if any confirmation emails are in the queue

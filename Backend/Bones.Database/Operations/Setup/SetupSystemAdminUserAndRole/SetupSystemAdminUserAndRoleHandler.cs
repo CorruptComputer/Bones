@@ -14,7 +14,7 @@ internal sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> 
         BonesUser? createdAdminUser = await CreateAdminUserIfNotExistAsync(cancellationToken);
 
         // Create System Administrators role
-        await CreateSysAdminRoleIfNotExistAsync(cancellationToken);
+        await CreateSysAdminRoleIfNotExistAsync();
 
         if (createdAdminUser != null)
         {
@@ -52,7 +52,7 @@ internal sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> 
         }
     }
 
-    private async Task CreateSysAdminRoleIfNotExistAsync(CancellationToken cancellationToken)
+    private async Task CreateSysAdminRoleIfNotExistAsync()
     {
         if (!await roleManager.RoleExistsAsync(SystemRoles.SYSTEM_ADMINISTRATORS))
         {

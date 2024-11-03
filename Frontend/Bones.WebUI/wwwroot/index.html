@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <!--link href="Bones.WebUI.styles.css" rel="stylesheet" /-->
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    
 </head>
 
 <body>
@@ -31,8 +31,19 @@
         <a class="dismiss">🗙</a>
     </div>
     
-    <script src="_content/MudBlazor/MudBlazor.min.js" autostart="false"></script>
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="
+          crossorigin="" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="
+            crossorigin=""></script>
+
+    <script src="_content/Bones.WebUI.Leaflet/leafletInterop.js"></script>
+    
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script type="module">
         import { BrotliDecode } from './decode.min.js';

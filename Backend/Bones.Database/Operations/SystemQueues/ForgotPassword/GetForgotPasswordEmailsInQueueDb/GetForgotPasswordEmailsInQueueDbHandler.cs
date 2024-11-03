@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.SystemQueues;
 
-namespace Bones.Database.Operations.SystemQueues.ForgotPassword.GetConfirmationEmailsInQueueDb;
+namespace Bones.Database.Operations.SystemQueues.ForgotPassword.GetForgotPasswordEmailsInQueueDb;
 
 internal sealed class GetForgotPasswordEmailsInQueueDbHandler(BonesDbContext dbContext) : IRequestHandler<GetForgotPasswordEmailsInQueueDbQuery, QueryResponse<List<ForgotPasswordEmailQueue>>>
 {

@@ -1,6 +1,7 @@
 <!-- Adding this here lets us use it on any page or component -->
 
 @code {
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         string baseRelativePath = NavManager.ToBaseRelativePath(NavManager.Uri);

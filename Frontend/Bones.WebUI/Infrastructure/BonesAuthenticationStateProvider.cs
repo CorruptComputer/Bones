@@ -5,8 +5,13 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Bones.WebUI.Infrastructure;
 
+/// <summary>
+///   Provides the state of authentication
+/// </summary>
+/// <param name="localStorageService"></param>
 public class BonesAuthenticationStateProvider(LocalStorageService localStorageService) : AuthenticationStateProvider
 {
+    /// <inheritdoc />
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         GetMyBasicInfoResponse? currentUser = await GetCurrentUserAsync(CancellationToken.None);
@@ -26,6 +31,12 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         return authenticationState;
     }
 
+    /// <summary>
+    ///   Sets the current user
+    /// </summary>
+    /// <param name="currentUser"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task SetCurrentUserAsync(GetMyBasicInfoResponse currentUser, CancellationToken cancellationToken)
     {
         await localStorageService.SetItemAsync(LocalStorageService.CURRENT_USER_KEY, currentUser, cancellationToken);
@@ -33,6 +44,11 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
+    /// <summary>
+    ///   Clears the current user
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task ClearCurrentUserAsync(CancellationToken cancellationToken)
     {
         await localStorageService.RemoveItemAsync(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
@@ -40,6 +56,11 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
+    /// <summary>
+    ///   Gets the current user
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public Task<GetMyBasicInfoResponse?> GetCurrentUserAsync(CancellationToken cancellationToken)
     {
         return localStorageService.GetItemAsync<GetMyBasicInfoResponse>(LocalStorageService.CURRENT_USER_KEY, cancellationToken);

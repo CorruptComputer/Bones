@@ -9,8 +9,16 @@ using MudBlazor.Services;
 
 namespace Bones.WebUI;
 
+/// <summary>
+///   The start of the maze
+/// </summary>
 public static class Program
 {
+    /// <summary>
+    ///   As you approach the maze you find a scroll, the scroll lets you put many words in it.
+    /// </summary>
+    /// <param name="args">These are the words you have written on the scroll.</param>
+    /// <exception cref="BonesException">If the words you put are incorrect, the scroll will yell at you.</exception>
     public static async Task Main(string[] args)
     {
         WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);

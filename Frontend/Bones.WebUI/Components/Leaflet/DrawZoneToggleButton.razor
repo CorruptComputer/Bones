@@ -1,0 +1,47 @@
+﻿@using Bones.WebUI.Leaflet.Data
+@implements IDisposable
+
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="ml-auto" @onclick="ToggleClicked">@ButtonText</MudButton>
+
+@code {
+    /// <summary>
+    ///   The text for the button
+    /// </summary>
+    [Parameter] public required string ButtonText { get; set; }
+    
+    /// <summary>
+    ///   The handler for drawing
+    /// </summary>
+    [Parameter] public required DrawHandler DrawHandler { get; set; }
+    
+    /// <summary>
+    ///   The toggle for if you're drawing
+    /// </summary>
+    [Parameter] public required EventCallback<bool> OnToggleCallback { get; set; }
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        DrawHandler.DrawFinished += OnDrawFinished;
+        base.OnInitialized();
+    }
+
+    async Task ToggleClicked()
+    {
+        await OnToggleCallback.InvokeAsync(true);
+    }
+
+    void OnDrawFinished(object? sender, EventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    /// <summary>
+    ///   Dispose it!
+    /// </summary>
+    public void Dispose()
+    {
+        DrawHandler.DrawFinished -= OnDrawFinished;
+        GC.SuppressFinalize(this);
+    }
+}

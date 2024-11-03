@@ -1,11 +1,8 @@
 using System.Net.Mail;
 using Bones.BackgroundService.Models;
 using Bones.Database.DbSets.SystemQueues;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.GetConfirmationEmailsInQueueDb;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.IncrementFailedConfirmationEmailById;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.RemoveConfirmationEmailFromQueueByIdDb;
 using Bones.Database.Operations.SystemQueues.ForgotPassword.AnyForgotPasswordEmailsInQueueDb;
-using Bones.Database.Operations.SystemQueues.ForgotPassword.GetConfirmationEmailsInQueueDb;
+using Bones.Database.Operations.SystemQueues.ForgotPassword.GetForgotPasswordEmailsInQueueDb;
 using Bones.Database.Operations.SystemQueues.ForgotPassword.IncrementFailedConfirmationEmailById;
 using Bones.Database.Operations.SystemQueues.ForgotPassword.RemoveConfirmationEmailFromQueueByIdDb;
 

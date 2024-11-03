@@ -509,19 +509,19 @@
         }
       }
     },
-    "/ProjectManagement/my/create": {
+    "/ProjectManagement/create": {
       "post": {
         "tags": [
           "ProjectManagement"
         ],
-        "summary": "Creates a new project for the current user",
-        "operationId": "CreateMyProjectAsync",
+        "summary": "Creates a new project",
+        "operationId": "CreateProjectAsync",
         "requestBody": {
-          "description": "The name for the project",
+          "description": "The request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateMyProjectRequest"
+                "$ref": "#/components/schemas/CreateProjectRequest"
               }
             }
           }
@@ -562,7 +562,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                  "$ref": "#/components/schemas/EmptyResponse"
                 }
               }
             }
@@ -572,7 +572,93 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StringStringArrayDictionaryActionResult"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectManagement/projects": {
+      "get": {
+        "tags": [
+          "ProjectManagement"
+        ],
+        "summary": "Gets the projects for the current user, or specified organization",
+        "operationId": "GetProjectsByOwnerAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetProjectsByOwnerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GuidStringValueTuple"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -689,17 +775,23 @@
         "type": "object",
         "additionalProperties": false
       },
-      "CreateMyProjectRequest": {
+      "CreateProjectRequest": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
             "description": "Name of the project to create",
             "nullable": true
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "Optionally the organization that this should be created under, if not specified will be created for the requesting user.",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": "Request to create a new project for the current user"
+        "description": "Request to create a new project"
       },
       "EmptyResponse": {
         "type": "object",
@@ -767,6 +859,26 @@
         "additionalProperties": false,
         "description": ""
       },
+      "GetProjectsByOwnerRequest": {
+        "type": "object",
+        "properties": {
+          "ownerType": {
+            "$ref": "#/components/schemas/OwnershipType"
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "Optionally the organization that this should be created under, if not specified will be created for the requesting user.",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request to get the projects for a given User/Organization"
+      },
+      "GuidStringValueTuple": {
+        "type": "object",
+        "additionalProperties": false
+      },
       "LoginUserApiRequest": {
         "type": "object",
         "properties": {
@@ -794,6 +906,13 @@
         "additionalProperties": false,
         "description": "Request to login"
       },
+      "OwnershipType": {
+        "enum": [
+          "User",
+          "Organization"
+        ],
+        "type": "string"
+      },
       "RegisterUserApiRequest": {
         "type": "object",
         "properties": {
@@ -810,26 +929,6 @@
         },
         "additionalProperties": false,
         "description": "Request to register a new user"
-      },
-      "StringStringArrayDictionaryActionResult": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ActionResult"
-          },
-          "value": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "nullable": true
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       }
     }
   }

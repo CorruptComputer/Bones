@@ -931,12 +931,12 @@ namespace Bones.Api.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Creates a new project for the current user
+        /// Creates a new project
         /// </summary>
-        /// <param name="body">The name for the project</param>
+        /// <param name="body">The request</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<EmptyResponseActionResult> CreateMyProjectAsync(CreateMyProjectRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<object> CreateProjectAsync(CreateProjectRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -944,7 +944,7 @@ namespace Bones.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateMyProjectRequest), JsonSerializerSettings);
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateProjectRequest), JsonSerializerSettings);
                     var content_ = new System.Net.Http.ByteArrayContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
@@ -953,8 +953,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "ProjectManagement/my/create"
-                    urlBuilder_.Append("ProjectManagement/my/create");
+                    // Operation Path: "ProjectManagement/create"
+                    urlBuilder_.Append("ProjectManagement/create");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1011,7 +1011,7 @@ namespace Bones.Api.Client
                         else
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<EmptyResponseActionResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1021,12 +1021,131 @@ namespace Bones.Api.Client
                         else
                         if (status_ == 400)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<StringStringArrayDictionaryActionResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, System.Collections.Generic.IEnumerable<string>>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new ApiException<StringStringArrayDictionaryActionResult>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new ApiException<System.Collections.Generic.IDictionary<string, System.Collections.Generic.IEnumerable<string>>>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the projects for the current user, or specified organization
+        /// </summary>
+        /// <param name="body">The request</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<object>> GetProjectsByOwnerAsync(GetProjectsByOwnerRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(GetProjectsByOwnerRequest), JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "ProjectManagement/projects"
+                    urlBuilder_.Append("ProjectManagement/projects");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<object>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<object>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<object>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IEnumerable<object>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, System.Collections.Generic.IEnumerable<string>>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<System.Collections.Generic.IDictionary<string, System.Collections.Generic.IEnumerable<string>>>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -1366,10 +1485,10 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
-    /// Request to create a new project for the current user
+    /// Request to create a new project
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record CreateMyProjectRequest
+    public partial record CreateProjectRequest
     {
         /// <summary>
         /// Name of the project to create
@@ -1377,6 +1496,13 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Optionally the organization that this should be created under, if not specified will be created for the requesting user.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("organizationId")]
+        public System.Guid? OrganizationId { get; set; }
 
     }
 
@@ -1426,6 +1552,26 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
+    /// Request to get the projects for a given User/Organization
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record GetProjectsByOwnerRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("ownerType")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public OwnershipType? OwnerType { get; set; }
+
+        /// <summary>
+        /// Optionally the organization that this should be created under, if not specified will be created for the requesting user.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("organizationId")]
+        public System.Guid? OrganizationId { get; set; }
+
+    }
+
+    /// <summary>
     /// Request to login
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1461,6 +1607,19 @@ namespace Bones.Api.Client
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Flags]
+    public enum OwnershipType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"User")]
+        User = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Organization")]
+        Organization = 2,
+
+    }
+
     /// <summary>
     /// Request to register a new user
     /// </summary>
@@ -1480,18 +1639,6 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("password")]
         public string Password { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record StringStringArrayDictionaryActionResult
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("result")]
-        public object Result { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public System.Collections.Generic.IDictionary<string, System.Collections.Generic.IEnumerable<string>> Value { get; set; }
 
     }
 
