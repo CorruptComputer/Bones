@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DatabaseConfiguration__UseInMemoryDb: true
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_ENVIRONMENT: "Development"
     steps:
       # Setup
       - name: Checkout Repo
@@ -34,6 +36,9 @@ jobs:
       - name: Restore Tools
         run: |
           cd Backend/Bones.Api
+          dotnet tool restore
+          cd ../..
+          cd Backend/Bones.BackgroundService
           dotnet tool restore
           cd ../..
           cd Frontend/Bones.Api.Client
@@ -54,6 +59,6 @@ jobs:
         run: |
           dotnet tool install --global dotnet-sonarscanner
           dotnet-sonarscanner begin /k:"CorruptComputer_Bones" /o:"corruptcomputer" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=./Tests/*/*.UnitTests/TestResults/*/coverage.opencover.xml /d:sonar.scanner.scanAll=false
-          dotnet build --no-incremental
+          dotnet build --configuration Debug --no-incremental
           dotnet test --no-build --collect:"XPlat Code Coverage;Format=opencover"
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

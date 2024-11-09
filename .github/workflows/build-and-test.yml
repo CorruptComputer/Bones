@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DatabaseConfiguration__UseInMemoryDb: true
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_ENVIRONMENT: "Development"
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -32,13 +34,16 @@ jobs:
           cd Backend/Bones.Api
           dotnet tool restore
           cd ../..
+          cd Backend/Bones.BackgroundService
+          dotnet tool restore
+          cd ../..
           cd Frontend/Bones.Api.Client
           dotnet tool restore
           cd ../..
 
       - name: Build
         run: |
-          dotnet build --no-incremental
+          dotnet build --configuration Debug --no-incremental
           git diff --quiet || exit 1
 
       - name: Test
