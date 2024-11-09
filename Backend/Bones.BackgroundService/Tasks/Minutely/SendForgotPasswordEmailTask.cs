@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Mail;
 using Bones.BackgroundService.Models;
 using Bones.Database.DbSets.SystemQueues;
@@ -39,6 +40,9 @@ internal class SendForgotPasswordEmailTask(ISender sender, BackgroundServiceConf
         Log.Information("{Count} confirmation emails in queue, ready to send.", emailsInQueue.Count);
 
         using SmtpClient client = new(configuration.SmtpServer, configuration.SmtpPort ?? 25);
+        client.EnableSsl = true;
+        client.Credentials = new NetworkCredential(configuration.SmtpUser, configuration.SmtpPassword);
+        
         foreach (ForgotPasswordEmailQueue emailToSend in emailsInQueue)
         {
             try
