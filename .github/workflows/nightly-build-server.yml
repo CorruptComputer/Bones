@@ -16,7 +16,7 @@ jobs:
       should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Print Commit Hash
         run: echo ${{ github.sha }}
@@ -49,25 +49,17 @@ jobs:
         run: |
           cd Backend/Bones.Api
           dotnet tool restore
-          dotnet deb --configuration Release --version-suffix ${{ github.run_id }} --output ../../publish-api/
-          dotnet rpm --configuration Release --version-suffix ${{ github.run_id }} --output ../../publish-api/
+          dotnet deb --configuration Release --version-suffix nightly --output ../../publish/
+          dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
           cd ../..
 
       - name: Build Background Service Packages
         run: |
           cd Backend/Bones.BackgroundService
           dotnet tool restore
-          dotnet deb --configuration Release --version-suffix ${{ github.run_id }} --output ../../publish-background-service/
-          dotnet rpm --configuration Release --version-suffix ${{ github.run_id }} --output ../../publish-background-service/
+          dotnet deb --configuration Release --version-suffix nightly --output ../../publish/
+          dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
           cd ../..
-          
-      - name: test
-        run: |
-          ls -la
-          cd publish-background-service/
-          ls -la 
-          cd ../publish-api/
-          ls -la
 
       - name: Upload API DEB Build Artifact
         uses: ncipollo/release-action@v1
@@ -79,4 +71,4 @@ jobs:
           tag: 'nightly'
           prerelease: true
           replacesArtifacts: true
-          artifacts: '~/publish-api/*.deb,~/publish-api/*.rpm,~/publish-background-service/*.deb,~/publish-background-service/*.rpm'
+          artifacts: './publish/Bones.Api.*.linux-x64.deb,./publish/Bones.Api.*.linux-x64.rpm,./publish/Bones.BackgroundService.*.linux-x64.deb,./publish/Bones.BackgroundService.*.linux-x64.rpm'
