@@ -8,3 +8,5 @@ riderModule.iml
 *opencover.xml
 coverage.xml
 TestResults/
+/publish-background-service/
+/publish-api/

@@ -61,12 +61,6 @@ public partial class TestMapPage : ComponentBase
     {
         Map.OnInitialized += () =>
         {
-            Map.AddLayer(new TileLayer
-            {
-                UrlTemplate = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                Attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
-            });
-
             Map.AddLayer(new Polygon
             {
                 Shape = [
@@ -98,15 +92,6 @@ public partial class TestMapPage : ComponentBase
             marker.OnMoveEnd += OnDragEnd;
 
             Map.AddLayer(marker);
-
-            Map.OnInitialized += () =>
-            {
-                Map.AddLayer(new TileLayer
-                {
-                    UrlTemplate = "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    Attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
-                });
-            };
         };
     }
 

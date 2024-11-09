@@ -2,22 +2,16 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "swashbuckle.aspnetcore.cli": {
-      "version": "6.7.1",
+    "dotnet-deb": {
+      "version": "0.1.226",
       "commands": [
-        "swagger"
+        "dotnet-deb"
       ]
     },
     "dotnet-rpm": {
       "version": "0.1.226",
       "commands": [
         "dotnet-rpm"
-      ]
-    },
-    "dotnet-deb": {
-      "version": "0.1.226",
-      "commands": [
-        "dotnet-deb"
       ]
     }
   }

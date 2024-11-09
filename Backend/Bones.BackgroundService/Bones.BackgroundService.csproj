@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
+        <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
         <TargetFramework>net8.0</TargetFramework>
+        <Version>0.0.1</Version>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <UserSecretsId>dotnet-Bones.BackgroundService-2060c4b5-90cb-487f-9891-9319f6997a62</UserSecretsId>
         <NoDefaultLaunchSettingsFile>True</NoDefaultLaunchSettingsFile>
     </PropertyGroup>
 

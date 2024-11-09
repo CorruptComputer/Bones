@@ -80,6 +80,16 @@ public class Map
         Id = Guid.NewGuid().ToString();
 
         _layers.CollectionChanged += OnLayersChanged;
+        
+        OnInitialized += () =>
+        {
+            AddLayer(new TileLayer
+            {
+                UrlTemplate = "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                MaximumZoom = 19f,
+                Attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+            });
+        };
     }
 
     /// <summary>
@@ -142,18 +152,17 @@ public class Map
         {
             case { Action: NotifyCollectionChangedAction.Add, NewItems: not null }:
                 {
-                    Task addTask = AddLayersAsync(args.NewItems);
+                    _ = AddLayersAsync(args.NewItems);
                     break;
                 }
             case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }:
                 {
-                    Task removeTask = RemoveLayersAsync(args.OldItems);
+                    _ = RemoveLayersAsync(args.OldItems);
                     break;
                 }
             case { Action: NotifyCollectionChangedAction.Replace or NotifyCollectionChangedAction.Move, OldItems: not null, NewItems: not null }:
                 {
-                    Task removeTask = RemoveLayersAsync(args.OldItems);
-                    Task addTask = AddLayersAsync(args.NewItems);
+                    _ = RemoveLayersAsync(args.OldItems).ContinueWith(_ => AddLayersAsync(args.NewItems));
                     break;
                 }
         }
