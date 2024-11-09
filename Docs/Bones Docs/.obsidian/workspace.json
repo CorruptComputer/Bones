@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Development/Development Environment Setup.md",
+                "file": "Development/Deployment of Frontend on Cloudflare Pages.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Development Environment Setup"
+              "title": "Deployment of Frontend on Cloudflare Pages"
             }
           }
         ]
@@ -166,10 +166,15 @@
   },
   "active": "63538227fcb0a17d",
   "lastOpenFiles": [
+    "Development/Deployment of Backend on Fedora Server.md",
+    "Development/Deployment of Frontend on Cloudflare Pages.md",
+    "Development/Feature Areas/Account Management.md",
     "Development/Overview.md",
+    "Development/Feature Areas/Asset Management.md",
+    "Development/Feature Areas",
+    "Development/Feature Areas/Work Item Management.md",
     "Development/Development Environment Setup.md",
     "Development/Project Relations.svg",
-    "Development/Untitled",
     "Development",
     "Welcome.md"
   ]

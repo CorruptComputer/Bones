@@ -8,6 +8,8 @@
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <PublishTrimmed>false</PublishTrimmed>
+        
         <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
         
         <!-- Recommended for mobile browsers: https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly?view=aspnetcore-8.0#decrease-maximum-heap-size-for-some-mobile-device-browsers -->

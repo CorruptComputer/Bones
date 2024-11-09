@@ -36,5 +36,5 @@ public abstract class GridLayer : Layer
     /// <summary>
     /// If set, tiles will only be loaded inside the set.
     /// </summary>
-    public (LatLon, LatLon)? Bounds { get; set; }
+    public ValueTuple<LatLon, LatLon>? Bounds { get; set; }
 }
