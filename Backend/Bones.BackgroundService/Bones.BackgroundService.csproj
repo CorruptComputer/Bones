@@ -3,13 +3,16 @@
     <PropertyGroup>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
         <TargetFramework>net8.0</TargetFramework>
-        <Version>0.0.1</Version>
+        <VersionPrefix>0.0.1</VersionPrefix>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
         <NoDefaultLaunchSettingsFile>True</NoDefaultLaunchSettingsFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration) == 'Release'">
     </PropertyGroup>
 
     <PropertyGroup Condition="$(Configuration) == 'Debug'">
@@ -27,6 +30,9 @@
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.4" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Update="Packaging.Targets">
+          <Version>0.1.226</Version>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

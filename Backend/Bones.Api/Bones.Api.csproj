@@ -2,12 +2,15 @@
     <PropertyGroup>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
         <TargetFramework>net8.0</TargetFramework>
-        <Version>0.0.1</Version>
+        <VersionPrefix>0.0.1</VersionPrefix>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration) == 'Release'">
     </PropertyGroup>
     
     <PropertyGroup Condition="$(Configuration) == 'Debug'">
@@ -22,6 +25,9 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.9.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.9.0" />
+        <PackageReference Update="Packaging.Targets">
+          <Version>0.1.226</Version>
+        </PackageReference>
     </ItemGroup>
 
     <Target Name="CreateSwaggerJson" AfterTargets="Build" Condition="$(Configuration) == 'Debug'">
