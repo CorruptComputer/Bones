@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Development/Deployment of Frontend on Cloudflare Pages.md",
+                "file": "Development/Deployment of Backend on Fedora Server.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Deployment of Frontend on Cloudflare Pages"
+              "title": "Deployment of Backend on Fedora Server"
             }
           }
         ]
@@ -166,8 +166,8 @@
   },
   "active": "63538227fcb0a17d",
   "lastOpenFiles": [
-    "Development/Deployment of Backend on Fedora Server.md",
     "Development/Deployment of Frontend on Cloudflare Pages.md",
+    "Development/Deployment of Backend on Fedora Server.md",
     "Development/Feature Areas/Account Management.md",
     "Development/Overview.md",
     "Development/Feature Areas/Asset Management.md",

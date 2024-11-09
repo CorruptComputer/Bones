@@ -18,17 +18,15 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
 
         if (currentUser == null)
         {
-            return new(new(new ClaimsIdentity()));
+            return new(new());
         }
 
         Claim[] claims = [
             new(BonesClaimTypes.User.EMAIL, currentUser.Email ?? string.Empty),
             new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName ?? string.Empty)
         ];
-
-        AuthenticationState authenticationState = new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));
-
-        return authenticationState;
+        
+        return new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));
     }
 
     /// <summary>

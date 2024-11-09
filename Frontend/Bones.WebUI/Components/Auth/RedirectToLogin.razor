@@ -1,5 +1,3 @@
-<!-- Adding this here lets us use it on any page or component -->
-
 @code {
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -12,6 +10,6 @@
             loginUrl += $"?returnUrl={Uri.EscapeDataString(baseRelativePath)}";
         }
         
-        NavManager.NavigateTo(loginUrl, true);
+        NavManager.NavigateTo(loginUrl, false);
     }
 }
