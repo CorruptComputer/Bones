@@ -14,10 +14,112 @@
     "version": "develop"
   },
   "paths": {
-    "/AccountManagement/register": {
+    "/Account/my/basic-info": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "",
+        "operationId": "GetMyBasicInfoAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyBasicInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Account/my/profile": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Returns a users own full profile info",
+        "operationId": "GetMyProfileAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMyProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Anonymous/register": {
       "post": {
         "tags": [
-          "AccountManagement"
+          "Anonymous"
         ],
         "summary": "Registers a new user if all validations pass",
         "operationId": "RegisterAsync",
@@ -91,71 +193,10 @@
         }
       }
     },
-    "/AccountManagement/login": {
-      "post": {
-        "tags": [
-          "AccountManagement"
-        ],
-        "summary": "Logs in a user, returns the active token as a cookie header if successful",
-        "operationId": "LoginAsync",
-        "requestBody": {
-          "description": "Request to login",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginUserApiRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/AccountManagement/confirm-email": {
+    "/Anonymous/confirm-email": {
       "get": {
         "tags": [
-          "AccountManagement"
+          "Anonymous"
         ],
         "summary": "Confirms a users email address",
         "operationId": "ConfirmEmailAsync",
@@ -232,10 +273,10 @@
         }
       }
     },
-    "/AccountManagement/resend-confirmation-email": {
+    "/Anonymous/resend-confirmation-email": {
       "post": {
         "tags": [
-          "AccountManagement"
+          "Anonymous"
         ],
         "summary": "Re-queues the confirmation email to send",
         "operationId": "ResendConfirmationEmailAsync",
@@ -294,10 +335,10 @@
         }
       }
     },
-    "/AccountManagement/forgot-password": {
+    "/Anonymous/forgot-password": {
       "post": {
         "tags": [
-          "AccountManagement"
+          "Anonymous"
         ],
         "summary": "Queues a forgot password email",
         "operationId": "ForgotPasswordAsync",
@@ -356,10 +397,71 @@
         }
       }
     },
-    "/AccountManagement/logout": {
+    "/Login/login": {
       "post": {
         "tags": [
-          "AccountManagement"
+          "Login"
+        ],
+        "summary": "Logs in a user, returns the active token as a cookie header if successful",
+        "operationId": "LoginAsync",
+        "requestBody": {
+          "description": "Request to login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserApiRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Login/logout": {
+      "post": {
+        "tags": [
+          "Login"
         ],
         "summary": "",
         "operationId": "LogoutAsync",
@@ -407,112 +509,10 @@
         }
       }
     },
-    "/AccountManagement/my/basic-info": {
-      "get": {
-        "tags": [
-          "AccountManagement"
-        ],
-        "summary": "",
-        "operationId": "GetMyBasicInfoAsync",
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetMyBasicInfoResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/AccountManagement/my/profile": {
-      "get": {
-        "tags": [
-          "AccountManagement"
-        ],
-        "summary": "Returns a users own full profile info",
-        "operationId": "GetMyProfileAsync",
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetMyProfileResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectManagement/create": {
+    "/Project/create": {
       "post": {
         "tags": [
-          "ProjectManagement"
+          "Project"
         ],
         "summary": "Creates a new project",
         "operationId": "CreateProjectAsync",
@@ -586,10 +586,10 @@
         }
       }
     },
-    "/ProjectManagement/projects": {
+    "/Project/projects": {
       "get": {
         "tags": [
-          "ProjectManagement"
+          "Project"
         ],
         "summary": "Gets the projects for the current user, or specified organization",
         "operationId": "GetProjectsByOwnerAsync",

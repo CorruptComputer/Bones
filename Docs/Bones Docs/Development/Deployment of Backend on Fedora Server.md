@@ -89,3 +89,23 @@ tmux new -d -s BackgroundService 'cd ~/bones/backgroundService; Bones.Background
 tmux new -d -s Api 'cd ~/bones/api; Bones.Api'
 # Go ahead and start them, tmux will continue running them until they probably crash for some reason
 ```
+
+To update:
+
+```bash
+tmux kill-session -t BackgroundService
+tmux kill-session -t Api
+# Not quite doom slayer music worthy, but it works
+
+dnf update
+# Go ahead while we're here
+
+cd Bones/
+gh release download nightly --dir ../
+cd .. 
+
+dnf install ./Bones.Api.0.0.1-nightly.linux-x64.rpm ./Bones.BackgroundService.0.0.1-nightly.linux-x64.rpm
+
+tmux new -d -s BackgroundService 'cd ~/bones/backgroundService; Bones.BackgroundService;'
+tmux new -d -s Api 'cd ~/bones/api; Bones.Api'
+```

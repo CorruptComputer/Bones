@@ -12,7 +12,7 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to Managing Projects
 /// </summary>
 /// <param name="sender">MediatR sender</param>
-public sealed class ProjectManagementController(ISender sender) : BonesControllerBase(sender)
+public sealed class ProjectController(ISender sender) : BonesControllerBase(sender)
 {
     /// <summary>
     ///   Request to create a new project
