@@ -58,6 +58,14 @@ jobs:
           dotnet deb --configuration Release --version-suffix ${{ github.run_id }} --output ../../publish-background-service/
           dotnet rpm --configuration Release --version-suffix ${{ github.run_id }} --output ../../publish-background-service/
           cd ../..
+          
+      - name: test
+        run: |
+          ls -la
+          cd publish-background-service/
+          ls -la 
+          cd ../publish-api/
+          ls -la
 
       - name: Upload API DEB Build Artifact
         uses: ncipollo/release-action@v1
@@ -66,6 +74,7 @@ jobs:
           updateOnlyUnreleased: true
           body: Nightly release of server artifacts
           name: Nightly Server Release
+          tag: 'nightly'
           prerelease: true
           replacesArtifacts: true
           artifacts: '~/publish-api/*.deb,~/publish-api/*.rpm,~/publish-background-service/*.deb,~/publish-background-service/*.rpm'
