@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: '0 0 * * *' # run at midnight UTC
   workflow_dispatch:
+    - branch: 'develop'
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -60,17 +61,16 @@ jobs:
           dotnet deb --configuration Release --version-suffix nightly --output ../../publish/
           dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
           cd ../..
+          
+      - name: Delete previous release
+        run: gh release delete nightly --cleanup-tag --yes
 
       - name: Upload Nightly Server Packages
         uses: ncipollo/release-action@v1
         with:
-          allowUpdates: true
-          updateOnlyUnreleased: true
           body: Nightly release of server artifacts
           name: Nightly Server Release
           tag: 'nightly'
           makeLatest: true
-          commit: '${{ github.sha }}'
           prerelease: true
-          removeArtifacts: true
           artifacts: './publish/Bones.Api.*.linux-x64.deb,./publish/Bones.Api.*.linux-x64.rpm,./publish/Bones.BackgroundService.*.linux-x64.deb,./publish/Bones.BackgroundService.*.linux-x64.rpm'
