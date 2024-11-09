@@ -61,7 +61,7 @@ jobs:
           dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
           cd ../..
 
-      - name: Upload API DEB Build Artifact
+      - name: Upload Nightly Server Packages
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
@@ -69,6 +69,8 @@ jobs:
           body: Nightly release of server artifacts
           name: Nightly Server Release
           tag: 'nightly'
+          makeLatest: true
+          commit: '${{ github.sha }}'
           prerelease: true
-          replacesArtifacts: true
+          removeArtifacts: true
           artifacts: './publish/Bones.Api.*.linux-x64.deb,./publish/Bones.Api.*.linux-x64.rpm,./publish/Bones.BackgroundService.*.linux-x64.deb,./publish/Bones.BackgroundService.*.linux-x64.rpm'
