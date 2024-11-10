@@ -166,6 +166,7 @@
   },
   "active": "63538227fcb0a17d",
   "lastOpenFiles": [
+    "Development/Development Environment Setup.md",
     "Development/Deployment of Frontend on Cloudflare Pages.md",
     "Development/Deployment of Backend on Fedora Server.md",
     "Development/Feature Areas/Account Management.md",
@@ -173,7 +174,6 @@
     "Development/Feature Areas/Asset Management.md",
     "Development/Feature Areas",
     "Development/Feature Areas/Work Item Management.md",
-    "Development/Development Environment Setup.md",
     "Development/Project Relations.svg",
     "Development",
     "Welcome.md"

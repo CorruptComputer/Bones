@@ -23,9 +23,9 @@ public static class Program
     ///     The main character of the project.
     /// </summary>
     /// <param name="args">Arg, I'm a pirate.</param>
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        WebApplication.CreateBuilder(args).BuildBonesApi().RunBonesApi();
+        await WebApplication.CreateBuilder(args).BuildBonesApi().RunBonesApiAsync();
     }
 
     private static WebApplication BuildBonesApi(this WebApplicationBuilder builder)
@@ -99,7 +99,7 @@ public static class Program
         return builder.Build();
     }
 
-    private static void RunBonesApi(this WebApplication app)
+    private static async Task RunBonesApiAsync(this WebApplication app)
     {
         using IServiceScope scope = app.Services.CreateScope();
         ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();
@@ -108,8 +108,8 @@ public static class Program
         {
             configurePolicy
                 .WithOrigins(
-                    apiConfig.WebUIBaseUrl ?? throw new BonesException("ApiConfiguration:WebUIBaseUrl missing from appsettings."),
-                    apiConfig.ApiBaseUrl ?? throw new BonesException("ApiConfiguration:ApiBaseUrl missing from appsettings."))
+                    apiConfig.CorsAllowedOrigins?.ToArray() ?? throw new BonesException("ApiConfiguration:CorsAllowedOrigins missing from appsettings.")
+                )
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
@@ -135,7 +135,8 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-
-        app.Run();
+        
+        Log.Information("Startup complete");
+        await app.RunAsync();
     }
 }

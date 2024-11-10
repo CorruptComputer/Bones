@@ -13,7 +13,7 @@ public static class ServiceProviderExtensions
     /// </summary>
     /// <param name="serviceProvider"></param>
     /// <param name="cancellationToken"></param>
-    public static async Task SetupDatabase(this IServiceProvider serviceProvider, CancellationToken cancellationToken)
+    public static async Task SetupDatabase(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
     {
         using IServiceScope scope = serviceProvider.CreateScope();
         ISender sender = scope.ServiceProvider.GetRequiredService<ISender>();

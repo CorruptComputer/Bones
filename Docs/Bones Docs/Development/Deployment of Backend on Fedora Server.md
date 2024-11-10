@@ -100,11 +100,14 @@ tmux kill-session -t Api
 dnf update
 # Go ahead while we're here
 
+rm -rf pkgs/
+mkdir pkgs
+
 cd Bones/
-gh release download nightly --dir ../
+gh release download nightly --dir ../pkgs
 cd .. 
 
-dnf install ./Bones.Api.0.0.1-nightly.linux-x64.rpm ./Bones.BackgroundService.0.0.1-nightly.linux-x64.rpm
+dnf install ./pkgs/Bones.Api.0.0.1-nightly.linux-x64.rpm ./pkgs/Bones.BackgroundService.0.0.1-nightly.linux-x64.rpm
 
 tmux new -d -s BackgroundService 'cd ~/bones/backgroundService; Bones.BackgroundService;'
 tmux new -d -s Api 'cd ~/bones/api; Bones.Api'

@@ -6,12 +6,7 @@ namespace Bones.Api.Models;
 internal sealed record ApiConfiguration
 {
     /// <summary>
-    ///   Base URL for the WebUI that uses this API.
+    ///   The origins we want to allow through CORS
     /// </summary>
-    public string? WebUIBaseUrl { get; set; }
-
-    /// <summary>
-    ///   Base URL for the API.
-    /// </summary>
-    public string? ApiBaseUrl { get; set; }
+    public IEnumerable<string>? CorsAllowedOrigins { get; init; }
 }

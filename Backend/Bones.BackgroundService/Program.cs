@@ -20,8 +20,7 @@ public static class Program
     /// <param name="args"></param>
     public static async Task Main(string[] args)
     {
-        using CancellationTokenSource cts = new();
-        await Host.CreateApplicationBuilder(args).BuildBonesBackgroundService().RunBonesBackgroundService(cts.Token);
+        await Host.CreateApplicationBuilder(args).BuildBonesBackgroundService().RunBonesBackgroundService();
     }
 
     private static IHost BuildBonesBackgroundService(this HostApplicationBuilder builder)
@@ -51,9 +50,11 @@ public static class Program
         return builder.Build();
     }
 
-    private static async Task RunBonesBackgroundService(this IHost host, CancellationToken cancellationToken)
+    private static async Task RunBonesBackgroundService(this IHost host)
     {
-        await host.Services.SetupDatabase(cancellationToken);
-        await host.RunAsync(cancellationToken);
+        await host.Services.SetupDatabase();
+        
+        Log.Information("Startup complete");
+        await host.RunAsync();
     }
 }
