@@ -51,7 +51,7 @@ public sealed class AccountController(ISender sender) : BonesControllerBase(send
     /// <returns><see cref="GetMyProfileResponse"/></returns>
     [HttpGet("my/profile", Name = "GetMyProfileAsync")]
     [ProducesResponseType<GetMyProfileResponse>(StatusCodes.Status200OK)]
-    public async Task<ActionResult> GetMyProfileAsync()
+    public async ValueTask<ActionResult> GetMyProfileAsync()
     {
         BonesUser user = await GetCurrentBonesUserAsync();
 

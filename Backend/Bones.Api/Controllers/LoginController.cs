@@ -54,12 +54,14 @@ public class LoginController(SignInManager<BonesUser> signInManager, ISender sen
             }
             else
             {
+                Log.Warning("Two-factor code was not provided and is required for login: {Login}", login.Email);
                 return Unauthorized(EmptyResponse.Value);
             }
         }
 
         if (!result.Succeeded)
         {
+            Log.Warning("Invalid login attempt: {Login}", login.Email);
             return Unauthorized(EmptyResponse.Value);
         }
 

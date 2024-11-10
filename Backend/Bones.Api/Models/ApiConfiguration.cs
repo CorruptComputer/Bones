@@ -8,5 +8,5 @@ internal sealed record ApiConfiguration
     /// <summary>
     ///   The origins we want to allow through CORS
     /// </summary>
-    public IEnumerable<string>? CorsAllowedOrigins { get; init; }
+    public string[]? CorsAllowedOrigins { get; init; }
 }

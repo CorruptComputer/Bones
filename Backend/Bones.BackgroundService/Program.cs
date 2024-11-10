@@ -26,7 +26,8 @@ public static class Program
     private static IHost BuildBonesBackgroundService(this HostApplicationBuilder builder)
     {
         builder.Configuration.AddEnvironmentVariables();
-
+        Log.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
+        
         builder.ConfigureContainer(new AutofacServiceProviderFactory(), containerBuilder =>
         {
             containerBuilder.RegisterModule(new BonesBackgroundServiceModule(builder.Configuration));

@@ -31,6 +31,7 @@ public static class Program
     private static WebApplication BuildBonesApi(this WebApplicationBuilder builder)
     {
         builder.Configuration.AddEnvironmentVariables();
+        Log.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
@@ -103,18 +104,20 @@ public static class Program
     {
         using IServiceScope scope = app.Services.CreateScope();
         ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();
+        string[] corsAllowedOrigins = apiConfig.CorsAllowedOrigins 
+            ?? throw new BonesException("ApiConfiguration:CorsAllowedOrigins missing from appsettings.");
+        
+        Log.Information("Allowed origins: {Origins}", string.Join(" | ", corsAllowedOrigins));
 
         app.UseCors(configurePolicy =>
         {
             configurePolicy
-                .WithOrigins(
-                    apiConfig.CorsAllowedOrigins?.ToArray() ?? throw new BonesException("ApiConfiguration:CorsAllowedOrigins missing from appsettings.")
-                )
+                .WithOrigins(corsAllowedOrigins)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
         });
-
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
