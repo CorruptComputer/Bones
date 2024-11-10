@@ -45,7 +45,7 @@ public class AnonymousController(ISender sender) : BonesControllerBase(sender)
         return Ok(EmptyResponse.Value);
     }
 
-    
+
 
     /// <summary>
     ///   Confirms a users email address

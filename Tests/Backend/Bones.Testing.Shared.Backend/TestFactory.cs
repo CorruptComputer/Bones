@@ -46,7 +46,6 @@ internal static class TestFactory
 
             configBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string?>>()
             {
-                //new("ApiConfiguration:WebUIBaseUrl", "http://localhost:9080"),
                 //new("BackgroundService:BackgroundTasksUserEmail", string.Empty),
                 new("BackendConfiguration:WebUIBaseUrl", "http://localhost:9080"),
                 new("DatabaseConfiguration:ConnectionString", string.Empty),
@@ -64,10 +63,9 @@ internal static class TestFactory
 
             hostBuilder.ConfigureContainer<ContainerBuilder>((containerCtx, containerBuilder) =>
             {
-                //containerBuilder.RegisterModule(new BonesApiModule(containerCtx.Configuration));
                 containerBuilder.RegisterModule(new BonesBackendModule(containerCtx.Configuration, services));
                 containerBuilder.RegisterModule(new BonesDatabaseModule(containerCtx.Configuration, services));
-                containerBuilder.RegisterModule<UnitTestModule>();
+                containerBuilder.RegisterModule(new UnitTestModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
             });
 
             services.AddIdentity<BonesUser, BonesRole>(options => options.AddBonesIdentityOptions())

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Backend;
@@ -6,6 +7,8 @@ using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Extensions;
 using Bones.Shared.Backend.Extensions;
+using Bones.Shared.Backend.PipelineBehaviors;
+using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 
 namespace Bones.BackgroundService;
 
@@ -26,11 +29,12 @@ public static class Program
     private static IHost BuildBonesBackgroundService(this HostApplicationBuilder builder)
     {
         builder.Configuration.AddEnvironmentVariables();
-        Log.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
-        
+
         builder.ConfigureContainer(new AutofacServiceProviderFactory(), containerBuilder =>
         {
-            containerBuilder.RegisterModule(new BonesBackgroundServiceModule(builder.Configuration));
+            containerBuilder.RegisterModule(new BonesBackgroundServiceModule(builder.Configuration,
+                [typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
+
             containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration, builder.Services));
             containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
         });
@@ -41,8 +45,9 @@ public static class Program
 
 
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
-            loggerConfig.ReadFrom.Configuration(builder.Configuration)
+            loggerConfig
                 .ReadFrom.Services(serviceProvider)
+                .ReadFrom.Configuration(builder.Configuration)
         );
 
         builder.Services.RegisterBackgroundTasks();
@@ -54,7 +59,7 @@ public static class Program
     private static async Task RunBonesBackgroundService(this IHost host)
     {
         await host.Services.SetupDatabase();
-        
+
         Log.Information("Startup complete");
         await host.RunAsync();
     }

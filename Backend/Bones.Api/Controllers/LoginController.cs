@@ -67,7 +67,7 @@ public class LoginController(SignInManager<BonesUser> signInManager, ISender sen
 
         return Ok(EmptyResponse.Value);
     }
-    
+
     /// <summary>
     /// 
     /// </summary>

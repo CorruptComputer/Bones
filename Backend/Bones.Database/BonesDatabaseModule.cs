@@ -17,16 +17,6 @@ public class BonesDatabaseModule(IConfiguration config, IServiceCollection servi
     /// <inheritdoc />
     protected override void Load(ContainerBuilder builder)
     {
-        MediatRConfigurationBuilder mediatrConfig = MediatRConfigurationBuilder
-            .Create(ThisAssembly)
-            .WithAllOpenGenericHandlerTypesRegistered()
-            .WithCustomPipelineBehaviors([
-                typeof(CommandBehavior<>),
-                typeof(QueryBehavior<,>)
-            ]);
-
-        builder.RegisterMediatR(mediatrConfig.Build());
-
         services.AddValidatorsFromAssembly(ThisAssembly, includeInternalTypes: true);
 
         DatabaseConfiguration? backgroundTasksConfig = config.GetSection(nameof(DatabaseConfiguration)).Get<DatabaseConfiguration>();

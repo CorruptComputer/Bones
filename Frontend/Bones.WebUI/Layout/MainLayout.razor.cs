@@ -11,7 +11,7 @@ public partial class MainLayout
     {
         public required string OrganizationName { get; init; }
         public required string ProjectName { get; init; }
-        
+
         public required Guid? ProjectId { get; init; }
 
         public override string ToString()
@@ -20,7 +20,7 @@ public partial class MainLayout
             {
                 return OrganizationName;
             }
-            
+
             return $"{OrganizationName} - {ProjectName}";
         }
     }
@@ -38,9 +38,9 @@ public partial class MainLayout
             ProjectName = string.Empty,
             ProjectId = null
         });
-        
+
         // TODO: Get users list of projects from the API and add them
-        
+
         Projects.Add(new()
         {
             OrganizationName = "+ Create a new project",
@@ -54,7 +54,7 @@ public partial class MainLayout
     {
         _open = !_open;
     }
-    
+
     private void OnGoToProjectChanged(IEnumerable<Guid?>? selectedProject)
     {
         Guid? selected = selectedProject?.FirstOrDefault();

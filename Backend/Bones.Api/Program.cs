@@ -31,12 +31,12 @@ public static class Program
     private static WebApplication BuildBonesApi(this WebApplicationBuilder builder)
     {
         builder.Configuration.AddEnvironmentVariables();
-        Log.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {
-            containerBuilder.RegisterModule(new BonesApiModule(builder.Configuration));
+            containerBuilder.RegisterModule(new BonesApiModule(builder.Configuration,
+                [typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
             containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration, builder.Services));
             containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
         });
@@ -91,8 +91,9 @@ public static class Program
         });
 
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
-            loggerConfig.ReadFrom.Configuration(builder.Configuration)
+            loggerConfig
                 .ReadFrom.Services(serviceProvider)
+                .ReadFrom.Configuration(builder.Configuration)
         );
 
         builder.Services.AddDbContext<BonesDbContext>();
@@ -104,9 +105,10 @@ public static class Program
     {
         using IServiceScope scope = app.Services.CreateScope();
         ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();
-        string[] corsAllowedOrigins = apiConfig.CorsAllowedOrigins 
+        string[] corsAllowedOrigins = apiConfig.CorsAllowedOrigins
             ?? throw new BonesException("ApiConfiguration:CorsAllowedOrigins missing from appsettings.");
-        
+
+        Log.Information("Environment: {Environment}", app.Environment.EnvironmentName);
         Log.Information("Allowed origins: {Origins}", string.Join(" | ", corsAllowedOrigins));
 
         app.UseCors(configurePolicy =>
@@ -117,7 +119,7 @@ public static class Program
                 .AllowAnyHeader()
                 .AllowCredentials();
         });
-        
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -138,7 +140,7 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-        
+
         Log.Information("Startup complete");
         await app.RunAsync();
     }

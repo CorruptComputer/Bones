@@ -17,16 +17,6 @@ public class BonesBackendModule(IConfiguration config, IServiceCollection servic
     /// <inheritdoc />
     protected override void Load(ContainerBuilder builder)
     {
-        MediatRConfigurationBuilder mediatrConfig = MediatRConfigurationBuilder
-            .Create(ThisAssembly)
-            .WithAllOpenGenericHandlerTypesRegistered()
-            .WithCustomPipelineBehaviors([
-                typeof(CommandBehavior<>),
-                typeof(QueryBehavior<,>)
-            ]);
-
-        builder.RegisterMediatR(mediatrConfig.Build());
-
         services.AddValidatorsFromAssembly(ThisAssembly, includeInternalTypes: true);
 
         BackendConfiguration? backgroundTasksConfig = config.GetSection(nameof(BackendConfiguration)).Get<BackendConfiguration>();

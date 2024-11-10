@@ -42,7 +42,7 @@ internal class SendForgotPasswordEmailTask(ISender sender, BackgroundServiceConf
         using SmtpClient client = new(configuration.SmtpServer, configuration.SmtpPort ?? 25);
         client.EnableSsl = true;
         client.Credentials = new NetworkCredential(configuration.SmtpUser, configuration.SmtpPassword);
-        
+
         foreach (ForgotPasswordEmailQueue emailToSend in emailsInQueue)
         {
             try

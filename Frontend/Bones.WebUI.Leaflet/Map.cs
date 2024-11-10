@@ -80,7 +80,7 @@ public class Map
         Id = Guid.NewGuid().ToString();
 
         _layers.CollectionChanged += OnLayersChanged;
-        
+
         OnInitialized += () =>
         {
             AddLayer(new TileLayer

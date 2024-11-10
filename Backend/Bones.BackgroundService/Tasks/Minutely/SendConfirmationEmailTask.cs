@@ -42,7 +42,7 @@ internal class SendConfirmationEmailTask(ISender sender, BackgroundServiceConfig
         using SmtpClient client = new(configuration.SmtpServer, configuration.SmtpPort ?? 25);
         client.EnableSsl = true;
         client.Credentials = new NetworkCredential(configuration.SmtpUser, configuration.SmtpPassword);
-        
+
         foreach (ConfirmationEmailQueue emailToSend in emailsInQueue)
         {
             try
@@ -53,7 +53,7 @@ internal class SendConfirmationEmailTask(ISender sender, BackgroundServiceConfig
                     "Confirmation Email",
                     emailToSend.ConfirmationLink);
 
-                
+
                 client.Send(message);
 
                 await Sender.Send(new RemoveConfirmationEmailFromQueueByIdDbCommand(emailToSend.Id), cancellationToken);
