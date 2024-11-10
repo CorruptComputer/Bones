@@ -30,7 +30,7 @@ public partial class MainLayout : LayoutComponentBase
 
     private bool _open = false;
 
-    private record ProjectDropDownModel
+    private sealed record ProjectDropDownModel
     {
         public required string ProjectName { get; init; }
 

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Bones.Api.Models;
 using Bones.Backend.Features.ProjectManagement.Projects.CreateProject;
@@ -23,7 +24,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// </summary>
     /// <param name="Name">Name of the project to create</param>
     /// <param name="OrganizationId">Optionally the organization that this should be created under, if not specified will be created for the requesting user.</param>
-    public record CreateProjectRequest(string Name, Guid? OrganizationId = null);
+    public record CreateProjectRequest([Required] string Name, Guid? OrganizationId = null);
 
     /// <summary>
     ///     Creates a new project
@@ -49,7 +50,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// </summary>
     /// <param name="OwnerType">OwnerType to get</param>
     /// <param name="OrganizationId">Optionally the organization that this should be created under, if not specified will be created for the requesting user.</param>
-    public record GetProjectsByOwnerRequest(OwnershipType OwnerType, Guid? OrganizationId = null);
+    public record GetProjectsByOwnerRequest([Required] OwnershipType OwnerType, Guid? OrganizationId = null);
 
     /// <summary>
     ///     Gets the projects for the current user, or specified organization
