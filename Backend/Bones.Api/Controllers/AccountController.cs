@@ -11,15 +11,8 @@ namespace Bones.Api.Controllers;
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
 /// </remarks>
-public sealed class AccountController(ISender sender) : BonesControllerBase(sender)
+public sealed partial class AccountController(ISender sender) : BonesControllerBase(sender)
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Email"></param>
-    /// <param name="DisplayName"></param>
-    public record GetMyBasicInfoResponse(string Email, string DisplayName);
-
     /// <summary>
     /// 
     /// </summary>
@@ -34,16 +27,6 @@ public sealed class AccountController(ISender sender) : BonesControllerBase(send
             user.Email ?? string.Empty,
             user.DisplayName ?? user.Email ?? string.Empty));
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Email"></param>
-    /// <param name="EmailConfirmed"></param>
-    /// <param name="EmailConfirmedDateTime"></param>
-    /// <param name="DisplayName"></param>
-    /// <param name="CreateDateTime"></param>
-    public record GetMyProfileResponse(string Email, bool EmailConfirmed, DateTimeOffset? EmailConfirmedDateTime, string DisplayName, DateTimeOffset CreateDateTime);
 
     /// <summary>
     ///   Returns a users own full profile info

@@ -17,17 +17,8 @@ namespace Bones.Api.Controllers;
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
 /// </remarks>
-public class LoginController(SignInManager<BonesUser> signInManager, ISender sender) : BonesControllerBase(sender)
+public sealed partial class LoginController(SignInManager<BonesUser> signInManager, ISender sender) : BonesControllerBase(sender)
 {
-    /// <summary>
-    ///   Request to login
-    /// </summary>
-    /// <param name="Email">The users email address</param>
-    /// <param name="Password">The users password</param>
-    /// <param name="TwoFactorCode">If they have 2fa, include the code here</param>
-    /// <param name="TwoFactorRecoveryCode">If they have 2fa and can't use their authenticator, include a recovery code here</param>
-    public sealed record LoginUserApiRequest([Required] string Email, [Required] string Password, string? TwoFactorCode, string? TwoFactorRecoveryCode);
-
     /// <summary>
     ///   Logs in a user, returns the active token as a cookie header if successful
     /// </summary>

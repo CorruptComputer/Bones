@@ -1,3 +1,4 @@
+using Bones.Api.Client;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -55,15 +56,15 @@ public partial class MainLayout : LayoutComponentBase
     {
         try
         {
-            IDictionary<string, string> projects = await ApiClient.GetProjectsUserCanAccessAsync();
+            List<GetProjectQuickSelectResponse> projects = await ApiClient.GetProjectQuickSelectAsync();
 
             Projects = [];
-            foreach (KeyValuePair<string, string> proj in projects)
+            foreach (GetProjectQuickSelectResponse proj in projects)
             {
                 Projects.Add(new()
                 {
-                    ProjectId = Guid.Parse(proj.Key),
-                    ProjectName = proj.Value
+                    ProjectId = proj.ProjectId,
+                    ProjectName = proj.ProjectName
                 });
             }
         }
@@ -97,7 +98,7 @@ public partial class MainLayout : LayoutComponentBase
             }
             else
             {
-                NavManager.NavigateTo(FrontEndUrls.Project.DASHBOARD.Replace("{ProjectId:guid}", selected.Value.ToString()));
+                NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace("{ProjectId:guid}", selected.Value.ToString()));
             }
         }
     }

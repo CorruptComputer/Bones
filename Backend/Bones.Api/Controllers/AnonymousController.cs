@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
-using Bones.Backend.Features.AccountManagement.ConfirmEmail;
-using Bones.Backend.Features.AccountManagement.QueueForgotPasswordEmail;
-using Bones.Backend.Features.AccountManagement.QueueResendConfirmationEmail;
-using Bones.Backend.Features.AccountManagement.RegisterUser;
+using Bones.Backend.Features.Accounts.ConfirmEmail;
+using Bones.Backend.Features.Accounts.QueueForgotPasswordEmail;
+using Bones.Backend.Features.Accounts.QueueResendConfirmationEmail;
+using Bones.Backend.Features.Accounts.RegisterUser;
 using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,15 +16,8 @@ namespace Bones.Api.Controllers;
 /// </summary>
 /// <param name="sender">MediatR sender</param>
 [AllowAnonymous]
-public class AnonymousController(ISender sender) : BonesControllerBase(sender)
+public sealed partial class AnonymousController(ISender sender) : BonesControllerBase(sender)
 {
-    /// <summary>
-    ///   Request to register a new user
-    /// </summary>
-    /// <param name="Email">Email, must be valid and unique</param>
-    /// <param name="Password">Password, must pass validation (1 upper, 1 lower, 1 number, 1 special character, and at least 8 characters long)</param>
-    public sealed record RegisterUserApiRequest([Required] string Email, [Required] string Password);
-
     /// <summary>
     ///   Registers a new user if all validations pass
     /// </summary>
@@ -44,8 +37,6 @@ public class AnonymousController(ISender sender) : BonesControllerBase(sender)
 
         return Ok(EmptyResponse.Value);
     }
-
-
 
     /// <summary>
     ///   Confirms a users email address

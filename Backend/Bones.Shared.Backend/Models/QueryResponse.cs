@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
@@ -34,7 +35,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     /// </summary>
     /// <param name="failureReasons"></param>
     /// <returns></returns>
-    public static QueryResponse<TResult> Fail(Dictionary<string, string[]>? failureReasons = null) => new()
+    public static QueryResponse<TResult> Fail(Dictionary<string, List<string>>? failureReasons = null) => new()
     {
         Success = false,
         FailureReasons = failureReasons
@@ -48,9 +49,9 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     public static QueryResponse<TResult> Fail(string? failureReason = null) => new()
     {
         Success = false,
-        FailureReasons = string.IsNullOrEmpty(failureReason) ? null : new()
+        FailureReasons = new()
         {
-            { "Failure", [ failureReason ] }
+            { "server", [ failureReason ?? "Unknown failure reason" ] }
         }
     };
 
@@ -63,7 +64,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
         Success = false,
         FailureReasons = new()
         {
-            {"Forbidden", [ "Forbidden." ] }
+            {"server", [ "Forbidden." ] }
         },
         Forbidden = true
     };

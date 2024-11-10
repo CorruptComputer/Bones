@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace Bones.Shared.Backend.Models;
@@ -17,6 +18,7 @@ public record BonesResponseBase
     /// <summary>
     ///     Was the command successful?
     /// </summary>
+    [MemberNotNullWhen(returnValue: false, nameof(FailureReasons))]
     public required bool Success { get; init; }
 
     /// <summary>
@@ -27,5 +29,5 @@ public record BonesResponseBase
     /// <summary>
     ///     If the command failed, why?
     /// </summary>
-    public Dictionary<string, string[]>? FailureReasons { get; init; }
+    public Dictionary<string, List<string>>? FailureReasons { get; init; }
 }

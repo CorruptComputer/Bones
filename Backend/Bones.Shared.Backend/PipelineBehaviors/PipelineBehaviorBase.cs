@@ -18,14 +18,14 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
     /// </summary>
     /// <param name="response"></param>
     /// <returns></returns>
-    protected abstract (bool success, Dictionary<string, string[]>? failReason, bool forbidden) GetResult(TResponse response);
+    protected abstract (bool success, Dictionary<string, List<string>>? failReason, bool forbidden) GetResult(TResponse response);
 
     /// <summary>
     ///   Generate a failure response with the provided type
     /// </summary>
     /// <param name="failReason"></param>
     /// <returns></returns>
-    protected abstract TResponse GetFailedResponse(Dictionary<string, string[]> failReason);
+    protected abstract TResponse GetFailedResponse(Dictionary<string, List<string>> failReason);
 
     // I don't really like using these, but in this case it's safer to do so.
     // Logging the request could potentially log a password,
@@ -60,7 +60,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
             else
             {
                 ValidationContext<TRequest> context = new(request);
-                Dictionary<string, string[]> errors = requestValidators
+                Dictionary<string, List<string>> errors = requestValidators
                     .Select(x => x.Validate(context))
                     .SelectMany(x => x.Errors)
                     .Where(x => x != null)
@@ -70,7 +70,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
                         (propertyName, errorMessages) => new
                         {
                             Key = propertyName,
-                            Values = errorMessages.Distinct().ToArray(),
+                            Values = errorMessages.Distinct().ToList(),
                         })
                     .ToDictionary(x => x.Key, x => x.Values);
 
@@ -96,7 +96,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
             });
         }
 
-        (bool success, Dictionary<string, string[]>? failReasons, bool forbidden) = GetResult(response);
+        (bool success, Dictionary<string, List<string>>? failReasons, bool forbidden) = GetResult(response);
 
         if (forbidden)
         {
@@ -121,7 +121,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
         _stopwatch = Stopwatch.StartNew();
     }
 
-    private void StopDebugLog(TRequest request, bool success, Dictionary<string, string[]>? failReasons, Exception? exception)
+    private void StopDebugLog(TRequest request, bool success, Dictionary<string, List<string>>? failReasons, Exception? exception)
     {
         if (!_debugLog || _stopwatch == null)
         {

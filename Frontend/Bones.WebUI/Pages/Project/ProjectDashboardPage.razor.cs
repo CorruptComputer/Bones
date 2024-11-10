@@ -20,11 +20,6 @@ public partial class ProjectDashboardPage : ComponentBase
     public string? ProjectName { get; set; }
 
     /// <summary>
-    ///   The number of initiatives on the project, received from the API
-    /// </summary>
-    public int? InitiativeCount { get; set; }
-
-    /// <summary>
     ///   The type of owner for the project, received from the API
     /// </summary>
     public OwnershipType? OwnerType { get; set; }
@@ -35,17 +30,34 @@ public partial class ProjectDashboardPage : ComponentBase
     public Guid? OwnerId { get; set; }
 
     /// <summary>
+    ///   The number of initiatives on the project, received from the API
+    /// </summary>
+    public int? InitiativeCount { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool InitiativeListLoading { get; set; } = true;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public List<InitiativeListModel> InitiativeList { get; set; } = [];
+
+    /// <summary>
     /// 
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
         GetProjectDashboardResponse dashboardResponse = await ApiClient.GetProjectDashboardAsync(ProjectId);
         ProjectName = dashboardResponse.ProjectName;
-        InitiativeCount = dashboardResponse.InitiativeCount;
         OwnerType = dashboardResponse.OwnerType;
         OwnerId = dashboardResponse.OwnerId;
-        // @page "/Project/{ProjectId:guid}/Dashboard/"
-        // 
+
+        InitiativeCount = dashboardResponse.InitiativeCount;
+        InitiativeList = dashboardResponse.Initiatives;
+        InitiativeListLoading = false;
+
         await base.OnInitializedAsync();
     }
 }

@@ -1,0 +1,11 @@
+using Bones.Database.DbSets.AccountManagement;
+
+namespace Bones.Backend.Features.Accounts.QueueConfirmationEmail;
+
+/// <summary>
+///   Backend command for queueing a confirmation email.
+/// </summary>
+/// <param name="User"></param>
+/// <param name="Email"></param>
+/// <param name="IsChange"></param>
+public sealed record QueueConfirmationEmailCommand(BonesUser User, string Email, bool IsChange = false) : IRequest<CommandResponse>;

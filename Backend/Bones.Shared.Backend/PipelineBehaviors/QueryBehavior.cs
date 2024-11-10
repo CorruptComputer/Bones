@@ -8,13 +8,13 @@ public class QueryBehavior<TRequest, TValue>(IEnumerable<IValidator<TRequest>> r
     : PipelineBehaviorBase<TRequest, QueryResponse<TValue>>(requestValidators) where TRequest : notnull
 {
     /// <inheritdoc />
-    protected override (bool success, Dictionary<string, string[]>? failReason, bool forbidden) GetResult(QueryResponse<TValue> response)
+    protected override (bool success, Dictionary<string, List<string>>? failReason, bool forbidden) GetResult(QueryResponse<TValue> response)
     {
         return (response.Success, response.FailureReasons, response.Forbidden);
     }
 
     /// <inheritdoc />
-    protected override QueryResponse<TValue> GetFailedResponse(Dictionary<string, string[]> failReason)
+    protected override QueryResponse<TValue> GetFailedResponse(Dictionary<string, List<string>> failReason)
     {
         return QueryResponse<TValue>.Fail(failReason);
     }

@@ -1,4 +1,4 @@
-using Bones.Backend.Features.AccountManagement.RegisterUser;
+using Bones.Backend.Features.Accounts.RegisterUser;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.SystemQueues;
 using Bones.Shared.Backend.Models;

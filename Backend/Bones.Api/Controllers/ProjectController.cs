@@ -1,10 +1,9 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using Bones.Api.Models;
-using Bones.Backend.Features.ProjectManagement.Projects.CreateProject;
-using Bones.Backend.Features.ProjectManagement.Projects.GetProjectById;
-using Bones.Backend.Features.ProjectManagement.Projects.GetProjectsByOwner;
-using Bones.Backend.Features.ProjectManagement.Projects.GetProjectsUserCanAccess;
+using Bones.Backend.Features.Projects.Initiatives;
+using Bones.Backend.Features.Projects.Projects.CreateProject;
+using Bones.Backend.Features.Projects.Projects.GetProjectById;
+using Bones.Backend.Features.Projects.Projects.GetProjectsByOwner;
+using Bones.Backend.Features.Projects.Projects.GetProjectsUserCanAccess;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Shared.Backend.Enums;
@@ -17,41 +16,9 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to Managing Projects
 /// </summary>
 /// <param name="sender">MediatR sender</param>
-public sealed class ProjectController(ISender sender) : BonesControllerBase(sender)
+public sealed partial class ProjectController(ISender sender) : BonesControllerBase(sender)
 {
-    /// <summary>
-    ///   Request to create a new project
-    /// </summary>
-    /// <param name="Name">Name of the project to create</param>
-    /// <param name="OrganizationId">Optionally the organization that this should be created under, if not specified will be created for the requesting user.</param>
-    public record CreateProjectRequest([Required] string Name, Guid? OrganizationId = null);
-
-    /// <summary>
-    ///     Creates a new project
-    /// </summary>
-    /// <param name="request">The request</param>
-    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("create", Name = "CreateProjectAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateProjectAsync([FromBody] CreateProjectRequest request)
-    {
-        CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
-        if (!response.Success)
-        {
-            return BadRequest(response.FailureReasons);
-        }
-
-        return Ok(response.Id);
-    }
-
-    /// <summary>
-    ///   Request to get the projects for a given User/Organization
-    /// </summary>
-    /// <param name="OwnerType">OwnerType to get</param>
-    /// <param name="OrganizationId">Optionally the organization that this should be created under, if not specified will be created for the requesting user.</param>
-    public record GetProjectsByOwnerRequest([Required] OwnershipType OwnerType, Guid? OrganizationId = null);
-
+    #region GET
     /// <summary>
     ///     Gets the projects for the current user, or specified organization
     /// </summary>
@@ -73,41 +40,31 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     }
 
     /// <summary>
-    ///     Gets the projects the current user is able to access
+    ///     Gets the users current quick select projects
     /// </summary>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("projects", Name = "GetProjectsUserCanAccessAsync")]
-    [ProducesResponseType<Dictionary<Guid, string>>(StatusCodes.Status200OK)]
+    [HttpGet("projects/quick-select", Name = "GetProjectQuickSelectAsync")]
+    [ProducesResponseType<List<GetProjectQuickSelectResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<EmptyResult>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> GetProjectsUserCanAccessAsync()
+    public async Task<ActionResult> GetProjectQuickSelectAsync()
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
+
+        // TODO: Make this customizable 
         QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsUserCanAccessQuery(currentUser));
         if (!response.Success)
         {
             return BadRequest(response.FailureReasons);
         }
 
-        return Ok(response.Result);
-    }
+        if (response.Result is null)
+        {
+            return NotFound(EmptyResponse.Value);
+        }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="ProjectId"></param>
-    /// <param name="ProjectName"></param>
-    /// <param name="InitiativeCount"></param>
-    /// <param name="OwnerType"></param>
-    /// <param name="OwnerId"></param>
-    [Serializable]
-    [JsonSerializable(typeof(GetProjectDashboardResponse))]
-    public record GetProjectDashboardResponse(
-        Guid ProjectId,
-        string ProjectName,
-        int InitiativeCount,
-        OwnershipType OwnerType,
-        Guid OwnerId
-    );
+        return Ok(response.Result.Select(kvp => new GetProjectQuickSelectResponse(kvp.Key, kvp.Value)));
+    }
 
     /// <summary>
     ///     Gets a projects dashboard information
@@ -120,20 +77,82 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     public async Task<ActionResult> GetProjectDashboardAsync(Guid projectId)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
-        QueryResponse<Project> response = await Sender.Send(new GetProjectByIdQuery(projectId, currentUser));
-        if (!response.Success || response.Result == null)
+        QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectByIdQuery(projectId, currentUser));
+        QueryResponse<List<Initiative>> initiativesResponse = await Sender.Send(new GetInitiativesByProjectQuery(projectId, currentUser));
+
+        if (!projectResponse.Success || projectResponse.Result is null || !initiativesResponse.Success || initiativesResponse.Result is null)
         {
-            return BadRequest(response.FailureReasons);
+            return BadRequest(projectResponse.FailureReasons);
+        }
+
+        if (!initiativesResponse.Success || initiativesResponse.Result is null)
+        {
+            return BadRequest(initiativesResponse.FailureReasons);
         }
 
         // We know they won't be null
-        Guid ownerId = response.Result.OwnerType == OwnershipType.User
-            ? response.Result.OwningUser!.Id
-            : response.Result.OwningOrganization!.Id;
+        Guid ownerId = projectResponse.Result.OwnerType == OwnershipType.User
+            ? projectResponse.Result.OwningUser!.Id
+            : projectResponse.Result.OwningOrganization!.Id;
 
-        GetProjectDashboardResponse resp = new(response.Result.Id, response.Result.Name,
-            response.Result.Initiatives.Count, response.Result.OwnerType, ownerId);
+        GetProjectDashboardResponse resp = new(
+            projectResponse.Result.Id,
+            projectResponse.Result.Name,
+            projectResponse.Result.OwnerType,
+            ownerId,
+            initiativesResponse.Result.Count,
+            initiativesResponse.Result.Select(i => new InitiativeListModel(i.Id, i.Name, i.Queues.Count)).ToList());
 
         return Ok(resp);
     }
+    #endregion
+
+    #region POST
+    /// <summary>
+    ///     Creates a new project
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("create", Name = "CreateProjectAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> CreateProjectAsync([FromBody] CreateProjectRequest request)
+    {
+        CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return Ok(response.Id);
+    }
+
+    /// <summary>
+    ///     Creates a new project
+    /// </summary>
+    /// <param name="projectId">The ID of the project to create this in</param>
+    /// <param name="request">The request</param>
+    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("{projectId:guid}/initiative/create", Name = "CreateInitiativeAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> CreateInitiativeAsync(Guid projectId, [FromBody] CreateInitiativeRequest request)
+    {
+        CommandResponse response = await Sender.Send(new CreateInitiativeCommand(request.Name, projectId, await GetCurrentBonesUserAsync()));
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return Ok(response.Id);
+    }
+    #endregion
+
+    #region PUT
+
+    #endregion
+
+    #region DELETE
+
+    #endregion
 }

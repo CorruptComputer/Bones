@@ -509,84 +509,6 @@
         }
       }
     },
-    "/Project/create": {
-      "post": {
-        "tags": [
-          "Project"
-        ],
-        "summary": "Creates a new project",
-        "operationId": "CreateProjectAsync",
-        "requestBody": {
-          "description": "The request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateProjectRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/Project/projects/by-owner": {
       "get": {
         "tags": [
@@ -667,13 +589,13 @@
         }
       }
     },
-    "/Project/projects": {
+    "/Project/projects/quick-select": {
       "get": {
         "tags": [
           "Project"
         ],
-        "summary": "Gets the projects the current user is able to access",
-        "operationId": "GetProjectsUserCanAccessAsync",
+        "summary": "Gets the users current quick select projects",
+        "operationId": "GetProjectQuickSelectAsync",
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -710,10 +632,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetProjectQuickSelectResponse"
                   }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResult"
                 }
               }
             }
@@ -816,13 +748,23 @@
         }
       }
     },
-    "/Test/bones-exception": {
-      "get": {
+    "/Project/create": {
+      "post": {
         "tags": [
-          "Test"
+          "Project"
         ],
-        "summary": "Throws a BonesException to test the ApiExceptionHandler",
-        "operationId": "GetBonesExceptionAsync",
+        "summary": "Creates a new project",
+        "operationId": "CreateProjectAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -859,7 +801,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -867,13 +820,35 @@
         }
       }
     },
-    "/Test/forbidden": {
-      "get": {
+    "/Project/{projectId}/initiative/create": {
+      "post": {
         "tags": [
-          "Test"
+          "Project"
         ],
-        "summary": "Throws a ForbiddenAccessException to test the ApiExceptionHandler",
-        "operationId": "GetForbiddenAsync",
+        "summary": "Creates a new project",
+        "operationId": "CreateInitiativeAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project to create this in",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInitiativeRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -910,7 +885,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmptyResponseActionResult"
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -921,9 +907,17 @@
   },
   "components": {
     "schemas": {
-      "ActionResult": {
+      "CreateInitiativeRequest": {
         "type": "object",
-        "additionalProperties": false
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the initiative to create",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request to create a new initiative"
       },
       "CreateProjectRequest": {
         "type": "object",
@@ -948,17 +942,27 @@
         "additionalProperties": false,
         "description": "The response body is empty, this is a workaround for the limitations of the API client."
       },
-      "EmptyResponseActionResult": {
+      "EmptyResult": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ErrorResponse": {
         "type": "object",
         "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ActionResult"
-          },
-          "value": {
-            "$ref": "#/components/schemas/EmptyResponse"
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "The errors that occurred, with the key being either the input that was invalid and the list of reasons it was invalid, or 'server' with the list of server errors.",
+            "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "The response body is empty, this is a workaround for the limitations of the API client."
       },
       "GetMyBasicInfoResponse": {
         "type": "object",
@@ -1022,11 +1026,6 @@
             "description": "",
             "nullable": true
           },
-          "initiativeCount": {
-            "type": "integer",
-            "description": "",
-            "format": "int32"
-          },
           "ownerType": {
             "$ref": "#/components/schemas/OwnershipType"
           },
@@ -1034,6 +1033,36 @@
             "type": "string",
             "description": "",
             "format": "uuid"
+          },
+          "initiativeCount": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          },
+          "initiatives": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InitiativeListModel"
+            },
+            "description": "",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
+      },
+      "GetProjectQuickSelectResponse": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "",
+            "format": "uuid"
+          },
+          "projectName": {
+            "type": "string",
+            "description": "",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -1054,6 +1083,28 @@
         },
         "additionalProperties": false,
         "description": "Request to get the projects for a given User/Organization"
+      },
+      "InitiativeListModel": {
+        "type": "object",
+        "properties": {
+          "initiativeId": {
+            "type": "string",
+            "description": "",
+            "format": "uuid"
+          },
+          "initiativeName": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "queueCount": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
       },
       "LoginUserApiRequest": {
         "type": "object",

@@ -8,13 +8,13 @@ public class CommandBehavior<TRequest>(IEnumerable<IValidator<TRequest>> request
     : PipelineBehaviorBase<TRequest, CommandResponse>(requestValidators) where TRequest : notnull
 {
     /// <inheritdoc />
-    protected override (bool success, Dictionary<string, string[]>? failReason, bool forbidden) GetResult(CommandResponse response)
+    protected override (bool success, Dictionary<string, List<string>>? failReason, bool forbidden) GetResult(CommandResponse response)
     {
         return (response.Success, response.FailureReasons, response.Forbidden);
     }
 
     /// <inheritdoc />
-    protected override CommandResponse GetFailedResponse(Dictionary<string, string[]> failReason)
+    protected override CommandResponse GetFailedResponse(Dictionary<string, List<string>> failReason)
     {
         return CommandResponse.Fail(failReason);
     }

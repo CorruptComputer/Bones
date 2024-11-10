@@ -32,7 +32,7 @@ public sealed record CommandResponse : BonesResponseBase
     /// </summary>
     /// <param name="failureReasons"></param>
     /// <returns></returns>
-    public static CommandResponse Fail(Dictionary<string, string[]> failureReasons) => new()
+    public static CommandResponse Fail(Dictionary<string, List<string>> failureReasons) => new()
     {
         Success = false,
         FailureReasons = failureReasons
@@ -46,9 +46,9 @@ public sealed record CommandResponse : BonesResponseBase
     public static CommandResponse Fail(string? failureReason = null) => new()
     {
         Success = false,
-        FailureReasons = string.IsNullOrEmpty(failureReason) ? null : new()
+        FailureReasons = new()
         {
-            { "Failure", [ failureReason ] }
+            { "server", [ failureReason ?? "Unknown failure reason" ] }
         }
     };
 
@@ -61,7 +61,7 @@ public sealed record CommandResponse : BonesResponseBase
         Success = false,
         FailureReasons = new()
         {
-            {"Forbidden", [ "Forbidden." ] }
+            {"server", [ "Forbidden." ] }
         },
         Forbidden = true
     };

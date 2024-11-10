@@ -1,6 +1,6 @@
 using System.Net.Mime;
 using Bones.Api.Models;
-using Bones.Backend.Features.AccountManagement.GetUserByClaimsPrincipal;
+using Bones.Backend.Features.Accounts.GetUserByClaimsPrincipal;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;

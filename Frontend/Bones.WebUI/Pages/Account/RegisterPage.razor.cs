@@ -1,3 +1,5 @@
+using System.Net;
+using Bones.Api.Client;
 using Bones.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -51,7 +53,20 @@ public partial class RegisterPage : ComponentBase
 
             RegistrationSuccess = true;
         }
-        catch (Exception ex)
+        catch (ApiException<Dictionary<string, List<string>>> ex)
+        {
+            if (ex.StatusCode == (int)HttpStatusCode.BadRequest)
+            {
+                List<string> apiErrors = [];
+                foreach (KeyValuePair<string, List<string>> kvp in ex.Result)
+                {
+                    apiErrors.AddRange(kvp.Value.Select(error => $"{kvp.Key}: {error}"));
+                }
+
+                ValidationErrors = apiErrors.ToArray();
+            }
+        }
+        catch (ApiException ex)
         {
             Logger.LogError(ex, "Error while registering user");
             RegistrationSuccess = false;
@@ -71,27 +86,27 @@ public partial class RegisterPage : ComponentBase
 
         if (Password.Text.Length <= 8)
         {
-            yield return "Password be at least 8 characters long.";
+            //yield return "Password be at least 8 characters long.";
         }
 
         if (!StandardRegexes.PasswordContainsUpper().IsMatch(Password.Text))
         {
-            yield return "Password must contain at least one capital letter";
+            //yield return "Password must contain at least one capital letter";
         }
 
         if (!StandardRegexes.PasswordContainsLower().IsMatch(Password.Text))
         {
-            yield return "Password must contain at least one lowercase letter";
+            //yield return "Password must contain at least one lowercase letter";
         }
 
         if (!StandardRegexes.PasswordContainsNumber().IsMatch(Password.Text))
         {
-            yield return "Password must contain at least one digit";
+            //yield return "Password must contain at least one digit";
         }
 
         if (!StandardRegexes.PasswordContainsSpecial().IsMatch(Password.Text))
         {
-            yield return "Password must contain at least one special character";
+            //yield return "Password must contain at least one special character";
         }
     }
 

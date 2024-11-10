@@ -1,6 +1,0 @@
-namespace Bones.Backend.Features.AccountManagement.QueueResendConfirmationEmail;
-
-internal class QueueResendConfirmationEmailCommandValidator : AbstractValidator<QueueResendConfirmationEmailCommand>
-{
-
-}

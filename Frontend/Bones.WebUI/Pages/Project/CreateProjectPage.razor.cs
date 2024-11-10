@@ -1,3 +1,5 @@
+using System.Net;
+using Bones.Api.Client;
 using Bones.Shared;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components;
@@ -42,11 +44,11 @@ public partial class CreateProjectPage : ComponentBase
                 OrganizationId = null
             });
 
-            NavManager.NavigateTo(FrontEndUrls.Project.DASHBOARD.Replace("{ProjectId:guid}", projectId.ToString()));
+            NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace("{ProjectId:guid}", projectId.ToString()));
         }
-        catch (Exception ex)
+        catch (ApiException ex)
         {
-            Logger.LogError(ex, "Error while registering user");
+            Logger.LogError(ex, "Error while creating project");
             ApiError = true;
         }
     }

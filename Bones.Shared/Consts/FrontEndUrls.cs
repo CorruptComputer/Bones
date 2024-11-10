@@ -69,6 +69,7 @@ public static class FrontEndUrls
     public static class Project
     {
         private const string _project = "/Project";
+        private const string _projectWithId = $"{_project}/{{ProjectId:guid}}";
 
         /// <summary>
         ///   Create project page
@@ -78,8 +79,29 @@ public static class FrontEndUrls
         /// <summary>
         ///   Project dashboard page
         /// </summary>
-        public const string DASHBOARD = _project + "/{ProjectId:guid}/Dashboard/";
+        public const string PROJECT_DASHBOARD = $"{_projectWithId}/Dashboard";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static class Initiative
+        {
+            private const string _initiative = $"{_projectWithId}/Initiative";
+            private const string _initiativeWithId = $"{_initiative}/{{InitiativeId:guid}}";
+
+            /// <summary>
+            ///   Create initiative page
+            /// </summary>
+            public const string CREATE_INITIATIVE = $"{_initiative}/Create";
+
+            /// <summary>
+            ///   Initiative dashboard page
+            /// </summary>
+            public const string INITIATIVE_DASHBOARD = $"{_initiativeWithId}/Dashboard";
+        }
     }
+
+
 
     /// <summary>
     ///   System Admin pages
