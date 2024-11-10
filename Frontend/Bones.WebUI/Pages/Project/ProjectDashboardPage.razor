@@ -1,0 +1,13 @@
+@attribute [Route(FrontEndUrls.Project.DASHBOARD)]
+@inject ILogger<ProjectDashboardPage> Logger
+@layout AuthenticatedLayout
+
+<h3>Project Dashboard</h3>
+
+<MudPaper Class="pa-4">
+    <MudText>Project ID: @ProjectId</MudText>
+    <MudText>Project Name: @ProjectName</MudText>
+    <MudText>Number of initiatives: @InitiativeCount</MudText>
+    <MudText>Owner Type: @OwnerType</MudText>
+    <MudText>Owner ID: @OwnerId</MudText>
+</MudPaper>

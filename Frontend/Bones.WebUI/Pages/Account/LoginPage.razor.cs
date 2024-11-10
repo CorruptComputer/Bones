@@ -7,7 +7,7 @@ namespace Bones.WebUI.Pages.Account;
 /// <summary>
 ///   Page to login
 /// </summary>
-public partial class LoginPage
+public partial class LoginPage : ComponentBase
 {
     /// <summary>
     ///   The URL to send them to after login is successful

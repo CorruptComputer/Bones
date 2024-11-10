@@ -64,6 +64,24 @@ public static class FrontEndUrls
     }
 
     /// <summary>
+    ///   Project pages
+    /// </summary>
+    public static class Project
+    {
+        private const string _project = "/Project";
+
+        /// <summary>
+        ///   Create project page
+        /// </summary>
+        public const string CREATE = $"{_project}/Create";
+
+        /// <summary>
+        ///   Project dashboard page
+        /// </summary>
+        public const string DASHBOARD = _project + "/{ProjectId:guid}/Dashboard/";
+    }
+
+    /// <summary>
     ///   System Admin pages
     /// </summary>
     public static class SystemAdmin

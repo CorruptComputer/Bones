@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
+@inject ILogger<MainLayout> Logger
 
-<MudThemeProvider/>
+<!-- TODO: Make a toggle for dark mode on the users profile -->
+<MudThemeProvider Theme="@Theme" />
 <MudPopoverProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
@@ -11,13 +13,23 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
         <AuthorizeView>
             <Authorized>
-                <MudSelect SelectedValuesChanged="OnGoToProjectChanged" MultiSelection="false" SelectedValues="[]" AdornmentColor="Color.Primary" Style="max-width: 300px" T="Guid?">
-                    <MudSelectItem Value="@((Guid?) null)" Disabled="true">Go to project...</MudSelectItem>
-                    @foreach (ProjectDropDownModel proj in Projects)
-                    {
-                        <MudSelectItem Value="@proj.ProjectId">@proj.ToString()</MudSelectItem>
-                    }
-                </MudSelect>
+                <div>
+                    <MudSelect SelectedValuesChanged="OnGoToProjectChanged"
+                               Placeholder="Go to project..."
+                               KeyDownPreventDefault="true"
+                               KeyUpPreventDefault="true"
+                               MultiSelection="false"
+                               SelectedValues="[]"
+                               FullWidth="true"
+                               T="Guid?">
+                        
+                        <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                        @foreach (ProjectDropDownModel proj in Projects)
+                        {
+                            <MudSelectItem Value="@proj.ProjectId">@proj.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
             </Authorized>
         </AuthorizeView>
         

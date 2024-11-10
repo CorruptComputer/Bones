@@ -5,7 +5,7 @@ namespace Bones.WebUI.Pages.Account;
 /// <summary>
 ///   Confirms the users email
 /// </summary>
-public partial class ConfirmEmailPage
+public partial class ConfirmEmailPage : ComponentBase
 {
     /// <summary>
     ///   The ID of the user this request is for

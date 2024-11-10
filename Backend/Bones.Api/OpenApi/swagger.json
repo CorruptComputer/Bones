@@ -586,7 +586,7 @@
         }
       }
     },
-    "/Project/projects": {
+    "/Project/projects/by-owner": {
       "get": {
         "tags": [
           "Project"
@@ -639,10 +639,159 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GuidStringValueTuple"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/projects": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets the projects the current user is able to access",
+        "operationId": "GetProjectsUserCanAccessAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/{projectId}/dashboard": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets a projects dashboard information",
+        "operationId": "GetProjectDashboardAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProjectDashboardResponse"
                 }
               }
             }
@@ -859,6 +1008,36 @@
         "additionalProperties": false,
         "description": ""
       },
+      "GetProjectDashboardResponse": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "",
+            "format": "uuid"
+          },
+          "projectName": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "initiativeCount": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          },
+          "ownerType": {
+            "$ref": "#/components/schemas/OwnershipType"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
+      },
       "GetProjectsByOwnerRequest": {
         "type": "object",
         "properties": {
@@ -874,10 +1053,6 @@
         },
         "additionalProperties": false,
         "description": "Request to get the projects for a given User/Organization"
-      },
-      "GuidStringValueTuple": {
-        "type": "object",
-        "additionalProperties": false
       },
       "LoginUserApiRequest": {
         "type": "object",

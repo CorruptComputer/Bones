@@ -1,22 +1,31 @@
+using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.Operations.ProjectManagement.Projects.GetProjectsByOwnerDb;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Backend.Features.ProjectManagement.Projects.GetProjectsByOwner;
 
-internal sealed class GetProjectsByOwnerHandler(ISender sender) : IRequestHandler<GetProjectsByOwnerQuery, QueryResponse<List<(Guid Id, string Name)>>>
+internal sealed class GetProjectsByOwnerHandler(ISender sender) : IRequestHandler<GetProjectsByOwnerQuery, QueryResponse<Dictionary<Guid, string>>>
 {
-    public async Task<QueryResponse<List<(Guid Id, string Name)>>> Handle(GetProjectsByOwnerQuery request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<Dictionary<Guid, string>>> Handle(GetProjectsByOwnerQuery request, CancellationToken cancellationToken)
     {
         if (request.OwnerType == OwnershipType.User
             && request.OwnerId == request.RequestingUser.Id)
         {
-            throw new NotImplementedException();
+            List<Project>? projects = await sender.Send(new GetProjectsByOwnerDbQuery(OwnershipType.User, request.RequestingUser.Id), cancellationToken);
+
+            if (projects is null)
+            {
+                return QueryResponse<Dictionary<Guid, string>>.Fail("DB failed :(");
+            }
+
+            return projects.ToDictionary(project => project.Id, project => project.Name);
         }
         else if (request.OwnerType == OwnershipType.Organization)
         {
-            // TODO
-            await sender.Send(new(), cancellationToken);
+            // TODO: Not implemented, will fail. Need to also check perms here before requesting DB
+            await sender.Send(new GetProjectsByOwnerDbQuery(OwnershipType.Organization, request.OwnerId), cancellationToken);
         }
 
-        return QueryResponse<List<(Guid Id, string Name)>>.Forbid();
+        return QueryResponse<Dictionary<Guid, string>>.Forbid();
     }
 }

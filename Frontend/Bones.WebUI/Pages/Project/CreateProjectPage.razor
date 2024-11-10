@@ -1,0 +1,30 @@
+@attribute [Route(FrontEndUrls.Project.CREATE)]
+@inject ILogger<CreateProjectPage> Logger
+@layout AuthenticatedLayout
+
+<h3>Create Project</h3>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+                <MudTextField T="string" Label="Project Name" Required="true" RequiredError="Project name is required!" @ref="@ProjectName"/>
+                
+                <div class="d-flex align-center justify-space-between">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudItem Class="pa-2" hidden="@(!ApiError)">
+            <MudAlert Severity="Severity.Error">There was an error with the creation, please try again.</MudAlert>
+        </MudItem>
+    
+        @foreach (string error in ValidationErrors)
+        {
+            <MudItem Class="pa-2">
+                <MudAlert  Severity="Severity.Error">@error</MudAlert>
+            </MudItem>
+        }
+    </MudItem>
+</MudGrid>

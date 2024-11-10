@@ -1,6 +1,7 @@
 using System.Globalization;
 using Bones.Api.Client;
 using Bones.Shared.Consts;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace Bones.WebUI.Pages.Account;
@@ -8,7 +9,7 @@ namespace Bones.WebUI.Pages.Account;
 /// <summary>
 ///   The user can view and update their profile here
 /// </summary>
-public partial class MyProfilePage
+public partial class MyProfilePage : ComponentBase
 {
     private bool ProfileUpdateSuccess { get; set; } = false;
 

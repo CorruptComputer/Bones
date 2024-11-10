@@ -9,4 +9,4 @@ namespace Bones.Backend.Features.ProjectManagement.Projects.GetProjectsByOwner;
 /// <param name="OwnerType"></param>
 /// <param name="OwnerId"></param>
 /// <param name="RequestingUser"></param>
-public sealed record GetProjectsByOwnerQuery(OwnershipType OwnerType, Guid OwnerId, BonesUser RequestingUser) : IRequest<QueryResponse<List<(Guid Id, string Name)>>>;
+public sealed record GetProjectsByOwnerQuery(OwnershipType OwnerType, Guid OwnerId, BonesUser RequestingUser) : IRequest<QueryResponse<Dictionary<Guid, string>>>;

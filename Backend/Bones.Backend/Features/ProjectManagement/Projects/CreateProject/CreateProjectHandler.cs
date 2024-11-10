@@ -22,7 +22,7 @@ internal sealed class CreateProjectHandler(ISender sender) : IRequestHandler<Cre
             return CommandResponse.Forbid();
         }
 
-        const string perm = BonesClaimTypes.Role.Organization.Project.CREATE_PROJECT;
+        const string perm = BonesClaimTypes.Role.Project.CREATE_PROJECT;
         bool? hasOrganizationPermission =
             await sender.Send(new UserHasOrganizationPermissionQuery(organization.Id, request.RequestingUser, perm), cancellationToken);
 

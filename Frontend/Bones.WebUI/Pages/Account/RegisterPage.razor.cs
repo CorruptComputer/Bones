@@ -1,4 +1,5 @@
 using Bones.Shared;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace Bones.WebUI.Pages.Account;
@@ -6,7 +7,7 @@ namespace Bones.WebUI.Pages.Account;
 /// <summary>
 ///   The page for registering user accounts 
 /// </summary>
-public partial class RegisterPage
+public partial class RegisterPage : ComponentBase
 {
     /// <summary>
     ///   Was the registration finished successfully?

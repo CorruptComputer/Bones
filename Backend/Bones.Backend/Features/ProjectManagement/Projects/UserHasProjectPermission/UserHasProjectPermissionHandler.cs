@@ -42,7 +42,7 @@ internal sealed class UserHasProjectPermissionHandler(UserManager<BonesUser> use
                 return QueryResponse<bool>.Fail("Role not found");
             }
 
-            string neededClaim = BonesClaimTypes.Role.Organization.Project.GetProjectClaimType(project.Id, request.Claim);
+            string neededClaim = BonesClaimTypes.Role.Project.GetProjectClaimType(project.Id, request.Claim);
 
             IList<Claim> claims = await roleManager.GetClaimsAsync(role);
             if (claims.Any(claim => claim.Type == neededClaim && claim.Value == ClaimValues.YES))
