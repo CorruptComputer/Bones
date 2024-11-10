@@ -32,7 +32,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpPost("create", Name = "CreateProjectAsync")]
-    [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateProjectAsync([FromBody] CreateProjectRequest request)
     {
@@ -42,7 +42,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
             return BadRequest(response.FailureReasons);
         }
 
-        return Ok(EmptyResponse.Value);
+        return Ok(response.Id);
     }
 
     /// <summary>

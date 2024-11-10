@@ -1,4 +1,5 @@
 using Bones.Shared;
+using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -35,13 +36,13 @@ public partial class CreateProjectPage : ComponentBase
         {
             ApiError = false;
 
-            await ApiClient.CreateProjectAsync(new()
+            Guid projectId = await ApiClient.CreateProjectAsync(new()
             {
                 Name = ProjectName.Text,
                 OrganizationId = null
             });
 
-            // TODO: Forward to newly created projects dashboard
+            NavManager.NavigateTo(FrontEndUrls.Project.DASHBOARD.Replace("{ProjectId:guid}", projectId.ToString()));
         }
         catch (Exception ex)
         {

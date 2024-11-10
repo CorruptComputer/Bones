@@ -562,7 +562,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
+                  "type": "string",
+                  "format": "uuid"
                 }
               }
             }
