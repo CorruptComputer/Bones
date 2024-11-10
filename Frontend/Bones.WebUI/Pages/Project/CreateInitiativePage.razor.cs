@@ -44,12 +44,12 @@ public partial class CreateInitiativePage : ComponentBase
         {
             ApiError = false;
 
-            Guid projectId = await ApiClient.CreateInitiativeAsync(ProjectId, new()
+            Guid initiativeId = await ApiClient.CreateInitiativeAsync(ProjectId, new()
             {
                 Name = InitiativeName.Text
             });
 
-            NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace("{ProjectId:guid}", projectId.ToString()));
+            NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
         }
         catch (ApiException ex)
         {
