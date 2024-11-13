@@ -35,10 +35,12 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish Frontend/Bones.WebUI/Bones.WebUI.csproj --configuration Release --property PublishDir=~/publish
+          cd Frontend/Bones.WebUI
+          dotnet publish Bones.WebUI.csproj --configuration Release --property PublishDir=../../publish/
+          cd ../..
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: webui-wasm-client
-          path: ~/publish
+          path: ./publish

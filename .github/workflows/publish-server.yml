@@ -31,34 +31,34 @@ jobs:
         run: |
           cd Backend/Bones.Api
           dotnet tool restore
-          dotnet deb --configuration Release --output ../../publish-api/
-          dotnet rpm --configuration Release --output ../../publish-api/
+          dotnet deb --configuration Release --version-suffix commit --output ../../publish/
+          dotnet rpm --configuration Release --version-suffix commit --output ../../publish/
           cd ../..
 
       - name: Build Background Service Packages
         run: |
           cd Backend/Bones.BackgroundService
           dotnet tool restore
-          dotnet deb --configuration Release --output ../../publish-background-service/
-          dotnet rpm --configuration Release --output ../../publish-background-service/
+          dotnet deb --configuration Release --version-suffix commit --output ../../publish/
+          dotnet rpm --configuration Release --version-suffix commit --output ../../publish/
           cd ../..
 
       - name: Upload API DEB Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ~/publish-api/*.deb
+          path: ./publish/Bones.Api.*.linux-x64.deb
       
       - name: Upload API RPM Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ~/publish-api/*.rpm
+          path: ./publish/Bones.Api.*.linux-x64.rpm
           
       - name: Upload Background Service DEB Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ~/publish-background-service/*.deb
+          path: ./publish/Bones.BackgroundService.*.linux-x64.deb
           
       - name: Upload Background Service RPM Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ~/publish-background-service/*.rpm
+          path: ./publish/Bones.BackgroundService.*.linux-x64.rpm
