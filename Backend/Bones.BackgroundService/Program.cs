@@ -43,7 +43,6 @@ public static class Program
             .AddRoles<BonesRole>()
             .AddEntityFrameworkStores<BonesDbContext>();
 
-
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
             loggerConfig
                 .ReadFrom.Services(serviceProvider)
