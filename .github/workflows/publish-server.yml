@@ -43,22 +43,15 @@ jobs:
           dotnet rpm --configuration Release --version-suffix commit --output ../../publish/
           cd ../..
 
-      - name: Upload API DEB Build Artifact
+      - name: Upload DEB Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: ./publish/Bones.Api.*.linux-x64.deb
+          name: 'Server DEB build.zip'
+          path: ./publish/*.linux-x64.deb
       
-      - name: Upload API RPM Build Artifact
+      - name: Upload RPM Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: ./publish/Bones.Api.*.linux-x64.rpm
+          name: 'Server RPM build.zip'
+          path: ./publish/*.linux-x64.rpm
           
-      - name: Upload Background Service DEB Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          path: ./publish/Bones.BackgroundService.*.linux-x64.deb
-          
-      - name: Upload Background Service RPM Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          path: ./publish/Bones.BackgroundService.*.linux-x64.rpm
