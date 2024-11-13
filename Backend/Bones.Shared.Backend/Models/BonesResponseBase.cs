@@ -30,4 +30,19 @@ public record BonesResponseBase
     ///     If the command failed, why?
     /// </summary>
     public Dictionary<string, List<string>>? FailureReasons { get; init; }
+
+    /// <summary>
+    ///   It's from the server, not a validation issue with the query
+    /// </summary>
+    public const string GENERIC_SERVER_ERROR_KEY = "server";
+
+    /// <summary>
+    ///   Forbidden access was detected
+    /// </summary>
+    public const string FORBIDDEN_ERROR_VALUE = "Forbidden.";
+
+    /// <summary>
+    ///   Something went wrong, and we don't know what, oops!
+    /// </summary>
+    public const string UNKNOWN_ERROR_VALUE = "Unknown failure reason";
 }

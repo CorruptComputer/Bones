@@ -26,7 +26,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     [HttpPost("register", Name = "RegisterAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> RegisterAsync([FromBody] RegisterUserApiRequest registration)
+    public async ValueTask<ActionResult<EmptyResponse>> RegisterAsync([FromBody] RegisterUserApiRequest registration)
     {
         QueryResponse<IdentityResult> result = await Sender.Send(new RegisterUserQuery(registration.Email, registration.Password));
 
@@ -35,7 +35,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
             return BadRequest(ReadErrorsFromIdentityResult(result.Result ?? IdentityResult.Failed()));
         }
 
-        return Ok(EmptyResponse.Value);
+        return EmptyResponse.Value;
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     /// <returns></returns>
     [HttpGet("confirm-email", Name = "ConfirmEmailAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
-    public async Task<ActionResult> ConfirmEmailAsync([FromQuery][Required] Guid userId, [FromQuery][Required] string code, [FromQuery] string? changedEmail)
+    public async ValueTask<ActionResult<EmptyResponse>> ConfirmEmailAsync([FromQuery][Required] Guid userId, [FromQuery][Required] string code, [FromQuery] string? changedEmail)
     {
         QueryResponse<IdentityResult> result = await Sender.Send(new ConfirmEmailQuery(userId, code, changedEmail));
 
@@ -56,7 +56,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
             return Unauthorized(EmptyResponse.Value);
         }
 
-        return Ok(EmptyResponse.Value);
+        return EmptyResponse.Value;
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     /// <returns></returns>
     [HttpPost("resend-confirmation-email", Name = "ResendConfirmationEmailAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
-    public async Task<ActionResult> ResendConfirmationEmailAsync([FromQuery][Required] string email)
+    public async ValueTask<ActionResult<EmptyResponse>> ResendConfirmationEmailAsync([FromQuery][Required] string email)
     {
         CommandResponse result = await Sender.Send(new QueueResendConfirmationEmailCommand(email));
 
@@ -75,7 +75,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
             return Unauthorized(EmptyResponse.Value);
         }
 
-        return Ok(EmptyResponse.Value);
+        return EmptyResponse.Value;
     }
 
     /// <summary>
@@ -85,10 +85,10 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     /// <returns></returns>
     [HttpPost("forgot-password", Name = "ForgotPasswordAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
-    public async Task<ActionResult> ForgotPasswordAsync([FromQuery][Required] string email)
+    public async ValueTask<ActionResult<EmptyResponse>> ForgotPasswordAsync([FromQuery][Required] string email)
     {
         await Sender.Send(new QueueForgotPasswordEmailCommand(email));
 
-        return Ok(EmptyResponse.Value);
+        return EmptyResponse.Value;
     }
 }

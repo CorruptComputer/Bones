@@ -51,7 +51,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
         Success = false,
         FailureReasons = new()
         {
-            { "server", [ failureReason ?? "Unknown failure reason" ] }
+            { GENERIC_SERVER_ERROR_KEY, [ failureReason ?? UNKNOWN_ERROR_VALUE ] }
         }
     };
 
@@ -64,7 +64,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
         Success = false,
         FailureReasons = new()
         {
-            {"server", [ "Forbidden." ] }
+            { GENERIC_SERVER_ERROR_KEY, [ FORBIDDEN_ERROR_VALUE ] }
         },
         Forbidden = true
     };

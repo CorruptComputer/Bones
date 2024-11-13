@@ -1,4 +1,5 @@
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
@@ -14,37 +15,22 @@ namespace Bones.Api.Controllers;
 public sealed partial class AccountController(ISender sender) : BonesControllerBase(sender)
 {
     /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("my/basic-info", Name = "GetMyBasicInfoAsync")]
-    [ProducesResponseType<GetMyBasicInfoResponse>(StatusCodes.Status200OK)]
-    public async Task<ActionResult> GetMyBasicInfoAsync()
-    {
-        BonesUser user = await GetCurrentBonesUserAsync();
-
-        return Ok(new GetMyBasicInfoResponse(
-            user.Email ?? string.Empty,
-            user.DisplayName ?? user.Email ?? string.Empty));
-    }
-
-    /// <summary>
     ///   Returns a users own full profile info
     /// </summary>
     /// <returns><see cref="GetMyProfileResponse"/></returns>
     [HttpGet("my/profile", Name = "GetMyProfileAsync")]
     [ProducesResponseType<GetMyProfileResponse>(StatusCodes.Status200OK)]
-    public async ValueTask<ActionResult> GetMyProfileAsync()
+    public async ValueTask<ActionResult<GetMyProfileResponse>> GetMyProfileAsync()
     {
         BonesUser user = await GetCurrentBonesUserAsync();
 
-
-        return Ok(new GetMyProfileResponse(
+        return new GetMyProfileResponse(
             user.Email ?? string.Empty,
             user.EmailConfirmed,
             user.EmailConfirmedDateTime,
             user.DisplayName ?? user.Email ?? string.Empty,
-            user.CreateDateTime
-        ));
+            user.CreateDateTime,
+            IsSysAdmin: User.IsInRole(SystemRoles.SYSTEM_ADMINISTRATORS)
+        );
     }
 }

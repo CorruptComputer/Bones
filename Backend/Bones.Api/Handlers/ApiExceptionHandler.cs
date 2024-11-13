@@ -1,3 +1,6 @@
+using System.Text.Json;
+using Bones.Api.Models;
+using Bones.Shared.Backend.Models;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Diagnostics;
@@ -5,30 +8,38 @@ using Microsoft.AspNetCore.Diagnostics;
 namespace Bones.Api.Handlers;
 
 /// <summary>
-/// 
+///   Handles exceptions thrown by the API before they are returned to the user
 /// </summary>
 public class ApiExceptionHandler : IExceptionHandler
 {
-    /// <summary>
-    ///   Handles exceptions that bubble up to the API
-    /// </summary>
-    /// <param name="httpContext"></param>
-    /// <param name="exception"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         if (exception is ForbiddenAccessException)
         {
             httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
             httpContext.Response.ContentType = "application/json";
-            httpContext.Response.Body = await "{}".ToStreamAsync(cancellationToken);
+            httpContext.Response.Body = await JsonSerializer.Serialize(new ErrorResponse()
+            {
+                Errors = new()
+                {
+                    { BonesResponseBase.GENERIC_SERVER_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
+                }
+            }).ToStreamAsync(cancellationToken);
+
             return true;
         }
 
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         httpContext.Response.ContentType = "application/json";
-        httpContext.Response.Body = await "{}".ToStreamAsync(cancellationToken);
+        httpContext.Response.Body = await JsonSerializer.Serialize(new ErrorResponse()
+        {
+            Errors = new()
+            {
+                { BonesResponseBase.GENERIC_SERVER_ERROR_KEY, [exception.Message] }
+            }
+        }).ToStreamAsync(cancellationToken);
+
         return true;
     }
 }

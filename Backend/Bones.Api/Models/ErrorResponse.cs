@@ -10,7 +10,11 @@ namespace Bones.Api.Models;
 [JsonSerializable(typeof(ErrorResponse))]
 public sealed record ErrorResponse
 {
-    private ErrorResponse(Dictionary<string, List<string>>? errors)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="errors"></param>
+    public ErrorResponse(Dictionary<string, List<string>>? errors = null)
     {
         Errors = errors;
     }

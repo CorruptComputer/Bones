@@ -14,5 +14,6 @@ public sealed record EmptyResponse
     /// <summary>
     ///   Gets a new empty response
     /// </summary>
+    [JsonIgnore]
     public static readonly EmptyResponse Value = new();
 }

@@ -26,8 +26,9 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("projects/by-owner", Name = "GetProjectsByOwnerAsync")]
     [ProducesResponseType<Dictionary<Guid, string>>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> GetProjectsByOwnerAsync([FromBody] GetProjectsByOwnerRequest request)
+    public async ValueTask<ActionResult<Dictionary<Guid, string>>> GetProjectsByOwnerAsync([FromBody] GetProjectsByOwnerRequest request)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
         QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsByOwnerQuery(request.OwnerType, request.OrganizationId ?? currentUser.Id, currentUser));
@@ -36,7 +37,12 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             return BadRequest(response.FailureReasons);
         }
 
-        return Ok(response.Result);
+        if (response.Result == null || response.Result.Count == 0)
+        {
+            return NoContent();
+        }
+
+        return response.Result;
     }
 
     /// <summary>
@@ -45,9 +51,9 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("projects/quick-select", Name = "GetProjectQuickSelectAsync")]
     [ProducesResponseType<List<GetProjectQuickSelectResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<EmptyResult>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> GetProjectQuickSelectAsync()
+    public async ValueTask<ActionResult<List<GetProjectQuickSelectResponse>>> GetProjectQuickSelectAsync()
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
 
@@ -63,7 +69,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             return NotFound(EmptyResponse.Value);
         }
 
-        return Ok(response.Result.Select(kvp => new GetProjectQuickSelectResponse(kvp.Key, kvp.Value)));
+        return response.Result.Select(kvp => new GetProjectQuickSelectResponse(kvp.Key, kvp.Value)).ToList();
     }
 
     /// <summary>
@@ -74,7 +80,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     [HttpGet("{projectId:guid}/dashboard", Name = "GetProjectDashboardAsync")]
     [ProducesResponseType<GetProjectDashboardResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> GetProjectDashboardAsync(Guid projectId)
+    public async ValueTask<ActionResult<GetProjectDashboardResponse>> GetProjectDashboardAsync(Guid projectId)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
         QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectByIdQuery(projectId, currentUser));
@@ -103,7 +109,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             initiativesResponse.Result.Count,
             initiativesResponse.Result.Select(i => new InitiativeListModel(i.Id, i.Name, i.Queues.Count)).ToList());
 
-        return Ok(resp);
+        return resp;
     }
     #endregion
 
@@ -116,7 +122,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     [HttpPost("create", Name = "CreateProjectAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateProjectAsync([FromBody] CreateProjectRequest request)
+    public async ValueTask<ActionResult<Guid>> CreateProjectAsync([FromBody] CreateProjectRequest request)
     {
         CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
         if (!response.Success)
@@ -124,7 +130,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return Ok(response.Id);
+        return response.Id ?? Guid.Empty;
     }
 
     /// <summary>
@@ -136,7 +142,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     [HttpPost("{projectId:guid}/initiative/create", Name = "CreateInitiativeAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateInitiativeAsync(Guid projectId, [FromBody] CreateInitiativeRequest request)
+    public async ValueTask<ActionResult<Guid>> CreateInitiativeAsync(Guid projectId, [FromBody] CreateInitiativeRequest request)
     {
         CommandResponse response = await Sender.Send(new CreateInitiativeCommand(request.Name, projectId, await GetCurrentBonesUserAsync()));
         if (!response.Success)
@@ -144,7 +150,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return Ok(response.Id);
+        return response.Id ?? Guid.Empty;
     }
     #endregion
 

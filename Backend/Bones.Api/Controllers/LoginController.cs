@@ -27,7 +27,7 @@ public sealed partial class LoginController(SignInManager<BonesUser> signInManag
     [HttpPost("login", Name = "LoginAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<ActionResult> LoginAsync([FromBody] LoginUserApiRequest login)
+    public async ValueTask<ActionResult<EmptyResponse>> LoginAsync([FromBody] LoginUserApiRequest login)
     {
         signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
 
@@ -56,7 +56,7 @@ public sealed partial class LoginController(SignInManager<BonesUser> signInManag
             return Unauthorized(EmptyResponse.Value);
         }
 
-        return Ok(EmptyResponse.Value);
+        return EmptyResponse.Value;
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public sealed partial class LoginController(SignInManager<BonesUser> signInManag
     [HttpPost("logout", Name = "LogoutAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public ActionResult LogoutAsync()
+    public ActionResult<EmptyResponse> LogoutAsync()
     {
         Response.Cookies.Append(".AspNetCore.Identity.Application", string.Empty, new()
         {
@@ -75,6 +75,6 @@ public sealed partial class LoginController(SignInManager<BonesUser> signInManag
             Expires = DateTimeOffset.Now.AddDays(-1)
         });
 
-        return Ok(EmptyResponse.Value);
+        return EmptyResponse.Value;
     }
 }

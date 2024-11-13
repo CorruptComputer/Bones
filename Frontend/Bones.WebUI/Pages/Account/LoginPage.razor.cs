@@ -49,7 +49,7 @@ public partial class LoginPage : ComponentBase
             }).ConfigureAwait(true);
 
             // Now refresh the Authentication State:
-            GetMyBasicInfoResponse? me = await ApiClient.GetMyBasicInfoAsync().ConfigureAwait(true);
+            GetMyProfileResponse? me = await ApiClient.GetMyProfileAsync().ConfigureAwait(true);
             if (me == null)
             {
                 ErrorLoggingIn = true;
@@ -58,7 +58,7 @@ public partial class LoginPage : ComponentBase
 
             await AuthStateProvider.SetCurrentUserAsync(me, CancellationToken.None);
 
-            NavManager.NavigateTo(GetNavigationUrl());
+            NavManager.NavigateTo(GetNavigationUrl(), forceLoad: true);
         }
         catch (Exception ex)
         {

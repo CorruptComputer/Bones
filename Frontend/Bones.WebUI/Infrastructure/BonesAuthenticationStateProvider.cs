@@ -14,17 +14,22 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     /// <inheritdoc />
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        GetMyBasicInfoResponse? currentUser = await GetCurrentUserAsync(CancellationToken.None);
+        GetMyProfileResponse? currentUser = await GetCurrentUserAsync(CancellationToken.None);
 
         if (currentUser == null)
         {
             return new(new());
         }
 
-        Claim[] claims = [
-            new(BonesClaimTypes.User.EMAIL, currentUser.Email ?? string.Empty),
-            new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName ?? string.Empty)
+        List<Claim> claims = [
+            new(BonesClaimTypes.User.EMAIL, currentUser.Email),
+            new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
         ];
+
+        if (currentUser.IsSysAdmin ?? false)
+        {
+            claims.Add(new(BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES));
+        }
 
         return new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));
     }
@@ -35,7 +40,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     /// <param name="currentUser"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task SetCurrentUserAsync(GetMyBasicInfoResponse currentUser, CancellationToken cancellationToken)
+    public async Task SetCurrentUserAsync(GetMyProfileResponse currentUser, CancellationToken cancellationToken)
     {
         await localStorageService.SetItemAsync(LocalStorageService.CURRENT_USER_KEY, currentUser, cancellationToken);
 
@@ -59,8 +64,8 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<GetMyBasicInfoResponse?> GetCurrentUserAsync(CancellationToken cancellationToken)
+    public Task<GetMyProfileResponse?> GetCurrentUserAsync(CancellationToken cancellationToken)
     {
-        return localStorageService.GetItemAsync<GetMyBasicInfoResponse>(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
+        return localStorageService.GetItemAsync<GetMyProfileResponse>(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
     }
 }

@@ -18,9 +18,9 @@ namespace Bones.Api.Controllers;
 [Route("[controller]")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
-[ProducesResponseType<EmptyResponse>(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType<EmptyResponse>(StatusCodes.Status403Forbidden)]
-[ProducesResponseType<EmptyResponse>(StatusCodes.Status500InternalServerError)]
+[ProducesResponseType<UnauthorizedResult>(StatusCodes.Status401Unauthorized)]
+[ProducesResponseType<ErrorResponse>(StatusCodes.Status403Forbidden)]
+[ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
 public class BonesControllerBase(ISender sender) : ControllerBase
 {
     /// <summary>
