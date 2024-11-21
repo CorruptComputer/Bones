@@ -20,7 +20,6 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.11" />
-      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>
