@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "corruptcomputer",
+        "projectKey": "CorruptComputer_Bones"
+    }
+}

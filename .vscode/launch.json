@@ -5,19 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Bones.BackgroundService",
+            "name": "Debug Bones.BackgroundService",
             "type": "dotnet",
             "request": "launch",
             "projectPath": "${workspaceFolder}/Services/Bones.BackgroundService/Bones.BackgroundService.csproj",
         },
         {
-            "name": "Bones.Api",
+            "name": "Debug Bones.Api",
             "type": "dotnet",
             "request": "launch",
             "projectPath": "${workspaceFolder}/Services/Bones.Api/Bones.Api.csproj",
         },
         {
-            "name": "Bones.WebUI",
+            "name": "Debug Bones.WebUI",
             "type": "blazorwasm",
             "request": "launch",
             "cwd": "${workspaceFolder}/Frontend/Bones.WebUI"
@@ -27,9 +27,9 @@
         {
             "name": "Full Stack",
             "configurations": [
-                "Bones.BackgroundService",
-                "Bones.Api",
-                "Bones.WebUI"
+                "Debug Bones.BackgroundService",
+                "Debug Bones.Api",
+                "Debug Bones.WebUI"
             ],
             "stopAll": true
         }

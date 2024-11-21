@@ -21,7 +21,7 @@
       "protectedMethods": [],
       "generateExceptionClasses": true,
       "exceptionClass": "ApiException",
-      "wrapDtoExceptions": false,
+      "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
       "useHttpRequestMessageCreationMethod": false,
