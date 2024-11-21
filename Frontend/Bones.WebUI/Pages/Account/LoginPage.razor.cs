@@ -46,10 +46,10 @@ public partial class LoginPage : ComponentBase
             {
                 Email = EmailAddress.Text,
                 Password = Password.Text
-            }).ConfigureAwait(true);
+            });
 
             // Now refresh the Authentication State:
-            GetMyProfileResponse? me = await ApiClient.GetMyProfileAsync().ConfigureAwait(true);
+            GetMyProfileResponse? me = await ApiClient.GetMyProfileAsync();
             if (me == null)
             {
                 ErrorLoggingIn = true;
@@ -97,11 +97,5 @@ public partial class LoginPage : ComponentBase
 
         return true;
     }
-
-
-
-
-
-
 
 }

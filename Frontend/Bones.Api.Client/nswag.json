@@ -2,7 +2,7 @@
   "runtime": "Net80",
   "documentGenerator": {
     "fromDocument": {
-      "url": "../../Backend/Bones.Api/OpenApi/swagger.json",
+      "url": "../../Services/Bones.Api/OpenApi/swagger.json",
       "output": null,
       "newLineBehavior": "Auto"
     }

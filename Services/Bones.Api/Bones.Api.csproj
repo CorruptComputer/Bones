@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+        <TargetFramework>net8.0</TargetFramework>
+        <VersionPrefix>0.0.1</VersionPrefix>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration) == 'Release'">
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="$(Configuration) == 'Debug'">
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="7.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.0.0" />
+        <PackageReference Update="Packaging.Targets">
+          <Version>0.1.226</Version>
+        </PackageReference>
+    </ItemGroup>
+
+    <Target Name="CreateSwaggerJson" AfterTargets="Build" Condition="$(Configuration) == 'Debug'">
+        <Exec Command="DatabaseConfiguration__UseInMemoryDb=true dotnet swagger tofile --output OpenApi/swagger.json $(OutputPath)$(AssemblyName).dll develop" WorkingDirectory="$(ProjectDir)" />
+    </Target>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Bones.Logic\Bones.Logic.csproj" />
+      <ProjectReference Include="..\..\Core\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="OpenApi\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="appsettings.Development.json" Condition="$(Configuration) == 'Release'" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Controllers\ProjectController.Responses.cs">
+        <DependentUpon>ProjectController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\ProjectController.Requests.cs">
+        <DependentUpon>ProjectController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\LoginController.Responses.cs">
+        <DependentUpon>LoginController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\LoginController.Requests.cs">
+        <DependentUpon>LoginController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AnonymousController.Responses.cs">
+        <DependentUpon>AnonymousController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AnonymousController.Requests.cs">
+        <DependentUpon>AnonymousController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AccountController.Responses.cs">
+        <DependentUpon>AccountController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Controllers\AccountController.Requests.cs">
+        <DependentUpon>AccountController.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+</Project>

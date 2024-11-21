@@ -1,0 +1,10 @@
+using System.Security.Claims;
+using Bones.Database.DbSets.AccountManagement;
+
+namespace Bones.Logic.Features.Accounts.GetUserByClaimsPrincipal;
+
+/// <summary>
+///   Backend request for getting a <see cref="BonesUser" /> by a <see cref="ClaimsPrincipal" />.
+/// </summary>
+/// <param name="ClaimsPrincipal"></param>
+public sealed record GetUserByClaimsPrincipalQuery(ClaimsPrincipal? ClaimsPrincipal) : IRequest<QueryResponse<BonesUser>>;

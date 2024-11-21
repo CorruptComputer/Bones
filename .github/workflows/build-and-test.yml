@@ -31,10 +31,10 @@ jobs:
 
       - name: Restore Tools
         run: |
-          cd Backend/Bones.Api
+          cd Services/Bones.Api
           dotnet tool restore
           cd ../..
-          cd Backend/Bones.BackgroundService
+          cd Services/Bones.BackgroundService
           dotnet tool restore
           cd ../..
           cd Frontend/Bones.Api.Client

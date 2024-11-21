@@ -48,7 +48,7 @@ jobs:
 
       - name: Build API Packages
         run: |
-          cd Backend/Bones.Api
+          cd Services/Bones.Api
           dotnet tool restore
           dotnet deb --configuration Release --version-suffix nightly --output ../../publish/
           dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
@@ -56,7 +56,7 @@ jobs:
 
       - name: Build Background Service Packages
         run: |
-          cd Backend/Bones.BackgroundService
+          cd Services/Bones.BackgroundService
           dotnet tool restore
           dotnet deb --configuration Release --version-suffix nightly --output ../../publish/
           dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
