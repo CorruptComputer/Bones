@@ -44,6 +44,9 @@ jobs:
           cd Frontend/Bones.Api.Client
           dotnet tool restore
           cd ../..
+          cd Frontend/Bones.WebUI
+          dotnet workload restore
+          cd ../..
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4

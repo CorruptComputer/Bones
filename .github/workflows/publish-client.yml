@@ -32,6 +32,9 @@ jobs:
           cd Frontend/Bones.Api.Client
           dotnet tool restore
           cd ../..
+          cd Frontend/Bones.WebUI
+          dotnet workload restore
+          cd ../..
 
       - name: Publish
         run: |
