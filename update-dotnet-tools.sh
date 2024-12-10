@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 cd Core/Bones.Database
 dotnet tool update dotnet-ef
 dotnet tool restore
