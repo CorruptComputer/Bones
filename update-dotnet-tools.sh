@@ -9,7 +9,7 @@ dotnet tool update nswag.consolecore
 dotnet tool restore
 
 cd ../Bones.WebUI/
-sudo dotnet workload restore
+dotnet workload restore
 
 cd ../../Services/Bones.Api/
 dotnet tool update swashbuckle.aspnetcore.cli

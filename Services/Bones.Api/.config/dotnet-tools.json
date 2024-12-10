@@ -3,22 +3,25 @@
   "isRoot": true,
   "tools": {
     "swashbuckle.aspnetcore.cli": {
-      "version": "7.0.0",
+      "version": "7.1.0",
       "commands": [
         "swagger"
-      ]
+      ],
+      "rollForward": false
     },
     "dotnet-rpm": {
       "version": "0.1.226",
       "commands": [
         "dotnet-rpm"
-      ]
+      ],
+      "rollForward": false
     },
     "dotnet-deb": {
       "version": "0.1.226",
       "commands": [
         "dotnet-deb"
-      ]
+      ],
+      "rollForward": false
     }
   }
 }
