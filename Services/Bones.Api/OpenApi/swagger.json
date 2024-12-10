@@ -911,24 +911,30 @@
   "components": {
     "schemas": {
       "CreateInitiativeRequest": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
+            "minLength": 1,
             "type": "string",
-            "description": "Name of the initiative to create",
-            "nullable": true
+            "description": "Name of the initiative to create"
           }
         },
         "additionalProperties": false,
         "description": "Request to create a new initiative"
       },
       "CreateProjectRequest": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
+            "minLength": 1,
             "type": "string",
-            "description": "Name of the project to create",
-            "nullable": true
+            "description": "Name of the project to create"
           },
           "organizationId": {
             "type": "string",
@@ -964,52 +970,67 @@
         "description": "The response body is empty, this is a workaround for the limitations of the API client."
       },
       "GetMyProfileResponse": {
+        "required": [
+          "createDateTime",
+          "displayName",
+          "email",
+          "emailConfirmed",
+          "isSysAdmin"
+        ],
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "description": "",
+            "description": "The email address of the user",
             "nullable": true
           },
           "emailConfirmed": {
             "type": "boolean",
-            "description": ""
+            "description": "Have they confirmed their email address?"
           },
           "emailConfirmedDateTime": {
             "type": "string",
-            "description": "",
+            "description": "If they have confirmed their email address, when they did it",
             "format": "date-time",
             "nullable": true
           },
           "displayName": {
             "type": "string",
-            "description": "",
+            "description": "The display name of the user, defaults to their email if they don't have one set",
             "nullable": true
           },
           "createDateTime": {
             "type": "string",
-            "description": "",
+            "description": "The date and time the user was created",
             "format": "date-time"
           },
           "isSysAdmin": {
             "type": "boolean",
-            "description": ""
+            "description": "Is the user a system administrator?"
           }
         },
         "additionalProperties": false,
-        "description": ""
+        "description": "Response for the GetMyProfile endpoint"
       },
       "GetProjectDashboardResponse": {
+        "required": [
+          "initiativeCount",
+          "initiatives",
+          "ownerId",
+          "ownerType",
+          "projectId",
+          "projectName"
+        ],
         "type": "object",
         "properties": {
           "projectId": {
             "type": "string",
-            "description": "",
+            "description": "The projects ID",
             "format": "uuid"
           },
           "projectName": {
             "type": "string",
-            "description": "",
+            "description": "The name of the project",
             "nullable": true
           },
           "ownerType": {
@@ -1017,12 +1038,12 @@
           },
           "ownerId": {
             "type": "string",
-            "description": "",
+            "description": "The ID of the owner",
             "format": "uuid"
           },
           "initiativeCount": {
             "type": "integer",
-            "description": "",
+            "description": "The number of initiatives in the project",
             "format": "int32"
           },
           "initiatives": {
@@ -1030,31 +1051,38 @@
             "items": {
               "$ref": "#/components/schemas/InitiativeListModel"
             },
-            "description": "",
+            "description": "A list of the initiatives in the project",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": ""
+        "description": "Response for the GetProjectDashboardAsync endpoint"
       },
       "GetProjectQuickSelectResponse": {
+        "required": [
+          "projectId",
+          "projectName"
+        ],
         "type": "object",
         "properties": {
           "projectId": {
             "type": "string",
-            "description": "",
+            "description": "The projects ID",
             "format": "uuid"
           },
           "projectName": {
             "type": "string",
-            "description": "",
+            "description": "The name of the project",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": ""
+        "description": "Response for the GetProjectQuickSelectAsync endpoint"
       },
       "GetProjectsByOwnerRequest": {
+        "required": [
+          "ownerType"
+        ],
         "type": "object",
         "properties": {
           "ownerType": {
@@ -1071,28 +1099,37 @@
         "description": "Request to get the projects for a given User/Organization"
       },
       "InitiativeListModel": {
+        "required": [
+          "initiativeId",
+          "initiativeName",
+          "queueCount"
+        ],
         "type": "object",
         "properties": {
           "initiativeId": {
             "type": "string",
-            "description": "",
+            "description": "The initiatives ID",
             "format": "uuid"
           },
           "initiativeName": {
             "type": "string",
-            "description": "",
+            "description": "The name of the initiative",
             "nullable": true
           },
           "queueCount": {
             "type": "integer",
-            "description": "",
+            "description": "The number of queues in the initiative",
             "format": "int32"
           }
         },
         "additionalProperties": false,
-        "description": ""
+        "description": "Model for the initiatives to be listed in a project"
       },
       "LoginUserApiRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -1127,6 +1164,10 @@
         "type": "string"
       },
       "RegisterUserApiRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {

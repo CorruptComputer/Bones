@@ -24,13 +24,14 @@ public sealed partial class AccountController(ISender sender) : BonesControllerB
     {
         BonesUser user = await GetCurrentBonesUserAsync();
 
-        return new GetMyProfileResponse(
-            user.Email ?? string.Empty,
-            user.EmailConfirmed,
-            user.EmailConfirmedDateTime,
-            user.DisplayName ?? user.Email ?? string.Empty,
-            user.CreateDateTime,
-            IsSysAdmin: User.IsInRole(SystemRoles.SYSTEM_ADMINISTRATORS)
-        );
+        return new GetMyProfileResponse
+        {
+            Email = user.Email ?? string.Empty,
+            EmailConfirmed = user.EmailConfirmed,
+            EmailConfirmedDateTime = user.EmailConfirmedDateTime,
+            DisplayName = user.DisplayName ?? user.Email ?? string.Empty,
+            CreateDateTime = user.CreateDateTime,
+            IsSysAdmin = User.IsInRole(SystemRoles.SYSTEM_ADMINISTRATORS)
+        };
     }
 }

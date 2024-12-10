@@ -69,7 +69,12 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             return NotFound(EmptyResponse.Value);
         }
 
-        return response.Result.Select(kvp => new GetProjectQuickSelectResponse(kvp.Key, kvp.Value)).ToList();
+        return response.Result.Select(kvp => 
+            new GetProjectQuickSelectResponse
+            {
+                ProjectId = kvp.Key,
+                ProjectName = kvp.Value
+            }).ToList();
     }
 
     /// <summary>
@@ -101,13 +106,21 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             ? projectResponse.Result.OwningUser!.Id
             : projectResponse.Result.OwningOrganization!.Id;
 
-        GetProjectDashboardResponse resp = new(
-            projectResponse.Result.Id,
-            projectResponse.Result.Name,
-            projectResponse.Result.OwnerType,
-            ownerId,
-            initiativesResponse.Result.Count,
-            initiativesResponse.Result.Select(i => new InitiativeListModel(i.Id, i.Name, i.Queues.Count)).ToList());
+        GetProjectDashboardResponse resp = new()
+        {
+            ProjectId = projectResponse.Result.Id,
+            ProjectName = projectResponse.Result.Name,
+            OwnerType = projectResponse.Result.OwnerType,
+            OwnerId = ownerId,
+            InitiativeCount = initiativesResponse.Result.Count,
+            Initiatives = initiativesResponse.Result.Select(i => 
+                new InitiativeListModel
+                {
+                    InitiativeId = i.Id,
+                    InitiativeName = i.Name,
+                    QueueCount = i.Queues.Count
+                }).ToList()
+        };
 
         return resp;
     }

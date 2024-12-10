@@ -1665,6 +1665,7 @@ namespace Bones.Api.Client
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
 
     }
@@ -1680,6 +1681,7 @@ namespace Bones.Api.Client
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
 
         /// <summary>
@@ -1706,61 +1708,124 @@ namespace Bones.Api.Client
 
     }
 
+    /// <summary>
+    /// Response for the GetMyProfile endpoint
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record GetMyProfileResponse
     {
+        /// <summary>
+        /// The email address of the user
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]
         public string Email { get; set; }
 
+        /// <summary>
+        /// Have they confirmed their email address?
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("emailConfirmed")]
-        public bool? EmailConfirmed { get; set; }
+        public bool EmailConfirmed { get; set; }
+
+        /// <summary>
+        /// If they have confirmed their email address, when they did it
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("emailConfirmedDateTime")]
         public System.DateTimeOffset? EmailConfirmedDateTime { get; set; }
 
+        /// <summary>
+        /// The display name of the user, defaults to their email if they don't have one set
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("displayName")]
         public string DisplayName { get; set; }
 
+        /// <summary>
+        /// The date and time the user was created
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("createDateTime")]
-        public System.DateTimeOffset? CreateDateTime { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset CreateDateTime { get; set; }
+
+        /// <summary>
+        /// Is the user a system administrator?
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("isSysAdmin")]
-        public bool? IsSysAdmin { get; set; }
+        public bool IsSysAdmin { get; set; }
 
     }
 
+    /// <summary>
+    /// Response for the GetProjectDashboardAsync endpoint
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record GetProjectDashboardResponse
     {
+        /// <summary>
+        /// The projects ID
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("projectId")]
-        public System.Guid? ProjectId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ProjectId { get; set; }
+
+        /// <summary>
+        /// The name of the project
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("projectName")]
         public string ProjectName { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("ownerType")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public OwnershipType? OwnerType { get; set; }
+        public OwnershipType OwnerType { get; set; }
+
+        /// <summary>
+        /// The ID of the owner
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("ownerId")]
-        public System.Guid? OwnerId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid OwnerId { get; set; }
+
+        /// <summary>
+        /// The number of initiatives in the project
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("initiativeCount")]
-        public int? InitiativeCount { get; set; }
+        public int InitiativeCount { get; set; }
+
+        /// <summary>
+        /// A list of the initiatives in the project
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("initiatives")]
         public System.Collections.Generic.List<InitiativeListModel> Initiatives { get; set; }
 
     }
 
+    /// <summary>
+    /// Response for the GetProjectQuickSelectAsync endpoint
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record GetProjectQuickSelectResponse
     {
+        /// <summary>
+        /// The projects ID
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("projectId")]
-        public System.Guid? ProjectId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ProjectId { get; set; }
+
+        /// <summary>
+        /// The name of the project
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("projectName")]
         public string ProjectName { get; set; }
@@ -1775,8 +1840,9 @@ namespace Bones.Api.Client
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("ownerType")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public OwnershipType? OwnerType { get; set; }
+        public OwnershipType OwnerType { get; set; }
 
         /// <summary>
         /// Optionally the organization that this should be created under, if not specified will be created for the requesting user.
@@ -1787,18 +1853,33 @@ namespace Bones.Api.Client
 
     }
 
+    /// <summary>
+    /// Model for the initiatives to be listed in a project
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record InitiativeListModel
     {
+        /// <summary>
+        /// The initiatives ID
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("initiativeId")]
-        public System.Guid? InitiativeId { get; set; }
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid InitiativeId { get; set; }
+
+        /// <summary>
+        /// The name of the initiative
+        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("initiativeName")]
         public string InitiativeName { get; set; }
 
+        /// <summary>
+        /// The number of queues in the initiative
+        /// </summary>
+
         [System.Text.Json.Serialization.JsonPropertyName("queueCount")]
-        public int? QueueCount { get; set; }
+        public int QueueCount { get; set; }
 
     }
 

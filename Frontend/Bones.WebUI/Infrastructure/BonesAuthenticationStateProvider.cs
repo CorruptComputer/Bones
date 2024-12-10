@@ -26,7 +26,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
             new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
         ];
 
-        if (currentUser.IsSysAdmin ?? false)
+        if (currentUser.IsSysAdmin)
         {
             claims.Add(new(BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES));
         }

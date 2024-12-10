@@ -9,26 +9,49 @@ public sealed partial class ProjectController
     /// <summary>
     ///   Request to create a new project
     /// </summary>
-    /// <param name="Name">Name of the project to create</param>
-    /// <param name="OrganizationId">Optionally the organization that this should be created under, if not specified will be created for the requesting user.</param>
-    [Serializable]
     [JsonSerializable(typeof(CreateProjectRequest))]
-    public record CreateProjectRequest([Required] string Name, Guid? OrganizationId = null);
+    public record CreateProjectRequest
+    {
+        /// <summary>
+        ///   Name of the project to create
+        /// </summary>
+        [Required]
+        public required string Name { get; init; }
+
+        /// <summary>
+        ///   Optionally the organization that this should be created under, if not specified will be created for the requesting user.
+        /// </summary>
+        public Guid? OrganizationId { get; init; }
+    }
 
     /// <summary>
     ///   Request to create a new initiative
     /// </summary>
-    /// <param name="Name">Name of the initiative to create</param>
-    [Serializable]
     [JsonSerializable(typeof(CreateInitiativeRequest))]
-    public record CreateInitiativeRequest([Required] string Name);
+    public record CreateInitiativeRequest
+    {
+        /// <summary>
+        ///   Name of the initiative to create
+        /// </summary>
+        [Required]
+        public required string Name { get; init; }
+    }
 
     /// <summary>
     ///   Request to get the projects for a given User/Organization
     /// </summary>
-    /// <param name="OwnerType">OwnerType to get</param>
-    /// <param name="OrganizationId">Optionally the organization that this should be created under, if not specified will be created for the requesting user.</param>
-    [Serializable]
     [JsonSerializable(typeof(GetProjectsByOwnerRequest))]
-    public record GetProjectsByOwnerRequest([Required] OwnershipType OwnerType, Guid? OrganizationId = null);
+    public record GetProjectsByOwnerRequest
+    {
+        /// <summary>
+        ///   OwnerType to get
+        /// </summary>
+        [Required]
+        public required OwnershipType OwnerType { get; init; }
+
+        /// <summary>
+        ///   Optionally the organization that this should be created under, if not specified will be created for the requesting user.
+        /// </summary>
+        public Guid? OrganizationId { get; init; }
+    }
 }

@@ -6,48 +6,89 @@ namespace Bones.Api.Controllers;
 public sealed partial class ProjectController
 {
     /// <summary>
-    /// 
+    ///   Response for the GetProjectQuickSelectAsync endpoint
     /// </summary>
-    /// <param name="ProjectId"></param>
-    /// <param name="ProjectName"></param>
-    [Serializable]
     [JsonSerializable(typeof(GetProjectQuickSelectResponse))]
-    public record GetProjectQuickSelectResponse(
-        Guid ProjectId,
-        string ProjectName
-    );
+    public record GetProjectQuickSelectResponse
+    {
+        /// <summary>
+        ///   The projects ID
+        /// </summary>
+        [JsonRequired]
+        public required Guid ProjectId { get; init; }
+
+        /// <summary>
+        ///   The name of the project
+        /// </summary>
+        [JsonRequired]
+        public required string ProjectName { get; init; }
+    }
 
     /// <summary>
-    /// 
+    ///   Response for the GetProjectDashboardAsync endpoint
     /// </summary>
-    /// <param name="ProjectId"></param>
-    /// <param name="ProjectName"></param>
-    /// <param name="OwnerType"></param>
-    /// <param name="OwnerId"></param>
-    /// <param name="InitiativeCount"></param>
-    /// <param name="Initiatives"></param>
-    [Serializable]
     [JsonSerializable(typeof(GetProjectDashboardResponse))]
-    public record GetProjectDashboardResponse(
-        Guid ProjectId,
-        string ProjectName,
-        OwnershipType OwnerType,
-        Guid OwnerId,
-        int InitiativeCount,
-        List<InitiativeListModel> Initiatives
-    );
+    public record GetProjectDashboardResponse
+    {
+        /// <summary>
+        ///   The projects ID
+        /// </summary>
+        [JsonRequired]
+        public required Guid ProjectId { get; init; }
+
+        /// <summary>
+        ///   The name of the project
+        /// </summary>
+        [JsonRequired]
+        public required string ProjectName { get; init; }
+
+        /// <summary>
+        ///   The type of owner
+        /// </summary>
+        [JsonRequired]
+        public required OwnershipType OwnerType { get; init; }
+
+        /// <summary>
+        ///   The ID of the owner
+        /// </summary>
+        [JsonRequired]
+        public required Guid OwnerId { get; init; }
+
+        /// <summary>
+        ///   The number of initiatives in the project
+        /// </summary>
+        [JsonRequired]
+        public required int InitiativeCount { get; init; }
+
+        /// <summary>
+        ///   A list of the initiatives in the project
+        /// </summary>
+        [JsonRequired]
+        public required List<InitiativeListModel> Initiatives { get; init; }
+    }
 
     /// <summary>
-    /// 
+    ///   Model for the initiatives to be listed in a project
     /// </summary>
-    /// <param name="InitiativeId"></param>
-    /// <param name="InitiativeName"></param>
-    /// <param name="QueueCount"></param>
-    [Serializable]
     [JsonSerializable(typeof(InitiativeListModel))]
-    public sealed record InitiativeListModel(
-        Guid InitiativeId,
-        string InitiativeName,
-        int QueueCount
-    );
+    public sealed record InitiativeListModel
+    {
+        /// <summary>
+        ///   The initiatives ID
+        /// </summary>
+        [JsonRequired]
+        public required Guid InitiativeId { get; init; }
+
+        /// <summary>
+        ///   The name of the initiative
+        /// </summary>
+        [JsonRequired]
+        public required string InitiativeName { get; init; }
+
+        /// <summary>
+        ///   The number of queues in the initiative
+        /// </summary>
+        [JsonRequired]
+        public required int QueueCount { get; init; }
+    }
 }
