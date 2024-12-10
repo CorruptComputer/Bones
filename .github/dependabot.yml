@@ -39,6 +39,9 @@ updates:
       NSwag:
         patterns:
           - "NSwag.ApiDescription.Client"
+      OpenTelemetry:
+        patterns:
+          - "OpenTelemetry.*"
       Serilog:
         patterns:
           - "Serilog"
