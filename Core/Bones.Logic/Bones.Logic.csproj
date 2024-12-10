@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <OutputType>Library</OutputType>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -14,18 +15,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Bones.Database\Bones.Database.csproj" />
-      <ProjectReference Include="..\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
+        <ProjectReference Include="..\Bones.Database\Bones.Database.csproj" />
+        <ProjectReference Include="..\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Projects\Projects\DeleteProjectById\" />
-      <Folder Include="Features\Projects\Projects\UpdateProject\" />
-      <Folder Include="Managers\" />
+        <Folder Include="Features\Projects\Projects\DeleteProjectById\" />
+        <Folder Include="Features\Projects\Projects\UpdateProject\" />
+        <Folder Include="Managers\" />
     </ItemGroup>
 
 </Project>

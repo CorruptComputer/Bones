@@ -11,6 +11,11 @@ using Bones.Shared.Backend.Extensions;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Bones.Api;
 
@@ -30,6 +35,63 @@ public static class Program
 
     private static WebApplication BuildBonesApi(this WebApplicationBuilder builder)
     {
+        // Aspire
+        builder.Logging.AddOpenTelemetry(logging =>
+        {
+            logging.IncludeFormattedMessage = true;
+            logging.IncludeScopes = true;
+        });
+
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(metrics =>
+            {
+                metrics.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddRuntimeInstrumentation();
+            })
+            .WithTracing(tracing =>
+            {
+                if (builder.Environment.IsDevelopment())
+                {
+                    // We want to view all traces in development
+                    tracing.SetSampler(new AlwaysOnSampler());
+                }
+
+                tracing.AddAspNetCoreInstrumentation()
+                    // Uncomment the following line to enable gRPC instrumentation 
+                    // (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
+                    //.AddGrpcClientInstrumentation()
+                    .AddHttpClientInstrumentation();
+            });
+
+        
+        bool useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
+        if (useOtlpExporter)
+        {
+            builder.Services.Configure<OpenTelemetryLoggerOptions>(
+                logging => logging.AddOtlpExporter());
+            builder.Services.ConfigureOpenTelemetryMeterProvider(
+                metrics => metrics.AddOtlpExporter());
+            builder.Services.ConfigureOpenTelemetryTracerProvider(
+                tracing => tracing.AddOtlpExporter());
+        }
+
+        builder.Services.AddHealthChecks()
+        // Add a default liveness check to ensure app is responsive
+        .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
+
+        builder.Services.AddServiceDiscovery();
+
+        builder.Services.ConfigureHttpClientDefaults(http =>
+        {
+            // Turn on resilience by default
+            http.AddStandardResilienceHandler();
+
+            // Turn on service discovery by default
+            http.AddServiceDiscovery();
+        });
+        // End Aspire
+
         builder.Configuration.AddEnvironmentVariables();
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -140,6 +202,19 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+
+        // Aspire
+        // All health checks must pass for app to be considered ready to 
+        // accept traffic after starting
+        app.MapHealthChecks("/health");
+
+        // Only health checks tagged with the "live" tag must pass for 
+        // app to be considered alive
+        app.MapHealthChecks("/alive", new HealthCheckOptions
+        {
+            Predicate = r => r.Tags.Contains("live")
+        });
+        // End Aspire
 
         Log.Information("Startup complete");
         await app.RunAsync();

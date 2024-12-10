@@ -19,10 +19,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Services\Bones.Api\Bones.Api.csproj" />
-      <ProjectReference Include="..\..\..\Core\Bones.Database\Bones.Database.csproj" />
-      <ProjectReference Include="..\..\..\Core\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
-      <ProjectReference Include="..\..\Bones.Testing.Shared\Bones.Testing.Shared.csproj" />
+        <ProjectReference Include="..\..\..\Services\Bones.Api\Bones.Api.csproj" />
+        <ProjectReference Include="..\..\..\Core\Bones.Database\Bones.Database.csproj" />
+        <ProjectReference Include="..\..\..\Core\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
+        <ProjectReference Include="..\..\Bones.Testing.Shared\Bones.Testing.Shared.csproj" />
     </ItemGroup>
 
 </Project>

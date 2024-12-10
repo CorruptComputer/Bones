@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Bones.Testing.Shared.Backend\Bones.Testing.Shared.Backend.csproj" />
+        <ProjectReference Include="..\Bones.Testing.Shared.Backend\Bones.Testing.Shared.Backend.csproj" />
     </ItemGroup>
 
 </Project>

@@ -27,12 +27,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Operations\ProjectManagement\Initiatives\" />
-      <Folder Include="Operations\ProjectManagement\Items\" />
+        <Folder Include="Operations\ProjectManagement\Initiatives\" />
+        <Folder Include="Operations\ProjectManagement\Items\" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Bones.Testing.Shared.Backend\Bones.Testing.Shared.Backend.csproj" />
+        <ProjectReference Include="..\Bones.Testing.Shared.Backend\Bones.Testing.Shared.Backend.csproj" />
     </ItemGroup>
 
 </Project>

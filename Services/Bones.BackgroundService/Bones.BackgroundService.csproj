@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
+        <OutputType>Exe</OutputType>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
         <TargetFramework>net9.0</TargetFramework>
         <VersionPrefix>0.0.1</VersionPrefix>
@@ -21,8 +22,8 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -30,13 +31,13 @@
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
         <PackageReference Update="Packaging.Targets">
-          <Version>0.1.226</Version>
+            <Version>0.1.226</Version>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Core\Bones.Logic\Bones.Logic.csproj" />
-      <ProjectReference Include="..\..\Core\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
+        <ProjectReference Include="..\..\Core\Bones.Logic\Bones.Logic.csproj" />
+        <ProjectReference Include="..\..\Core\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
     </ItemGroup>
 
     <ItemGroup>

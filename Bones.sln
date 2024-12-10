@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-#
+# 
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2A5FCFB-6AD5-4EA6-8C14-081F7824EE90}"
@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Database", "Core\Bones.Database\Bones.Database.csproj", "{770FD557-F74A-4A65-9292-F66DAD5EE244}"
@@ -21,7 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Shared", "Core\Bones.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Shared.Backend", "Core\Bones.Shared.Backend\Bones.Shared.Backend.csproj", "{7D73C8BF-8052-4386-B9CA-816321E0EF6E}"
 EndProject
-
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{2BF99936-90E9-4855-869C-F31C3C694647}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client", "Frontend\Bones.Api.Client\Bones.Api.Client.csproj", "{12C73BFE-490F-48E3-B409-0092CD242612}"
@@ -33,14 +31,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.WebUI", "Frontend\Bon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.WebUI.Leaflet", "Frontend\Bones.WebUI.Leaflet\Bones.WebUI.Leaflet.csproj", "{72CC087C-C908-4082-A19A-A1C60EE2BE0F}"
 EndProject
-
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{93B535AC-0A5C-4FC5-909E-832DD1AE52B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api", "Services\Bones.Api\Bones.Api.csproj", "{646BF7B1-446B-47A0-A156-13363CD2E957}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.BackgroundService", "Services\Bones.BackgroundService\Bones.BackgroundService.csproj", "{7F2FEA43-E1B6-4C93-99F9-87EC28C978A6}"
 EndProject
-
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AFD22481-8267-4E6C-89D9-AB37A3FE020C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C1C3F97D-6CB5-4A9B-A088-8DC828824C3D}"
@@ -55,11 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Testing.Shared.Backen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Testing.Shared", "Tests\Bones.Testing.Shared\Bones.Testing.Shared.csproj", "{C4168260-D19D-4919-B100-CCA86C9A6B68}"
 EndProject
-
-
-
-
-
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.AppHost", "Services\Bones.AppHost\Bones.AppHost.csproj", "{007B84A2-EA4E-4352-9E2B-BEAC8D276331}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +115,10 @@ Global
 		{72CC087C-C908-4082-A19A-A1C60EE2BE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72CC087C-C908-4082-A19A-A1C60EE2BE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72CC087C-C908-4082-A19A-A1C60EE2BE0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{007B84A2-EA4E-4352-9E2B-BEAC8D276331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{007B84A2-EA4E-4352-9E2B-BEAC8D276331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{007B84A2-EA4E-4352-9E2B-BEAC8D276331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{007B84A2-EA4E-4352-9E2B-BEAC8D276331}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,5 +139,6 @@ Global
 		{12C73BFE-490F-48E3-B409-0092CD242612} = {2BF99936-90E9-4855-869C-F31C3C694647}
 		{83C0F78F-F035-40B3-A349-50E13938F545} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
 		{CFB559B0-C8D7-4D43-B58D-0075876F7A79} = {C1C3F97D-6CB5-4A9B-A088-8DC828824C3D}
+		{007B84A2-EA4E-4352-9E2B-BEAC8D276331} = {93B535AC-0A5C-4FC5-909E-832DD1AE52B0}
 	EndGlobalSection
 EndGlobal
