@@ -30,7 +30,7 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.10.0" />
         <!-- End Aspire -->
         
-        <PackageReference Include="Autofac" Version="8.1.1" />
+        <PackageReference Include="Autofac" Version="8.2.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
         <PackageReference Include="FluentValidation" Version="11.11.0" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
