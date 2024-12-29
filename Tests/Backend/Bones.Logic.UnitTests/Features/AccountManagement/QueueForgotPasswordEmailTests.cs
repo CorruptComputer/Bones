@@ -1,5 +1,4 @@
-using Bones.Logic.Features.Accounts.QueueForgotPasswordEmail;
-using Bones.Logic.Features.Accounts.RegisterUser;
+using Bones.Logic.Features.Accounts;
 using Bones.Database.DbSets.SystemQueues;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;

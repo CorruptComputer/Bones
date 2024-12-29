@@ -1,10 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.Operations.OrganizationManagement.GetOrganizationByIdDb;
-using Bones.Database.Operations.ProjectManagement.Projects;
-using Bones.Shared.Backend.Enums;
-using Bones.Shared.Consts;
 
 namespace Bones.Database.Operations.ProjectManagement.Initiatives;
 
@@ -23,6 +17,9 @@ internal sealed class GetInitiativesByProjectDbHandler(BonesDbContext dbContext)
 {
     public async Task<QueryResponse<List<Initiative>>> Handle(GetInitiativesByProjectDbQuery request, CancellationToken cancellationToken)
     {
-        return await dbContext.Initiatives.Where(i => i.Project.Id == request.ProjectId).ToListAsync(cancellationToken);
+        return await dbContext.Initiatives
+            .Include(i => i.Queues)
+            .Where(i => i.Project.Id == request.ProjectId)
+            .ToListAsync(cancellationToken);
     }
 }

@@ -21,24 +21,24 @@ public partial class InitiativeDashboardPage : ComponentBase
     public Guid InitiativeId { get; set; }
 
     /// <summary>
-    ///   The name of the project, received from the API
+    ///   The name of the initiative, received from the API
     /// </summary>
     public string? InitiativeName { get; set; }
 
     /// <summary>
-    ///   The number of initiatives on the project, received from the API
+    ///   The number of queues on the initiative, received from the API
     /// </summary>
     public int? QueueCount { get; set; }
 
     /// <summary>
-    /// 
+    ///   Is the queue list still loading from the API?
     /// </summary>
     public bool QueueListLoading { get; set; } = true;
 
     /// <summary>
-    /// 
+    ///   The list of queues on the initiative, received from the API
     /// </summary>
-    public List<InitiativeListModel> QueueList { get; set; } = [];
+    public List<WorkItemQueueListModel> QueueList { get; set; } = [];
 
     /// <summary>
     /// 
@@ -46,11 +46,12 @@ public partial class InitiativeDashboardPage : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         // TODO: Garbage data for now, do real later
-        GetProjectDashboardResponse dashboardResponse = await ApiClient.GetProjectDashboardAsync(ProjectId);
-        InitiativeName = dashboardResponse.ProjectName;
+        GetInitiativeDashboardResponse dashboardResponse = await ApiClient.GetInitiativeDashboardAsync(ProjectId, InitiativeId);
 
-        QueueCount = dashboardResponse.InitiativeCount;
-        QueueList = dashboardResponse.Initiatives;
+        InitiativeName = dashboardResponse.InitiativeName;
+
+        QueueCount = dashboardResponse.WorkItemQueueCount;
+        QueueList = dashboardResponse.WorkItemQueues;
         QueueListLoading = false;
 
         await base.OnInitializedAsync();

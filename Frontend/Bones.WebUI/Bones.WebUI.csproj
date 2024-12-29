@@ -35,7 +35,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js"/>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     </ItemGroup>
 
     <ItemGroup>
@@ -46,6 +46,10 @@
 
     <ItemGroup>
         <Content Remove="wwwroot\appsettings.Development.json" Condition="$(Configuration) == 'Release'" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages/WorkItem/" />
     </ItemGroup>
 
 </Project>

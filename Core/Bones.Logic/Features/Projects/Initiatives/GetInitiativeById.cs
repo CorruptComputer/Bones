@@ -1,5 +1,7 @@
+using System.Data;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.Operations.ProjectManagement.Initiatives;
 
 namespace Bones.Logic.Features.Projects.Initiatives;
 
@@ -10,15 +12,19 @@ namespace Bones.Logic.Features.Projects.Initiatives;
 /// <param name="RequestingUser"></param>
 public sealed record GetInitiativeByIdQuery(Guid InitiativeId, BonesUser RequestingUser) : IRequest<QueryResponse<Initiative>>;
 
-internal sealed class GetInitiativeByIdQueryValidator
+internal sealed class GetInitiativeByIdQueryValidator : AbstractValidator<GetInitiativeByIdQuery>
 {
-
+    public GetInitiativeByIdQueryValidator()
+    {
+        RuleFor(x => x.InitiativeId).NotNull().NotEmpty();
+        RuleFor(x => x.RequestingUser).NotNull();
+    }
 }
 
-internal sealed class GetInitiativeByIdHandler : IRequestHandler<GetInitiativeByIdQuery, QueryResponse<Initiative>>
+internal sealed class GetInitiativeByIdHandler(ISender sender) : IRequestHandler<GetInitiativeByIdQuery, QueryResponse<Initiative>>
 {
-    public Task<QueryResponse<Initiative>> Handle(GetInitiativeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<Initiative>> Handle(GetInitiativeByIdQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await sender.Send(new GetInitiativesByIdDbQuery(request.InitiativeId), cancellationToken);
     }
 }

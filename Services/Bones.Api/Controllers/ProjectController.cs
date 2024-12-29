@@ -1,9 +1,6 @@
 using Bones.Api.Models;
 using Bones.Logic.Features.Projects.Initiatives;
-using Bones.Logic.Features.Projects.Projects.CreateProject;
-using Bones.Logic.Features.Projects.Projects.GetProjectById;
-using Bones.Logic.Features.Projects.Projects.GetProjectsByOwner;
-using Bones.Logic.Features.Projects.Projects.GetProjectsUserCanAccess;
+using Bones.Logic.Features.Projects.Projects;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Shared.Backend.Enums;
@@ -82,7 +79,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     /// </summary>
     /// <param name="projectId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("{projectId:guid}/dashboard", Name = "GetProjectDashboardAsync")]
+    [HttpGet("P{projectId:guid}/dashboard", Name = "GetProjectDashboardAsync")]
     [ProducesResponseType<GetProjectDashboardResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetProjectDashboardResponse>> GetProjectDashboardAsync(Guid projectId)
@@ -91,7 +88,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
         QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectByIdQuery(projectId, currentUser));
         QueryResponse<List<Initiative>> initiativesResponse = await Sender.Send(new GetInitiativesByProjectQuery(projectId, currentUser));
 
-        if (!projectResponse.Success || projectResponse.Result is null || !initiativesResponse.Success || initiativesResponse.Result is null)
+        if (!projectResponse.Success || projectResponse.Result is null)
         {
             return BadRequest(projectResponse.FailureReasons);
         }
@@ -119,6 +116,45 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
                     InitiativeId = i.Id,
                     InitiativeName = i.Name,
                     QueueCount = i.Queues.Count
+                }).ToList()
+        };
+
+        return resp;
+    }
+
+    /// <summary>
+    ///     Gets a initiatives dashboard information
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <param name="initiativeId"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpGet("P{projectId:guid}/I{initiativeId:guid}/dashboard", Name = "GetInitiativeDashboardAsync")]
+    [ProducesResponseType<GetInitiativeDashboardResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<GetInitiativeDashboardResponse>> GetInitiativeDashboardAsync(Guid projectId, Guid initiativeId)
+    {
+        BonesUser currentUser = await GetCurrentBonesUserAsync();
+        QueryResponse<Initiative> initiativeResponse = await Sender.Send(new GetInitiativeByIdQuery(initiativeId, currentUser));
+
+        if (!initiativeResponse.Success || initiativeResponse.Result is null)
+        {
+            return BadRequest(initiativeResponse.FailureReasons);
+        }
+
+        Initiative initiative = initiativeResponse.Result;
+
+        GetInitiativeDashboardResponse resp = new()
+        {
+            InitiativeId = initiative.Id,
+            InitiativeName = initiative.Name,
+            ProjectId = initiative.Project.Id,
+            WorkItemQueueCount = initiative.Queues.Count,
+            WorkItemQueues = initiative.Queues.Select(i => 
+                new WorkItemQueueListModel
+                {
+                    WorkItemQueueId = i.Id,
+                    WorkItemQueueName = i.Name,
+                    WorkItemCount = i.WorkItems.Count
                 }).ToList()
         };
 
@@ -152,7 +188,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{projectId:guid}/initiative/create", Name = "CreateInitiativeAsync")]
+    [HttpPost("P{projectId:guid}/initiative/create", Name = "CreateInitiativeAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateInitiativeAsync(Guid projectId, [FromBody] CreateInitiativeRequest request)

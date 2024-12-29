@@ -621,7 +621,7 @@
         }
       }
     },
-    "/Project/{projectId}/dashboard": {
+    "/Project/P{projectId}/dashboard": {
       "get": {
         "tags": [
           "Project"
@@ -677,6 +677,95 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetProjectDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/P{projectId}/I{initiativeId}/dashboard": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets a initiatives dashboard information",
+        "operationId": "GetInitiativeDashboardAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "initiativeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetInitiativeDashboardResponse"
                 }
               }
             }
@@ -772,7 +861,7 @@
         }
       }
     },
-    "/Project/{projectId}/initiative/create": {
+    "/Project/P{projectId}/initiative/create": {
       "post": {
         "tags": [
           "Project"
@@ -968,6 +1057,48 @@
         },
         "additionalProperties": false,
         "description": "The response body is empty, this is a workaround for the limitations of the API client."
+      },
+      "GetInitiativeDashboardResponse": {
+        "required": [
+          "initiativeId",
+          "initiativeName",
+          "projectId",
+          "workItemQueueCount",
+          "workItemQueues"
+        ],
+        "type": "object",
+        "properties": {
+          "initiativeId": {
+            "type": "string",
+            "description": "The initiative ID",
+            "format": "uuid"
+          },
+          "initiativeName": {
+            "type": "string",
+            "description": "The name of the Initiative",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "description": "The ID of the project the initiative is in",
+            "format": "uuid"
+          },
+          "workItemQueueCount": {
+            "type": "integer",
+            "description": "The number of initiatives in the project",
+            "format": "int32"
+          },
+          "workItemQueues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkItemQueueListModel"
+            },
+            "description": "A list of the initiatives in the project",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetInitiativeDashboardAsync endpoint"
       },
       "GetMyProfileResponse": {
         "required": [
@@ -1193,6 +1324,33 @@
           }
         },
         "additionalProperties": false
+      },
+      "WorkItemQueueListModel": {
+        "required": [
+          "workItemCount",
+          "workItemQueueId",
+          "workItemQueueName"
+        ],
+        "type": "object",
+        "properties": {
+          "workItemQueueId": {
+            "type": "string",
+            "description": "The work item queue ID",
+            "format": "uuid"
+          },
+          "workItemQueueName": {
+            "type": "string",
+            "description": "The name of the work item queue",
+            "nullable": true
+          },
+          "workItemCount": {
+            "type": "integer",
+            "description": "The number of work items in the work item queue",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for the work item queues to be listed in an initiative"
       }
     }
   }

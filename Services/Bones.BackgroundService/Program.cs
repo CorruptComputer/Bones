@@ -1,4 +1,3 @@
-using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Logic;
@@ -7,8 +6,6 @@ using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Extensions;
 using Bones.Shared.Backend.Extensions;
-using Bones.Shared.Backend.PipelineBehaviors;
-using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 
 namespace Bones.BackgroundService;
 

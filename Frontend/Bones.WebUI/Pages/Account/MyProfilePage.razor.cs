@@ -38,13 +38,13 @@ public partial class MyProfilePage : ComponentBase
     {
         GetMyProfileResponse response = await ApiClient.GetMyProfileAsync();
 
-        await CreateDateTime.SetText(response.CreateDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture) ?? string.Empty);
+        await CreateDateTime.SetText(response.CreateDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture));
 
-        await Email.SetText(response.Email ?? string.Empty);
-        await EmailConfirmed.SetText(response.EmailConfirmed.ToString() ?? string.Empty);
+        await Email.SetText(response.Email);
+        await EmailConfirmed.SetText(response.EmailConfirmed.ToString());
         await EmailConfirmedDateTime.SetText(response.EmailConfirmedDateTime?.LocalDateTime.ToString(CultureInfo.CurrentCulture) ?? string.Empty);
 
-        await DisplayName.SetText(response.DisplayName ?? string.Empty);
+        await DisplayName.SetText(response.DisplayName);
 
         await base.OnInitializedAsync();
     }

@@ -11,25 +11,25 @@
 <div class="d-flex">
     <MudText Typo="Typo.h4">Queues</MudText>
     <MudSpacer/>
-    <MudButton Href="@FrontEndUrls.Project.Initiative.CREATE_INITIATIVE.Replace("{ProjectId:guid}", ProjectId.ToString())">Create Initiative</MudButton>
+    <MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_CREATE_WORKITEM_QUEUE.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", InitiativeId.ToString())">Create Work Item Queue</MudButton>
 </div>
 
 
 <MudPaper Class="pa-4">
-    <MudText>Number of initiatives: @QueueCount</MudText>
+    <MudText>Number of Work Item queues: @QueueCount</MudText>
 
     <MudTable Items="@QueueList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@QueueListLoading" LoadingProgressColor="Color.Info">
         <HeaderContent>
-            <MudTh>Initiative ID</MudTh>
-            <MudTh>Initiative Name</MudTh>
-            <MudTh>Queue Count</MudTh>
-            <MudTh>Go to Initiative</MudTh>
+            <MudTh>Work Item Queue ID</MudTh>
+            <MudTh>Work Item Queue Name</MudTh>
+            <MudTh>Work Item Count</MudTh>
+            <MudTh>Go to Work Item Queue</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Initiative ID">@context.InitiativeId</MudTd>
-            <MudTd DataLabel="Initiative Name">@context.InitiativeName</MudTd>
-            <MudTd DataLabel="Queue Count">@context.QueueCount</MudTd>
-            <MudTd DataLabel="Go to Initiative"><MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", context.InitiativeId.ToString())">Dashboard</MudButton></MudTd>
+            <MudTd DataLabel="Work Item Queue ID">@context.WorkItemQueueId</MudTd>
+            <MudTd DataLabel="Work Item Queue Name">@context.WorkItemQueueName</MudTd>
+            <MudTd DataLabel="Work Item Count">@context.WorkItemCount</MudTd>
+            <MudTd DataLabel="Go to Work Item Queue"><MudButton Href="@FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{WorkItemQueueId:guid}", context.WorkItemQueueId.ToString())">Dashboard</MudButton></MudTd>
         </RowTemplate>
     </MudTable>
 </MudPaper>

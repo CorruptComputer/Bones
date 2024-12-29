@@ -1,17 +1,13 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.Operations.OrganizationManagement.GetOrganizationByIdDb;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
-using Bones.Database.Operations.ProjectManagement.Projects;
-using Bones.Logic.Features.Projects.Projects.UserHasProjectPermission;
-using Bones.Shared.Backend.Enums;
+using Bones.Logic.Features.Projects.Projects;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Projects.Initiatives;
 
 /// <summary>
-///   Backend Command for creating an Initiative.
+///   Backend query for getting initiatives that belong to a project.
 /// </summary>
 /// <param name="ProjectId">Internal ID of the project</param>
 /// <param name="RequestingUser">The user requesting this</param>
@@ -19,7 +15,11 @@ public record GetInitiativesByProjectQuery(Guid ProjectId, BonesUser RequestingU
 
 internal sealed class GetInitiativesByProjectQueryValidator : AbstractValidator<GetInitiativesByProjectQuery>
 {
-
+    public GetInitiativesByProjectQueryValidator()
+    {
+        RuleFor(x => x.ProjectId).NotNull().NotEmpty();
+        RuleFor(x => x.RequestingUser).NotNull();
+    }
 }
 
 internal sealed class GetInitiativesByProjectHandler(ISender sender) : IRequestHandler<GetInitiativesByProjectQuery, QueryResponse<List<Initiative>>>

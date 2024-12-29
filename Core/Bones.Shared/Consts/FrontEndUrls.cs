@@ -98,10 +98,29 @@ public static class FrontEndUrls
             ///   Initiative dashboard page
             /// </summary>
             public const string INITIATIVE_DASHBOARD = $"{_initiativeWithId}/Dashboard";
+
+            /// <summary>
+            ///   Page to create a work item queue within an initiative
+            /// </summary>
+            public const string INITIATIVE_CREATE_WORKITEM_QUEUE = $"{_initiativeWithId}/CreateWorkItemQueue";
         }
     }
 
+    /// <summary>
+    ///   Work item pages
+    /// </summary>
+    public static class WorkItem
+    {
+        private const string _workItem = "/WorkItem";
 
+        private const string _workItemQueueWithId = $"{_workItem}/Q{{WorkItemQueueId:guid}}";
+
+        /// <summary>
+        ///   Work item queue dashboard page
+        /// </summary>
+        public const string WORKITEM_QUEUE_DASHBOARD = $"{_workItemQueueWithId}/Dashboard";
+
+    }
 
     /// <summary>
     ///   System Admin pages

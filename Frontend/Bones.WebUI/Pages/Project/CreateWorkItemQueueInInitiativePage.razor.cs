@@ -1,20 +1,25 @@
 using Bones.Api.Client;
-using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace Bones.WebUI.Pages.Project;
 
 /// <summary>
-///   Create Initiative page
+///   Page to create a work item queue in an initiative
 /// </summary>
-public partial class CreateInitiativePage : ComponentBase
+public partial class CreateWorkItemQueueInInitiativePage : ComponentBase
 {
     /// <summary>
-    ///   The ID of the project to load in this dashboard
+    ///   The ID of the project
     /// </summary>
     [Parameter]
     public Guid ProjectId { get; set; }
+
+    /// <summary>
+    ///   The ID of the initiative
+    /// </summary>
+    [Parameter]
+    public Guid InitiativeId { get; set; }
 
     /// <summary>
     ///   Did the request to the API result in an error?
@@ -31,7 +36,7 @@ public partial class CreateInitiativePage : ComponentBase
     /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
-    private MudTextField<string> InitiativeName { get; set; } = new();
+    private MudTextField<string> WorkItemQueueName { get; set; } = new();
 
     /// <summary>
     ///   Send the request to register to the API, if it errors tell the user what went wrong.
@@ -42,16 +47,18 @@ public partial class CreateInitiativePage : ComponentBase
         {
             ApiError = false;
 
-            Guid initiativeId = await ApiClient.CreateInitiativeAsync(ProjectId, new()
-            {
-                Name = InitiativeName.Text
-            });
+            await Task.CompletedTask;
 
-            NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
+            //Guid workItemQueueId = await ApiClient.CreateWorkItemQueueAsync(InitiativeId, new()
+            //{
+            //    Name = WorkItemQueueName.Text
+            //});
+
+            //NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", InitiativeId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
         }
         catch (ApiException ex)
         {
-            Logger.LogError(ex, "Error while creating initiative");
+            Logger.LogError(ex, "Error while creating the work item queue");
             ApiError = true;
         }
     }

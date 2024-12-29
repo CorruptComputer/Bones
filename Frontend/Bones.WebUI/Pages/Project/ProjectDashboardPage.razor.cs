@@ -49,6 +49,26 @@ public partial class ProjectDashboardPage : ComponentBase
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
+        await FetchFromAPI();
+
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        InitiativeListLoading = true;
+        InitiativeList = [];
+        await FetchFromAPI();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task FetchFromAPI() 
+    {
         GetProjectDashboardResponse dashboardResponse = await ApiClient.GetProjectDashboardAsync(ProjectId);
         ProjectName = dashboardResponse.ProjectName;
         OwnerType = dashboardResponse.OwnerType;
@@ -57,7 +77,5 @@ public partial class ProjectDashboardPage : ComponentBase
         InitiativeCount = dashboardResponse.InitiativeCount;
         InitiativeList = dashboardResponse.Initiatives;
         InitiativeListLoading = false;
-
-        await base.OnInitializedAsync();
     }
 }

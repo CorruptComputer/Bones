@@ -1,9 +1,9 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
-using Bones.Database.Operations.OrganizationManagement.GetOrganizationByIdDb;
+using Bones.Database.Operations.OrganizationManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives.CreateInitiativeDb;
 using Bones.Database.Operations.ProjectManagement.Projects;
-using Bones.Logic.Features.Projects.Projects.UserHasProjectPermission;
+using Bones.Logic.Features.Projects.Projects;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 

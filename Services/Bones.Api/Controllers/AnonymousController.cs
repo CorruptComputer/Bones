@@ -1,9 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
-using Bones.Logic.Features.Accounts.ConfirmEmail;
-using Bones.Logic.Features.Accounts.QueueForgotPasswordEmail;
-using Bones.Logic.Features.Accounts.QueueResendConfirmationEmail;
-using Bones.Logic.Features.Accounts.RegisterUser;
+using Bones.Logic.Features.Accounts;
 using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

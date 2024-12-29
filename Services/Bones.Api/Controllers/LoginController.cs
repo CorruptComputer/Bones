@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
 using Bones.Database.DbSets.AccountManagement;
 using Microsoft.AspNetCore.Authorization;

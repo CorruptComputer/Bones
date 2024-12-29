@@ -146,34 +146,34 @@ public static class BonesClaimTypes
         }
 
         /// <summary>
-        ///   Queue level claim types for organization roles
+        ///   WorkItemQueue level claim types for organization roles
         /// </summary>
-        public static class Queue
+        public static class WorkItemQueue
         {
             /// <summary>
             ///   Claim type for if a user can view a queue
             /// </summary>
-            public const string VIEW_QUEUE = "ViewQueue";
+            public const string VIEW_QUEUE = "ViewWorkItemQueue";
 
             /// <summary>
             ///   Claim type for if a user can create a queue
             /// </summary>
-            public const string CREATE_QUEUE = "CreateQueue";
+            public const string CREATE_QUEUE = "CreateWorkItemQueue";
 
             /// <summary>
             ///   Claim type for if a user can delete a queue
             /// </summary>
-            public const string DELETE_QUEUE = "DeleteQueue";
+            public const string DELETE_QUEUE = "DeleteWorkItemQueue";
 
             /// <summary>
             ///   Claim type for if a user can view the queues settings
             /// </summary>
-            public const string VIEW_QUEUE_SETTINGS = "ViewQueueSettings";
+            public const string VIEW_QUEUE_SETTINGS = "ViewWorkItemQueueSettings";
 
             /// <summary>
             ///   Claim type for if a user can edit the queues settings
             /// </summary>
-            public const string EDIT_QUEUE_SETTINGS = "EditQueueSettings";
+            public const string EDIT_QUEUE_SETTINGS = "EditWorkItemQueueSettings";
 
             /// <summary>
             ///   Gets the claim type for permissions that should apply to this queue

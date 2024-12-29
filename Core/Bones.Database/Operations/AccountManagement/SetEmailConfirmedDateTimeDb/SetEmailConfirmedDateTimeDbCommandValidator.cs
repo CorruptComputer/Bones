@@ -1,6 +1,0 @@
-namespace Bones.Database.Operations.AccountManagement.SetEmailConfirmedDateTimeDb;
-
-internal sealed class SetEmailConfirmedDateTimeDbCommandValidator : AbstractValidator<SetEmailConfirmedDateTimeDbCommand>
-{
-
-}
