@@ -21,7 +21,7 @@
         <!-- Aspire -->
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
 
-        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.1.0" />
         <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.0.0" />
         <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.10.0" />
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.10.0" />
@@ -37,9 +37,9 @@
         <PackageReference Include="GeoJSON.Text" Version="1.1.0" />
         <PackageReference Include="MediatR" Version="12.4.1" />
         <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.1" />
         <PackageReference Include="Serilog" Version="4.2.0" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
