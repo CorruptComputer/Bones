@@ -3,7 +3,12 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Database.Operations.Setup.SetupSystemAdminUserAndRole;
+namespace Bones.Database.Operations.Setup;
+
+/// <summary>
+///   Command to set up the system admin user and role
+/// </summary>
+public sealed record SetupSystemAdminUserAndRoleCommand : IRequest<CommandResponse>;
 
 internal sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager)
     : IRequestHandler<SetupSystemAdminUserAndRoleCommand, CommandResponse>

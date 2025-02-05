@@ -17,7 +17,7 @@ internal sealed class GetWorkItemQueuesByInitiativeDbHandler(BonesDbContext dbCo
 {
     public async Task<QueryResponse<List<WorkItemQueue>>> Handle(GetWorkItemQueuesByInitiativeDbQuery request, CancellationToken cancellationToken)
     {
-        return (await dbContext.Initiatives.Include(i => i.Queues).FirstOrDefaultAsync(i => i.Id == request.InitiativeId, cancellationToken))?.Queues 
+        return (await dbContext.Initiatives.Include(i => i.Queues).FirstOrDefaultAsync(i => i.Id == request.InitiativeId, cancellationToken))?.Queues
             // Should only really happen if the initiative doesn't exist, but that would have been checked in the Logic layer before here anyways
             ?? [];
     }

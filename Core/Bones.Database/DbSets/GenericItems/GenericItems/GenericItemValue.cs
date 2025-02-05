@@ -24,7 +24,7 @@ public class GenericItemValue
     /// <summary>
     ///   The field this value belongs to
     /// </summary>
-    public required GenericItemField Field { get; set; }
+    public required GenericItemFieldVersion Field { get; set; }
 
     /// <summary>
     ///   If the field this value belongs to is a Location, the type of location that is saved for the value

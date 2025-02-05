@@ -82,7 +82,50 @@ public static class FrontEndUrls
         public const string PROJECT_DASHBOARD = $"{_projectWithId}/Dashboard";
 
         /// <summary>
-        /// 
+        ///   Project dashboard page
+        /// </summary>
+        public const string MODIFY_PROJECT = $"{_projectWithId}/edit";
+
+        /// <summary>
+        ///   Project Item Field pages
+        /// </summary>
+        public static class ItemField
+        {
+            private const string _itemField = $"{_projectWithId}/ItemField";
+            private const string _itemFieldWithId = $"{_itemField}/{{ItemFieldId:guid}}";
+
+            /// <summary>
+            ///   Create item field page
+            /// </summary>
+            public const string CREATE_FIELD = $"{_itemField}/create";
+
+            /// <summary>
+            ///   Edit item field page
+            /// </summary>
+            public const string EDIT_FIELD = $"{_itemFieldWithId}/edit";
+        }
+
+        /// <summary>
+        ///   Project Item Layout pages
+        /// </summary>
+        public static class ItemLayout
+        {
+            private const string _itemLayout = $"{_projectWithId}/ItemLayout";
+            private const string _itemLayoutWithId = $"{_itemLayout}/{{ItemLayoutId:guid}}";
+
+            /// <summary>
+            ///   Create layout page
+            /// </summary>
+            public const string CREATE_LAYOUT = $"{_itemLayout}/create";
+
+            /// <summary>
+            ///   Edit layout page
+            /// </summary>
+            public const string EDIT_LAYOUT = $"{_itemLayoutWithId}/edit";
+        }
+
+        /// <summary>
+        ///   Project Initiative pages
         /// </summary>
         public static class Initiative
         {

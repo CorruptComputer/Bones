@@ -18,7 +18,7 @@ public sealed record QueueConfirmationEmailCommand(BonesUser User, string Email,
 
 internal class QueueConfirmationEmailCommandValidator : AbstractValidator<QueueConfirmationEmailCommand>
 {
-    public QueueConfirmationEmailCommandValidator() 
+    public QueueConfirmationEmailCommandValidator()
     {
         RuleFor(x => x.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
         {

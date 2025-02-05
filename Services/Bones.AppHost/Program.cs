@@ -20,12 +20,12 @@ public static class Program
 
         IResourceBuilder<ProjectResource> api = builder.AddProject<Projects.Bones_Api>(ServiceNames.Api)
                                                        .WaitFor(backgroundService);
-        
+
         builder.AddProject<Projects.Bones_WebUI>(ServiceNames.WebUI)
                .WithExternalHttpEndpoints()
                .WithReference(api)
                .WaitFor(api);
-        
+
         return builder.Build();
     }
 

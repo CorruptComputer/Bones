@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -24,10 +26,10 @@ namespace Bones.Database.Migrations
                 name: "SystemQueues");
 
             migrationBuilder.EnsureSchema(
-                name: "ProjectManagement");
+                name: "GenericItems");
 
             migrationBuilder.EnsureSchema(
-                name: "GenericItems");
+                name: "ProjectManagement");
 
             migrationBuilder.EnsureSchema(
                 name: "System");
@@ -88,8 +90,8 @@ namespace Bones.Database.Migrations
                     RetryCount = table.Column<int>(type: "integer", nullable: false),
                     LastTry = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     FailureReasons = table.Column<List<string>>(type: "text[]", nullable: false),
-                    EmailTo = table.Column<string>(type: "text", nullable: false),
-                    ConfirmationLink = table.Column<string>(type: "text", nullable: false)
+                    EmailTo = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    ConfirmationLink = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,8 +108,8 @@ namespace Bones.Database.Migrations
                     RetryCount = table.Column<int>(type: "integer", nullable: false),
                     LastTry = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     FailureReasons = table.Column<List<string>>(type: "text[]", nullable: false),
-                    EmailTo = table.Column<string>(type: "text", nullable: false),
-                    ConfirmationLink = table.Column<string>(type: "text", nullable: false)
+                    EmailTo = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    ConfirmationLink = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,8 +127,8 @@ namespace Bones.Database.Migrations
                     RetryCount = table.Column<int>(type: "integer", nullable: false),
                     LastTry = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     FailureReasons = table.Column<List<string>>(type: "text[]", nullable: false),
-                    EmailTo = table.Column<string>(type: "text", nullable: false),
-                    PasswordResetLink = table.Column<string>(type: "text", nullable: false)
+                    EmailTo = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    PasswordResetLink = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,8 +145,8 @@ namespace Bones.Database.Migrations
                     RetryCount = table.Column<int>(type: "integer", nullable: false),
                     LastTry = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     FailureReasons = table.Column<List<string>>(type: "text[]", nullable: false),
-                    EmailTo = table.Column<string>(type: "text", nullable: false),
-                    PasswordResetLink = table.Column<string>(type: "text", nullable: false)
+                    EmailTo = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    PasswordResetLink = table.Column<string>(type: "character varying(4096)", maxLength: 4096, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,7 +154,21 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemLayouts",
+                name: "GenericItemFields",
+                schema: "GenericItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenericItemFields", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenericItemLayouts",
                 schema: "GenericItems",
                 columns: table => new
                 {
@@ -164,7 +180,7 @@ namespace Bones.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemLayouts", x => x.Id);
+                    table.PrimaryKey("PK_GenericItemLayouts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,7 +190,7 @@ namespace Bones.Database.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ErrorTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ErrorMessage = table.Column<string>(type: "text", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
                     StackTrace = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -303,7 +319,7 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemLayoutVersions",
+                name: "GenericItemLayoutVersions",
                 schema: "GenericItems",
                 columns: table => new
                 {
@@ -311,40 +327,40 @@ namespace Bones.Database.Migrations
                     ItemLayoutId = table.Column<Guid>(type: "uuid", nullable: false),
                     Version = table.Column<long>(type: "bigint", nullable: false),
                     CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false),
+                    GenericItemLayoutId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemLayoutVersions", x => x.Id);
+                    table.PrimaryKey("PK_GenericItemLayoutVersions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemLayoutVersions_ItemLayouts_ItemLayoutId",
-                        column: x => x.ItemLayoutId,
+                        name: "FK_GenericItemLayoutVersions_GenericItemLayouts_GenericItemLay~",
+                        column: x => x.GenericItemLayoutId,
                         principalSchema: "GenericItems",
-                        principalTable: "ItemLayouts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "GenericItemLayouts",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "GenericItems",
                 schema: "GenericItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
                     ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ItemLayoutId = table.Column<Guid>(type: "uuid", nullable: false),
+                    GenericItemLayoutId = table.Column<Guid>(type: "uuid", nullable: false),
                     CurrentVersion = table.Column<int>(type: "integer", nullable: false),
                     DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.PrimaryKey("PK_GenericItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Items_ItemLayouts_ItemLayoutId",
-                        column: x => x.ItemLayoutId,
+                        name: "FK_GenericItems_GenericItemLayouts_GenericItemLayoutId",
+                        column: x => x.GenericItemLayoutId,
                         principalSchema: "GenericItems",
-                        principalTable: "ItemLayouts",
+                        principalTable: "GenericItemLayouts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -422,25 +438,35 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemFields",
+                name: "GenericItemFieldVersions",
                 schema: "GenericItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GenericItemFieldId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsRequired = table.Column<bool>(type: "boolean", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
-                    ItemLayoutVersionId = table.Column<Guid>(type: "uuid", nullable: true)
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false),
+                    GenericItemLayoutVersionId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemFields", x => x.Id);
+                    table.PrimaryKey("PK_GenericItemFieldVersions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemFields_ItemLayoutVersions_ItemLayoutVersionId",
-                        column: x => x.ItemLayoutVersionId,
+                        name: "FK_GenericItemFieldVersions_GenericItemFields_GenericItemField~",
+                        column: x => x.GenericItemFieldId,
                         principalSchema: "GenericItems",
-                        principalTable: "ItemLayoutVersions",
+                        principalTable: "GenericItemFields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GenericItemFieldVersions_GenericItemLayoutVersions_GenericI~",
+                        column: x => x.GenericItemLayoutVersionId,
+                        principalSchema: "GenericItems",
+                        principalTable: "GenericItemLayoutVersions",
                         principalColumn: "Id");
                 });
 
@@ -459,10 +485,10 @@ namespace Bones.Database.Migrations
                 {
                     table.PrimaryKey("PK_Assets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Assets_Items_ItemId",
+                        name: "FK_Assets_GenericItems_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "GenericItems",
-                        principalTable: "Items",
+                        principalTable: "GenericItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -475,7 +501,7 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemVersions",
+                name: "GenericItemVersions",
                 schema: "GenericItems",
                 columns: table => new
                 {
@@ -483,26 +509,26 @@ namespace Bones.Database.Migrations
                     ItemId = table.Column<Guid>(type: "uuid", nullable: false),
                     Version = table.Column<long>(type: "bigint", nullable: false),
                     CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ItemLayoutVersionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                    GenericItemLayoutVersionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false),
+                    GenericItemId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemVersions", x => x.Id);
+                    table.PrimaryKey("PK_GenericItemVersions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemVersions_ItemLayoutVersions_ItemLayoutVersionId",
-                        column: x => x.ItemLayoutVersionId,
+                        name: "FK_GenericItemVersions_GenericItemLayoutVersions_GenericItemLa~",
+                        column: x => x.GenericItemLayoutVersionId,
                         principalSchema: "GenericItems",
-                        principalTable: "ItemLayoutVersions",
+                        principalTable: "GenericItemLayoutVersions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItemVersions_Items_ItemId",
-                        column: x => x.ItemId,
+                        name: "FK_GenericItemVersions_GenericItems_GenericItemId",
+                        column: x => x.GenericItemId,
                         principalSchema: "GenericItems",
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "GenericItems",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -528,29 +554,37 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemFieldListEntries",
+                name: "GenericItemFieldListEntries",
                 schema: "GenericItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: false),
                     ParentFieldId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MatchingType = table.Column<int>(type: "integer", nullable: false)
+                    MatchingType = table.Column<int>(type: "integer", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false),
+                    GenericItemFieldVersionId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemFieldListEntries", x => x.Id);
+                    table.PrimaryKey("PK_GenericItemFieldListEntries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemFieldListEntries_ItemFields_ParentFieldId",
+                        name: "FK_GenericItemFieldListEntries_GenericItemFieldVersions_Generi~",
+                        column: x => x.GenericItemFieldVersionId,
+                        principalSchema: "GenericItems",
+                        principalTable: "GenericItemFieldVersions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GenericItemFieldListEntries_GenericItemFields_ParentFieldId",
                         column: x => x.ParentFieldId,
                         principalSchema: "GenericItems",
-                        principalTable: "ItemFields",
+                        principalTable: "GenericItemFields",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemValues",
+                name: "GenericItemValues",
                 schema: "GenericItems",
                 columns: table => new
                 {
@@ -559,23 +593,23 @@ namespace Bones.Database.Migrations
                     LocationType = table.Column<int>(type: "integer", nullable: true),
                     Value = table.Column<string>(type: "text", nullable: true),
                     DeleteFlag = table.Column<bool>(type: "boolean", nullable: false),
-                    ItemVersionId = table.Column<Guid>(type: "uuid", nullable: true)
+                    GenericItemVersionId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemValues", x => x.Id);
+                    table.PrimaryKey("PK_GenericItemValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemValues_ItemFields_FieldId",
+                        name: "FK_GenericItemValues_GenericItemFieldVersions_FieldId",
                         column: x => x.FieldId,
                         principalSchema: "GenericItems",
-                        principalTable: "ItemFields",
+                        principalTable: "GenericItemFieldVersions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItemValues_ItemVersions_ItemVersionId",
-                        column: x => x.ItemVersionId,
+                        name: "FK_GenericItemValues_GenericItemVersions_GenericItemVersionId",
+                        column: x => x.GenericItemVersionId,
                         principalSchema: "GenericItems",
-                        principalTable: "ItemVersions",
+                        principalTable: "GenericItemVersions",
                         principalColumn: "Id");
                 });
 
@@ -594,10 +628,10 @@ namespace Bones.Database.Migrations
                 {
                     table.PrimaryKey("PK_WorkItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkItems_Items_ItemId",
+                        name: "FK_WorkItems_GenericItems_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "GenericItems",
-                        principalTable: "Items",
+                        principalTable: "GenericItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -672,58 +706,70 @@ namespace Bones.Database.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_GenericItemFieldListEntries_GenericItemFieldVersionId",
+                schema: "GenericItems",
+                table: "GenericItemFieldListEntries",
+                column: "GenericItemFieldVersionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemFieldListEntries_ParentFieldId",
+                schema: "GenericItems",
+                table: "GenericItemFieldListEntries",
+                column: "ParentFieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemFieldVersions_GenericItemFieldId",
+                schema: "GenericItems",
+                table: "GenericItemFieldVersions",
+                column: "GenericItemFieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemFieldVersions_GenericItemLayoutVersionId",
+                schema: "GenericItems",
+                table: "GenericItemFieldVersions",
+                column: "GenericItemLayoutVersionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemLayoutVersions_GenericItemLayoutId",
+                schema: "GenericItems",
+                table: "GenericItemLayoutVersions",
+                column: "GenericItemLayoutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItems_GenericItemLayoutId",
+                schema: "GenericItems",
+                table: "GenericItems",
+                column: "GenericItemLayoutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemValues_FieldId",
+                schema: "GenericItems",
+                table: "GenericItemValues",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemValues_GenericItemVersionId",
+                schema: "GenericItems",
+                table: "GenericItemValues",
+                column: "GenericItemVersionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemVersions_GenericItemId",
+                schema: "GenericItems",
+                table: "GenericItemVersions",
+                column: "GenericItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemVersions_GenericItemLayoutVersionId",
+                schema: "GenericItems",
+                table: "GenericItemVersions",
+                column: "GenericItemLayoutVersionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Initiatives_ProjectId",
                 schema: "ProjectManagement",
                 table: "Initiatives",
                 column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemFieldListEntries_ParentFieldId",
-                schema: "GenericItems",
-                table: "ItemFieldListEntries",
-                column: "ParentFieldId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemFields_ItemLayoutVersionId",
-                schema: "GenericItems",
-                table: "ItemFields",
-                column: "ItemLayoutVersionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemLayoutVersions_ItemLayoutId",
-                schema: "GenericItems",
-                table: "ItemLayoutVersions",
-                column: "ItemLayoutId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_ItemLayoutId",
-                schema: "GenericItems",
-                table: "Items",
-                column: "ItemLayoutId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemValues_FieldId",
-                schema: "GenericItems",
-                table: "ItemValues",
-                column: "FieldId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemValues_ItemVersionId",
-                schema: "GenericItems",
-                table: "ItemValues",
-                column: "ItemVersionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemVersions_ItemId",
-                schema: "GenericItems",
-                table: "ItemVersions",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemVersions_ItemLayoutVersionId",
-                schema: "GenericItems",
-                table: "ItemVersions",
-                column: "ItemLayoutVersionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_OwningOrganizationId",
@@ -800,11 +846,11 @@ namespace Bones.Database.Migrations
                 schema: "SystemQueues");
 
             migrationBuilder.DropTable(
-                name: "ItemFieldListEntries",
+                name: "GenericItemFieldListEntries",
                 schema: "GenericItems");
 
             migrationBuilder.DropTable(
-                name: "ItemValues",
+                name: "GenericItemValues",
                 schema: "GenericItems");
 
             migrationBuilder.DropTable(
@@ -820,11 +866,11 @@ namespace Bones.Database.Migrations
                 schema: "AccountManagement");
 
             migrationBuilder.DropTable(
-                name: "ItemFields",
+                name: "GenericItemFieldVersions",
                 schema: "GenericItems");
 
             migrationBuilder.DropTable(
-                name: "ItemVersions",
+                name: "GenericItemVersions",
                 schema: "GenericItems");
 
             migrationBuilder.DropTable(
@@ -832,11 +878,15 @@ namespace Bones.Database.Migrations
                 schema: "WorkItemManagement");
 
             migrationBuilder.DropTable(
-                name: "ItemLayoutVersions",
+                name: "GenericItemFields",
                 schema: "GenericItems");
 
             migrationBuilder.DropTable(
-                name: "Items",
+                name: "GenericItemLayoutVersions",
+                schema: "GenericItems");
+
+            migrationBuilder.DropTable(
+                name: "GenericItems",
                 schema: "GenericItems");
 
             migrationBuilder.DropTable(
@@ -844,7 +894,7 @@ namespace Bones.Database.Migrations
                 schema: "ProjectManagement");
 
             migrationBuilder.DropTable(
-                name: "ItemLayouts",
+                name: "GenericItemLayouts",
                 schema: "GenericItems");
 
             migrationBuilder.DropTable(

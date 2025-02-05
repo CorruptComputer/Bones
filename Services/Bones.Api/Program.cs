@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Api.Handlers;
@@ -64,7 +63,7 @@ public static class Program
                     .AddHttpClientInstrumentation();
             });
 
-        
+
         bool useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
         if (useOtlpExporter)
         {
@@ -170,8 +169,9 @@ public static class Program
         string[] corsAllowedOrigins = apiConfig.CorsAllowedOrigins
             ?? throw new BonesException("ApiConfiguration:CorsAllowedOrigins missing from appsettings.");
 
-        Log.Information("Environment: {Environment}", app.Environment.EnvironmentName);
-        Log.Information("Allowed origins: {Origins}", string.Join(" | ", corsAllowedOrigins));
+        Log.Information("Environment: {Environment}\nAllowed origins: {Origins}",
+            app.Environment.EnvironmentName,
+            string.Join(" | ", corsAllowedOrigins));
 
         app.UseCors(configurePolicy =>
         {

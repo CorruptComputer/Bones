@@ -1,5 +1,3 @@
-using System;
-
 namespace Bones.Logic.Features.Accounts;
 
 /// <summary>

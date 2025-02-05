@@ -17,30 +17,25 @@ public class GenericItemField
     public Guid Id { get; set; }
 
     /// <summary>
-    ///   The name of this ItemField
-    /// </summary>
-    [MaxLength(512)]
-    public required string Name { get; set; }
-
-    /// <summary>
     ///   The ID of the project this ItemField belongs to
     /// </summary>
     [ForeignKey(nameof(Project))]
     public required Guid ProjectId { get; set; }
 
     /// <summary>
-    ///   Is this field required to have a value?
+    ///   The most recent version of this field
     /// </summary>
-    public bool IsRequired { get; set; } = false;
+    [NotMapped]
+    public GenericItemFieldVersion CurrentVersion => Versions.OrderByDescending(v => v.Version).First();
 
     /// <summary>
-    ///   If the Type of this field is a ValueList, the possible values this can have
+    ///   The versions for this Item field
     /// </summary>
-    public List<GenericItemFieldListEntry>? PossibleValues { get; set; }
+    public List<GenericItemFieldVersion> Versions { get; set; } = [];
 
     /// <summary>
-    ///   The FieldType for this field
+    ///   Disables creating of new layouts with this field,
+    ///   and when all items using it are deleted it will be removed.
     /// </summary>
-    public required FieldType Type { get; set; }
-
+    public bool DeleteFlag { get; set; } = false;
 }

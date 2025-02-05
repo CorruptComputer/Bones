@@ -13,7 +13,7 @@ internal sealed class SetEmailConfirmedDateTimeDbCommandValidator : AbstractVali
 {
     public SetEmailConfirmedDateTimeDbCommandValidator()
     {
-        RuleFor(x => x.User).NotNull().Custom((user, ctx) => 
+        RuleFor(x => x.User).NotNull().Custom((user, ctx) =>
         {
             if (user.EmailConfirmed)
             {

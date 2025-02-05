@@ -41,19 +41,32 @@ public partial class InitiativeDashboardPage : ComponentBase
     public List<WorkItemQueueListModel> QueueList { get; set; } = [];
 
     /// <summary>
-    /// 
+    ///   Fires when the page is loaded
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
-        // TODO: Garbage data for now, do real later
+        await FetchFromAPI();
+
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    ///   Fires if the same page but with a different parameter is loaded
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        await FetchFromAPI();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task FetchFromAPI()
+    {
         GetInitiativeDashboardResponse dashboardResponse = await ApiClient.GetInitiativeDashboardAsync(ProjectId, InitiativeId);
-
         InitiativeName = dashboardResponse.InitiativeName;
-
         QueueCount = dashboardResponse.WorkItemQueueCount;
         QueueList = dashboardResponse.WorkItemQueues;
         QueueListLoading = false;
-
-        await base.OnInitializedAsync();
     }
 }

@@ -12,7 +12,7 @@ public sealed record UserHasOrganizationPermissionQuery(Guid OrganizationId, Bon
 
 internal sealed class UserHasOrganizationPermissionQueryValidator : AbstractValidator<UserHasOrganizationPermissionQuery>
 {
-    public UserHasOrganizationPermissionQueryValidator() 
+    public UserHasOrganizationPermissionQueryValidator()
     {
         RuleFor(x => x.OrganizationId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.User).NotNull();

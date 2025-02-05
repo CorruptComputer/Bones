@@ -1,7 +1,11 @@
 using Bones.Database.Models;
-using Bones.Database.Operations.Setup.SetupSystemAdminUserAndRole;
 
-namespace Bones.Database.Operations.Setup.SetupDb;
+namespace Bones.Database.Operations.Setup;
+
+/// <summary>
+///   Command to set up the Database
+/// </summary>
+public sealed record SetupDbCommand : IRequest<CommandResponse>;
 
 internal sealed class SetupDbHandler(BonesDbContext dbContext, DatabaseConfiguration config, ISender sender) : IRequestHandler<SetupDbCommand, CommandResponse>
 {

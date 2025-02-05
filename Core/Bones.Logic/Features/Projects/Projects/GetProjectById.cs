@@ -39,6 +39,6 @@ internal sealed class GetProjectByIdHandler(ISender sender) : IRequestHandler<Ge
             return QueryResponse<Database.DbSets.ProjectManagement.Project>.Fail("Project not found");
         }
 
-        return QueryResponse<Database.DbSets.ProjectManagement.Project>.Pass(project);
+        return project;
     }
 }

@@ -12,7 +12,7 @@ public sealed record QueueResendConfirmationEmailCommand(string Email) : IReques
 
 internal class QueueResendConfirmationEmailCommandValidator : AbstractValidator<QueueResendConfirmationEmailCommand>
 {
-    public QueueResendConfirmationEmailCommandValidator() 
+    public QueueResendConfirmationEmailCommandValidator()
     {
         RuleFor(x => x.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
         {

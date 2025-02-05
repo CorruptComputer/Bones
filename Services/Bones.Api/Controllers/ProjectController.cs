@@ -6,6 +6,10 @@ using Bones.Database.DbSets.ProjectManagement;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Bones.Database.DbSets.GenericItems.GenericItemFields;
+using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
+using Bones.Api.Models.Project;
+using Bones.Logic.Features.GenericItem;
 
 namespace Bones.Api.Controllers;
 
@@ -13,7 +17,7 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to Managing Projects
 /// </summary>
 /// <param name="sender">MediatR sender</param>
-public sealed partial class ProjectController(ISender sender) : BonesControllerBase(sender)
+public sealed class ProjectController(ISender sender) : BonesControllerBase(sender)
 {
     #region GET
     /// <summary>
@@ -50,7 +54,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
     [ProducesResponseType<List<GetProjectQuickSelectResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<List<GetProjectQuickSelectResponse>>> GetProjectQuickSelectAsync()
+    public async ValueTask<ActionResult<IEnumerable<GetProjectQuickSelectResponse>>> GetProjectQuickSelectAsync()
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
 
@@ -66,7 +70,7 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             return NotFound(EmptyResponse.Value);
         }
 
-        return response.Result.Select(kvp => 
+        return response.Result.Select(kvp =>
             new GetProjectQuickSelectResponse
             {
                 ProjectId = kvp.Key,
@@ -103,20 +107,26 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             ? projectResponse.Result.OwningUser!.Id
             : projectResponse.Result.OwningOrganization!.Id;
 
+        string ownerDisplayName = projectResponse.Result.OwnerType == OwnershipType.User
+            // Default it to "Unknown", if someone hasn't set it yet and sees that it'll probably prompt them to add it lol
+            ? projectResponse.Result.OwningUser!.DisplayName ?? "Unknown"
+            : projectResponse.Result.OwningOrganization!.Name;
+
         GetProjectDashboardResponse resp = new()
         {
             ProjectId = projectResponse.Result.Id,
             ProjectName = projectResponse.Result.Name,
             OwnerType = projectResponse.Result.OwnerType,
             OwnerId = ownerId,
+            OwnerDisplayName = ownerDisplayName,
             InitiativeCount = initiativesResponse.Result.Count,
-            Initiatives = initiativesResponse.Result.Select(i => 
-                new InitiativeListModel
+            Initiatives = initiativesResponse.Result.Select(i =>
+                new GetProjectDashboardResponse.InitiativeListModel()
                 {
                     InitiativeId = i.Id,
                     InitiativeName = i.Name,
                     QueueCount = i.Queues.Count
-                }).ToList()
+                })
         };
 
         return resp;
@@ -149,14 +159,50 @@ public sealed partial class ProjectController(ISender sender) : BonesControllerB
             InitiativeName = initiative.Name,
             ProjectId = initiative.Project.Id,
             WorkItemQueueCount = initiative.Queues.Count,
-            WorkItemQueues = initiative.Queues.Select(i => 
-                new WorkItemQueueListModel
+            WorkItemQueues = initiative.Queues.Select(i =>
+                new GetInitiativeDashboardResponse.WorkItemQueueListModel
                 {
                     WorkItemQueueId = i.Id,
                     WorkItemQueueName = i.Name,
                     WorkItemCount = i.WorkItems.Count
-                }).ToList()
+                })
         };
+
+        return resp;
+    }
+
+    /// <summary>
+    ///     Gets a projects info by Id
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpGet("P{projectId:guid}/settings", Name = "GetProjectSettingsAsync")]
+    [ProducesResponseType<GetProjectSettingsResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<GetProjectSettingsResponse>> GetProjectSettingsAsync(Guid projectId)
+    {
+        BonesUser currentUser = await GetCurrentBonesUserAsync();
+        QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectByIdQuery(projectId, currentUser));
+
+        if (!projectResponse.Success || projectResponse.Result is null)
+        {
+            return BadRequest(projectResponse.FailureReasons);
+        }
+
+        QueryResponse<List<GenericItemField>> itemFields = await Sender.Send(new GetItemFieldsByProjectQuery(projectId, currentUser));
+        QueryResponse<List<GenericItemLayout>> itemLayouts = await Sender.Send(new GetItemLayoutsByProjectQuery(projectId, currentUser));
+
+        if (!itemFields.Success || itemFields.Result is null)
+        {
+            return BadRequest(itemFields.FailureReasons);
+        }
+
+        if (!itemLayouts.Success || itemLayouts.Result is null)
+        {
+            return BadRequest(itemLayouts.FailureReasons);
+        }
+
+        GetProjectSettingsResponse resp = GetProjectSettingsResponse.FromInternal(projectResponse.Result, itemFields.Result, itemLayouts.Result);
 
         return resp;
     }

@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Bones.Shared.Backend.Models;
 
 namespace Bones.Api.Models;

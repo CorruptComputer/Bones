@@ -8,7 +8,7 @@ using Bones.Shared.Consts;
 namespace Bones.Logic.Features.Projects.Projects;
 
 /// <summary>
-///     DB Command for creating a Project.
+///     Command for creating a Project.
 /// </summary>
 /// <param name="Name">Name of the project</param>
 /// <param name="RequestingUser">The user requesting this project be created</param>

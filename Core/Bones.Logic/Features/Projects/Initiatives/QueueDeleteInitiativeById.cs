@@ -28,7 +28,7 @@ internal sealed class QueueDeleteInitiativeByIdHandler(ISender sender) : IReques
         {
             return CommandResponse.Forbid();
         }
-        
+
         return await sender.Send(new QueueDeleteInitiativeByIdDbCommand(request.InitiativeId), cancellationToken);
     }
 }

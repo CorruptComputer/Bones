@@ -2,12 +2,15 @@
 @inject ILogger<ProjectDashboardPage> Logger
 @layout AuthenticatedLayout
 
-<MudText Typo="Typo.h4">Project Dashboard</MudText>
+<div class="d-flex">
+    <MudText Typo="Typo.h4">Project Dashboard</MudText>
+    <MudSpacer/>
+    <MudButton Href="@FrontEndUrls.Project.MODIFY_PROJECT.Replace("{ProjectId:guid}", ProjectId.ToString())">Modify Project</MudButton>
+</div>
+
 <MudPaper Class="pa-4">
-    <MudText>Project ID: @ProjectId</MudText>
     <MudText>Project Name: @ProjectName</MudText>
-    <MudText>Owner Type: @OwnerType</MudText>
-    <MudText>Owner ID: @OwnerId</MudText>
+    <MudText>Owner Name: @OwnerName</MudText>
 </MudPaper>
 
 <div class="d-flex">
@@ -22,13 +25,11 @@
 
     <MudTable Items="@InitiativeList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@InitiativeListLoading" LoadingProgressColor="Color.Info">
         <HeaderContent>
-            <MudTh>Initiative ID</MudTh>
             <MudTh>Initiative Name</MudTh>
             <MudTh>Queue Count</MudTh>
             <MudTh>Go to Initiative</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Initiative ID">@context.InitiativeId</MudTd>
             <MudTd DataLabel="Initiative Name">@context.InitiativeName</MudTd>
             <MudTd DataLabel="Queue Count">@context.QueueCount</MudTd>
             <MudTd DataLabel="Go to Initiative"><MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", context.InitiativeId.ToString())">Dashboard</MudButton></MudTd>

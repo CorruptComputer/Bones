@@ -789,6 +789,85 @@
         }
       }
     },
+    "/Project/P{projectId}/settings": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets a projects info by Id",
+        "operationId": "GetProjectSettingsAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProjectSettingsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Project/create": {
       "post": {
         "tags": [
@@ -1006,9 +1085,9 @@
         "type": "object",
         "properties": {
           "name": {
-            "minLength": 1,
             "type": "string",
-            "description": "Name of the initiative to create"
+            "description": "Name of the initiative to create",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -1021,9 +1100,9 @@
         "type": "object",
         "properties": {
           "name": {
-            "minLength": 1,
             "type": "string",
-            "description": "Name of the project to create"
+            "description": "Name of the project to create",
+            "nullable": true
           },
           "organizationId": {
             "type": "string",
@@ -1057,6 +1136,17 @@
         },
         "additionalProperties": false,
         "description": "The response body is empty, this is a workaround for the limitations of the API client."
+      },
+      "FieldType": {
+        "enum": [
+          "String",
+          "Number",
+          "Boolean",
+          "DateTime",
+          "ValueList",
+          "GeoLocation"
+        ],
+        "type": "string"
       },
       "GetInitiativeDashboardResponse": {
         "required": [
@@ -1147,6 +1237,7 @@
         "required": [
           "initiativeCount",
           "initiatives",
+          "ownerDisplayName",
           "ownerId",
           "ownerType",
           "projectId",
@@ -1171,6 +1262,11 @@
             "type": "string",
             "description": "The ID of the owner",
             "format": "uuid"
+          },
+          "ownerDisplayName": {
+            "type": "string",
+            "description": "The DisplayName of the owner",
+            "nullable": true
           },
           "initiativeCount": {
             "type": "integer",
@@ -1209,6 +1305,57 @@
         },
         "additionalProperties": false,
         "description": "Response for the GetProjectQuickSelectAsync endpoint"
+      },
+      "GetProjectSettingsResponse": {
+        "required": [
+          "itemFieldCount",
+          "itemFields",
+          "itemLayoutCount",
+          "itemLayouts",
+          "projectId",
+          "projectName"
+        ],
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "The projects ID",
+            "format": "uuid"
+          },
+          "projectName": {
+            "type": "string",
+            "description": "The name of the project",
+            "nullable": true
+          },
+          "itemFieldCount": {
+            "type": "integer",
+            "description": "The total number of item fields in the project",
+            "format": "int32"
+          },
+          "itemFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemFieldModel"
+            },
+            "description": "A list of the item fields in the project",
+            "nullable": true
+          },
+          "itemLayoutCount": {
+            "type": "integer",
+            "description": "The total number of item layouts in the project",
+            "format": "int32"
+          },
+          "itemLayouts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemLayoutModel"
+            },
+            "description": "A list of the item layouts in the project",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetProjectSettingsAsync endpoint"
       },
       "GetProjectsByOwnerRequest": {
         "required": [
@@ -1254,7 +1401,80 @@
           }
         },
         "additionalProperties": false,
-        "description": "Model for the initiatives to be listed in a project"
+        "description": "Model for the initiatives to be listed in a project's dashboard"
+      },
+      "ItemFieldModel": {
+        "required": [
+          "isRequired",
+          "itemFieldCurrentVersionId",
+          "itemFieldId",
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "itemFieldId": {
+            "type": "string",
+            "description": "Internal ID for the ItemField",
+            "format": "uuid"
+          },
+          "itemFieldCurrentVersionId": {
+            "type": "string",
+            "description": "Internal ID for the current version ItemFieldVersion",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of this ItemField",
+            "nullable": true
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Is this field required to have a value?"
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldType"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for an item field in a projects settings"
+      },
+      "ItemLayoutModel": {
+        "required": [
+          "enabledFor",
+          "itemLayoutId",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "itemLayoutId": {
+            "type": "string",
+            "description": "Internal ID for the ItemLayout",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name for this Item layout",
+            "nullable": true
+          },
+          "enabledFor": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemLayoutUse"
+            },
+            "description": "The uses this layout is applicable to",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for an item layout in a projects settings"
+      },
+      "ItemLayoutUse": {
+        "enum": [
+          "WorkItems",
+          "Assets"
+        ],
+        "type": "string"
       },
       "LoginUserApiRequest": {
         "required": [

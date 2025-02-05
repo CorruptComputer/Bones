@@ -2,10 +2,9 @@
 @inject ILogger<InitiativeDashboardPage> Logger
 @layout AuthenticatedLayout
 
-<MudText Typo="Typo.h4">Initiative Dashboard (WIP)</MudText>
+<MudText Typo="Typo.h4">Initiative Dashboard</MudText>
 <MudPaper Class="pa-4">
-    <MudText>Project ID: @ProjectId</MudText>
-    <MudText>Project Name: @InitiativeName</MudText>
+    <MudText>Initiative Name: @InitiativeName</MudText>
 </MudPaper>
 
 <div class="d-flex">
@@ -20,13 +19,11 @@
 
     <MudTable Items="@QueueList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@QueueListLoading" LoadingProgressColor="Color.Info">
         <HeaderContent>
-            <MudTh>Work Item Queue ID</MudTh>
             <MudTh>Work Item Queue Name</MudTh>
             <MudTh>Work Item Count</MudTh>
             <MudTh>Go to Work Item Queue</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Work Item Queue ID">@context.WorkItemQueueId</MudTd>
             <MudTd DataLabel="Work Item Queue Name">@context.WorkItemQueueName</MudTd>
             <MudTd DataLabel="Work Item Count">@context.WorkItemCount</MudTd>
             <MudTd DataLabel="Go to Work Item Queue"><MudButton Href="@FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{WorkItemQueueId:guid}", context.WorkItemQueueId.ToString())">Dashboard</MudButton></MudTd>

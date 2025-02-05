@@ -29,6 +29,12 @@ public class GenericItemLayout
     public required Guid ProjectId { get; set; }
 
     /// <summary>
+    ///   The most recent version of this layout
+    /// </summary>
+    [NotMapped]
+    public GenericItemLayoutVersion? CurrentVersion => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
+
+    /// <summary>
     ///   The versions for this Item layout
     /// </summary>
     public List<GenericItemLayoutVersion> Versions { get; set; } = [];

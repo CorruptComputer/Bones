@@ -17,7 +17,7 @@ public sealed record QueueForgotPasswordEmailCommand([Required] string Email) : 
 
 internal class QueueForgotPasswordEmailCommandValidator : AbstractValidator<QueueForgotPasswordEmailCommand>
 {
-    public QueueForgotPasswordEmailCommandValidator() 
+    public QueueForgotPasswordEmailCommandValidator()
     {
         RuleFor(x => x.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
         {

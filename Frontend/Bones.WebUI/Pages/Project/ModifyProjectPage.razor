@@ -1,0 +1,63 @@
+@attribute [Route(FrontEndUrls.Project.MODIFY_PROJECT)]
+@layout AuthenticatedLayout
+
+<MudText Typo="Typo.h4">Modify Project</MudText>
+
+<MudPaper Class="pa-4">
+    <MudText>Project ID: @ProjectId</MudText>
+    <MudText>Project Name: @ProjectName</MudText>
+</MudPaper>
+
+
+<div class="d-flex">
+    <div>
+        <div class="d-flex">
+            <MudText Typo="Typo.h4">Project Fields</MudText>
+            <MudSpacer/>
+            <MudButton Href="@GetCreateItemFieldUrl(ProjectId)">Create Field</MudButton>
+        </div>
+
+        <MudPaper Class="pa-4">
+            <MudText>Number of fields: @ItemFieldsCount</MudText>
+
+            <MudTable Items="@ItemFieldsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemFieldsListLoading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Field Name</MudTh>
+                    <MudTh>Is Required?</MudTh>
+                    <MudTh>Field Type</MudTh>
+                    <MudTh>Edit Field</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Field Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Is Required?">@context.IsRequired</MudTd>
+                    <MudTd DataLabel="Field Type">@context.Type</MudTd>
+                    <MudTd DataLabel="Edit Field"><MudButton Href="@GetEditItemFieldUrl(ProjectId, context.ItemFieldId)">Edit</MudButton></MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudPaper>
+    </div>
+    <div>
+        <div class="d-flex">
+            <MudText Typo="Typo.h4">Project Layouts</MudText>
+            <MudSpacer/>
+            <MudButton Href="@GetCreateItemLayoutUrl(ProjectId)">Create Layout</MudButton>
+        </div>
+
+        <MudPaper Class="pa-4">
+            <MudText>Number of layouts: @ItemLayoutsCount</MudText>
+
+            <MudTable Items="@ItemLayoutsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemLayoutsListLoading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Layout Name</MudTh>
+                    <MudTh>Enabled For</MudTh>
+                    <MudTh>Edit Layout</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Layout Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Enabled For">@string.Join(", ", context.EnabledFor.Select(e => Enum.GetName(e) ?? string.Empty))</MudTd>
+                    <MudTd DataLabel="Edit Layout"><MudButton Href="@GetEditItemLayoutUrl(ProjectId, context.ItemLayoutId)">Edit</MudButton></MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudPaper>
+    </div>
+</div>

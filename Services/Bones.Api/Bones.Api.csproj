@@ -45,12 +45,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Controllers\ProjectController.Responses.cs">
-            <DependentUpon>ProjectController.cs</DependentUpon>
-        </Compile>
-        <Compile Update="Controllers\ProjectController.Requests.cs">
-            <DependentUpon>ProjectController.cs</DependentUpon>
-        </Compile>
         <Compile Update="Controllers\LoginController.Responses.cs">
             <DependentUpon>LoginController.cs</DependentUpon>
         </Compile>

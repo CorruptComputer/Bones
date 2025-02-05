@@ -47,4 +47,10 @@ public class GenericItemFieldListEntry
             _ => false
         };
     }
+
+    /// <summary>
+    ///   Disables creating of new layouts with this entry value,
+    ///   and when all items using it are deleted it will be removed.
+    /// </summary>
+    public bool DeleteFlag { get; set; } = false;
 }

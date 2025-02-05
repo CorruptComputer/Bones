@@ -12,7 +12,7 @@ public sealed record GetUserByClaimsPrincipalQuery(ClaimsPrincipal? ClaimsPrinci
 
 internal sealed class GetUserByClaimsPrincipalQueryValidator : AbstractValidator<GetUserByClaimsPrincipalQuery>
 {
-    public GetUserByClaimsPrincipalQueryValidator() 
+    public GetUserByClaimsPrincipalQueryValidator()
     {
         RuleFor(x => x.ClaimsPrincipal).NotNull();
     }

@@ -31,7 +31,7 @@ internal sealed class CreateWorkItemVersionDbHandler(BonesDbContext dbContext) :
 
         foreach ((string? key, object? value) in request.Values)
         {
-            GenericItemField? field = layoutVersion.Fields.Find(f => f.Name == key);
+            GenericItemFieldVersion? field = layoutVersion.Fields.Find(f => f.Name == key);
             if (field == null)
             {
                 return CommandResponse.Fail($"Invalid field name provided: {key}");

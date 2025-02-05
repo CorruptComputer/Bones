@@ -32,9 +32,9 @@ public class GenericItemLayoutVersion
     public required DateTimeOffset CreateDateTime { get; init; }
 
     /// <summary>
-    ///   The fields associated with this layout version
+    ///   The field versions associated with this layout version
     /// </summary>
-    public List<GenericItemField> Fields { get; init; } = [];
+    public List<GenericItemFieldVersion> Fields { get; init; } = [];
 
     /// <summary>
     ///   Disables creating of new items using this layout version,

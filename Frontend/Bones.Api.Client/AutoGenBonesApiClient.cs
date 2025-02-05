@@ -1322,6 +1322,125 @@ namespace Bones.Api.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
+        /// Gets a projects info by Id
+        /// </summary>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<GetProjectSettingsResponse> GetProjectSettingsAsync(System.Guid projectId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/settings"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/settings");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetProjectSettingsResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
         /// Creates a new project
         /// </summary>
         /// <param name="body">The request</param>
@@ -1789,7 +1908,6 @@ namespace Bones.Api.Client
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
-        [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
 
     }
@@ -1805,7 +1923,6 @@ namespace Bones.Api.Client
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
-        [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
 
         /// <summary>
@@ -1829,6 +1946,31 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("errors")]
         public System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> Errors { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Flags]
+    public enum FieldType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"String")]
+        String = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Number")]
+        Number = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Boolean")]
+        Boolean = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DateTime")]
+        DateTime = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ValueList")]
+        ValueList = 16,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"GeoLocation")]
+        GeoLocation = 32,
 
     }
 
@@ -1963,6 +2105,13 @@ namespace Bones.Api.Client
         public System.Guid OwnerId { get; set; }
 
         /// <summary>
+        /// The DisplayName of the owner
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("ownerDisplayName")]
+        public string OwnerDisplayName { get; set; }
+
+        /// <summary>
         /// The number of initiatives in the project
         /// </summary>
 
@@ -2002,6 +2151,57 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
+    /// Response for the GetProjectSettingsAsync endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record GetProjectSettingsResponse
+    {
+        /// <summary>
+        /// The projects ID
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("projectId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ProjectId { get; set; }
+
+        /// <summary>
+        /// The name of the project
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("projectName")]
+        public string ProjectName { get; set; }
+
+        /// <summary>
+        /// The total number of item fields in the project
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemFieldCount")]
+        public int ItemFieldCount { get; set; }
+
+        /// <summary>
+        /// A list of the item fields in the project
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemFields")]
+        public System.Collections.Generic.List<ItemFieldModel> ItemFields { get; set; }
+
+        /// <summary>
+        /// The total number of item layouts in the project
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemLayoutCount")]
+        public int ItemLayoutCount { get; set; }
+
+        /// <summary>
+        /// A list of the item layouts in the project
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemLayouts")]
+        public System.Collections.Generic.List<ItemLayoutModel> ItemLayouts { get; set; }
+
+    }
+
+    /// <summary>
     /// Request to get the projects for a given User/Organization
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2023,7 +2223,7 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
-    /// Model for the initiatives to be listed in a project
+    /// Model for the initiatives to be listed in a project's dashboard
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record InitiativeListModel
@@ -2049,6 +2249,94 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("queueCount")]
         public int QueueCount { get; set; }
+
+    }
+
+    /// <summary>
+    /// Model for an item field in a projects settings
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record ItemFieldModel
+    {
+        /// <summary>
+        /// Internal ID for the ItemField
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemFieldId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ItemFieldId { get; set; }
+
+        /// <summary>
+        /// Internal ID for the current version ItemFieldVersion
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemFieldCurrentVersionId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ItemFieldCurrentVersionId { get; set; }
+
+        /// <summary>
+        /// The name of this ItemField
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Is this field required to have a value?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
+        public bool IsRequired { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public FieldType Type { get; set; }
+
+    }
+
+    /// <summary>
+    /// Model for an item layout in a projects settings
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record ItemLayoutModel
+    {
+        /// <summary>
+        /// Internal ID for the ItemLayout
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemLayoutId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ItemLayoutId { get; set; }
+
+        /// <summary>
+        /// The name for this Item layout
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// The uses this layout is applicable to
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("enabledFor")]
+
+        // TODO(system.text.json): Add string enum item converter
+        public System.Collections.Generic.List<ItemLayoutUse> EnabledFor { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Flags]
+    public enum ItemLayoutUse
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"WorkItems")]
+        WorkItems = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Assets")]
+        Assets = 2,
 
     }
 

@@ -4,5 +4,8 @@
 			"path": ".."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"entityframework.project": "Core/Bones.Database",
+		"entityframework.startupProject": "Services/Bones.BackgroundService"
+	}
 }
