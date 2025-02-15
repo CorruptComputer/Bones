@@ -1,5 +1,6 @@
 using Bones.Api.Client;
 using Bones.Shared.Consts;
+using Bones.WebUI.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -8,7 +9,7 @@ namespace Bones.WebUI.Layout;
 /// <summary>
 /// 
 /// </summary>
-public partial class MainLayout : LayoutComponentBase
+public partial class MainLayout(BonesAuthenticationStateProvider authStateProvider) : LayoutComponentBase
 {
     private MudTheme? _theme = null;
 
@@ -72,6 +73,12 @@ public partial class MainLayout : LayoutComponentBase
 
     private async Task UpdateProjectList()
     {
+        // Only load the project list if the user is authenticated
+        if ((await authStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated != true)
+        {
+            return;
+        }
+
         try
         {
             List<GetProjectQuickSelectResponse> projects = await ApiClient.GetProjectQuickSelectAsync();
