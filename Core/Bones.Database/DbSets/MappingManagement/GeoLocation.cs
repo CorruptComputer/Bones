@@ -49,7 +49,7 @@ public sealed class GeoLocation
     /// </summary>
     public long? LastAcknowledgedOsmVersion { get; set; }
     #endregion
-    
+
     #region Address
     /// <summary>
     ///   The street number of this address
@@ -92,7 +92,7 @@ public sealed class GeoLocation
     /// </summary>
     public bool? GeoLocated { get; set; }
     #endregion
-    
+
     /// <summary>
     ///   Disables viewing of this,
     ///   and when all references to it are deleted it will be removed.

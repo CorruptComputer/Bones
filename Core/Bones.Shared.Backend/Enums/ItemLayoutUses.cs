@@ -10,7 +10,7 @@ public enum ItemLayoutUses : ushort
     ///   None
     /// </summary>
     None = 0,
-    
+
     /// <summary>
     ///   They can be used in work items
     /// </summary>

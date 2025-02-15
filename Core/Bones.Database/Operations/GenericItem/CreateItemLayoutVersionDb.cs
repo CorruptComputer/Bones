@@ -38,7 +38,7 @@ internal class CreateItemLayoutVersionDbHandler(BonesDbContext dbContext) : IReq
         List<GenericItemField> fields = await dbContext.ItemFields.Where(f => fieldVersions.Select(v => v.Id).Contains(f.Id)).ToListAsync(cancellationToken);
 
         // Check that all fields found are in the same project as the layout
-        if (fields.Any(f => f.ProjectId != layout.ProjectId)) 
+        if (fields.Any(f => f.ProjectId != layout.ProjectId))
         {
             return CommandResponse.Forbid();
         }

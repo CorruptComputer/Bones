@@ -21,7 +21,7 @@ public class GenericItemLayoutVersion
     /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
-    
+
     /// <summary>
     ///   The uses this layout is applicable to
     /// </summary>

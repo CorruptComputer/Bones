@@ -139,7 +139,7 @@ public partial class CreateItemLayoutPage : ComponentBase
     ///   Adds an item field to the layout
     /// </summary>
     /// <param name="FieldVersionId"></param>
-    protected void AddField_OnClick(Guid FieldVersionId) 
+    protected void AddField_OnClick(Guid FieldVersionId)
     {
         if (SelectedItemFields.Contains(FieldVersionId))
         {
@@ -153,7 +153,7 @@ public partial class CreateItemLayoutPage : ComponentBase
     ///   Removes an item field to the layout
     /// </summary>
     /// <param name="FieldVersionId"></param>
-    protected void RemoveField_OnClick(Guid FieldVersionId) 
+    protected void RemoveField_OnClick(Guid FieldVersionId)
     {
         if (!SelectedItemFields.Contains(FieldVersionId))
         {

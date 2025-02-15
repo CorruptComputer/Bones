@@ -56,7 +56,7 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
 
     #region System
     /// See also <see cref="OnConfiguring(DbContextOptionsBuilder)" />, "__EFMigrationsHistory" is here too
-    
+
     internal DbSet<ConfirmationEmailDeadQueue> ConfirmationEmailDeadQueue { get; set; }
     internal DbSet<ConfirmationEmailQueue> ConfirmationEmailQueue { get; set; }
 

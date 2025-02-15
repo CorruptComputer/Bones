@@ -9,4 +9,3 @@ internal class GeoJsonFeatureCollectionToStringConverter() : ValueConverter<Feat
         feature => feature == null ? null : JsonSerializer.Serialize(feature, StandardJsonSerializerOptions.Default),
         str => str == null ? null : JsonSerializer.Deserialize<FeatureCollection>(str, StandardJsonSerializerOptions.Default)
     );
-    

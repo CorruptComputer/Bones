@@ -19,7 +19,7 @@ public sealed record CreateItemLayoutVersionCommand(Guid ItemLayoutId, string Na
 
 internal class CreateItemLayoutVersionCommandValidator : AbstractValidator<CreateItemLayoutVersionCommand>
 {
-    public CreateItemLayoutVersionCommandValidator() 
+    public CreateItemLayoutVersionCommandValidator()
     {
         RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
         RuleFor(x => x.Name).NotNull().NotEmpty();
@@ -39,7 +39,7 @@ internal class CreateItemLayoutVersionHandler(ISender sender) : IRequestHandler<
         {
             return CommandResponse.Fail("ItemLayout not found");
         }
-        
+
         const string perm = BonesClaimTypes.Role.Project.EDIT_PROJECT_SETTINGS;
         bool? hasProjectPermission =
             await sender.Send(new UserHasProjectPermissionQuery(layout.ProjectId, request.RequestingUser, perm), cancellationToken);

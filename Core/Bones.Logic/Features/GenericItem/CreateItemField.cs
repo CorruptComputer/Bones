@@ -18,8 +18,8 @@ namespace Bones.Logic.Features.GenericItem;
 /// <param name="GeoLocationType"></param>
 /// <param name="RequiredAddressFields"></param>
 /// <param name="RequestingUser"></param>
-public record CreateItemFieldCommand(Guid ProjectId, string Name, bool IsRequired, FieldType Type, 
-    bool? CanBeNegative, Dictionary<string, StringValueMatchingType>? PossibleValues, 
+public record CreateItemFieldCommand(Guid ProjectId, string Name, bool IsRequired, FieldType Type,
+    bool? CanBeNegative, Dictionary<string, StringValueMatchingType>? PossibleValues,
     GeoLocationType? GeoLocationType, AddressFields? RequiredAddressFields, BonesUser RequestingUser) : IRequest<CommandResponse>;
 
 internal sealed class CreateItemFieldCommandValidator : AbstractValidator<CreateItemFieldCommand>
@@ -57,8 +57,8 @@ internal sealed class CreateItemFieldHandler(ISender sender) : IRequestHandler<C
         }
 
         CommandResponse createFieldVersionResponse = await sender.Send(
-            new CreateItemFieldVersionDb.Command(createFieldResponse.Id.Value, request.Name, 
-            request.IsRequired, request.Type, request.CanBeNegative, request.PossibleValues, 
+            new CreateItemFieldVersionDb.Command(createFieldResponse.Id.Value, request.Name,
+            request.IsRequired, request.Type, request.CanBeNegative, request.PossibleValues,
             request.GeoLocationType, request.RequiredAddressFields), cancellationToken);
 
         if (!createFieldVersionResponse.Success)

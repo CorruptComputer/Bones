@@ -115,7 +115,7 @@ public partial class EditItemLayoutPage : ComponentBase
         {
             return;
         }
-        
+
         try
         {
             ApiError = false;
@@ -151,7 +151,7 @@ public partial class EditItemLayoutPage : ComponentBase
     ///   Adds an item field to the layout
     /// </summary>
     /// <param name="FieldVersionId"></param>
-    protected void AddField_OnClick(Guid FieldVersionId) 
+    protected void AddField_OnClick(Guid FieldVersionId)
     {
         if (SelectedItemFields.Contains(FieldVersionId))
         {
@@ -165,7 +165,7 @@ public partial class EditItemLayoutPage : ComponentBase
     ///   Removes an item field to the layout
     /// </summary>
     /// <param name="FieldVersionId"></param>
-    protected void RemoveField_OnClick(Guid FieldVersionId) 
+    protected void RemoveField_OnClick(Guid FieldVersionId)
     {
         if (!SelectedItemFields.Contains(FieldVersionId))
         {

@@ -19,8 +19,8 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
     /// <param name="PossibleValues"></param>
     /// <param name="GeoLocationType"></param>
     /// <param name="RequiredAddressFields"></param>
-    public record Command(Guid ItemFieldId, string Name, bool IsRequired, FieldType Type, 
-        bool? CanBeNegative, Dictionary<string, StringValueMatchingType>? PossibleValues, 
+    public record Command(Guid ItemFieldId, string Name, bool IsRequired, FieldType Type,
+        bool? CanBeNegative, Dictionary<string, StringValueMatchingType>? PossibleValues,
         GeoLocationType? GeoLocationType, AddressFields? RequiredAddressFields) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
@@ -52,7 +52,7 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
         {
             return CommandResponse.Fail("Item field is marked for deletion");
         }
-        
+
         EntityEntry<GenericItemFieldVersion> added = dbContext.ItemFieldVersions.Add(new()
         {
             GenericItemFieldId = field.Id,

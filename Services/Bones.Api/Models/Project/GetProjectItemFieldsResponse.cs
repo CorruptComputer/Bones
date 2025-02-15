@@ -3,9 +3,9 @@ using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
 
-    /// <summary>
-    ///   API response for the GetProjectItemFieldsAsync endpoint
-    /// </summary>
+/// <summary>
+///   API response for the GetProjectItemFieldsAsync endpoint
+/// </summary>
 public class GetProjectItemFieldsResponse
 {
     /// <summary>
@@ -13,7 +13,7 @@ public class GetProjectItemFieldsResponse
     /// </summary>
     public required List<ProjectItemFieldModel> ItemFields { get; init; }
 
-    internal static GetProjectItemFieldsResponse FromInternalList(List<GenericItemField> fields) 
+    internal static GetProjectItemFieldsResponse FromInternalList(List<GenericItemField> fields)
     {
         return new()
         {

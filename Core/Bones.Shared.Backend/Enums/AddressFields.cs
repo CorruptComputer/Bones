@@ -10,7 +10,7 @@ public enum AddressFields
     ///   None
     /// </summary>
     None = 0,
-    
+
     /// <summary>
     ///   The numbers at the start of an address
     /// </summary>

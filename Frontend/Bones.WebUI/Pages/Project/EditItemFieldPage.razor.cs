@@ -180,6 +180,6 @@ public partial class EditItemFieldPage : ComponentBase
             }
         }
 
-        return request;   
+        return request;
     }
 }

@@ -70,7 +70,7 @@ public partial class MainLayout : LayoutComponentBase
         await base.OnParametersSetAsync();
     }
 
-    private async Task UpdateProjectList() 
+    private async Task UpdateProjectList()
     {
         try
         {

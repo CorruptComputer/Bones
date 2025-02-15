@@ -20,7 +20,7 @@ public sealed record CreateItemLayoutCommand(Guid ProjectId, string Name, ItemLa
 
 internal class CreateItemLayoutCommandValidator : AbstractValidator<CreateItemLayoutCommand>
 {
-    public CreateItemLayoutCommandValidator() 
+    public CreateItemLayoutCommandValidator()
     {
         RuleFor(x => x.Name).NotNull().NotEmpty();
         RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);

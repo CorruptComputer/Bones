@@ -33,11 +33,11 @@ public sealed class SetEmailConfirmedDateTimeDb(BonesDbContext dbContext) : IReq
         {
             return CommandResponse.Fail("User not found");
         }
-            
+
         user.EmailConfirmed = true;
         user.EmailConfirmedDateTime = request.ConfirmedDateTime;
         dbContext.Users.Update(user);
-        
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return CommandResponse.Pass();

@@ -55,7 +55,7 @@ public class GenericItemValue
 
         where T : notnull
     {
-        bool success = Field.Type switch 
+        bool success = Field.Type switch
         {
             FieldType.Text => ValidateAndSetTextValue(valueToSet),
             FieldType.Integer => ValidateAndSetIntegerValue(valueToSet),
@@ -210,18 +210,18 @@ public class GenericItemValue
             throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a string instead.");
         }
 
-        return (T?) Convert.ChangeType(Value, typeof(T));
+        return (T?)Convert.ChangeType(Value, typeof(T));
     }
 
     private T? GetIntegerValue<T>()
     {
         if (Field.CanBeNegative == true && typeof(T) == typeof(long))
         {
-            return (T?) Convert.ChangeType(Value, typeof(long));
+            return (T?)Convert.ChangeType(Value, typeof(long));
         }
         else if (Field.CanBeNegative == false && typeof(T) == typeof(ulong))
         {
-            return (T?) Convert.ChangeType(Value, typeof(ulong));
+            return (T?)Convert.ChangeType(Value, typeof(ulong));
         }
 
         throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a long or ulong instead.");
@@ -231,7 +231,7 @@ public class GenericItemValue
     {
         if (typeof(T) == typeof(double))
         {
-            return (T?) Convert.ChangeType(Value, typeof(double));
+            return (T?)Convert.ChangeType(Value, typeof(double));
         }
 
         throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a double instead.");
@@ -241,7 +241,7 @@ public class GenericItemValue
     {
         if (typeof(T) == typeof(bool))
         {
-            return (T?) Convert.ChangeType(Value, typeof(bool));
+            return (T?)Convert.ChangeType(Value, typeof(bool));
         }
 
         throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a bool instead.");
@@ -251,7 +251,7 @@ public class GenericItemValue
     {
         if (typeof(T) == typeof(DateTimeOffset))
         {
-            return (T?) Convert.ChangeType(Value, typeof(DateTimeOffset));
+            return (T?)Convert.ChangeType(Value, typeof(DateTimeOffset));
         }
 
         throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a DateTimeOffset instead.");
@@ -261,7 +261,7 @@ public class GenericItemValue
     {
         if (typeof(T) == typeof(GeoLocation))
         {
-            return (T?) Convert.ChangeType(Location, typeof(GeoLocation));
+            return (T?)Convert.ChangeType(Location, typeof(GeoLocation));
         }
 
         throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a GeoLocation instead.");

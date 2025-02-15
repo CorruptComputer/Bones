@@ -90,7 +90,7 @@ internal static class Setup
             });
     }
 
-    internal static void AddAspire(this WebApplicationBuilder builder) 
+    internal static void AddAspire(this WebApplicationBuilder builder)
     {
         builder.Logging.AddOpenTelemetry(logging =>
         {
