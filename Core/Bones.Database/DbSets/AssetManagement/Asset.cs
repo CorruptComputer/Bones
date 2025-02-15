@@ -24,10 +24,9 @@ public class Asset
     public required string Name { get; set; }
 
     /// <summary>
-    ///   The ID of the project this Asset belongs to
+    ///   The project this Asset belongs to
     /// </summary>
-    [ForeignKey(nameof(Project))]
-    public required Guid ProjectId { get; set; }
+    public required Project Project { get; set; }
 
     /// <summary>
     ///   The generic item for this asset

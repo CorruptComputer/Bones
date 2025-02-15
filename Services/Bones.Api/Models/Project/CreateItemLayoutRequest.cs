@@ -35,7 +35,7 @@ public class CreateItemLayoutRequest
     [JsonRequired]
     public required List<Guid> FieldVersions { get; init; }
 
-    internal CreateItemLayoutCommand ToInternal(Guid projectId, BonesUser user)
+    internal CreateItemLayout.Command ToInternal(Guid projectId, BonesUser user)
     {
         return new(projectId, Name, EnabledFor, FriendlyIdPrefix, FieldVersions, user);
     }

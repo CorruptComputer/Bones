@@ -2,20 +2,27 @@ using Bones.Database.DbSets.GenericItems;
 
 namespace Bones.Database.Operations.GenericItem;
 
-/// <summary>
-///     DB Query for getting an item field by its ID
-/// </summary>
-/// <param name="ItemFieldVersionId">Internal ID of the item field</param>
-public record GetItemFieldVersionByIdDbQuery(Guid ItemFieldVersionId) : IRequest<QueryResponse<GenericItemFieldVersion?>>;
-
-internal sealed class GetItemFieldVersionByIdDbQueryValidator : AbstractValidator<GetItemFieldVersionByIdDbQuery>
+/// <inheritdoc />
+public sealed class GetItemFieldVersionByIdDb(BonesDbContext dbContext) : IRequestHandler<GetItemFieldVersionByIdDb.Query, QueryResponse<GenericItemFieldVersion?>>
 {
+    /// <summary>
+    ///     DB Query for getting an item field by its ID
+    /// </summary>
+    /// <param name="ItemFieldVersionId">Internal ID of the item field</param>
+    public record Query(Guid ItemFieldVersionId) : IRequest<QueryResponse<GenericItemFieldVersion?>>;
 
-}
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
+    {
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ItemFieldVersionId).NotNull().NotEqual(Guid.Empty);
+        }
+    }
 
-internal sealed class GetItemFieldVersionByIdDbHandler(BonesDbContext dbContext) : IRequestHandler<GetItemFieldVersionByIdDbQuery, QueryResponse<GenericItemFieldVersion?>>
-{
-    public async Task<QueryResponse<GenericItemFieldVersion?>> Handle(GetItemFieldVersionByIdDbQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<GenericItemFieldVersion?>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.ItemFieldVersions
             .Include(x => x.PossibleValues)

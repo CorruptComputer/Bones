@@ -4,28 +4,30 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.GenericItem;
 
-/// <summary>
-///   DB Command for creating an item layout version
-/// </summary>
-/// <param name="ItemLayoutId"></param>
-/// <param name="Name"></param>
-/// <param name="EnabledFor"></param>
-/// <param name="FieldVersions"></param>
-public sealed record CreateItemLayoutVersionDbCommand(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, List<Guid> FieldVersions) : IRequest<CommandResponse>;
-
-internal class CreateItemLayoutVersionDbCommandValidator : AbstractValidator<CreateItemLayoutVersionDbCommand>
+/// <inheritdoc />
+public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandler<CreateItemLayoutVersionDb.Command, CommandResponse>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<CreateItemLayoutVersionDbCommand> context, CancellationToken cancellation = new())
+    /// <summary>
+    ///   DB Command for creating an item layout version
+    /// </summary>
+    /// <param name="ItemLayoutId"></param>
+    /// <param name="Name"></param>
+    /// <param name="EnabledFor"></param>
+    /// <param name="FieldVersions"></param>
+    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, List<Guid> FieldVersions) : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public class Validator : AbstractValidator<Command>
     {
-        RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
-
-        return base.ValidateAsync(context, cancellation);
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
+        }
     }
-}
 
-internal class CreateItemLayoutVersionDbHandler(BonesDbContext dbContext) : IRequestHandler<CreateItemLayoutVersionDbCommand, CommandResponse>
-{
-    public async Task<CommandResponse> Handle(CreateItemLayoutVersionDbCommand request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         GenericItemLayout? layout = await dbContext.ItemLayouts.FindAsync([request.ItemLayoutId], cancellationToken);
 
@@ -38,7 +40,7 @@ internal class CreateItemLayoutVersionDbHandler(BonesDbContext dbContext) : IReq
         List<GenericItemField> fields = await dbContext.ItemFields.Where(f => fieldVersions.Select(v => v.Id).Contains(f.Id)).ToListAsync(cancellationToken);
 
         // Check that all fields found are in the same project as the layout
-        if (fields.Any(f => f.ProjectId != layout.ProjectId))
+        if (fields.Any(f => f.Project.Id != layout.Project.Id))
         {
             return CommandResponse.Forbid();
         }
@@ -51,7 +53,7 @@ internal class CreateItemLayoutVersionDbHandler(BonesDbContext dbContext) : IReq
 
         EntityEntry<GenericItemLayoutVersion> added = dbContext.ItemLayoutVersions.Add(new()
         {
-            ItemLayoutId = layout.Id,
+            ItemLayout = layout,
             Name = request.Name,
             EnabledFor = request.EnabledFor,
             Version = (layout.CurrentVersion?.Version ?? 0) + 1,

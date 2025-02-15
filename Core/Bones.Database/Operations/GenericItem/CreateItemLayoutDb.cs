@@ -4,27 +4,29 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.GenericItem;
 
-/// <summary>
-///   DB Command for creating an Item Layout
-/// </summary>
-/// <param name="FriendlyIdPrefix"></param>
-/// <param name="ProjectId"></param>
-public sealed record CreateItemLayoutDbCommand(Guid ProjectId, string FriendlyIdPrefix) : IRequest<CommandResponse>;
-
-internal class CreateItemLayoutDbCommandValidator : AbstractValidator<CreateItemLayoutDbCommand>
+/// <inheritdoc />
+public class CreateItemLayoutDb(BonesDbContext dbContext) : IRequestHandler<CreateItemLayoutDb.Command, CommandResponse>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<CreateItemLayoutDbCommand> context, CancellationToken cancellation = new())
+    /// <summary>
+    ///   DB Command for creating an Item Layout
+    /// </summary>
+    /// <param name="FriendlyIdPrefix"></param>
+    /// <param name="ProjectId"></param>
+    public sealed record Command(Guid ProjectId, string FriendlyIdPrefix) : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public class Validator : AbstractValidator<Command>
     {
-        RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
-        RuleFor(x => x.FriendlyIdPrefix).NotNull().NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
-
-        return base.ValidateAsync(context, cancellation);
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.FriendlyIdPrefix).NotNull().NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
+        }
     }
-}
 
-internal class CreateItemLayoutDbHandler(BonesDbContext dbContext) : IRequestHandler<CreateItemLayoutDbCommand, CommandResponse>
-{
-    public async Task<CommandResponse> Handle(CreateItemLayoutDbCommand request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
 
         Project? project = await dbContext.Projects.FindAsync([request.ProjectId], cancellationToken);
@@ -36,7 +38,7 @@ internal class CreateItemLayoutDbHandler(BonesDbContext dbContext) : IRequestHan
 
         GenericItemLayout newLayout = new()
         {
-            ProjectId = project.Id,
+            Project = project,
             FriendlyIdPrefix = request.FriendlyIdPrefix
         };
 

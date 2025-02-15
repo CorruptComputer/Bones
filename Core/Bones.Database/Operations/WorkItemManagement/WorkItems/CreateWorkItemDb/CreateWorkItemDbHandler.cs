@@ -14,7 +14,7 @@ internal sealed class CreateWorkItemDbHandler(BonesDbContext dbContext) : IReque
             return CommandResponse.Fail("Invalid Queue ID.");
         }
 
-        GenericItemLayout? itemLayout = await dbContext.ItemLayouts.FindAsync([request.ItemLayoutId], cancellationToken);
+        GenericItemLayout? itemLayout = await dbContext.ItemLayouts.Include(l => l.Project).FirstOrDefaultAsync(l => l.Id == request.ItemLayoutId, cancellationToken);
         if (itemLayout == null)
         {
             return CommandResponse.Fail("Invalid ItemLayout ID.");
@@ -27,7 +27,7 @@ internal sealed class CreateWorkItemDbHandler(BonesDbContext dbContext) : IReque
             Item = new()
             {
                 Name = request.Name,
-                ProjectId = itemLayout.ProjectId,
+                Project = itemLayout.Project,
                 GenericItemLayout = itemLayout
             }
         }, cancellationToken);

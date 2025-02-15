@@ -31,6 +31,6 @@ internal sealed class GetItemLayoutsByProjectHandler(ISender sender) : IRequestH
             return QueryResponse<List<GenericItemLayout>>.Forbid();
         }
 
-        return await sender.Send(new GetItemLayoutsByProjectDbQuery(request.ProjectId), cancellationToken);
+        return await sender.Send(new GetItemLayoutsByProjectDb.Query(request.ProjectId), cancellationToken);
     }
 }

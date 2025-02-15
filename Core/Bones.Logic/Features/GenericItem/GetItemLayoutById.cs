@@ -24,7 +24,7 @@ public sealed class GetItemLayoutById(ISender sender) : IRequestHandler<GetItemL
     /// <inheritdoc />
     public async Task<QueryResponse<GenericItemLayout?>> Handle(Query request, CancellationToken cancellationToken)
     {
-        GenericItemLayout? itemField = await sender.Send(new GetItemLayoutByIdDbQuery(request.ItemLayoutId), cancellationToken);
+        GenericItemLayout? itemField = await sender.Send(new GetItemLayoutByIdDb.Query(request.ItemLayoutId), cancellationToken);
 
         if (itemField == null)
         {
@@ -33,7 +33,7 @@ public sealed class GetItemLayoutById(ISender sender) : IRequestHandler<GetItemL
 
         const string perm = BonesClaimTypes.Role.Project.VIEW_PROJECT;
         bool? hasProjectPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(itemField.ProjectId, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermissionQuery(itemField.Project.Id, request.RequestingUser, perm), cancellationToken);
 
         if (hasProjectPermission != true)
         {

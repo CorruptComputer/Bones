@@ -4,12 +4,12 @@ using Bones.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Bones.WebUI.Pages.Account;
+namespace Bones.WebUI.Components.Auth;
 
 /// <summary>
 ///   The page for registering user accounts 
 /// </summary>
-public partial class RegisterPage : ComponentBase
+public partial class RegisterComponent : ComponentBase
 {
     /// <summary>
     ///   Was the registration finished successfully?
@@ -66,9 +66,8 @@ public partial class RegisterPage : ComponentBase
                 ValidationErrors = apiErrors.ToArray();
             }
         }
-        catch (ApiException ex)
+        catch
         {
-            Logger.LogError(ex, "Error while registering user");
             RegistrationSuccess = false;
             RegistrationApiError = true;
         }

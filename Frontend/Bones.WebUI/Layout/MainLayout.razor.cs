@@ -32,6 +32,8 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
 
     private bool _open = false;
 
+    private bool _login = true;
+
     private sealed record ProjectDropDownModel
     {
         public required string ProjectName { get; init; }
@@ -69,6 +71,17 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
         await UpdateProjectList();
 
         await base.OnParametersSetAsync();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected async Task LogoutAsync()
+    {
+        await ApiClient.LogoutAsync();
+        await AuthStateProvider.ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
+
+        NavManager.NavigateTo("/");
     }
 
     private async Task UpdateProjectList()
@@ -111,6 +124,14 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
     protected void ToggleDrawer()
     {
         _open = !_open;
+    }
+
+    /// <summary>
+    ///   Toggles the nav drawer
+    /// </summary>
+    protected void ToggleLoginRegister()
+    {
+        _login = !_login;
     }
 
     /// <summary>

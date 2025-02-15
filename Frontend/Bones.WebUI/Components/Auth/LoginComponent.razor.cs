@@ -2,19 +2,13 @@ using Bones.Api.Client;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace Bones.WebUI.Pages.Account;
+namespace Bones.WebUI.Components.Auth;
 
 /// <summary>
 ///   Page to login
 /// </summary>
-public partial class LoginPage : ComponentBase
+public partial class LoginComponent : ComponentBase
 {
-    /// <summary>
-    ///   The URL to send them to after login is successful
-    /// </summary>
-    [Parameter]
-    public string? ReturnUrl { get; set; }
-
     /// <summary>
     ///   Is the form valid?
     /// </summary>
@@ -57,45 +51,10 @@ public partial class LoginPage : ComponentBase
             }
 
             await AuthStateProvider.SaveCurrentUserInBrowserStorageAsync(me, CancellationToken.None);
-
-            NavManager.NavigateTo(GetNavigationUrl(), forceLoad: true);
         }
-        catch (Exception ex)
+        catch
         {
-            Logger.LogError(ex, "Error while logging in");
             ErrorLoggingIn = true;
         }
     }
-
-    private string GetNavigationUrl()
-    {
-        if (string.IsNullOrWhiteSpace(ReturnUrl) || !IsSafeRedirect(ReturnUrl))
-        {
-            return "/";
-        }
-
-        return ReturnUrl;
-    }
-
-    /// <summary>
-    ///   We only want to redirect them within our own application, don't want to redirect to anywhere else.
-    /// </summary>
-    /// <param name="uri"></param>
-    /// <returns></returns>
-    private static bool IsSafeRedirect(string uri)
-    {
-        if (Uri.IsWellFormedUriString(uri, UriKind.Absolute))
-        {
-            return false;
-        }
-
-        Uri parsedUri = new(uri, UriKind.RelativeOrAbsolute);
-        if (parsedUri.IsAbsoluteUri || !string.IsNullOrEmpty(parsedUri.Host))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
 }

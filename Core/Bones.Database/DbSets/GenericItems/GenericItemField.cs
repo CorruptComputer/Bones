@@ -22,10 +22,9 @@ public class GenericItemField
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The ID of the project this ItemField belongs to
+    ///   The project this ItemField belongs to
     /// </summary>
-    [ForeignKey(nameof(Project))]
-    public required Guid ProjectId { get; set; }
+    public required Project Project { get; set; }
 
     /// <summary>
     ///   The most recent version of this field

@@ -35,6 +35,7 @@ public static class Program
 
         builder.Services.AddTransient<CookieDelegatingHandler>();
         builder.Services.AddTransient<UnauthorizedDelegatingHandler>();
+        builder.Services.AddTransient<ForbiddenDelegatingHandler>();
 
         string thisHost = new Uri(builder.HostEnvironment.BaseAddress).Authority;
         string? apiBaseUrl = builder.Configuration["ApiBaseUrl"]
@@ -52,7 +53,8 @@ public static class Program
                 client.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             })
             .AddHttpMessageHandler<CookieDelegatingHandler>()
-            .AddHttpMessageHandler<UnauthorizedDelegatingHandler>();
+            .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
+            .AddHttpMessageHandler<ForbiddenDelegatingHandler>();
 
         builder.Services.AddTransient<BonesApiClient>();
 

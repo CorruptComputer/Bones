@@ -38,11 +38,16 @@
             <AuthorizeView>
                 <Authorized>
                     <MudButton Href="@FrontEndUrls.Account.MY_PROFILE">My Profile</MudButton>
-                    <MudButton Href="@FrontEndUrls.Account.LOGOUT">Logout</MudButton>
+                    <MudButton OnClick="@LogoutAsync">Logout</MudButton>
                 </Authorized>
                 <NotAuthorized>
-                    <MudButton Href="@FrontEndUrls.Account.LOGIN">Login</MudButton>
-                    <MudButton Href="@FrontEndUrls.Account.REGISTER">Register</MudButton>
+                    @if(_login) 
+                    {
+                        <MudButton OnClick="@ToggleLoginRegister">Register</MudButton>
+                    }
+                    else {
+                        <MudButton OnClick="@ToggleLoginRegister">Login</MudButton>
+                    }
                 </NotAuthorized>
             </AuthorizeView>
         </MudButtonGroup>
@@ -61,7 +66,20 @@
     <!-- Content -->
     <MudMainContent Class="pt-16 px-16">
         <MudContainer Class="mt-6">
-            @Body
+            <AuthorizeView>
+                <Authorized>
+                    @Body
+                </Authorized>
+                <NotAuthorized>
+                    @if(_login) 
+                    {
+                        <Bones.WebUI.Components.Auth.LoginComponent />
+                    }
+                    else {
+                        <Bones.WebUI.Components.Auth.RegisterComponent />
+                    }
+                </NotAuthorized>
+            </AuthorizeView>
         </MudContainer>
     </MudMainContent>
 </MudLayout>

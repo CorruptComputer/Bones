@@ -7,41 +7,45 @@ using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
 
-/// <summary>
-///     DB Command for creating a new item field version
-/// </summary>
-/// <param name="ItemFieldId">Internal ID of the item field</param>
-/// <param name="Name"></param>
-/// <param name="IsRequired"></param>
-/// <param name="Type"></param>
-/// <param name="CanBeNegative"></param>
-/// <param name="PossibleValues"></param>
-/// <param name="GeoLocationType"></param>
-/// <param name="RequiredAddressFields"></param>
-/// <param name="RequestingUser"></param>
-public record CreateItemFieldVersionCommand(Guid ItemFieldId, string Name, bool IsRequired, FieldType Type,
-    bool? CanBeNegative, Dictionary<string, StringValueMatchingType>? PossibleValues,
-    GeoLocationType? GeoLocationType, AddressFields? RequiredAddressFields, BonesUser RequestingUser) : IRequest<CommandResponse>;
-
-internal sealed class CreateItemFieldVersionCommandValidator : AbstractValidator<CreateItemFieldVersionCommand>
+/// <inheritdoc />
+public sealed class CreateItemFieldVersion(ISender sender) : IRequestHandler<CreateItemFieldVersion.Command, CommandResponse>
 {
-    public CreateItemFieldVersionCommandValidator()
+    /// <summary>
+    ///     DB Command for creating a new item field version
+    /// </summary>
+    /// <param name="ItemFieldId">Internal ID of the item field</param>
+    /// <param name="Name"></param>
+    /// <param name="IsRequired"></param>
+    /// <param name="Type"></param>
+    /// <param name="CanBeNegative"></param>
+    /// <param name="PossibleValues"></param>
+    /// <param name="GeoLocationType"></param>
+    /// <param name="RequiredAddressFields"></param>
+    /// <param name="RequestingUser"></param>
+    public record Command(Guid ItemFieldId, string Name, bool IsRequired, FieldType Type,
+        bool? CanBeNegative, Dictionary<string, StringValueMatchingType>? PossibleValues,
+        GeoLocationType? GeoLocationType, AddressFields? RequiredAddressFields, BonesUser RequestingUser) : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Command>
     {
-        RuleFor(x => x.ItemFieldId).NotNull().NotEqual(Guid.Empty);
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(512);
-        RuleFor(x => x.Type).IsInEnum();
-        RuleFor(x => x.CanBeNegative).NotNull().When(x => x.Type is FieldType.Integer or FieldType.Decimal);
-        RuleFor(x => x.PossibleValues).NotEmpty().When(x => x.Type == FieldType.ValueList);
-        RuleFor(x => x.GeoLocationType).NotNull().When(x => x.Type == FieldType.GeoLocation);
-        RuleFor(x => x.RequiredAddressFields).NotNull().When(x => x.GeoLocationType == GeoLocationType.Address);
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ItemFieldId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(512);
+            RuleFor(x => x.Type).IsInEnum();
+            RuleFor(x => x.CanBeNegative).NotNull().When(x => x.Type is FieldType.Integer or FieldType.Decimal);
+            RuleFor(x => x.PossibleValues).NotEmpty().When(x => x.Type == FieldType.ValueList);
+            RuleFor(x => x.GeoLocationType).NotNull().When(x => x.Type == FieldType.GeoLocation);
+            RuleFor(x => x.RequiredAddressFields).NotNull().When(x => x.GeoLocationType == GeoLocationType.Address);
+        }
     }
-}
 
-internal sealed class CreateItemFieldVersionHandler(ISender sender) : IRequestHandler<CreateItemFieldVersionCommand, CommandResponse>
-{
-    public async Task<CommandResponse> Handle(CreateItemFieldVersionCommand request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        GenericItemField? field = await sender.Send(new GetItemFieldByIdDbQuery(request.ItemFieldId), cancellationToken);
+        GenericItemField? field = await sender.Send(new GetItemFieldByIdDb.Query(request.ItemFieldId), cancellationToken);
 
         if (field == null)
         {
@@ -50,7 +54,7 @@ internal sealed class CreateItemFieldVersionHandler(ISender sender) : IRequestHa
 
         const string perm = BonesClaimTypes.Role.Project.EDIT_PROJECT_SETTINGS;
         bool? hasProjectPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(field.ProjectId, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermissionQuery(field.Project.Id, request.RequestingUser, perm), cancellationToken);
 
         if (hasProjectPermission != true)
         {

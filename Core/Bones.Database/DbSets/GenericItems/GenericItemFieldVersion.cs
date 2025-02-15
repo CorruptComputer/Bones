@@ -22,10 +22,9 @@ public class GenericItemFieldVersion
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The ID of the layout this version belongs to
+    ///   The field this version belongs to
     /// </summary>
-    [ForeignKey(nameof(GenericItemField))]
-    public required Guid GenericItemFieldId { get; init; }
+    public required GenericItemField GenericItemField { get; init; }
 
     /// <summary>
     ///   The version number for this

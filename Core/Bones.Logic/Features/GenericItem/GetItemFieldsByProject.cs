@@ -31,6 +31,6 @@ internal sealed class GetItemFieldsByProjectHandler(ISender sender) : IRequestHa
             return QueryResponse<List<GenericItemField>>.Forbid();
         }
 
-        return await sender.Send(new GetItemFieldsByProjectDbQuery(request.ProjectId), cancellationToken);
+        return await sender.Send(new GetItemFieldsByProjectDb.Query(request.ProjectId), cancellationToken);
     }
 }

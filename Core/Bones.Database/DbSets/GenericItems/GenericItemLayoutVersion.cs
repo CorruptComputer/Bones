@@ -35,8 +35,7 @@ public class GenericItemLayoutVersion
     /// <summary>
     ///   The ID of the layout this version belongs to
     /// </summary>
-    [ForeignKey(nameof(GenericItemLayout))]
-    public required Guid ItemLayoutId { get; init; }
+    public required GenericItemLayout ItemLayout { get; init; }
 
     /// <summary>
     ///   The version number for this

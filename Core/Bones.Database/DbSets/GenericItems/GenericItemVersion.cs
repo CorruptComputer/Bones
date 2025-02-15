@@ -16,10 +16,9 @@ public class GenericItemVersion
     public Guid Id { get; set; }
 
     /// <summary>
-    ///   The ID of the Item this version belongs to
+    ///   The Item this version belongs to
     /// </summary>
-    [ForeignKey(nameof(GenericItem))]
-    public required Guid ItemId { get; init; }
+    public required GenericItem Item { get; init; }
 
     /// <summary>
     ///   The version number for this

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bones.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class MoveSchemaAround : Migration
+    public partial class UpdateRelations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -151,38 +151,6 @@ namespace Bones.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ForgotPasswordEmailQueue", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GenericItemFields",
-                schema: "GenericItem",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GenericItemFields", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GenericItemLayouts",
-                schema: "GenericItem",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
-                    FriendlyIdPrefix = table.Column<string>(type: "character varying(6)", maxLength: 6, nullable: false),
-                    FriendlyIdNonce = table.Column<long>(type: "bigint", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GenericItemLayouts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -340,89 +308,6 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GenericItemLayoutVersions",
-                schema: "GenericItem",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    EnabledFor = table.Column<int>(type: "integer", nullable: false),
-                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ItemLayoutId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<long>(type: "bigint", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false),
-                    GenericItemLayoutId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GenericItemLayoutVersions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GenericItemLayoutVersions_GenericItemLayouts_GenericItemLay~",
-                        column: x => x.GenericItemLayoutId,
-                        principalSchema: "GenericItem",
-                        principalTable: "GenericItemLayouts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GenericItems",
-                schema: "GenericItem",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
-                    GenericItemLayoutId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CurrentVersion = table.Column<int>(type: "integer", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GenericItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GenericItems_GenericItemLayouts_GenericItemLayoutId",
-                        column: x => x.GenericItemLayoutId,
-                        principalSchema: "GenericItem",
-                        principalTable: "GenericItemLayouts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GeoLocations",
-                schema: "MappingManagement",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Latitude = table.Column<double>(type: "double precision", nullable: true),
-                    Longitude = table.Column<double>(type: "double precision", nullable: true),
-                    Geometry = table.Column<string>(type: "text", nullable: true),
-                    OsmObjectId = table.Column<Guid>(type: "uuid", nullable: true),
-                    LastAcknowledgedOsmVersion = table.Column<long>(type: "bigint", nullable: true),
-                    StreetNumber = table.Column<string>(type: "text", nullable: true),
-                    StreetName = table.Column<string>(type: "text", nullable: true),
-                    CityOrPlace = table.Column<string>(type: "text", nullable: true),
-                    StateOrProvince = table.Column<string>(type: "text", nullable: true),
-                    PostalCode = table.Column<string>(type: "text", nullable: true),
-                    County = table.Column<string>(type: "text", nullable: true),
-                    Country = table.Column<string>(type: "text", nullable: true),
-                    GeoLocated = table.Column<bool>(type: "boolean", nullable: true),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GeoLocations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GeoLocations_OsmObjects_OsmObjectId",
-                        column: x => x.OsmObjectId,
-                        principalSchema: "MappingManagement",
-                        principalTable: "OsmObjects",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BonesRoleClaims",
                 schema: "AccountManagement",
                 columns: table => new
@@ -473,6 +358,92 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GenericItemFields",
+                schema: "GenericItem",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenericItemFields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenericItemFields_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalSchema: "ProjectManagement",
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenericItemLayouts",
+                schema: "GenericItem",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FriendlyIdPrefix = table.Column<string>(type: "character varying(6)", maxLength: 6, nullable: false),
+                    FriendlyIdNonce = table.Column<long>(type: "bigint", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenericItemLayouts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenericItemLayouts_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalSchema: "ProjectManagement",
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GeoLocations",
+                schema: "MappingManagement",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Latitude = table.Column<double>(type: "double precision", nullable: true),
+                    Longitude = table.Column<double>(type: "double precision", nullable: true),
+                    Geometry = table.Column<string>(type: "text", nullable: true),
+                    OsmObjectId = table.Column<Guid>(type: "uuid", nullable: true),
+                    LastAcknowledgedOsmVersion = table.Column<long>(type: "bigint", nullable: true),
+                    StreetNumber = table.Column<string>(type: "text", nullable: true),
+                    StreetName = table.Column<string>(type: "text", nullable: true),
+                    CityOrPlace = table.Column<string>(type: "text", nullable: true),
+                    StateOrProvince = table.Column<string>(type: "text", nullable: true),
+                    PostalCode = table.Column<string>(type: "text", nullable: true),
+                    County = table.Column<string>(type: "text", nullable: true),
+                    Country = table.Column<string>(type: "text", nullable: true),
+                    GeoLocated = table.Column<bool>(type: "boolean", nullable: true),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoLocations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GeoLocations_OsmObjects_OsmObjectId",
+                        column: x => x.OsmObjectId,
+                        principalSchema: "MappingManagement",
+                        principalTable: "OsmObjects",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeoLocations_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalSchema: "ProjectManagement",
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Initiatives",
                 schema: "ProjectManagement",
                 columns: table => new
@@ -490,6 +461,85 @@ namespace Bones.Database.Migrations
                         column: x => x.ProjectId,
                         principalSchema: "ProjectManagement",
                         principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenericItemLayoutVersions",
+                schema: "GenericItem",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    EnabledFor = table.Column<int>(type: "integer", nullable: false),
+                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ItemLayoutId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Version = table.Column<long>(type: "bigint", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenericItemLayoutVersions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenericItemLayoutVersions_GenericItemLayouts_ItemLayoutId",
+                        column: x => x.ItemLayoutId,
+                        principalSchema: "GenericItem",
+                        principalTable: "GenericItemLayouts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenericItems",
+                schema: "GenericItem",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    GenericItemLayoutId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CurrentVersion = table.Column<int>(type: "integer", nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenericItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GenericItems_GenericItemLayouts_GenericItemLayoutId",
+                        column: x => x.GenericItemLayoutId,
+                        principalSchema: "GenericItem",
+                        principalTable: "GenericItemLayouts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GenericItems_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalSchema: "ProjectManagement",
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkItemQueues",
+                schema: "WorkItemManagement",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    InitiativeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkItemQueues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkItemQueues_Initiatives_InitiativeId",
+                        column: x => x.InitiativeId,
+                        principalSchema: "ProjectManagement",
+                        principalTable: "Initiatives",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -551,6 +601,13 @@ namespace Bones.Database.Migrations
                         principalTable: "GenericItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Assets_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalSchema: "ProjectManagement",
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -563,8 +620,7 @@ namespace Bones.Database.Migrations
                     Version = table.Column<long>(type: "bigint", nullable: false),
                     CreateDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     GenericItemLayoutVersionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false),
-                    GenericItemId = table.Column<Guid>(type: "uuid", nullable: true)
+                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -577,31 +633,40 @@ namespace Bones.Database.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GenericItemVersions_GenericItems_GenericItemId",
-                        column: x => x.GenericItemId,
+                        name: "FK_GenericItemVersions_GenericItems_ItemId",
+                        column: x => x.ItemId,
                         principalSchema: "GenericItem",
                         principalTable: "GenericItems",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkItemQueues",
+                name: "WorkItems",
                 schema: "WorkItemManagement",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    InitiativeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
+                    WorkItemQueueId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AddedToQueueDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
                     DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkItemQueues", x => x.Id);
+                    table.PrimaryKey("PK_WorkItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkItemQueues_Initiatives_InitiativeId",
-                        column: x => x.InitiativeId,
-                        principalSchema: "ProjectManagement",
-                        principalTable: "Initiatives",
+                        name: "FK_WorkItems_GenericItems_ItemId",
+                        column: x => x.ItemId,
+                        principalSchema: "GenericItem",
+                        principalTable: "GenericItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkItems_WorkItemQueues_WorkItemQueueId",
+                        column: x => x.WorkItemQueueId,
+                        principalSchema: "WorkItemManagement",
+                        principalTable: "WorkItemQueues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -666,41 +731,17 @@ namespace Bones.Database.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "WorkItems",
-                schema: "WorkItemManagement",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkItemQueueId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AddedToQueueDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DeleteFlag = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkItems_GenericItems_ItemId",
-                        column: x => x.ItemId,
-                        principalSchema: "GenericItem",
-                        principalTable: "GenericItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WorkItems_WorkItemQueues_WorkItemQueueId",
-                        column: x => x.WorkItemQueueId,
-                        principalSchema: "WorkItemManagement",
-                        principalTable: "WorkItemQueues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_ItemId",
                 schema: "AssetManagement",
                 table: "Assets",
                 column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assets_ProjectId",
+                schema: "AssetManagement",
+                table: "Assets",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BonesRoleClaims_RoleId",
@@ -759,6 +800,12 @@ namespace Bones.Database.Migrations
                 column: "GenericItemFieldVersionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GenericItemFields_ProjectId",
+                schema: "GenericItem",
+                table: "GenericItemFields",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GenericItemFieldVersions_GenericItemFieldId",
                 schema: "GenericItem",
                 table: "GenericItemFieldVersions",
@@ -771,16 +818,28 @@ namespace Bones.Database.Migrations
                 column: "GenericItemLayoutVersionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenericItemLayoutVersions_GenericItemLayoutId",
+                name: "IX_GenericItemLayouts_ProjectId",
+                schema: "GenericItem",
+                table: "GenericItemLayouts",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItemLayoutVersions_ItemLayoutId",
                 schema: "GenericItem",
                 table: "GenericItemLayoutVersions",
-                column: "GenericItemLayoutId");
+                column: "ItemLayoutId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GenericItems_GenericItemLayoutId",
                 schema: "GenericItem",
                 table: "GenericItems",
                 column: "GenericItemLayoutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenericItems_ProjectId",
+                schema: "GenericItem",
+                table: "GenericItems",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GenericItemValues_FieldId",
@@ -801,22 +860,28 @@ namespace Bones.Database.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenericItemVersions_GenericItemId",
-                schema: "GenericItem",
-                table: "GenericItemVersions",
-                column: "GenericItemId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GenericItemVersions_GenericItemLayoutVersionId",
                 schema: "GenericItem",
                 table: "GenericItemVersions",
                 column: "GenericItemLayoutVersionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GenericItemVersions_ItemId",
+                schema: "GenericItem",
+                table: "GenericItemVersions",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GeoLocations_OsmObjectId",
                 schema: "MappingManagement",
                 table: "GeoLocations",
                 column: "OsmObjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeoLocations_ProjectId",
+                schema: "MappingManagement",
+                table: "GeoLocations",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Initiatives_ProjectId",

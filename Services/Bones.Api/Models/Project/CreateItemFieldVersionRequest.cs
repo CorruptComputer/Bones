@@ -48,7 +48,7 @@ public record CreateItemFieldVersionRequest
     /// </summary>
     public AddressFields? RequiredAddressFields { get; init; }
 
-    internal CreateItemFieldVersionCommand ToInternal(Guid itemFieldId, BonesUser user)
+    internal CreateItemFieldVersion.Command ToInternal(Guid itemFieldId, BonesUser user)
     {
         return new(itemFieldId, Name, IsRequired, Type, CanBeNegative, PossibleValues, GeoLocationType, RequiredAddressFields, user);
     }

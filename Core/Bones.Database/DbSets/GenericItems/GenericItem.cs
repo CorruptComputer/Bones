@@ -28,10 +28,9 @@ public class GenericItem
     public required string Name { get; set; }
 
     /// <summary>
-    ///   The ID of the project this item belongs to
+    ///   The project this item belongs to
     /// </summary>
-    [ForeignKey(nameof(Project))]
-    public required Guid ProjectId { get; set; }
+    public required Project Project { get; set; }
 
     /// <summary>
     ///   The layout this item will use

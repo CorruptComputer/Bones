@@ -1,4 +1,5 @@
 using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.ProjectManagement;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.GenericItem;
@@ -26,9 +27,16 @@ public sealed class CreateItemFieldDb(BonesDbContext dbContext) : IRequestHandle
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
+        Project? project = await dbContext.Projects.FindAsync([request.ProjectId], cancellationToken);
+
+        if (project == null)
+        {
+            return CommandResponse.Fail("Project not found");
+        }
+
         EntityEntry<GenericItemField> added = dbContext.ItemFields.Add(new()
         {
-            ProjectId = request.ProjectId,
+            Project = project,
         });
 
         await dbContext.SaveChangesAsync(cancellationToken);

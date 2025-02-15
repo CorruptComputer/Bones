@@ -1,11 +1,4 @@
-﻿@attribute [Route(FrontEndUrls.Account.LOGIN)]
-@inject ILogger<LoginPage> Logger
-@layout MainLayout
-
-<PageTitle>Login</PageTitle>
-<MudText Typo="Typo.h5">Login</MudText>
-
-<MudGrid>
+﻿<MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">

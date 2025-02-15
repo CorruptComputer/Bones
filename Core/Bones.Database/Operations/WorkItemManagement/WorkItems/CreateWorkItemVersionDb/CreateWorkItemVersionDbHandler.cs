@@ -47,7 +47,7 @@ internal sealed class CreateWorkItemVersionDbHandler(BonesDbContext dbContext) :
 
         workItem.Item.Versions.Add(new()
         {
-            ItemId = workItem.Item.Id,
+            Item = workItem.Item,
             Version = ++workItem.Item.CurrentVersion,
             CreateDateTime = DateTimeOffset.Now,
             GenericItemLayoutVersion = layoutVersion,

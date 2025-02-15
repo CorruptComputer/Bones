@@ -1,11 +1,4 @@
-﻿@attribute [Route(FrontEndUrls.Account.REGISTER)]
-@inject ILogger<RegisterPage> Logger
-@layout MainLayout
-
-<PageTitle>Register</PageTitle>
-<MudText Typo="Typo.h5">Register</MudText>
-
-@if (!RegistrationSuccess)
+﻿@if (!RegistrationSuccess)
 {
     <MudGrid>
         <MudItem xs="12" sm="7">

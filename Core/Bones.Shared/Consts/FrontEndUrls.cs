@@ -33,24 +33,9 @@ public static class FrontEndUrls
         public const string CONFIRM_EMAIL = $"{_account}/ConfirmEmail";
 
         /// <summary>
-        ///   Login page
-        /// </summary>
-        public const string LOGIN = $"{_account}/Login";
-
-        /// <summary>
-        ///   Logout page
-        /// </summary>
-        public const string LOGOUT = $"{_account}/Logout";
-
-        /// <summary>
         ///   My profile page
         /// </summary>
         public const string MY_PROFILE = $"{_account}/MyProfile";
-
-        /// <summary>
-        ///   Register page
-        /// </summary>
-        public const string REGISTER = $"{_account}/Register";
 
         /// <summary>
         ///   Confirm email page

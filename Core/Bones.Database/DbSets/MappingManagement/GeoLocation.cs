@@ -18,10 +18,9 @@ public sealed class GeoLocation
     public Guid Id { get; set; }
 
     /// <summary>
-    ///   The ID of the project this GeoLocation belongs to
+    ///   The project this GeoLocation belongs to
     /// </summary>
-    [ForeignKey(nameof(Project))]
-    public required Guid ProjectId { get; set; }
+    public required Project Project { get; set; }
 
     /// <summary>
     ///   The latitude of this object, centeroid if its a polygon

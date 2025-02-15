@@ -7,33 +7,37 @@ using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
 
-/// <summary>
-///   DB Command for creating an Item Layout
-/// </summary>
-/// <param name="ProjectId"></param>
-/// <param name="Name"></param>
-/// <param name="EnabledFor"></param>
-/// <param name="FriendlyIdPrefix"></param>
-/// <param name="FieldVersions"></param>
-/// <param name="RequestingUser"></param>
-public sealed record CreateItemLayoutCommand(Guid ProjectId, string Name, ItemLayoutUses EnabledFor, string FriendlyIdPrefix, List<Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
-
-internal class CreateItemLayoutCommandValidator : AbstractValidator<CreateItemLayoutCommand>
+/// <inheritdoc />
+public class CreateItemLayout(ISender sender) : IRequestHandler<CreateItemLayout.Command, CommandResponse>
 {
-    public CreateItemLayoutCommandValidator()
+    /// <summary>
+    ///   DB Command for creating an Item Layout
+    /// </summary>
+    /// <param name="ProjectId"></param>
+    /// <param name="Name"></param>
+    /// <param name="EnabledFor"></param>
+    /// <param name="FriendlyIdPrefix"></param>
+    /// <param name="FieldVersions"></param>
+    /// <param name="RequestingUser"></param>
+    public sealed record Command(Guid ProjectId, string Name, ItemLayoutUses EnabledFor, string FriendlyIdPrefix, List<Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public class Validator : AbstractValidator<Command>
     {
-        RuleFor(x => x.Name).NotNull().NotEmpty();
-        RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
-        RuleFor(x => x.EnabledFor).NotNull().NotEqual(ItemLayoutUses.None);
-        RuleFor(x => x.FriendlyIdPrefix).NotNull().NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
-        RuleFor(x => x.FieldVersions).NotNull().NotEmpty();
-        RuleFor(x => x.RequestingUser).NotNull();
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.EnabledFor).NotNull().NotEqual(ItemLayoutUses.None);
+            RuleFor(x => x.FriendlyIdPrefix).NotNull().NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
+            RuleFor(x => x.FieldVersions).NotNull().NotEmpty();
+            RuleFor(x => x.RequestingUser).NotNull();
+        }
     }
-}
 
-internal class CreateItemLayoutHandler(ISender sender) : IRequestHandler<CreateItemLayoutCommand, CommandResponse>
-{
-    public async Task<CommandResponse> Handle(CreateItemLayoutCommand request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         const string perm = BonesClaimTypes.Role.Project.EDIT_PROJECT_SETTINGS;
         bool? hasProjectPermission =
@@ -46,20 +50,20 @@ internal class CreateItemLayoutHandler(ISender sender) : IRequestHandler<CreateI
 
         foreach (Guid fieldVersionId in request.FieldVersions)
         {
-            GenericItemFieldVersion? fieldVersion = await sender.Send(new GetItemFieldVersionByIdDbQuery(fieldVersionId), cancellationToken);
+            GenericItemFieldVersion? fieldVersion = await sender.Send(new GetItemFieldVersionByIdDb.Query(fieldVersionId), cancellationToken);
             if (fieldVersion == null)
             {
                 return CommandResponse.Fail("FieldVersion not found");
             }
 
-            GenericItemField? field = await sender.Send(new GetItemFieldByIdDbQuery(fieldVersion.GenericItemFieldId), cancellationToken);
+            GenericItemField? field = await sender.Send(new GetItemFieldByIdDb.Query(fieldVersion.GenericItemField.Id), cancellationToken);
 
             if (field == null)
             {
                 return CommandResponse.Fail("Field not found");
             }
 
-            if (field.ProjectId != request.ProjectId)
+            if (field.Project.Id != request.ProjectId)
             {
                 return CommandResponse.Forbid();
             }
@@ -71,14 +75,14 @@ internal class CreateItemLayoutHandler(ISender sender) : IRequestHandler<CreateI
             return CommandResponse.Fail("FriendlyIdPrefix already in use");
         }
 
-        CommandResponse createLayoutResponse = await sender.Send(new CreateItemLayoutDbCommand(request.ProjectId, request.FriendlyIdPrefix), cancellationToken);
+        CommandResponse createLayoutResponse = await sender.Send(new CreateItemLayoutDb.Command(request.ProjectId, request.FriendlyIdPrefix), cancellationToken);
 
         if (!createLayoutResponse.Success || createLayoutResponse.Id == null)
         {
             return createLayoutResponse;
         }
 
-        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDbCommand(createLayoutResponse.Id.Value, request.Name, request.EnabledFor, request.FieldVersions), cancellationToken);
+        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDb.Command(createLayoutResponse.Id.Value, request.Name, request.EnabledFor, request.FieldVersions), cancellationToken);
 
         if (!createLayoutVersionResponse.Success)
         {

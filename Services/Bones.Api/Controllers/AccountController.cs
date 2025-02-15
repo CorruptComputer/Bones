@@ -29,7 +29,7 @@ public sealed partial class AccountController(ISender sender) : BonesControllerB
             Email = user.Email ?? string.Empty,
             EmailConfirmed = user.EmailConfirmed,
             EmailConfirmedDateTime = user.EmailConfirmedDateTime,
-            DisplayName = user.DisplayName ?? user.Email ?? string.Empty,
+            DisplayName = user.DisplayName ?? "Unknown",
             CreateDateTime = user.CreateDateTime,
             IsSysAdmin = User.IsInRole(SystemRoles.SYSTEM_ADMINISTRATORS)
         };

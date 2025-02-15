@@ -237,7 +237,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetLatestItemFieldVersionResponse>> GetLatestItemFieldVersionAsync(Guid projectId, Guid fieldId)
     {
-        QueryResponse<GenericItemField?> fieldResponse = await Sender.Send(new GetItemFieldByIdQuery(fieldId, await GetCurrentBonesUserAsync()));
+        QueryResponse<GenericItemField?> fieldResponse = await Sender.Send(new GetItemFieldById.Query(fieldId, await GetCurrentBonesUserAsync()));
 
         if (!fieldResponse.Success || fieldResponse.Result is null)
         {

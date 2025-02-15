@@ -2,20 +2,27 @@ using Bones.Database.DbSets.GenericItems;
 
 namespace Bones.Database.Operations.GenericItem;
 
-/// <summary>
-///     DB Query for getting an item layout by its ID
-/// </summary>
-/// <param name="ItemLayoutId">Internal ID of the item layout</param>
-public record GetItemLayoutByIdDbQuery(Guid ItemLayoutId) : IRequest<QueryResponse<GenericItemLayout?>>;
-
-internal sealed class GetItemLayoutByIdDbQueryValidator : AbstractValidator<GetItemLayoutByIdDbQuery>
+/// <inheritdoc />
+public sealed class GetItemLayoutByIdDb(BonesDbContext dbContext) : IRequestHandler<GetItemLayoutByIdDb.Query, QueryResponse<GenericItemLayout?>>
 {
+    /// <summary>
+    ///     DB Query for getting an item layout by its ID
+    /// </summary>
+    /// <param name="ItemLayoutId">Internal ID of the item layout</param>
+    public record Query(Guid ItemLayoutId) : IRequest<QueryResponse<GenericItemLayout?>>;
 
-}
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
+    {
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
+        }
+    }
 
-internal sealed class GetItemLayoutByIdDbHandler(BonesDbContext dbContext) : IRequestHandler<GetItemLayoutByIdDbQuery, QueryResponse<GenericItemLayout?>>
-{
-    public async Task<QueryResponse<GenericItemLayout?>> Handle(GetItemLayoutByIdDbQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<GenericItemLayout?>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.ItemLayouts
             .Include(x => x.Versions)

@@ -13,9 +13,10 @@ public sealed class GetItemLayoutByProjectAndFriendlyIdPrefixDb(BonesDbContext d
     /// <param name="FriendlyIdPrefix"></param>
     public record Query(Guid ProjectId, string FriendlyIdPrefix) : IRequest<QueryResponse<GenericItemLayout?>>;
 
-
-    internal sealed class Validator : AbstractValidator<Query>
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
     {
+        /// <inheritdoc />
         public Validator()
         {
             RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
@@ -29,6 +30,6 @@ public sealed class GetItemLayoutByProjectAndFriendlyIdPrefixDb(BonesDbContext d
         return await dbContext.ItemLayouts
             .Include(x => x.Versions)
             .ThenInclude(x => x.Fields)
-            .FirstOrDefaultAsync(x => x.ProjectId == request.ProjectId && x.FriendlyIdPrefix == request.FriendlyIdPrefix, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Project.Id == request.ProjectId && x.FriendlyIdPrefix == request.FriendlyIdPrefix, cancellationToken);
     }
 }
