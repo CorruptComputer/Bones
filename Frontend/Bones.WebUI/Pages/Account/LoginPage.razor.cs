@@ -56,7 +56,7 @@ public partial class LoginPage : ComponentBase
                 return;
             }
 
-            await AuthStateProvider.SetCurrentUserAsync(me, CancellationToken.None);
+            await AuthStateProvider.SaveCurrentUserInBrowserStorageAsync(me, CancellationToken.None);
 
             NavManager.NavigateTo(GetNavigationUrl(), forceLoad: true);
         }

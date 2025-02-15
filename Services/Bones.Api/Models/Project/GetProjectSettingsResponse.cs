@@ -1,5 +1,4 @@
-using Bones.Database.DbSets.GenericItems.GenericItemFields;
-using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
+using Bones.Database.DbSets.GenericItems;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
@@ -57,7 +56,7 @@ public record GetProjectSettingsResponse
                 new ItemFieldModel
                 {
                     ItemFieldId = i.Id,
-                    ItemFieldCurrentVersionId = i.CurrentVersion.Id,
+                    ItemFieldCurrentVersionId = i.CurrentVersion!.Id,
                     Name = i.CurrentVersion.Name,
                     IsRequired = i.CurrentVersion.IsRequired,
                     Type = i.CurrentVersion.Type
@@ -67,8 +66,8 @@ public record GetProjectSettingsResponse
                 new ItemLayoutModel
                 {
                     ItemLayoutId = i.Id,
-                    Name = i.Name,
-                    EnabledFor = i.EnabledFor,
+                    Name = i.CurrentVersion!.Name,
+                    EnabledFor = i.CurrentVersion!.EnabledFor.ToString()
                 })
         };
     }
@@ -132,6 +131,6 @@ public record GetProjectSettingsResponse
         ///   The uses this layout is applicable to
         /// </summary>
         [JsonRequired]
-        public required List<ItemLayoutUse> EnabledFor { get; init; }
+        public required string EnabledFor { get; init; }
     }
 }

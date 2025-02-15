@@ -2,36 +2,42 @@ using Bones.Database.DbSets.AccountManagement;
 
 namespace Bones.Database.Operations.AccountManagement;
 
-/// <summary>
-///   Sets the email confirmed date time on the user
-/// </summary>
-/// <param name="User"></param>
-/// <param name="ConfirmedDateTime"></param>
-public sealed record SetEmailConfirmedDateTimeDbCommand(BonesUser User, DateTimeOffset ConfirmedDateTime) : IRequest<CommandResponse>;
-
-internal sealed class SetEmailConfirmedDateTimeDbCommandValidator : AbstractValidator<SetEmailConfirmedDateTimeDbCommand>
+/// <inheritdoc />
+public sealed class SetEmailConfirmedDateTimeDb(BonesDbContext dbContext) : IRequestHandler<SetEmailConfirmedDateTimeDb.Command, CommandResponse>
 {
-    public SetEmailConfirmedDateTimeDbCommandValidator()
+    /// <summary>
+    ///   Sets the email confirmed date time on the user
+    /// </summary>
+    /// <param name="UserId"></param>
+    /// <param name="ConfirmedDateTime"></param>
+    public sealed record Command(Guid UserId, DateTimeOffset ConfirmedDateTime) : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Command>
     {
-        RuleFor(x => x.User).NotNull().Custom((user, ctx) =>
+        /// <inheritdoc />
+        public Validator()
         {
-            if (user.EmailConfirmed)
-            {
-                ctx.AddFailure("User", "User already has email confirmed");
-            }
-        });
-
-        RuleFor(x => x.ConfirmedDateTime).NotNull();
+            RuleFor(x => x.UserId).NotNull().NotEmpty();
+            RuleFor(x => x.ConfirmedDateTime).NotNull();
+        }
     }
-}
 
-internal sealed class SetEmailConfirmedDateTimeDbHandler(BonesDbContext dbContext) : IRequestHandler<SetEmailConfirmedDateTimeDbCommand, CommandResponse>
-{
-    public async Task<CommandResponse> Handle(SetEmailConfirmedDateTimeDbCommand request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        request.User.EmailConfirmed = true;
-        request.User.EmailConfirmedDateTime = request.ConfirmedDateTime;
-        dbContext.Users.Update(request.User);
+        BonesUser? user = await dbContext.Users
+            .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+
+        if (user is null)
+        {
+            return CommandResponse.Fail("User not found");
+        }
+            
+        user.EmailConfirmed = true;
+        user.EmailConfirmedDateTime = request.ConfirmedDateTime;
+        dbContext.Users.Update(user);
+        
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return CommandResponse.Pass();

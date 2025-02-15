@@ -1,9 +1,11 @@
+using Bones.Database.DbConsts;
+
 namespace Bones.Database.DbSets.System;
 
 /// <summary>
 ///     Model for the System.TaskErrors table
 /// </summary>
-[Table("TaskErrors", Schema = "System")]
+[Table(TableNames.System.TaskErrors, Schema = SchemaNames.System)]
 [PrimaryKey(nameof(Id))]
 public class TaskError
 {

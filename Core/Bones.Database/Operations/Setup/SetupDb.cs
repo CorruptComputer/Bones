@@ -13,6 +13,9 @@ internal sealed class SetupDbHandler(BonesDbContext dbContext, DatabaseConfigura
     {
         if (!(config.UseInMemoryDb ?? false) && (await dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
         {
+            // TODO: Remove this at some point, just easier to do this while still in development and major DB changes are still happening
+            await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+
             await dbContext.Database.MigrateAsync(cancellationToken);
             Log.Information("Migration complete.");
         }

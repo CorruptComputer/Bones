@@ -868,6 +868,245 @@
         }
       }
     },
+    "/Project/P{projectId}/fields": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets the Item Fields available in a project",
+        "operationId": "GetProjectItemFieldsAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProjectItemFieldsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/P{projectId}/fields/F{fieldId}/latest": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets the latest version of a field",
+        "operationId": "GetLatestItemFieldVersionAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "fieldId",
+            "in": "path",
+            "description": "The ID of the field",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestItemFieldVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/P{projectId}/layouts/L{layoutId}/latest": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets the latest version of a layout",
+        "operationId": "GetLatestItemLayoutVersionAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestItemLayoutVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Project/create": {
       "post": {
         "tags": [
@@ -1024,6 +1263,362 @@
         }
       }
     },
+    "/Project/P{projectId}/fields/create": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Creates a new item field in a project",
+        "operationId": "CreateItemFieldAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project to create this in",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateItemFieldRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/P{projectId}/fields/F{fieldId}": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Creates a new item field version in a project",
+        "operationId": "CreateItemFieldVersionAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project to create this in",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "fieldId",
+            "in": "path",
+            "description": "The ID of the field to add this version to",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateItemFieldVersionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/P{projectId}/layouts/create": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Creates a new item layout in a project",
+        "operationId": "CreateItemLayoutAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project to create this in",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateItemLayoutRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/P{projectId}/layouts/L{layoutId}": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Creates a new item layout version in a project",
+        "operationId": "CreateItemLayoutVersionAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project to create this in",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout to add this version to",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateItemLayoutVersionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/SysAdmin/ping": {
       "post": {
         "tags": [
@@ -1078,6 +1673,19 @@
   },
   "components": {
     "schemas": {
+      "AddressFields": {
+        "enum": [
+          "none",
+          "streetNumber",
+          "streetName",
+          "cityOrPlace",
+          "stateOrProvince",
+          "postalCode",
+          "county",
+          "country"
+        ],
+        "type": "string"
+      },
       "CreateInitiativeRequest": {
         "required": [
           "name"
@@ -1092,6 +1700,157 @@
         },
         "additionalProperties": false,
         "description": "Request to create a new initiative"
+      },
+      "CreateItemFieldRequest": {
+        "required": [
+          "isRequired",
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the item field to create",
+            "nullable": true
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Is this field required to have a value?"
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldType"
+          },
+          "canBeNegative": {
+            "type": "boolean",
+            "description": "If the Type of this field is either an Integer or Decimal, can it be negative?",
+            "nullable": true
+          },
+          "possibleValues": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/StringValueMatchingType"
+            },
+            "description": "If the Type of this field is a ValueList, the possible values this can have",
+            "nullable": true
+          },
+          "geoLocationType": {
+            "$ref": "#/components/schemas/GeoLocationType"
+          },
+          "requiredAddressFields": {
+            "$ref": "#/components/schemas/AddressFields"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request to create a new item field"
+      },
+      "CreateItemFieldVersionRequest": {
+        "required": [
+          "isRequired",
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the item field to create",
+            "nullable": true
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": ""
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldType"
+          },
+          "canBeNegative": {
+            "type": "boolean",
+            "description": "",
+            "nullable": true
+          },
+          "possibleValues": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/StringValueMatchingType"
+            },
+            "description": "",
+            "nullable": true
+          },
+          "geoLocationType": {
+            "$ref": "#/components/schemas/GeoLocationType"
+          },
+          "requiredAddressFields": {
+            "$ref": "#/components/schemas/AddressFields"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request to create a new item field version"
+      },
+      "CreateItemLayoutRequest": {
+        "required": [
+          "enabledFor",
+          "fieldVersions",
+          "friendlyIdPrefix",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the item layout to create",
+            "nullable": true
+          },
+          "enabledFor": {
+            "$ref": "#/components/schemas/ItemLayoutUses"
+          },
+          "friendlyIdPrefix": {
+            "maxLength": 6,
+            "type": "string",
+            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.",
+            "nullable": true
+          },
+          "fieldVersions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The field versions to use for the initial layout version",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API request to create a new item layout"
+      },
+      "CreateItemLayoutVersionRequest": {
+        "required": [
+          "enabledFor",
+          "fieldVersions",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the item layout to create",
+            "nullable": true
+          },
+          "enabledFor": {
+            "$ref": "#/components/schemas/ItemLayoutUses"
+          },
+          "fieldVersions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The field versions to use for this layout version",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API request to create a new item layout version"
       },
       "CreateProjectRequest": {
         "required": [
@@ -1139,12 +1898,22 @@
       },
       "FieldType": {
         "enum": [
-          "String",
-          "Number",
-          "Boolean",
-          "DateTime",
-          "ValueList",
-          "GeoLocation"
+          "text",
+          "integer",
+          "decimal",
+          "boolean",
+          "dateTime",
+          "valueList",
+          "geoLocation"
+        ],
+        "type": "string"
+      },
+      "GeoLocationType": {
+        "enum": [
+          "osmObject",
+          "latLon",
+          "address",
+          "geometry"
         ],
         "type": "string"
       },
@@ -1189,6 +1958,103 @@
         },
         "additionalProperties": false,
         "description": "Response for the GetInitiativeDashboardAsync endpoint"
+      },
+      "GetLatestItemFieldVersionResponse": {
+        "required": [
+          "fieldId",
+          "fieldVersionId",
+          "isRequired",
+          "name",
+          "type",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "fieldId": {
+            "type": "string",
+            "description": "ID of the item field",
+            "format": "uuid"
+          },
+          "fieldVersionId": {
+            "type": "string",
+            "description": "ID of the item field version",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Version number of the item field",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the item field",
+            "nullable": true
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": ""
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldType"
+          },
+          "canBeNegative": {
+            "type": "boolean",
+            "description": "",
+            "nullable": true
+          },
+          "possibleValues": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/StringValueMatchingType"
+            },
+            "description": "",
+            "nullable": true
+          },
+          "geoLocationType": {
+            "$ref": "#/components/schemas/GeoLocationType"
+          },
+          "requiredAddressFields": {
+            "$ref": "#/components/schemas/AddressFields"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API response for the GetLatestItemFieldVersionAsync endpoint"
+      },
+      "GetLatestItemLayoutVersionResponse": {
+        "required": [
+          "enabledFor",
+          "fieldVersions",
+          "friendlyIdPrefix",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the item layout",
+            "nullable": true
+          },
+          "enabledFor": {
+            "$ref": "#/components/schemas/ItemLayoutUses"
+          },
+          "friendlyIdPrefix": {
+            "maxLength": 6,
+            "type": "string",
+            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.",
+            "nullable": true
+          },
+          "fieldVersions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The field versions",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API response for the GetLatestItemLayoutVersionAsync endpoint"
       },
       "GetMyProfileResponse": {
         "required": [
@@ -1284,6 +2150,24 @@
         },
         "additionalProperties": false,
         "description": "Response for the GetProjectDashboardAsync endpoint"
+      },
+      "GetProjectItemFieldsResponse": {
+        "required": [
+          "itemFields"
+        ],
+        "type": "object",
+        "properties": {
+          "itemFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectItemFieldModel"
+            },
+            "description": "List of item fields associated with the project",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API response for the GetProjectItemFieldsAsync endpoint"
       },
       "GetProjectQuickSelectResponse": {
         "required": [
@@ -1458,10 +2342,7 @@
             "nullable": true
           },
           "enabledFor": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ItemLayoutUse"
-            },
+            "type": "string",
             "description": "The uses this layout is applicable to",
             "nullable": true
           }
@@ -1469,10 +2350,11 @@
         "additionalProperties": false,
         "description": "Model for an item layout in a projects settings"
       },
-      "ItemLayoutUse": {
+      "ItemLayoutUses": {
         "enum": [
-          "WorkItems",
-          "Assets"
+          "none",
+          "workItems",
+          "assets"
         ],
         "type": "string"
       },
@@ -1509,10 +2391,71 @@
       },
       "OwnershipType": {
         "enum": [
-          "User",
-          "Organization"
+          "user",
+          "organization"
         ],
         "type": "string"
+      },
+      "ProjectItemFieldModel": {
+        "required": [
+          "fieldId",
+          "fieldVersionId",
+          "isRequired",
+          "name",
+          "type",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "fieldId": {
+            "type": "string",
+            "description": "ID of the item field",
+            "format": "uuid"
+          },
+          "fieldVersionId": {
+            "type": "string",
+            "description": "ID of the item field version",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Version number of the item field",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the item field",
+            "nullable": true
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": ""
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldType"
+          },
+          "canBeNegative": {
+            "type": "boolean",
+            "description": "",
+            "nullable": true
+          },
+          "possibleValues": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/StringValueMatchingType"
+            },
+            "description": "",
+            "nullable": true
+          },
+          "geoLocationType": {
+            "$ref": "#/components/schemas/GeoLocationType"
+          },
+          "requiredAddressFields": {
+            "$ref": "#/components/schemas/AddressFields"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response model for item fields"
       },
       "RegisterUserApiRequest": {
         "required": [
@@ -1534,6 +2477,14 @@
         },
         "additionalProperties": false,
         "description": "Request to register a new user"
+      },
+      "StringValueMatchingType": {
+        "enum": [
+          "exact",
+          "caseInvariant",
+          "soundex"
+        ],
+        "type": "string"
       },
       "UnauthorizedResult": {
         "type": "object",

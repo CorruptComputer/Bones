@@ -11,7 +11,7 @@
     protected override async Task OnInitializedAsync()
     {
         await ApiClient.LogoutAsync();
-        await AuthStateProvider.ClearCurrentUserAsync(CancellationToken.None);
+        await AuthStateProvider.ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
 
         NavManager.NavigateTo("/");
     }

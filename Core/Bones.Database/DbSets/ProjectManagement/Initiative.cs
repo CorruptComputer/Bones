@@ -1,3 +1,4 @@
+using Bones.Database.DbConsts;
 using Bones.Database.DbSets.WorkItemManagement;
 
 namespace Bones.Database.DbSets.ProjectManagement;
@@ -5,7 +6,7 @@ namespace Bones.Database.DbSets.ProjectManagement;
 /// <summary>
 ///     Model for the ProjectManagement.Initiatives table
 /// </summary>
-[Table("Initiatives", Schema = "ProjectManagement")]
+[Table(TableNames.ProjectManagement.Initiatives, Schema = SchemaNames.ProjectManagement)]
 [PrimaryKey(nameof(Id))]
 public class Initiative
 {

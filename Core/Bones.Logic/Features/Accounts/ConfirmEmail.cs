@@ -55,7 +55,7 @@ internal class ConfirmEmailHandler(UserManager<BonesUser> userManager, ISender s
 
             if (result.Succeeded)
             {
-                await sender.Send(new SetEmailConfirmedDateTimeDbCommand(user, DateTimeOffset.Now), cancellationToken);
+                await sender.Send(new SetEmailConfirmedDateTimeDb.Command(user.Id, DateTimeOffset.Now), cancellationToken);
             }
         }
         else

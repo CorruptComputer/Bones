@@ -1,3 +1,4 @@
+using Bones.Database.DbConsts;
 using Bones.Database.DbSets.ProjectManagement;
 
 namespace Bones.Database.DbSets.WorkItemManagement;
@@ -5,7 +6,7 @@ namespace Bones.Database.DbSets.WorkItemManagement;
 /// <summary>
 ///     Model for the WorkItemManagement.WorkItemQueues table
 /// </summary>
-[Table("WorkItemQueues", Schema = "WorkItemManagement")]
+[Table(TableNames.WorkItemManagement.WorkItemQueues, Schema = SchemaNames.WorkItemManagement)]
 [PrimaryKey(nameof(Id))]
 public class WorkItemQueue
 {

@@ -1,6 +1,6 @@
 using Bones.Logic.Features.Accounts;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.System;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
@@ -99,7 +99,7 @@ public class RegisterUserTests : TestBase
 
         ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(request.Email));
         confirmation.Should().NotBeNull();
-        confirmation?.ConfirmationLink.Should().NotBeNullOrEmpty();
+        confirmation.ConfirmationLink.Should().NotBeNullOrEmpty();
     }
 
     /// <summary>

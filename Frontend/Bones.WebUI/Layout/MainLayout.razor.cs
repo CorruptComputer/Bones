@@ -50,9 +50,27 @@ public partial class MainLayout : LayoutComponentBase
     }];
 
     /// <summary>
-    ///   
+    ///   Event for when the page is loaded
     /// </summary>
     protected override async Task OnInitializedAsync()
+    {
+        await UpdateProjectList();
+
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    ///   Event for when the page is changed without a full site reload
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        await UpdateProjectList();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task UpdateProjectList() 
     {
         try
         {
@@ -78,16 +96,21 @@ public partial class MainLayout : LayoutComponentBase
             ProjectName = "+ Create a new project",
             ProjectId = Guid.Empty
         });
-
-        await base.OnInitializedAsync();
     }
 
-    private void ToggleDrawer()
+    /// <summary>
+    ///   Toggles the nav drawer
+    /// </summary>
+    protected void ToggleDrawer()
     {
         _open = !_open;
     }
 
-    private void OnGoToProjectChanged(IEnumerable<Guid?>? selectedProject)
+    /// <summary>
+    ///    Navigates to the selected project
+    /// </summary>
+    /// <param name="selectedProject"></param>
+    protected void OnGoToProjectChanged(IEnumerable<Guid?>? selectedProject)
     {
         Guid? selected = selectedProject?.FirstOrDefault();
         if (selected.HasValue)

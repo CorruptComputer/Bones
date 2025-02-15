@@ -1,0 +1,185 @@
+using Bones.Api.Client;
+using Bones.Shared.Consts;
+using Microsoft.AspNetCore.Components;
+
+namespace Bones.WebUI.Pages.Project;
+
+/// <summary>
+///   Edit Item Field page
+/// </summary>
+public partial class EditItemFieldPage : ComponentBase
+{
+    /// <summary>
+    ///   The ID of the project the parent item field belongs to
+    /// </summary>
+    [Parameter]
+    public Guid ProjectId { get; set; }
+
+    /// <summary>
+    ///   The ID of the item field to load on this page
+    /// </summary>
+    [Parameter]
+    public Guid ItemFieldId { get; set; }
+
+    /// <summary>
+    ///   Did the request to the API result in an error?
+    /// </summary>
+    public bool ApiError { get; set; } = false;
+
+    /// <summary>
+    ///   Is the form valid?
+    /// </summary>
+    public bool FormValid { get; set; }
+
+    /// <summary>
+    ///   The issues with the users inputs
+    /// </summary>
+    public string[] ValidationErrors { get; set; } = [];
+
+    private string FieldName { get; set; } = string.Empty;
+    private Api.Client.FieldType FieldType { get; set; }
+    private bool IsRequired { get; set; }
+
+    private bool CanBeNegative { get; set; }
+
+    private GeoLocationType GeoLocationType { get; set; }
+    private bool StreetNumberRequired { get; set; }
+    private bool StreetNameRequired { get; set; }
+    private bool CityOrPlaceRequired { get; set; }
+    private bool StateOrProvinceRequired { get; set; }
+    private bool PostalCodeRequired { get; set; }
+    private bool CountyRequired { get; set; }
+    private bool CountryRequired { get; set; }
+
+    /// <summary>
+    ///   Fires when the page is loaded
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchFromAPI();
+
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    ///   Fires if the same page but with a different parameter is loaded
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        await FetchFromAPI();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task FetchFromAPI()
+    {
+        GetLatestItemFieldVersionResponse latestVersion = await ApiClient.GetLatestItemFieldVersionAsync(ProjectId, ItemFieldId);
+        FieldName = latestVersion.Name;
+        FieldType = latestVersion.Type;
+        IsRequired = latestVersion.IsRequired;
+
+        CanBeNegative = latestVersion.CanBeNegative ?? false;
+
+        GeoLocationType = latestVersion.GeoLocationType ?? GeoLocationType.OsmObject;
+        StreetNumberRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.StreetNumber) ?? false;
+        StreetNameRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.StreetName) ?? false;
+        CityOrPlaceRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.CityOrPlace) ?? false;
+        StateOrProvinceRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.StateOrProvince) ?? false;
+        PostalCodeRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.PostalCode) ?? false;
+        CountyRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.County) ?? false;
+        CountryRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.Country) ?? false;
+    }
+
+    /// <summary>
+    ///   Send the request to create the new version to the API, if it errors tell the user what went wrong.
+    /// </summary>
+    public async Task SendCreateRequestAsync()
+    {
+        if (!FormValid)
+        {
+            return;
+        }
+
+        try
+        {
+            ApiError = false;
+
+            CreateItemFieldVersionRequest request = GetRequest();
+            await ApiClient.CreateItemFieldVersionAsync(ProjectId, ItemFieldId, request);
+
+            NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace("{ProjectId:guid}", ProjectId.ToString()));
+        }
+        catch (ApiException ex)
+        {
+            Logger.LogError(ex, "Error while creating initiative");
+            ApiError = true;
+        }
+    }
+
+    private CreateItemFieldVersionRequest GetRequest()
+    {
+        CreateItemFieldVersionRequest request = new()
+        {
+            Name = FieldName,
+            IsRequired = IsRequired,
+            Type = FieldType,
+        };
+
+        if (request.Type is Api.Client.FieldType.ValueList)
+        {
+            // TODO: Implement this
+            request.PossibleValues = new();
+        }
+        else if (request.Type is Api.Client.FieldType.Integer or Api.Client.FieldType.Decimal)
+        {
+            request.CanBeNegative = CanBeNegative;
+        }
+        else if (request.Type is Api.Client.FieldType.GeoLocation)
+        {
+            request.GeoLocationType = GeoLocationType;
+
+            if (request.GeoLocationType is Api.Client.GeoLocationType.Address)
+            {
+                request.RequiredAddressFields = AddressFields.None;
+
+                if (StreetNumberRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.StreetNumber;
+                }
+
+                if (StreetNameRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.StreetName;
+                }
+
+                if (CityOrPlaceRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.CityOrPlace;
+                }
+
+                if (StateOrProvinceRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.StateOrProvince;
+                }
+
+                if (PostalCodeRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.PostalCode;
+                }
+
+                if (CountyRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.County;
+                }
+
+                if (CountryRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.Country;
+                }
+            }
+        }
+
+        return request;   
+    }
+}

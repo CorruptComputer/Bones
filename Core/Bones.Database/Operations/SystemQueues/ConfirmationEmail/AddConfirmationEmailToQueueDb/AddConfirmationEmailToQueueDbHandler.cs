@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.System;
 using Bones.Shared.Extensions;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

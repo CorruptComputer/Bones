@@ -14,7 +14,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     /// <inheritdoc />
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        GetMyProfileResponse? currentUser = await GetCurrentUserAsync(CancellationToken.None);
+        GetMyProfileResponse? currentUser = await GetCurrentUserFromBrowserStorageAsync(CancellationToken.None);
 
         if (currentUser == null)
         {
@@ -35,12 +35,12 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     }
 
     /// <summary>
-    ///   Sets the current user
+    ///   Saves the current user
     /// </summary>
     /// <param name="currentUser"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task SetCurrentUserAsync(GetMyProfileResponse currentUser, CancellationToken cancellationToken)
+    public async Task SaveCurrentUserInBrowserStorageAsync(GetMyProfileResponse currentUser, CancellationToken cancellationToken)
     {
         await localStorageService.SetItemAsync(LocalStorageService.CURRENT_USER_KEY, currentUser, cancellationToken);
 
@@ -52,7 +52,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task ClearCurrentUserAsync(CancellationToken cancellationToken)
+    public async Task ClearCurrentUserInBrowserStorageAsync(CancellationToken cancellationToken)
     {
         await localStorageService.RemoveItemAsync(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
 
@@ -64,7 +64,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<GetMyProfileResponse?> GetCurrentUserAsync(CancellationToken cancellationToken)
+    public Task<GetMyProfileResponse?> GetCurrentUserFromBrowserStorageAsync(CancellationToken cancellationToken)
     {
         return localStorageService.GetItemAsync<GetMyProfileResponse>(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
     }

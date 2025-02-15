@@ -23,7 +23,11 @@ public partial class AutoGenBonesApiClient
 {
     static partial void UpdateJsonSerializerSettings(JsonSerializerOptions settings)
     {
+        settings.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        settings.WriteIndented = true;
+        settings.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
         settings.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        settings.Converters.Add(new JsonStringEnumConverter());
+        settings.AllowTrailingCommas = true;
+        settings.RespectNullableAnnotations = true;
     }
 }

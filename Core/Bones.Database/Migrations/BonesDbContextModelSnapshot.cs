@@ -18,7 +18,7 @@ namespace Bones.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -157,7 +157,7 @@ namespace Bones.Database.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("BonesUsers", "AccountManagement");
+                    b.ToTable("BonesUser", "AccountManagement");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.AccountManagement.BonesUserClaim", b =>
@@ -263,127 +263,10 @@ namespace Bones.Database.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("ProjectId");
-
                     b.ToTable("Assets", "AssetManagement");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemField", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("DeleteFlag")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GenericItemFields", "GenericItems");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemFieldListEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("DeleteFlag")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid?>("GenericItemFieldVersionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("MatchingType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("ParentFieldId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenericItemFieldVersionId");
-
-                    b.HasIndex("ParentFieldId");
-
-                    b.ToTable("GenericItemFieldListEntries", "GenericItems");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemFieldVersion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("DeleteFlag")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("GenericItemFieldId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("GenericItemLayoutVersionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsRequired")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("Version")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Version"));
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenericItemFieldId");
-
-                    b.HasIndex("GenericItemLayoutVersionId");
-
-                    b.ToTable("GenericItemFieldVersions", "GenericItems");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayout", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("DeleteFlag")
-                        .HasColumnType("boolean");
-
-                    b.PrimitiveCollection<int[]>("EnabledFor")
-                        .IsRequired()
-                        .HasColumnType("integer[]");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GenericItemLayouts", "GenericItems");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayoutVersion", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -391,31 +274,6 @@ namespace Bones.Database.Migrations
 
                     b.Property<DateTimeOffset>("CreateDateTime")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("DeleteFlag")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid?>("GenericItemLayoutId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ItemLayoutId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("Version")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenericItemLayoutId");
-
-                    b.ToTable("GenericItemLayoutVersions", "GenericItems");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
 
                     b.Property<int>("CurrentVersion")
                         .HasColumnType("integer");
@@ -438,14 +296,177 @@ namespace Bones.Database.Migrations
 
                     b.HasIndex("GenericItemLayoutId");
 
-                    b.ToTable("GenericItems", "GenericItems");
+                    b.ToTable("GenericItems", "GenericItem");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItemValue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemField", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreateDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GenericItemFields", "GenericItem");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFieldListEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("GenericItemFieldVersionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("MatchingType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenericItemFieldVersionId");
+
+                    b.ToTable("GenericItemFieldListEntries", "GenericItem");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFieldVersion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool?>("CanBeNegative")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("CreateDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("GenericItemFieldId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("GenericItemLayoutVersionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("GeoLocationType")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<int?>("RequiredAddressFields")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenericItemFieldId");
+
+                    b.HasIndex("GenericItemLayoutVersionId");
+
+                    b.ToTable("GenericItemFieldVersions", "GenericItem");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayout", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreateDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("FriendlyIdNonce")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FriendlyIdPrefix")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GenericItemLayouts", "GenericItem");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreateDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("EnabledFor")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("GenericItemLayoutId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ItemLayoutId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenericItemLayoutId");
+
+                    b.ToTable("GenericItemLayoutVersions", "GenericItem");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreateDateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
@@ -456,8 +477,8 @@ namespace Bones.Database.Migrations
                     b.Property<Guid?>("GenericItemVersionId")
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("LocationType")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("LocationId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -468,10 +489,12 @@ namespace Bones.Database.Migrations
 
                     b.HasIndex("GenericItemVersionId");
 
-                    b.ToTable("GenericItemValues", "GenericItems");
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("GenericItemValues", "GenericItem");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItemVersion", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemVersion", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -501,7 +524,97 @@ namespace Bones.Database.Migrations
 
                     b.HasIndex("GenericItemLayoutVersionId");
 
-                    b.ToTable("GenericItemVersions", "GenericItems");
+                    b.ToTable("GenericItemVersions", "GenericItem");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.MappingManagement.GeoLocation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CityOrPlace")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("text");
+
+                    b.Property<string>("County")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("GeoLocated")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Geometry")
+                        .HasColumnType("text");
+
+                    b.Property<long?>("LastAcknowledgedOsmVersion")
+                        .HasColumnType("bigint");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid?>("OsmObjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("StateOrProvince")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StreetName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StreetNumber")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OsmObjectId");
+
+                    b.ToTable("GeoLocations", "MappingManagement");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.MappingManagement.OsmObject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("DeletedOnOsmFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LastOsmGeometryUpdate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("LastOsmVersion")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OsmGeometry")
+                        .HasColumnType("text");
+
+                    b.Property<long>("OsmId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("OsmType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OsmObjects", "MappingManagement");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.OrganizationManagement.BonesOrganization", b =>
@@ -576,30 +689,7 @@ namespace Bones.Database.Migrations
                     b.ToTable("Projects", "ProjectManagement");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.System.TaskError", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ErrorMessage")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<DateTimeOffset>("ErrorTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("StackTrace")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TaskErrors", "System");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.SystemQueues.ConfirmationEmailDeadQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.ConfirmationEmailDeadQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -633,10 +723,10 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConfirmationEmailDeadQueue", "SystemQueues");
+                    b.ToTable("ConfirmationEmailDeadQueue", "System");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.SystemQueues.ConfirmationEmailQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.ConfirmationEmailQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -667,10 +757,10 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConfirmationEmailQueue", "SystemQueues");
+                    b.ToTable("ConfirmationEmailQueue", "System");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.SystemQueues.ForgotPasswordEmailDeadQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.ForgotPasswordEmailDeadQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -704,10 +794,10 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ForgotPasswordEmailDeadQueue", "SystemQueues");
+                    b.ToTable("ForgotPasswordEmailDeadQueue", "System");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.SystemQueues.ForgotPasswordEmailQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.ForgotPasswordEmailQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -738,7 +828,30 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ForgotPasswordEmailQueue", "SystemQueues");
+                    b.ToTable("ForgotPasswordEmailQueue", "System");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.System.TaskError", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ErrorMessage")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<DateTimeOffset>("ErrorTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("StackTrace")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskErrors", "System");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.WorkItemManagement.WorkItem", b =>
@@ -854,61 +967,18 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.AssetManagement.Asset", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItems.GenericItem", "Item")
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItem", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bones.Database.DbSets.ProjectManagement.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Item");
-
-                    b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemFieldListEntry", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItem", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemFieldVersion", null)
-                        .WithMany("PossibleValues")
-                        .HasForeignKey("GenericItemFieldVersionId");
-
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemField", "ParentField")
-                        .WithMany()
-                        .HasForeignKey("ParentFieldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ParentField");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemFieldVersion", b =>
-                {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemField", null)
-                        .WithMany("Versions")
-                        .HasForeignKey("GenericItemFieldId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayoutVersion", null)
-                        .WithMany("Fields")
-                        .HasForeignKey("GenericItemLayoutVersionId");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayoutVersion", b =>
-                {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayout", null)
-                        .WithMany("Versions")
-                        .HasForeignKey("GenericItemLayoutId");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItem", b =>
-                {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayout", "GenericItemLayout")
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayout", "GenericItemLayout")
                         .WithMany()
                         .HasForeignKey("GenericItemLayoutId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -917,34 +987,78 @@ namespace Bones.Database.Migrations
                     b.Navigation("GenericItemLayout");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItemValue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFieldListEntry", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemFieldVersion", "Field")
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemFieldVersion", null)
+                        .WithMany("PossibleValues")
+                        .HasForeignKey("GenericItemFieldVersionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFieldVersion", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemField", null)
+                        .WithMany("Versions")
+                        .HasForeignKey("GenericItemFieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", null)
+                        .WithMany("Fields")
+                        .HasForeignKey("GenericItemLayoutVersionId");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayout", null)
+                        .WithMany("Versions")
+                        .HasForeignKey("GenericItemLayoutId");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemValue", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemFieldVersion", "Field")
                         .WithMany()
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItems.GenericItemVersion", null)
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemVersion", null)
                         .WithMany("Values")
                         .HasForeignKey("GenericItemVersionId");
 
+                    b.HasOne("Bones.Database.DbSets.MappingManagement.GeoLocation", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.Navigation("Field");
+
+                    b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItemVersion", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemVersion", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItems.GenericItem", null)
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItem", null)
                         .WithMany("Versions")
                         .HasForeignKey("GenericItemId");
 
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayoutVersion", "GenericItemLayoutVersion")
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", "GenericItemLayoutVersion")
                         .WithMany()
                         .HasForeignKey("GenericItemLayoutVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("GenericItemLayoutVersion");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.MappingManagement.GeoLocation", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.MappingManagement.OsmObject", "OsmObject")
+                        .WithMany()
+                        .HasForeignKey("OsmObjectId");
+
+                    b.Navigation("OsmObject");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.ProjectManagement.Initiative", b =>
@@ -975,7 +1089,7 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.WorkItemManagement.WorkItem", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItems.GenericItem", "Item")
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItem", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1008,32 +1122,32 @@ namespace Bones.Database.Migrations
                     b.Navigation("Projects");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemField", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItem", b =>
                 {
                     b.Navigation("Versions");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFields.GenericItemFieldVersion", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemField", b =>
+                {
+                    b.Navigation("Versions");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemFieldVersion", b =>
                 {
                     b.Navigation("PossibleValues");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayout", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayout", b =>
                 {
                     b.Navigation("Versions");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayouts.GenericItemLayoutVersion", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", b =>
                 {
                     b.Navigation("Fields");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItem", b =>
-                {
-                    b.Navigation("Versions");
-                });
-
-            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItems.GenericItemVersion", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemVersion", b =>
                 {
                     b.Navigation("Values");
                 });

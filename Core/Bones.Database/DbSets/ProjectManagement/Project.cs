@@ -1,3 +1,4 @@
+using Bones.Database.DbConsts;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Shared.Backend.Enums;
@@ -7,7 +8,7 @@ namespace Bones.Database.DbSets.ProjectManagement;
 /// <summary>
 ///     Model for the ProjectManagement.Projects table
 /// </summary>
-[Table("Projects", Schema = "ProjectManagement")]
+[Table(TableNames.ProjectManagement.Projects, Schema = SchemaNames.ProjectManagement)]
 [PrimaryKey(nameof(Id))]
 public class Project
 {

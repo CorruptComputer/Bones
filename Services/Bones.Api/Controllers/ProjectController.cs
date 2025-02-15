@@ -6,8 +6,7 @@ using Bones.Database.DbSets.ProjectManagement;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Mvc;
-using Bones.Database.DbSets.GenericItems.GenericItemFields;
-using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
+using Bones.Database.DbSets.GenericItems;
 using Bones.Api.Models.Project;
 using Bones.Logic.Features.GenericItem;
 
@@ -206,6 +205,68 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
 
         return resp;
     }
+
+    /// <summary>
+    ///     Gets the Item Fields available in a project
+    /// </summary>
+    /// <param name="projectId">The ID of the project</param>
+    /// <returns>The item fields in the project.</returns>
+    [HttpGet("P{projectId:guid}/fields", Name = "GetProjectItemFieldsAsync")]
+    [ProducesResponseType<GetProjectItemFieldsResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<GetProjectItemFieldsResponse>> GetProjectItemFieldsAsync(Guid projectId)
+    {
+        QueryResponse<List<GenericItemField>> fieldResponse = await Sender.Send(new GetItemFieldsByProjectQuery(projectId, await GetCurrentBonesUserAsync()));
+
+        if (!fieldResponse.Success || fieldResponse.Result is null)
+        {
+            return BadRequest(ErrorResponse.FromQueryResponse(fieldResponse));
+        }
+
+        return GetProjectItemFieldsResponse.FromInternalList(fieldResponse.Result);
+    }
+
+    /// <summary>
+    ///     Gets the latest version of a field
+    /// </summary>
+    /// <param name="projectId">The ID of the project</param>
+    /// <param name="fieldId">The ID of the field</param>
+    /// <returns>The latest version of the requested field.</returns>
+    [HttpGet("P{projectId:guid}/fields/F{fieldId:guid}/latest", Name = "GetLatestItemFieldVersionAsync")]
+    [ProducesResponseType<GetLatestItemFieldVersionResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<GetLatestItemFieldVersionResponse>> GetLatestItemFieldVersionAsync(Guid projectId, Guid fieldId)
+    {
+        QueryResponse<GenericItemField?> fieldResponse = await Sender.Send(new GetItemFieldByIdQuery(fieldId, await GetCurrentBonesUserAsync()));
+
+        if (!fieldResponse.Success || fieldResponse.Result is null)
+        {
+            return BadRequest(ErrorResponse.FromQueryResponse(fieldResponse));
+        }
+
+        return GetLatestItemFieldVersionResponse.FromInternal(fieldResponse.Result);
+    }
+
+    /// <summary>
+    ///     Gets the latest version of a layout
+    /// </summary>
+    /// <param name="projectId">The ID of the project</param>
+    /// <param name="layoutId">The ID of the layout</param>
+    /// <returns>The latest version of the requested layout.</returns>
+    [HttpGet("P{projectId:guid}/layouts/L{layoutId:guid}/latest", Name = "GetLatestItemLayoutVersionAsync")]
+    [ProducesResponseType<GetLatestItemLayoutVersionResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<GetLatestItemLayoutVersionResponse>> GetLatestItemLayoutVersionAsync(Guid projectId, Guid layoutId)
+    {
+        QueryResponse<GenericItemLayout?> layoutResponse = await Sender.Send(new GetItemLayoutById.Query(layoutId, await GetCurrentBonesUserAsync()));
+
+        if (!layoutResponse.Success || layoutResponse.Result is null)
+        {
+            return BadRequest(ErrorResponse.FromQueryResponse(layoutResponse));
+        }
+
+        return GetLatestItemLayoutVersionResponse.FromInternal(layoutResponse.Result);
+    }
     #endregion
 
     #region POST
@@ -247,6 +308,89 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
 
         return response.Id ?? Guid.Empty;
     }
+
+    /// <summary>
+    ///     Creates a new item field in a project
+    /// </summary>
+    /// <param name="projectId">The ID of the project to create this in</param>
+    /// <param name="request">The request</param>
+    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("P{projectId:guid}/fields/create", Name = "CreateItemFieldAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<Guid>> CreateItemFieldAsync(Guid projectId, [FromBody] CreateItemFieldRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(projectId, await GetCurrentBonesUserAsync()));
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Id ?? Guid.Empty;
+    }
+
+    /// <summary>
+    ///     Creates a new item field version in a project
+    /// </summary>
+    /// <param name="projectId">The ID of the project to create this in</param>
+    /// <param name="fieldId">The ID of the field to add this version to</param>
+    /// <param name="request">The request</param>
+    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("P{projectId:guid}/fields/F{fieldId:guid}", Name = "CreateItemFieldVersionAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<Guid>> CreateItemFieldVersionAsync(Guid projectId, Guid fieldId, [FromBody] CreateItemFieldVersionRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(fieldId, await GetCurrentBonesUserAsync()));
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Id ?? Guid.Empty;
+    }
+
+    /// <summary>
+    ///     Creates a new item layout in a project
+    /// </summary>
+    /// <param name="projectId">The ID of the project to create this in</param>
+    /// <param name="request">The request</param>
+    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("P{projectId:guid}/layouts/create", Name = "CreateItemLayoutAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<Guid>> CreateItemLayoutAsync(Guid projectId, [FromBody] CreateItemLayoutRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(projectId, await GetCurrentBonesUserAsync()));
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Id ?? Guid.Empty;
+    }
+
+    /// <summary>
+    ///     Creates a new item layout version in a project
+    /// </summary>
+    /// <param name="projectId">The ID of the project to create this in</param>
+    /// <param name="layoutId">The ID of the layout to add this version to</param>
+    /// <param name="request">The request</param>
+    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("P{projectId:guid}/layouts/L{layoutId:guid}", Name = "CreateItemLayoutVersionAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<Guid>> CreateItemLayoutVersionAsync(Guid projectId, Guid layoutId, [FromBody] CreateItemLayoutVersionRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(layoutId, await GetCurrentBonesUserAsync()));
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Id ?? Guid.Empty;
+    }
+
     #endregion
 
     #region PUT

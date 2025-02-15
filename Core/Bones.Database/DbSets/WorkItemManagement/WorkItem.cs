@@ -1,11 +1,12 @@
-using Bones.Database.DbSets.GenericItems.GenericItems;
+using Bones.Database.DbConsts;
+using Bones.Database.DbSets.GenericItems;
 
 namespace Bones.Database.DbSets.WorkItemManagement;
 
 /// <summary>
 ///     Model for the WorkItemManagement.WorkItems table
 /// </summary>
-[Table("WorkItems", Schema = "WorkItemManagement")]
+[Table(TableNames.WorkItemManagement.WorkItems, Schema = SchemaNames.WorkItemManagement)]
 [PrimaryKey(nameof(Id))]
 public class WorkItem
 {

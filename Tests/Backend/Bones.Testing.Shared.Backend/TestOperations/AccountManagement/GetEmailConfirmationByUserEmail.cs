@@ -1,5 +1,5 @@
 using Bones.Database;
-using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.System;
 using Bones.Shared.Backend.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

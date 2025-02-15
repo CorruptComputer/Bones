@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems.GenericItemFields;
+using Bones.Database.DbSets.GenericItems;
 
 namespace Bones.Database.Operations.GenericItem;
 

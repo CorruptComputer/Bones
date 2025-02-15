@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.GenericItems.GenericItems;
+using Bones.Database.DbConsts;
+using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.ProjectManagement;
 
 namespace Bones.Database.DbSets.AssetManagement;
@@ -6,7 +7,7 @@ namespace Bones.Database.DbSets.AssetManagement;
 /// <summary>
 ///     Model for the AssetManagement.Assets table
 /// </summary>
-[Table("Assets", Schema = "AssetManagement")]
+[Table(TableNames.AssetManagement.Assets, Schema = SchemaNames.AssetManagement)]
 [PrimaryKey(nameof(Id))]
 public class Asset
 {
@@ -23,9 +24,10 @@ public class Asset
     public required string Name { get; set; }
 
     /// <summary>
-    ///   The project this Asset belongs to
+    ///   The ID of the project this Asset belongs to
     /// </summary>
-    public required Project Project { get; set; }
+    [ForeignKey(nameof(Project))]
+    public required Guid ProjectId { get; set; }
 
     /// <summary>
     ///   The generic item for this asset

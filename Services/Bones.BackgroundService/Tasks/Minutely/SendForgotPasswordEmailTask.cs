@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 using Bones.BackgroundService.Models;
-using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.System;
 using Bones.Database.Operations.SystemQueues.ForgotPassword.AnyForgotPasswordEmailsInQueueDb;
 using Bones.Database.Operations.SystemQueues.ForgotPassword.GetForgotPasswordEmailsInQueueDb;
 using Bones.Database.Operations.SystemQueues.ForgotPassword.IncrementFailedConfirmationEmailById;

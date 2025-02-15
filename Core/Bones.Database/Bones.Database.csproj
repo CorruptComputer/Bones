@@ -15,6 +15,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.1" />
@@ -30,15 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="DbSets\DocumentationManagement\" />
-        <Folder Include="Migrations\" />
-        <Folder Include="Operations\AssetManagement\" />
-        <Folder Include="Operations\GenericItem\ItemFields\" />
-        <Folder Include="Operations\GenericItem\ItemLayouts\GetItemLayoutDetailsByIdDb\" />
-        <Folder Include="Operations\GenericItem\ItemLayouts\GetItemLayoutsByProjectDb\" />
-        <Folder Include="Operations\GenericItem\ItemLayouts\QueueDeleteItemLayoutByIdDb\" />
-        <Folder Include="Operations\SystemQueues\ConfirmationEmail\" />
-        <Folder Include="Operations\WorkItemManagement\" />
+      <Folder Include="Migrations/" />
     </ItemGroup>
 
 </Project>

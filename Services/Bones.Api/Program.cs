@@ -1,20 +1,14 @@
-using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Api.Handlers;
 using Bones.Api.Models;
 using Bones.Logic;
 using Bones.Database;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Shared.Backend.Extensions;
-using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
-using OpenTelemetry.Logs;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Trace;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
+using System.Reflection;
 
 namespace Bones.Api;
 
@@ -34,62 +28,7 @@ public static class Program
 
     private static WebApplication BuildBonesApi(this WebApplicationBuilder builder)
     {
-        // Aspire
-        builder.Logging.AddOpenTelemetry(logging =>
-        {
-            logging.IncludeFormattedMessage = true;
-            logging.IncludeScopes = true;
-        });
-
-        builder.Services.AddOpenTelemetry()
-            .WithMetrics(metrics =>
-            {
-                metrics.AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddRuntimeInstrumentation();
-            })
-            .WithTracing(tracing =>
-            {
-                if (builder.Environment.IsDevelopment())
-                {
-                    // We want to view all traces in development
-                    tracing.SetSampler(new AlwaysOnSampler());
-                }
-
-                tracing.AddAspNetCoreInstrumentation()
-                    // Uncomment the following line to enable gRPC instrumentation 
-                    // (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
-                    //.AddGrpcClientInstrumentation()
-                    .AddHttpClientInstrumentation();
-            });
-
-
-        bool useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
-        if (useOtlpExporter)
-        {
-            builder.Services.Configure<OpenTelemetryLoggerOptions>(
-                logging => logging.AddOtlpExporter());
-            builder.Services.ConfigureOpenTelemetryMeterProvider(
-                metrics => metrics.AddOtlpExporter());
-            builder.Services.ConfigureOpenTelemetryTracerProvider(
-                tracing => tracing.AddOtlpExporter());
-        }
-
-        builder.Services.AddHealthChecks()
-        // Add a default liveness check to ensure app is responsive
-        .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
-
-        builder.Services.AddServiceDiscovery();
-
-        builder.Services.ConfigureHttpClientDefaults(http =>
-        {
-            // Turn on resilience by default
-            http.AddStandardResilienceHandler();
-
-            // Turn on service discovery by default
-            http.AddServiceDiscovery();
-        });
-        // End Aspire
+        builder.AddAspire();
 
         builder.Configuration.AddEnvironmentVariables();
 
@@ -109,22 +48,16 @@ public static class Program
 
         builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 
-        builder.Services.AddAuthorizationBuilder()
-            .AddPolicy(AuthorizationPolicy.SYSTEM_ADMINISTRATOR, policy =>
-            {
-                policy.RequireClaim(BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES);
-            });
-
-        builder.Services.AddIdentity<BonesUser, BonesRole>(options => options.AddBonesIdentityOptions())
-            .AddSignInManager()
-            .AddDefaultTokenProviders()
-            .AddRoles<BonesRole>()
-            .AddEntityFrameworkStores<BonesDbContext>();
+        builder.Services.AddApiAuthenticationAndAuthorization();
 
         builder.Services.AddControllers().AddJsonOptions(configure =>
         {
+            configure.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            configure.JsonSerializerOptions.WriteIndented = true;
+            configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
             configure.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-            configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            configure.JsonSerializerOptions.AllowTrailingCommas = true;
+            configure.JsonSerializerOptions.RespectNullableAnnotations = true;
         });
 
         builder.Services.AddEndpointsApiExplorer();
@@ -203,18 +136,7 @@ public static class Program
         app.UseAuthorization();
         app.MapControllers();
 
-        // Aspire
-        // All health checks must pass for app to be considered ready to 
-        // accept traffic after starting
-        app.MapHealthChecks("/health");
-
-        // Only health checks tagged with the "live" tag must pass for 
-        // app to be considered alive
-        app.MapHealthChecks("/alive", new HealthCheckOptions
-        {
-            Predicate = r => r.Tags.Contains("live")
-        });
-        // End Aspire
+        app.UseAspire();
 
         Log.Information("Startup complete");
         await app.RunAsync();

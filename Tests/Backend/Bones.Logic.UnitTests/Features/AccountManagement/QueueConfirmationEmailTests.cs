@@ -1,6 +1,6 @@
 using Bones.Logic.Features.Accounts;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.System;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
@@ -31,9 +31,9 @@ public class QueueConfirmationEmailTests : TestBase
 
         ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(createUserRequest.Email));
         confirmation.Should().NotBeNull();
-        confirmation?.ConfirmationLink.Should().NotBeNullOrEmpty();
+        confirmation.ConfirmationLink.Should().NotBeNullOrEmpty();
 
-        QueueConfirmationEmailCommand confirmationEmailCommand = new(createdUser ?? throw new(), createUserRequest.Email);
+        QueueConfirmationEmailCommand confirmationEmailCommand = new(createdUser, createUserRequest.Email);
         TestValidationResult<QueueConfirmationEmailCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 

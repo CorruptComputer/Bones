@@ -1441,6 +1441,378 @@ namespace Bones.Api.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
+        /// Gets the Item Fields available in a project
+        /// </summary>
+        /// <param name="projectId">The ID of the project</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<GetProjectItemFieldsResponse> GetProjectItemFieldsAsync(System.Guid projectId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/fields"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/fields");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetProjectItemFieldsResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the latest version of a field
+        /// </summary>
+        /// <param name="projectId">The ID of the project</param>
+        /// <param name="fieldId">The ID of the field</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<GetLatestItemFieldVersionResponse> GetLatestItemFieldVersionAsync(System.Guid projectId, System.Guid fieldId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            if (fieldId == null)
+                throw new System.ArgumentNullException("fieldId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/fields/F{fieldId}/latest"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/fields/F");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(fieldId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/latest");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetLatestItemFieldVersionResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the latest version of a layout
+        /// </summary>
+        /// <param name="projectId">The ID of the project</param>
+        /// <param name="layoutId">The ID of the layout</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<GetLatestItemLayoutVersionResponse> GetLatestItemLayoutVersionAsync(System.Guid projectId, System.Guid layoutId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            if (layoutId == null)
+                throw new System.ArgumentNullException("layoutId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/layouts/L{layoutId}/latest"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/layouts/L");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(layoutId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/latest");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetLatestItemLayoutVersionResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
         /// Creates a new project
         /// </summary>
         /// <param name="body">The request</param>
@@ -1590,6 +1962,516 @@ namespace Bones.Api.Client
                     urlBuilder_.Append("Project/P");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/initiative/create");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new item field in a project
+        /// </summary>
+        /// <param name="projectId">The ID of the project to create this in</param>
+        /// <param name="body">The request</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Guid> CreateItemFieldAsync(System.Guid projectId, CreateItemFieldRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateItemFieldRequest), JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/fields/create"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/fields/create");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new item field version in a project
+        /// </summary>
+        /// <param name="projectId">The ID of the project to create this in</param>
+        /// <param name="fieldId">The ID of the field to add this version to</param>
+        /// <param name="body">The request</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Guid> CreateItemFieldVersionAsync(System.Guid projectId, System.Guid fieldId, CreateItemFieldVersionRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            if (fieldId == null)
+                throw new System.ArgumentNullException("fieldId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateItemFieldVersionRequest), JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/fields/F{fieldId}"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/fields/F");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(fieldId, System.Globalization.CultureInfo.InvariantCulture)));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new item layout in a project
+        /// </summary>
+        /// <param name="projectId">The ID of the project to create this in</param>
+        /// <param name="body">The request</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Guid> CreateItemLayoutAsync(System.Guid projectId, CreateItemLayoutRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateItemLayoutRequest), JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/layouts/create"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/layouts/create");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new item layout version in a project
+        /// </summary>
+        /// <param name="projectId">The ID of the project to create this in</param>
+        /// <param name="layoutId">The ID of the layout to add this version to</param>
+        /// <param name="body">The request</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Guid> CreateItemLayoutVersionAsync(System.Guid projectId, System.Guid layoutId, CreateItemLayoutVersionRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (projectId == null)
+                throw new System.ArgumentNullException("projectId");
+
+            if (layoutId == null)
+                throw new System.ArgumentNullException("layoutId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(CreateItemLayoutVersionRequest), JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Project/P{projectId}/layouts/L{layoutId}"
+                    urlBuilder_.Append("Project/P");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/layouts/L");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(layoutId, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1897,6 +2779,37 @@ namespace Bones.Api.Client
         }
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Flags]
+    public enum AddressFields
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"none")]
+        None = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"streetNumber")]
+        StreetNumber = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"streetName")]
+        StreetName = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"cityOrPlace")]
+        CityOrPlace = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"stateOrProvince")]
+        StateOrProvince = 16,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"postalCode")]
+        PostalCode = 32,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"county")]
+        County = 64,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"country")]
+        Country = 128,
+
+    }
+
     /// <summary>
     /// Request to create a new initiative
     /// </summary>
@@ -1909,6 +2822,154 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string Name { get; set; }
+
+    }
+
+    /// <summary>
+    /// Request to create a new item field
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record CreateItemFieldRequest
+    {
+        /// <summary>
+        /// Name of the item field to create
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Is this field required to have a value?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
+        public bool IsRequired { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public FieldType Type { get; set; }
+
+        /// <summary>
+        /// If the Type of this field is either an Integer or Decimal, can it be negative?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
+        public bool? CanBeNegative { get; set; }
+
+        /// <summary>
+        /// If the Type of this field is a ValueList, the possible values this can have
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
+        public System.Collections.Generic.Dictionary<string, StringValueMatchingType> PossibleValues { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("geoLocationType")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public GeoLocationType? GeoLocationType { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("requiredAddressFields")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public AddressFields? RequiredAddressFields { get; set; }
+
+    }
+
+    /// <summary>
+    /// Request to create a new item field version
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record CreateItemFieldVersionRequest
+    {
+        /// <summary>
+        /// Name of the item field to create
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
+        public bool IsRequired { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public FieldType Type { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
+        public bool? CanBeNegative { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
+        public System.Collections.Generic.Dictionary<string, StringValueMatchingType> PossibleValues { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("geoLocationType")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public GeoLocationType? GeoLocationType { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("requiredAddressFields")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public AddressFields? RequiredAddressFields { get; set; }
+
+    }
+
+    /// <summary>
+    /// API request to create a new item layout
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record CreateItemLayoutRequest
+    {
+        /// <summary>
+        /// Name of the item layout to create
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("enabledFor")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public ItemLayoutUses EnabledFor { get; set; }
+
+        /// <summary>
+        /// The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("friendlyIdPrefix")]
+        [System.ComponentModel.DataAnnotations.StringLength(6)]
+        public string FriendlyIdPrefix { get; set; }
+
+        /// <summary>
+        /// The field versions to use for the initial layout version
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldVersions")]
+        public System.Collections.Generic.List<System.Guid> FieldVersions { get; set; }
+
+    }
+
+    /// <summary>
+    /// API request to create a new item layout version
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record CreateItemLayoutVersionRequest
+    {
+        /// <summary>
+        /// Name of the item layout to create
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("enabledFor")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public ItemLayoutUses EnabledFor { get; set; }
+
+        /// <summary>
+        /// The field versions to use for this layout version
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldVersions")]
+        public System.Collections.Generic.List<System.Guid> FieldVersions { get; set; }
 
     }
 
@@ -1954,23 +3015,45 @@ namespace Bones.Api.Client
     public enum FieldType
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"String")]
-        String = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"text")]
+        Text = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Number")]
-        Number = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"integer")]
+        Integer = 2,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Boolean")]
-        Boolean = 4,
+        [System.Runtime.Serialization.EnumMember(Value = @"decimal")]
+        Decimal = 4,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"DateTime")]
-        DateTime = 8,
+        [System.Runtime.Serialization.EnumMember(Value = @"boolean")]
+        Boolean = 8,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ValueList")]
-        ValueList = 16,
+        [System.Runtime.Serialization.EnumMember(Value = @"dateTime")]
+        DateTime = 16,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"GeoLocation")]
-        GeoLocation = 32,
+        [System.Runtime.Serialization.EnumMember(Value = @"valueList")]
+        ValueList = 32,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"geoLocation")]
+        GeoLocation = 64,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Flags]
+    public enum GeoLocationType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"osmObject")]
+        OsmObject = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"latLon")]
+        LatLon = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"address")]
+        Address = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"geometry")]
+        Geometry = 8,
 
     }
 
@@ -2016,6 +3099,101 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("workItemQueues")]
         public System.Collections.Generic.List<WorkItemQueueListModel> WorkItemQueues { get; set; }
+
+    }
+
+    /// <summary>
+    /// API response for the GetLatestItemFieldVersionAsync endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record GetLatestItemFieldVersionResponse
+    {
+        /// <summary>
+        /// ID of the item field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid FieldId { get; set; }
+
+        /// <summary>
+        /// ID of the item field version
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldVersionId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid FieldVersionId { get; set; }
+
+        /// <summary>
+        /// Version number of the item field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("version")]
+        public long Version { get; set; }
+
+        /// <summary>
+        /// Name of the item field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
+        public bool IsRequired { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public FieldType Type { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
+        public bool? CanBeNegative { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
+        public System.Collections.Generic.Dictionary<string, StringValueMatchingType> PossibleValues { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("geoLocationType")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public GeoLocationType? GeoLocationType { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("requiredAddressFields")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public AddressFields? RequiredAddressFields { get; set; }
+
+    }
+
+    /// <summary>
+    /// API response for the GetLatestItemLayoutVersionAsync endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record GetLatestItemLayoutVersionResponse
+    {
+        /// <summary>
+        /// Name of the item layout
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("enabledFor")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public ItemLayoutUses EnabledFor { get; set; }
+
+        /// <summary>
+        /// The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("friendlyIdPrefix")]
+        [System.ComponentModel.DataAnnotations.StringLength(6)]
+        public string FriendlyIdPrefix { get; set; }
+
+        /// <summary>
+        /// The field versions
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldVersions")]
+        public System.Collections.Generic.List<System.Guid> FieldVersions { get; set; }
 
     }
 
@@ -2124,6 +3302,21 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("initiatives")]
         public System.Collections.Generic.List<InitiativeListModel> Initiatives { get; set; }
+
+    }
+
+    /// <summary>
+    /// API response for the GetProjectItemFieldsAsync endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record GetProjectItemFieldsResponse
+    {
+        /// <summary>
+        /// List of item fields associated with the project
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemFields")]
+        public System.Collections.Generic.List<ProjectItemFieldModel> ItemFields { get; set; }
 
     }
 
@@ -2321,22 +3514,23 @@ namespace Bones.Api.Client
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("enabledFor")]
-
-        // TODO(system.text.json): Add string enum item converter
-        public System.Collections.Generic.List<ItemLayoutUse> EnabledFor { get; set; }
+        public string EnabledFor { get; set; }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     [System.Flags]
-    public enum ItemLayoutUse
+    public enum ItemLayoutUses
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"WorkItems")]
-        WorkItems = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"none")]
+        None = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Assets")]
-        Assets = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"workItems")]
+        WorkItems = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"assets")]
+        Assets = 4,
 
     }
 
@@ -2381,11 +3575,71 @@ namespace Bones.Api.Client
     public enum OwnershipType
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"User")]
+        [System.Runtime.Serialization.EnumMember(Value = @"user")]
         User = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Organization")]
+        [System.Runtime.Serialization.EnumMember(Value = @"organization")]
         Organization = 2,
+
+    }
+
+    /// <summary>
+    /// Response model for item fields
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record ProjectItemFieldModel
+    {
+        /// <summary>
+        /// ID of the item field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid FieldId { get; set; }
+
+        /// <summary>
+        /// ID of the item field version
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldVersionId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid FieldVersionId { get; set; }
+
+        /// <summary>
+        /// Version number of the item field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("version")]
+        public long Version { get; set; }
+
+        /// <summary>
+        /// Name of the item field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
+        public bool IsRequired { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public FieldType Type { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
+        public bool? CanBeNegative { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
+        public System.Collections.Generic.Dictionary<string, StringValueMatchingType> PossibleValues { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("geoLocationType")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public GeoLocationType? GeoLocationType { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("requiredAddressFields")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public AddressFields? RequiredAddressFields { get; set; }
 
     }
 
@@ -2408,6 +3662,22 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("password")]
         public string Password { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Flags]
+    public enum StringValueMatchingType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"exact")]
+        Exact = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"caseInvariant")]
+        CaseInvariant = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"soundex")]
+        Soundex = 4,
 
     }
 

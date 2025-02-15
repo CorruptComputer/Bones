@@ -1,6 +1,4 @@
-using Bones.Database.DbSets.GenericItems.GenericItemFields;
-using Bones.Database.DbSets.GenericItems.GenericItemLayouts;
-using Bones.Database.DbSets.GenericItems.GenericItems;
+using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

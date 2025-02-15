@@ -27,6 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Operations/GenericItem/ItemLayouts/" />
         <Folder Include="Operations\ProjectManagement\Initiatives\" />
         <Folder Include="Operations\ProjectManagement\Items\" />
     </ItemGroup>

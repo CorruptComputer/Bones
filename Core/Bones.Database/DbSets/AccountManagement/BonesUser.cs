@@ -1,12 +1,14 @@
+using Bones.Database.DbConsts;
 using Bones.Database.DbSets.ProjectManagement;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.AccountManagement;
 
 /// <summary>
 ///     Model for the AccountManagement.BonesUsers table.
 /// </summary>
-[Table("BonesUsers", Schema = "AccountManagement")]
+[Table(TableNames.AccountManagement.BonesUsers, Schema = SchemaNames.AccountManagement)]
 public class BonesUser : IdentityUser<Guid>
 {
     /// <summary>
@@ -36,4 +38,14 @@ public class BonesUser : IdentityUser<Guid>
     ///   The projects that the user owns.
     /// </summary>
     public List<Project> Projects { get; set; } = [];
+
+    /// <summary>
+    ///   Needed to override the default table name and schema that <see cref="IdentityUser{Guid}" /> uses.
+    ///   Seems the attribute is ignored by that, still keeping it there for consistency though.
+    /// </summary>
+    /// <param name="builder"></param>
+    internal static void BuildTable(EntityTypeBuilder<BonesUser> builder)
+    {
+        builder.ToTable(TableNames.AccountManagement.BonesUsers, SchemaNames.AccountManagement);
+    }
 }

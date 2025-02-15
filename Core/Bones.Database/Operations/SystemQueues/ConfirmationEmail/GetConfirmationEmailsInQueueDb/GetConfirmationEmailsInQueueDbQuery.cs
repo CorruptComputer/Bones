@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.System;
 
 namespace Bones.Database.Operations.SystemQueues.ConfirmationEmail.GetConfirmationEmailsInQueueDb;
 

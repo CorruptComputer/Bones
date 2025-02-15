@@ -1,5 +1,5 @@
 using Bones.Logic.Features.Accounts;
-using Bones.Database.DbSets.SystemQueues;
+using Bones.Database.DbSets.System;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
@@ -31,12 +31,8 @@ public class QueueForgotPasswordEmailTests : TestBase
 
         ForgotPasswordEmailQueue? queueItem = await Sender.Send(new GetForgotPasswordQueueItemByUserEmailQuery(createUserRequest.Email));
         queueItem.Should().NotBeNull();
-
-        if (queueItem is not null)
-        {
-            queueItem.EmailTo.Should().Be(createUserRequest.Email);
-            queueItem.PasswordResetLink.Should().NotBeNullOrEmpty();
-        }
+        queueItem.EmailTo.Should().Be(createUserRequest.Email);
+        queueItem.PasswordResetLink.Should().NotBeNullOrEmpty();
     }
 
     /// <summary>

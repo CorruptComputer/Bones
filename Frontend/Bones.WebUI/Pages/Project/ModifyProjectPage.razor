@@ -9,8 +9,8 @@
 </MudPaper>
 
 
-<div class="d-flex">
-    <div>
+<div class="d-flex" style="justify-content: space-between;">
+    <div style="width:49%">
         <div class="d-flex">
             <MudText Typo="Typo.h4">Project Fields</MudText>
             <MudSpacer/>
@@ -36,7 +36,7 @@
             </MudTable>
         </MudPaper>
     </div>
-    <div>
+    <div style="width:49%">
         <div class="d-flex">
             <MudText Typo="Typo.h4">Project Layouts</MudText>
             <MudSpacer/>
@@ -54,10 +54,12 @@
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Layout Name">@context.Name</MudTd>
-                    <MudTd DataLabel="Enabled For">@string.Join(", ", context.EnabledFor.Select(e => Enum.GetName(e) ?? string.Empty))</MudTd>
+                    <MudTd DataLabel="Enabled For">@context.EnabledFor</MudTd>
                     <MudTd DataLabel="Edit Layout"><MudButton Href="@GetEditItemLayoutUrl(ProjectId, context.ItemLayoutId)">Edit</MudButton></MudTd>
                 </RowTemplate>
             </MudTable>
         </MudPaper>
     </div>
 </div>
+
+<!-- TODO: Going to also need Role and Assignment settings here for Organizations once those start getting implemented -->

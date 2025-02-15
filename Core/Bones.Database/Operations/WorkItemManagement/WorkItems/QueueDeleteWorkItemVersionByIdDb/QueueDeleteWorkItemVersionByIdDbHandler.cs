@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems.GenericItems;
+using Bones.Database.DbSets.GenericItems;
 
 namespace Bones.Database.Operations.WorkItemManagement.WorkItems.QueueDeleteWorkItemVersionByIdDb;
 

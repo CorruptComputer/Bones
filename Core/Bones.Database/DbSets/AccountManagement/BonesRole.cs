@@ -1,12 +1,14 @@
+using Bones.Database.DbConsts;
 using Bones.Database.DbSets.OrganizationManagement;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.AccountManagement;
 
 /// <summary>
 ///     Model for the AccountManagement.BonesRoles table.
 /// </summary>
-[Table("BonesRoles", Schema = "AccountManagement")]
+[Table(TableNames.AccountManagement.BonesRoles, Schema = SchemaNames.AccountManagement)]
 public class BonesRole : IdentityRole<Guid>
 {
     /// <summary>
@@ -24,4 +26,14 @@ public class BonesRole : IdentityRole<Guid>
     ///   and should not be edited by organization users. They can still add users.
     /// </summary>
     public bool ReadOnlyRole { get; set; } = false;
+
+    /// <summary>
+    ///   Needed to override the default table name and schema that <see cref="IdentityRole{Guid}" /> uses.
+    ///   Seems the attribute is ignored by that, still keeping it there for consistency though.
+    /// </summary>
+    /// <param name="builder"></param>
+    internal static void BuildTable(EntityTypeBuilder<BonesRole> builder)
+    {
+        builder.ToTable(TableNames.AccountManagement.BonesRoles, SchemaNames.AccountManagement);
+    }
 }
