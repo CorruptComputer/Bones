@@ -17,6 +17,6 @@ public static class ServiceProviderExtensions
     {
         using IServiceScope scope = serviceProvider.CreateScope();
         ISender sender = scope.ServiceProvider.GetRequiredService<ISender>();
-        await sender.Send(new SetupDbCommand(), cancellationToken);
+        await sender.Send(new SetupDb.Command(), cancellationToken);
     }
 }

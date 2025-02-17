@@ -2,14 +2,16 @@ using Bones.Database.Models;
 
 namespace Bones.Database.Operations.Setup;
 
-/// <summary>
-///   Command to set up the Database
-/// </summary>
-public sealed record SetupDbCommand : IRequest<CommandResponse>;
-
-internal sealed class SetupDbHandler(BonesDbContext dbContext, DatabaseConfiguration config, ISender sender) : IRequestHandler<SetupDbCommand, CommandResponse>
+/// <inheritdoc />
+public sealed class SetupDb(BonesDbContext dbContext, DatabaseConfiguration config, ISender sender) : IRequestHandler<SetupDb.Command, CommandResponse>
 {
-    public async Task<CommandResponse> Handle(SetupDbCommand request, CancellationToken cancellationToken)
+    /// <summary>
+    ///   Command to set up the Database
+    /// </summary>
+    public sealed record Command : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         if (!(config.UseInMemoryDb ?? false) && (await dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
         {
@@ -24,7 +26,7 @@ internal sealed class SetupDbHandler(BonesDbContext dbContext, DatabaseConfigura
             Log.Information("Database is up to date.");
         }
 
-        await sender.Send(new SetupSystemAdminUserAndRoleCommand(), cancellationToken);
+        await sender.Send(new SetupSystemAdminUserAndRole.Command(), cancellationToken);
 
         return CommandResponse.Pass();
     }

@@ -2,10 +2,7 @@ using System.Net;
 using System.Net.Mail;
 using Bones.BackgroundService.Models;
 using Bones.Database.DbSets.System;
-using Bones.Database.Operations.SystemQueues.ForgotPassword.AnyForgotPasswordEmailsInQueueDb;
-using Bones.Database.Operations.SystemQueues.ForgotPassword.GetForgotPasswordEmailsInQueueDb;
-using Bones.Database.Operations.SystemQueues.ForgotPassword.IncrementFailedConfirmationEmailById;
-using Bones.Database.Operations.SystemQueues.ForgotPassword.RemoveConfirmationEmailFromQueueByIdDb;
+using Bones.Database.Operations.System;
 
 namespace Bones.BackgroundService.Tasks.Minutely;
 
@@ -25,12 +22,12 @@ internal class SendForgotPasswordEmailTask(ISender sender, BackgroundServiceConf
             return false;
         }
 
-        return await Sender.Send(new AnyForgotPasswordEmailsInQueueDbQuery(), cancellationToken);
+        return await Sender.Send(new AnyForgotPasswordEmailsInQueueDb.Query(), cancellationToken);
     }
 
     protected override async Task RunTaskAsync(CancellationToken cancellationToken)
     {
-        List<ForgotPasswordEmailQueue>? emailsInQueue = await Sender.Send(new GetForgotPasswordEmailsInQueueDbQuery(), cancellationToken);
+        List<ForgotPasswordEmailQueue>? emailsInQueue = await Sender.Send(new GetForgotPasswordEmailsInQueueDb.Query(), cancellationToken);
 
         if (emailsInQueue is null)
         {
@@ -55,11 +52,11 @@ internal class SendForgotPasswordEmailTask(ISender sender, BackgroundServiceConf
 
                 client.Send(message);
 
-                await Sender.Send(new RemoveForgotPasswordEmailFromQueueByIdDbCommand(emailToSend.Id), cancellationToken);
+                await Sender.Send(new RemoveForgotPasswordEmailFromQueueByIdDb.Command(emailToSend.Id), cancellationToken);
             }
             catch (Exception ex)
             {
-                await Sender.Send(new IncrementFailedForgotPasswordEmailByIdCommand(emailToSend.Id, ex.Message), cancellationToken);
+                await Sender.Send(new IncrementFailedForgotPasswordEmailById.Command(emailToSend.Id, ex.Message), cancellationToken);
             }
         }
     }

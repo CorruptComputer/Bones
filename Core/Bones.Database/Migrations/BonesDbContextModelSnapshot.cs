@@ -132,6 +132,9 @@ namespace Bones.Database.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset>("PasswordLastSetDateTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 

@@ -9,7 +9,7 @@ namespace Bones.WebUI.Components.Auth;
 /// <summary>
 ///   The page for registering user accounts 
 /// </summary>
-public partial class RegisterComponent : ComponentBase
+public partial class RegisterComponent(BonesApiClient ApiClient) : ComponentBase
 {
     /// <summary>
     ///   Was the registration finished successfully?

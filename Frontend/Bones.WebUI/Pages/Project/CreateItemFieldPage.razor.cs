@@ -7,7 +7,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Create Item Field page
 /// </summary>
-public partial class CreateItemFieldPage : ComponentBase
+public partial class CreateItemFieldPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<CreateItemFieldPage> Logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to create this item field in

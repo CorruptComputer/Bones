@@ -1,35 +1,43 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.Operations.OrganizationManagement;
-using Bones.Database.Operations.ProjectManagement.Projects.CreateProjectDb;
+using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Logic.Features.Organizations;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Projects.Projects;
 
-/// <summary>
-///     Command for creating a Project.
-/// </summary>
-/// <param name="Name">Name of the project</param>
-/// <param name="RequestingUser">The user requesting this project be created</param>
-/// <param name="OrganizationId">Optionally, the organization this project should belong to.</param>
-public record CreateProjectCommand(string Name, BonesUser RequestingUser, Guid? OrganizationId = null) : IRequest<CommandResponse>;
-
-internal sealed class CreateProjectCommandValidator : AbstractValidator<CreateProjectCommand>
+/// <inheritdoc />
+public sealed class CreateProject(ISender sender) : IRequestHandler<CreateProject.Command, CommandResponse>
 {
+    /// <summary>
+    ///     Command for creating a Project.
+    /// </summary>
+    /// <param name="Name">Name of the project</param>
+    /// <param name="RequestingUser">The user requesting this project be created</param>
+    /// <param name="OrganizationId">Optionally, the organization this project should belong to.</param>
+    public record Command(string Name, BonesUser RequestingUser, Guid? OrganizationId = null) : IRequest<CommandResponse>;
 
-}
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Command>
+    {
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.RequestingUser).NotNull();
+        }
+    }
 
-internal sealed class CreateProjectHandler(ISender sender) : IRequestHandler<CreateProjectCommand, CommandResponse>
-{
-    public async Task<CommandResponse> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         if (!request.OrganizationId.HasValue)
         {
-            return await sender.Send(new CreateProjectDbCommand(request.Name, request.RequestingUser), cancellationToken);
+            return await sender.Send(new CreateProjectDb.Command(request.Name, request.RequestingUser), cancellationToken);
         }
 
-        BonesOrganization? organization = await sender.Send(new GetOrganizationByIdDbQuery(request.OrganizationId.Value), cancellationToken);
+        BonesOrganization? organization = await sender.Send(new GetOrganizationByIdDb.Query(request.OrganizationId.Value), cancellationToken);
         // Don't want to give away that this org doesn't exist, instead just return forbidden.
         if (organization is null)
         {
@@ -38,13 +46,13 @@ internal sealed class CreateProjectHandler(ISender sender) : IRequestHandler<Cre
 
         const string perm = BonesClaimTypes.Role.Project.CREATE_PROJECT;
         bool? hasOrganizationPermission =
-            await sender.Send(new UserHasOrganizationPermissionQuery(organization.Id, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasOrganizationPermission.Query(organization.Id, request.RequestingUser, perm), cancellationToken);
 
         if (hasOrganizationPermission != true)
         {
             return CommandResponse.Forbid();
         }
 
-        return await sender.Send(new CreateProjectDbCommand(request.Name, request.RequestingUser, organization), cancellationToken);
+        return await sender.Send(new CreateProjectDb.Command(request.Name, request.RequestingUser, organization), cancellationToken);
     }
 }

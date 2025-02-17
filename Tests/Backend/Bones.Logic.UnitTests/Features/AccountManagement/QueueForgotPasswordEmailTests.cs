@@ -4,12 +4,13 @@ using Bones.Shared.Backend.Models;
 using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 using FluentValidation.TestHelper;
+using Bones.Logic.Features.System;
 
 namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
 public class QueueForgotPasswordEmailTests : TestBase
 {
-    private readonly QueueForgotPasswordEmailCommandValidator _validator = new();
+    private readonly QueueForgotPasswordEmail.Validator _validator = new();
 
     /// <summary>
     ///     Makes sure this works
@@ -17,13 +18,13 @@ public class QueueForgotPasswordEmailTests : TestBase
     [Fact]
     public async Task QueueForgotPasswordEmail_ShouldPassForValidUserEmail()
     {
-        RegisterUserQuery createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
+        RegisterUser.Query createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
         await Sender.Send(createUserRequest);
         await Sender.Send(new ConfirmUserByEmailCommand(createUserRequest.Email));
 
-        QueueForgotPasswordEmailCommand forgotPasswordCommand = new(createUserRequest.Email);
+        QueueForgotPasswordEmail.Command forgotPasswordCommand = new(createUserRequest.Email);
 
-        TestValidationResult<QueueForgotPasswordEmailCommand> validationResult = await _validator.TestValidateAsync(forgotPasswordCommand);
+        TestValidationResult<QueueForgotPasswordEmail.Command> validationResult = await _validator.TestValidateAsync(forgotPasswordCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse result = await Sender.Send(forgotPasswordCommand);
@@ -41,7 +42,7 @@ public class QueueForgotPasswordEmailTests : TestBase
     [Fact]
     public async Task QueueForgotPasswordEmail_ShouldPassForUnknownUserEmail()
     {
-        CommandResponse result = await Sender.Send(new QueueForgotPasswordEmailCommand("UnknownEmail@example.com"));
+        CommandResponse result = await Sender.Send(new QueueForgotPasswordEmail.Command("UnknownEmail@example.com"));
         result.Success.Should().BeTrue();
     }
 
@@ -61,8 +62,8 @@ public class QueueForgotPasswordEmailTests : TestBase
     [InlineData("InvalidEmail")]
     public async Task QueueForgotPasswordEmailValidator_ShouldReturnErrorForInvalidEmails(string? email)
     {
-        QueueForgotPasswordEmailCommand forgotPasswordCommand = new(email!);
-        TestValidationResult<QueueForgotPasswordEmailCommand> validationResult = await _validator.TestValidateAsync(forgotPasswordCommand);
+        QueueForgotPasswordEmail.Command forgotPasswordCommand = new(email!);
+        TestValidationResult<QueueForgotPasswordEmail.Command> validationResult = await _validator.TestValidateAsync(forgotPasswordCommand);
         validationResult.ShouldHaveValidationErrorFor(x => x.Email);
     }
 }

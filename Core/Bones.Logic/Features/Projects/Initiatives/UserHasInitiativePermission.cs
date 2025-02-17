@@ -1,4 +1,3 @@
-
 using System.Security.Claims;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
@@ -9,35 +8,40 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Logic.Features.Projects.Initiatives;
 
-/// <summary>
-///   Checks if the user has permission to do the specified action in the initiative.
-/// </summary>
-/// <param name="InitiativeId"></param>
-/// <param name="User"></param>
-/// <param name="Claim"></param>
-public sealed record UserHasInitiativePermissionQuery(Guid InitiativeId, BonesUser User, string Claim) : IRequest<QueryResponse<bool>>;
-
-internal sealed class UserHasInitiativePermissionQueryValidator : AbstractValidator<UserHasInitiativePermissionQuery>
+/// <inheritdoc />
+public sealed class UserHasInitiativePermission(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager, ISender sender)
+    : IRequestHandler<UserHasInitiativePermission.Query, QueryResponse<bool>>
 {
-    public UserHasInitiativePermissionQueryValidator()
+    /// <summary>
+    ///   Checks if the user has permission to do the specified action in the initiative.
+    /// </summary>
+    /// <param name="InitiativeId"></param>
+    /// <param name="User"></param>
+    /// <param name="Claim"></param>
+    public sealed record Query(Guid InitiativeId, BonesUser User, string Claim) : IRequest<QueryResponse<bool>>;
+
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
     {
-        RuleFor(x => x.InitiativeId).NotNull().NotEqual(Guid.Empty);
-        RuleFor(x => x.User).NotNull();
-        RuleFor(x => x.Claim).NotNull().NotEmpty().Custom((claim, ctx) =>
+        /// <inheritdoc />
+        public Validator()
         {
-            if (claim.Contains('|'))
+            RuleFor(x => x.InitiativeId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.User).NotNull();
+            RuleFor(x => x.Claim).NotNull().NotEmpty().Custom((claim, ctx) =>
             {
-                ctx.AddFailure("Claim contains '|', this means you probably called GetInitiativeClaimType(). Don't do that, just pass in the claim name.");
-            }
-        });
+                if (claim.Contains('|'))
+                {
+                    ctx.AddFailure("Claim contains '|', this means you probably called GetInitiativeClaimType(). Don't do that, just pass in the claim name.");
+                }
+            });
+        }
     }
-}
 
-internal sealed class UserHasInitiativePermissionHandler(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager, ISender sender) : IRequestHandler<UserHasInitiativePermissionQuery, QueryResponse<bool>>
-{
-    public async Task<QueryResponse<bool>> Handle(UserHasInitiativePermissionQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<bool>> Handle(Query request, CancellationToken cancellationToken)
     {
-        Initiative? initiative = await sender.Send(new GetInitiativesByIdDbQuery(request.InitiativeId), cancellationToken);
+        Initiative? initiative = await sender.Send(new GetInitiativesByIdDb.Query(request.InitiativeId), cancellationToken);
 
         if (initiative is null)
         {
@@ -45,7 +49,7 @@ internal sealed class UserHasInitiativePermissionHandler(UserManager<BonesUser> 
         }
 
         bool? projectPermission = await sender.Send(
-            new UserHasProjectPermissionQuery(initiative.Project.Id, request.User, request.Claim),
+            new UserHasProjectPermission.Query(initiative.Project.Id, request.User, request.Claim),
             cancellationToken);
 
         if (projectPermission == true)

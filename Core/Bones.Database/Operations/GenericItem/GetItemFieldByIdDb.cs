@@ -28,6 +28,7 @@ public sealed class GetItemFieldByIdDb(BonesDbContext dbContext) : IRequestHandl
         return await dbContext.ItemFields
             .Include(x => x.Versions)
             .ThenInclude(x => x.PossibleValues)
+            .Include(x => x.Project)
             .FirstOrDefaultAsync(x => x.Id == request.ItemFieldId, cancellationToken);
     }
 }

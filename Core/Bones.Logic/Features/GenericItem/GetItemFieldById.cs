@@ -38,7 +38,7 @@ public sealed class GetItemFieldById(ISender sender) : IRequestHandler<GetItemFi
 
         const string perm = BonesClaimTypes.Role.Project.VIEW_PROJECT;
         bool? hasProjectPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(itemField.Project.Id, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermission.Query(itemField.Project.Id, request.RequestingUser, perm), cancellationToken);
 
         if (hasProjectPermission != true)
         {

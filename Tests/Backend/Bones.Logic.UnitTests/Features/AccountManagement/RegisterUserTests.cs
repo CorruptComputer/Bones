@@ -11,7 +11,7 @@ namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
 public class RegisterUserTests : TestBase
 {
-    private readonly RegisterUserQueryValidator _validator = new();
+    private readonly RegisterUser.Validator _validator = new();
 
     /// <summary>
     ///     Checks that the validator and handler both validate the email address.
@@ -30,9 +30,9 @@ public class RegisterUserTests : TestBase
     [InlineData("InvalidEmail")]
     public async Task InvalidEmail_ShouldFail(string? email)
     {
-        RegisterUserQuery request = new(email!, "abcdEFGH1!");
+        RegisterUser.Query request = new(email!, "abcdEFGH1!");
 
-        TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
+        TestValidationResult<RegisterUser.Query> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldHaveValidationErrorFor(x => x.Email);
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
@@ -54,8 +54,8 @@ public class RegisterUserTests : TestBase
     [InlineData("abcdEFGH1")] // No special char
     public async Task InvalidPassword_ShouldFail(string? password)
     {
-        RegisterUserQuery request = new("InvalidPassword@example.com", password!);
-        TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
+        RegisterUser.Query request = new("InvalidPassword@example.com", password!);
+        TestValidationResult<RegisterUser.Query> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldHaveValidationErrorFor(x => x.Password);
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
@@ -69,9 +69,9 @@ public class RegisterUserTests : TestBase
     [Fact]
     public async Task ValidEmailAndPassword_ShouldSucceed()
     {
-        RegisterUserQuery request = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
+        RegisterUser.Query request = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
 
-        TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
+        TestValidationResult<RegisterUser.Query> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
@@ -85,8 +85,8 @@ public class RegisterUserTests : TestBase
     [Fact]
     public async Task RegisteringUser_ShouldQueueConfirmationEmail()
     {
-        RegisterUserQuery request = new("RegisteringUserQueueConfirmationEmail@example.com", "abcdEFGH1!");
-        TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
+        RegisterUser.Query request = new("RegisteringUserQueueConfirmationEmail@example.com", "abcdEFGH1!");
+        TestValidationResult<RegisterUser.Query> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
@@ -108,10 +108,10 @@ public class RegisterUserTests : TestBase
     [Fact]
     public async Task DuplicateEmail_ShouldFail()
     {
-        RegisterUserQuery request = new("DuplicateEmail@example.com", "abcdEFGH1!");
+        RegisterUser.Query request = new("DuplicateEmail@example.com", "abcdEFGH1!");
 
         // Do it
-        TestValidationResult<RegisterUserQuery> validationResult = await _validator.TestValidateAsync(request);
+        TestValidationResult<RegisterUser.Query> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
@@ -119,7 +119,7 @@ public class RegisterUserTests : TestBase
         result.Result?.Succeeded.Should().BeTrue();
 
         // Do it again
-        TestValidationResult<RegisterUserQuery> validationResult2 = await _validator.TestValidateAsync(request);
+        TestValidationResult<RegisterUser.Query> validationResult2 = await _validator.TestValidateAsync(request);
         validationResult2.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result2 = await Sender.Send(request);

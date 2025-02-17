@@ -1,28 +1,32 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.ProjectManagement.Projects.GetProjectsByOwnerDb;
+using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects.Projects;
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="RequestingUser"></param>
-public sealed record GetProjectsUserCanAccessQuery(BonesUser RequestingUser) : IRequest<QueryResponse<Dictionary<Guid, string>>>;
-
-internal sealed class GetProjectsUserCanAccessQueryValidator : AbstractValidator<GetProjectsUserCanAccessQuery>
+/// <inheritdoc />
+public sealed class GetProjectsUserCanAccess(ISender sender) : IRequestHandler<GetProjectsUserCanAccess.Query, QueryResponse<Dictionary<Guid, string>>>
 {
-    public GetProjectsUserCanAccessQueryValidator()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="RequestingUser"></param>
+    public sealed record Query(BonesUser RequestingUser) : IRequest<QueryResponse<Dictionary<Guid, string>>>;
+
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
     {
-        RuleFor(x => x.RequestingUser).NotNull();
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.RequestingUser).NotNull();
+        }
     }
-}
 
-internal sealed class GetProjectsUserCanAccessHandler(ISender sender) : IRequestHandler<GetProjectsUserCanAccessQuery, QueryResponse<Dictionary<Guid, string>>>
-{
-    public async Task<QueryResponse<Dictionary<Guid, string>>> Handle(GetProjectsUserCanAccessQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<Dictionary<Guid, string>>> Handle(Query request, CancellationToken cancellationToken)
     {
-        List<Database.DbSets.ProjectManagement.Project>? projects = await sender.Send(new GetProjectsByOwnerDbQuery(OwnershipType.User, request.RequestingUser.Id), cancellationToken);
+        List<Database.DbSets.ProjectManagement.Project>? projects = await sender.Send(new GetProjectsByOwnerDb.Query(OwnershipType.User, request.RequestingUser.Id), cancellationToken);
 
         if (projects is null)
         {

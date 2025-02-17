@@ -5,15 +5,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Database.Operations.Setup;
 
-/// <summary>
-///   Command to set up the system admin user and role
-/// </summary>
-public sealed record SetupSystemAdminUserAndRoleCommand : IRequest<CommandResponse>;
-
-internal sealed class SetupSystemAdminUserAndRoleHandler(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager)
-    : IRequestHandler<SetupSystemAdminUserAndRoleCommand, CommandResponse>
+/// <inheritdoc />
+public sealed class SetupSystemAdminUserAndRole(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager)
+    : IRequestHandler<SetupSystemAdminUserAndRole.Command, CommandResponse>
 {
-    public async Task<CommandResponse> Handle(SetupSystemAdminUserAndRoleCommand request, CancellationToken cancellationToken)
+    /// <summary>
+    ///   Command to set up the system admin user and role
+    /// </summary>
+    public sealed record Command : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         // Create System Admin user
         BonesUser? createdAdminUser = await CreateAdminUserIfNotExistAsync(cancellationToken);

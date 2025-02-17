@@ -2,10 +2,7 @@ using System.Net;
 using System.Net.Mail;
 using Bones.BackgroundService.Models;
 using Bones.Database.DbSets.System;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.AnyConfirmationEmailsInQueueDb;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.GetConfirmationEmailsInQueueDb;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.IncrementFailedConfirmationEmailById;
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.RemoveConfirmationEmailFromQueueByIdDb;
+using Bones.Database.Operations.System;
 
 namespace Bones.BackgroundService.Tasks.Minutely;
 
@@ -25,12 +22,12 @@ internal class SendConfirmationEmailTask(ISender sender, BackgroundServiceConfig
             return false;
         }
 
-        return await Sender.Send(new AnyConfirmationEmailsInQueueDbQuery(), cancellationToken);
+        return await Sender.Send(new AnyConfirmationEmailsInQueueDb.Query(), cancellationToken);
     }
 
     protected override async Task RunTaskAsync(CancellationToken cancellationToken)
     {
-        List<ConfirmationEmailQueue>? emailsInQueue = await Sender.Send(new GetConfirmationEmailsInQueueDbQuery(), cancellationToken);
+        List<ConfirmationEmailQueue>? emailsInQueue = await Sender.Send(new GetConfirmationEmailsInQueueDb.Query(), cancellationToken);
 
         if (emailsInQueue is null)
         {
@@ -56,11 +53,11 @@ internal class SendConfirmationEmailTask(ISender sender, BackgroundServiceConfig
 
                 client.Send(message);
 
-                await Sender.Send(new RemoveConfirmationEmailFromQueueByIdDbCommand(emailToSend.Id), cancellationToken);
+                await Sender.Send(new RemoveConfirmationEmailFromQueueByIdDb.Command(emailToSend.Id), cancellationToken);
             }
             catch (Exception ex)
             {
-                await Sender.Send(new IncrementFailedConfirmationEmailByIdCommand(emailToSend.Id, ex.Message), cancellationToken);
+                await Sender.Send(new IncrementFailedConfirmationEmailById.Command(emailToSend.Id, ex.Message), cancellationToken);
             }
         }
     }

@@ -2,14 +2,13 @@ using System.Globalization;
 using Bones.Api.Client;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 
 namespace Bones.WebUI.Pages.Account;
 
 /// <summary>
 ///   The user can view and update their profile here
 /// </summary>
-public partial class MyProfilePage : ComponentBase
+public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager NavManager) : ComponentBase
 {
     private bool ProfileUpdateSuccess { get; set; } = false;
 
@@ -23,30 +22,46 @@ public partial class MyProfilePage : ComponentBase
     /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
-    private MudTextField<string> Email { get; set; } = new();
+    private string CreateDateTime { get; set; } = string.Empty;
 
-    private MudTextField<string> EmailConfirmed { get; set; } = new();
+    private string PasswordLastSet { get; set; } = string.Empty;
 
-    private MudTextField<string> EmailConfirmedDateTime { get; set; } = new();
+    private string Email { get; set; } = string.Empty;
 
-    private MudTextField<string> DisplayName { get; set; } = new();
+    private string EmailConfirmed { get; set; } = string.Empty;
 
-    private MudTextField<string> CreateDateTime { get; set; } = new();
+    private string DisplayName { get; set; } = string.Empty;
 
-    /// <inheritdoc />
+    /// <summary>
+    ///   Event for when the page is loaded
+    /// </summary>
     protected override async Task OnInitializedAsync()
+    {
+        await FetchFromApi();
+
+        await base.OnInitializedAsync();
+    }
+
+    /// <summary>
+    ///   Event for when the page is changed without a full site reload
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        await FetchFromApi();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task FetchFromApi()
     {
         GetMyProfileResponse response = await ApiClient.GetMyProfileAsync();
 
-        await CreateDateTime.SetText(response.CreateDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture));
-
-        await Email.SetText(response.Email);
-        await EmailConfirmed.SetText(response.EmailConfirmed.ToString());
-        await EmailConfirmedDateTime.SetText(response.EmailConfirmedDateTime?.LocalDateTime.ToString(CultureInfo.CurrentCulture) ?? string.Empty);
-
-        await DisplayName.SetText(response.DisplayName);
-
-        await base.OnInitializedAsync();
+        CreateDateTime = response.CreateDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture);
+        PasswordLastSet = response.PasswordLastSetDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture);
+        Email = response.Email;
+        EmailConfirmed = response.EmailConfirmed ? response.EmailConfirmedDateTime?.LocalDateTime.ToString(CultureInfo.CurrentCulture) ?? "Not confirmed" : "Not confirmed";
+        DisplayName = response.DisplayName;
     }
 
     /// <summary>
@@ -54,15 +69,15 @@ public partial class MyProfilePage : ComponentBase
     /// </summary>
     public async Task UpdateProfileAsync()
     {
-        string? displayName = DisplayName.Text;
-
-        if (string.IsNullOrWhiteSpace(displayName))
+        if (string.IsNullOrWhiteSpace(DisplayName))
         {
             return;
         }
 
-        // TODO: Api 
-        await Task.Run(() => Thread.Sleep(1));
+        await ApiClient.UpdateMyProfileAsync(new UpdateMyProfileRequest
+        {
+            DisplayName = DisplayName
+        });
     }
 
     /// <summary>

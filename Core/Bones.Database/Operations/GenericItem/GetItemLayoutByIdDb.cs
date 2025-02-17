@@ -25,8 +25,13 @@ public sealed class GetItemLayoutByIdDb(BonesDbContext dbContext) : IRequestHand
     public async Task<QueryResponse<GenericItemLayout?>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.ItemLayouts
+            .Include(x => x.Project)
             .Include(x => x.Versions)
             .ThenInclude(x => x.Fields)
+            .ThenInclude(x => x.GenericItemField)
+            .Include(x => x.Versions)
+            .ThenInclude(x => x.Fields)
+            .ThenInclude(x => x.PossibleValues)
             .FirstOrDefaultAsync(x => x.Id == request.ItemLayoutId, cancellationToken);
     }
 }

@@ -2,20 +2,27 @@ using Bones.Database.DbSets.ProjectManagement;
 
 namespace Bones.Database.Operations.ProjectManagement.Initiatives;
 
-/// <summary>
-///   DB Query for getting the initiatives under a project
-/// </summary>
-/// <param name="ProjectId">Internal ID of the project</param>
-public record GetInitiativesByProjectDbQuery(Guid ProjectId) : IRequest<QueryResponse<List<Initiative>>>;
-
-internal sealed class GetInitiativesByProjectQueryDbValidator : AbstractValidator<GetInitiativesByProjectDbQuery>
+/// <inheritdoc />
+public sealed class GetInitiativesByProjectDb(BonesDbContext dbContext) : IRequestHandler<GetInitiativesByProjectDb.Query, QueryResponse<List<Initiative>>>
 {
+    /// <summary>
+    ///   DB Query for getting the initiatives under a project
+    /// </summary>
+    /// <param name="ProjectId">Internal ID of the project</param>
+    public record Query(Guid ProjectId) : IRequest<QueryResponse<List<Initiative>>>;
 
-}
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
+    {
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
+        }
+    }
 
-internal sealed class GetInitiativesByProjectDbHandler(BonesDbContext dbContext) : IRequestHandler<GetInitiativesByProjectDbQuery, QueryResponse<List<Initiative>>>
-{
-    public async Task<QueryResponse<List<Initiative>>> Handle(GetInitiativesByProjectDbQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<List<Initiative>>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.Initiatives
             .Include(i => i.Queues)

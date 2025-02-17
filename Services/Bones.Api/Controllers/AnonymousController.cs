@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
 using Bones.Logic.Features.Accounts;
+using Bones.Logic.Features.System;
 using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +26,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<EmptyResponse>> RegisterAsync([FromBody] RegisterUserApiRequest registration)
     {
-        QueryResponse<IdentityResult> result = await Sender.Send(new RegisterUserQuery(registration.Email, registration.Password));
+        QueryResponse<IdentityResult> result = await Sender.Send(new RegisterUser.Query(registration.Email, registration.Password));
 
         if (!result.Success || !(result.Result?.Succeeded ?? false))
         {
@@ -46,7 +47,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     public async ValueTask<ActionResult<EmptyResponse>> ConfirmEmailAsync([FromQuery][Required] Guid userId, [FromQuery][Required] string code, [FromQuery] string? changedEmail)
     {
-        QueryResponse<IdentityResult> result = await Sender.Send(new ConfirmEmailQuery(userId, code, changedEmail));
+        QueryResponse<IdentityResult> result = await Sender.Send(new ConfirmEmail.Query(userId, code, changedEmail));
 
         if (!result.Success || !(result.Result?.Succeeded ?? false))
         {
@@ -65,7 +66,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     public async ValueTask<ActionResult<EmptyResponse>> ResendConfirmationEmailAsync([FromQuery][Required] string email)
     {
-        CommandResponse result = await Sender.Send(new QueueResendConfirmationEmailCommand(email));
+        CommandResponse result = await Sender.Send(new QueueResendConfirmationEmail.Command(email));
 
         if (!result.Success)
         {
@@ -84,7 +85,7 @@ public sealed partial class AnonymousController(ISender sender) : BonesControlle
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     public async ValueTask<ActionResult<EmptyResponse>> ForgotPasswordAsync([FromQuery][Required] string email)
     {
-        await Sender.Send(new QueueForgotPasswordEmailCommand(email));
+        await Sender.Send(new QueueForgotPasswordEmail.Command(email));
 
         return EmptyResponse.Value;
     }

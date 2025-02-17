@@ -1,7 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.Operations.OrganizationManagement;
-using Bones.Database.Operations.ProjectManagement.Initiatives.CreateInitiativeDb;
+using Bones.Database.Operations.ProjectManagement.Initiatives;
 using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Logic.Features.Projects.Projects;
 using Bones.Shared.Backend.Enums;
@@ -9,24 +9,33 @@ using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Projects.Initiatives;
 
-/// <summary>
-///   Backend Command for creating an Initiative.
-/// </summary>
-/// <param name="Name">Name of the initiative</param>
-/// <param name="ProjectId">Internal ID of the project</param>
-/// <param name="RequestingUser">The user requesting this</param>
-public record CreateInitiativeCommand(string Name, Guid ProjectId, BonesUser RequestingUser) : IRequest<CommandResponse>;
-
-internal sealed class CreateInitiativeCommandValidator : AbstractValidator<CreateInitiativeCommand>
+/// <inheritdoc />
+public sealed class CreateInitiative(ISender sender) : IRequestHandler<CreateInitiative.Command, CommandResponse>
 {
+    /// <summary>
+    ///   Backend Command for creating an Initiative.
+    /// </summary>
+    /// <param name="Name">Name of the initiative</param>
+    /// <param name="ProjectId">Internal ID of the project</param>
+    /// <param name="RequestingUser">The user requesting this</param>
+    public record Command(string Name, Guid ProjectId, BonesUser RequestingUser) : IRequest<CommandResponse>;
 
-}
-
-internal sealed class CreateInitiativeHandler(ISender sender) : IRequestHandler<CreateInitiativeCommand, CommandResponse>
-{
-    public async Task<CommandResponse> Handle(CreateInitiativeCommand request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Command>
     {
-        Database.DbSets.ProjectManagement.Project? project = await sender.Send(new GetProjectByIdDbQuery(request.ProjectId), cancellationToken);
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.RequestingUser).NotNull();
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
+    {
+        Database.DbSets.ProjectManagement.Project? project = await sender.Send(new GetProjectByIdDb.Query(request.ProjectId), cancellationToken);
 
         if (project is null)
         {
@@ -36,10 +45,10 @@ internal sealed class CreateInitiativeHandler(ISender sender) : IRequestHandler<
         if (project.OwnerType == OwnershipType.User
             && project.OwningUser!.Id == request.RequestingUser.Id)
         {
-            return await sender.Send(new CreateInitiativeDbCommand(request.Name, request.ProjectId), cancellationToken);
+            return await sender.Send(new CreateInitiativeDb.Command(request.Name, request.ProjectId), cancellationToken);
         }
 
-        BonesOrganization? organization = await sender.Send(new GetOrganizationByIdDbQuery(project.OwningOrganization!.Id), cancellationToken);
+        BonesOrganization? organization = await sender.Send(new GetOrganizationByIdDb.Query(project.OwningOrganization!.Id), cancellationToken);
         // Don't want to give away that this org doesn't exist, instead just return forbidden.
         if (organization is null)
         {
@@ -48,13 +57,13 @@ internal sealed class CreateInitiativeHandler(ISender sender) : IRequestHandler<
 
         const string perm = BonesClaimTypes.Role.Initiative.CREATE_INITIATIVE;
         bool? hasOrganizationPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(project.Id, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermission.Query(project.Id, request.RequestingUser, perm), cancellationToken);
 
         if (hasOrganizationPermission != true)
         {
             return CommandResponse.Forbid();
         }
 
-        return await sender.Send(new CreateInitiativeDbCommand(request.Name, request.ProjectId), cancellationToken);
+        return await sender.Send(new CreateInitiativeDb.Command(request.Name, request.ProjectId), cancellationToken);
     }
 }

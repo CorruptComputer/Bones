@@ -26,9 +26,10 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
             new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
         ];
 
+        // SysAdmin stuff is dynamically hidden from the UI, organizational roles are handled server side 
         if (currentUser.IsSysAdmin)
         {
-            claims.Add(new(BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR, ClaimValues.YES));
+            claims.Add(new(ClaimTypes.Role, BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR));
         }
 
         return new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));

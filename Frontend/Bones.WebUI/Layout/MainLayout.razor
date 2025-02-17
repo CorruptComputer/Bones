@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@inject ILogger<MainLayout> Logger
 
 <!-- TODO: Make a toggle for dark mode on the users profile -->
 <MudThemeProvider Theme="@Theme" />
@@ -59,8 +58,13 @@
         </MudDrawerHeader>
         <MudNavMenu>
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.HOME">Home</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" href="/RequiresLogin">Requires Login</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="/TestMapPage">Test Map Page</MudNavLink>
+            <AuthorizeView Roles="@SystemRoles.SYSTEM_ADMINISTRATORS">
+                <Authorized>
+                    <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.SystemAdmin.DASHBOARD">System Admin Dashboard</MudNavLink>
+                </Authorized>
+            </AuthorizeView>
+            
         </MudNavMenu>
     </MudDrawer>
     <!-- Content -->

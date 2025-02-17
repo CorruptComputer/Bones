@@ -160,6 +160,125 @@ namespace Bones.Api.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
+        /// Updates the current users profile
+        /// </summary>
+        /// <param name="body">The request</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<bool> UpdateMyProfileAsync(UpdateMyProfileRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(UpdateMyProfileRequest), JsonSerializerSettings);
+                    var content_ = new System.Net.Http.ByteArrayContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "Account/my/profile"
+                    urlBuilder_.Append("Account/my/profile");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UnauthorizedResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<UnauthorizedResult>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<bool>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
         /// Registers a new user if all validations pass
         /// </summary>
         /// <param name="body">Request to register a new user</param>
@@ -1099,8 +1218,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/dashboard"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/dashboard"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/dashboard");
 
@@ -1221,10 +1340,10 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/I{initiativeId}/dashboard"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/{initiativeId}/dashboard"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/I");
+                    urlBuilder_.Append('/');
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(initiativeId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/dashboard");
 
@@ -1342,8 +1461,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/settings"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/settings"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/settings");
 
@@ -1462,8 +1581,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/fields"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/fields"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/fields");
 
@@ -1586,10 +1705,10 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/fields/F{fieldId}/latest"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/fields/{fieldId}/latest"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/fields/F");
+                    urlBuilder_.Append("/fields/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(fieldId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/latest");
 
@@ -1712,10 +1831,10 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/layouts/L{layoutId}/latest"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/layouts/{layoutId}/latest"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/layouts/L");
+                    urlBuilder_.Append("/layouts/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(layoutId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/latest");
 
@@ -1958,8 +2077,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/initiative/create"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/initiative/create"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/initiative/create");
 
@@ -2083,8 +2202,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/fields/create"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/fields/create"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/fields/create");
 
@@ -2212,10 +2331,10 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/fields/F{fieldId}"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/fields/{fieldId}"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/fields/F");
+                    urlBuilder_.Append("/fields/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(fieldId, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -2338,8 +2457,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/layouts/create"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/layouts/create"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/layouts/create");
 
@@ -2467,10 +2586,10 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "Project/P{projectId}/layouts/L{layoutId}"
-                    urlBuilder_.Append("Project/P");
+                    // Operation Path: "Project/{projectId}/layouts/{layoutId}"
+                    urlBuilder_.Append("Project/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(projectId, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/layouts/L");
+                    urlBuilder_.Append("/layouts/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(layoutId, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -3198,7 +3317,7 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
-    /// Response for the GetMyProfile endpoint
+    /// Response for the GetMyProfileAsync endpoint
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record GetMyProfileResponse
@@ -3238,6 +3357,14 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonPropertyName("createDateTime")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset CreateDateTime { get; set; }
+
+        /// <summary>
+        /// The date and time the user last set their password
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("passwordLastSetDateTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset PasswordLastSetDateTime { get; set; }
 
         /// <summary>
         /// Is the user a system administrator?
@@ -3687,6 +3814,21 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("statusCode")]
         public int? StatusCode { get; set; }
+
+    }
+
+    /// <summary>
+    /// Request for the UpdateMyProfileAsync endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record UpdateMyProfileRequest
+    {
+        /// <summary>
+        /// The display name to set for the user
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("displayName")]
+        public string DisplayName { get; set; }
 
     }
 

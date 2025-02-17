@@ -5,33 +5,37 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Logic.Features.Accounts;
 
-/// <summary>
-///   Backend request for confirming a users email
-/// </summary>
-/// <param name="UserId"></param>
-/// <param name="Code"></param>
-/// <param name="ChangedEmail"></param>
-public sealed record ConfirmEmailQuery(Guid UserId, string Code, string? ChangedEmail) : IRequest<QueryResponse<IdentityResult>>;
-
-internal class ConfirmEmailQueryValidator : AbstractValidator<ConfirmEmailQuery>
+/// <inheritdoc />
+public class ConfirmEmail(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<ConfirmEmail.Query, QueryResponse<IdentityResult>>
 {
-    public ConfirmEmailQueryValidator()
+    /// <summary>
+    ///   Backend request for confirming a users email
+    /// </summary>
+    /// <param name="UserId"></param>
+    /// <param name="Code"></param>
+    /// <param name="ChangedEmail"></param>
+    public sealed record Query(Guid UserId, string Code, string? ChangedEmail) : IRequest<QueryResponse<IdentityResult>>;
+
+    /// <inheritdoc />
+    public class Validator : AbstractValidator<Query>
     {
-        RuleFor(x => x.UserId).NotNull().NotEmpty();
-        RuleFor(x => x.Code).NotNull().NotEmpty();
-        RuleFor(x => x.ChangedEmail).Custom(async (email, ctx) =>
+        /// <inheritdoc />
+        public Validator()
         {
-            if (email != null && !await email.IsValidEmailAsync())
+            RuleFor(x => x.UserId).NotNull().NotEmpty();
+            RuleFor(x => x.Code).NotNull().NotEmpty();
+            RuleFor(x => x.ChangedEmail).Custom(async (email, ctx) =>
             {
-                ctx.AddFailure("ChangedEmail", "Email is not valid");
-            }
-        });
+                if (email != null && !await email.IsValidEmailAsync())
+                {
+                    ctx.AddFailure("ChangedEmail", "Email is not valid");
+                }
+            });
+        }
     }
-}
 
-internal class ConfirmEmailHandler(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<ConfirmEmailQuery, QueryResponse<IdentityResult>>
-{
-    public async Task<QueryResponse<IdentityResult>> Handle(ConfirmEmailQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<IdentityResult>> Handle(Query request, CancellationToken cancellationToken)
     {
         if (await userManager.FindByIdAsync(request.UserId.ToString()) is not { } user)
         {

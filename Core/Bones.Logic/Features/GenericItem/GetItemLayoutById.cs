@@ -16,9 +16,15 @@ public sealed class GetItemLayoutById(ISender sender) : IRequestHandler<GetItemL
     /// <param name="RequestingUser">The user requesting this</param>
     public record Query(Guid ItemLayoutId, BonesUser RequestingUser) : IRequest<QueryResponse<GenericItemLayout?>>;
 
-    internal sealed class Validator : AbstractValidator<Query>
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
     {
-
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.RequestingUser).NotNull();
+        }
     }
 
     /// <inheritdoc />
@@ -33,7 +39,7 @@ public sealed class GetItemLayoutById(ISender sender) : IRequestHandler<GetItemL
 
         const string perm = BonesClaimTypes.Role.Project.VIEW_PROJECT;
         bool? hasProjectPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(itemField.Project.Id, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermission.Query(itemField.Project.Id, request.RequestingUser, perm), cancellationToken);
 
         if (hasProjectPermission != true)
         {

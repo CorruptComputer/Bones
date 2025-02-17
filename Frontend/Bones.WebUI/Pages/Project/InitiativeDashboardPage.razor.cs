@@ -6,7 +6,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Dashboard for projects
 /// </summary>
-public partial class InitiativeDashboardPage : ComponentBase
+public partial class InitiativeDashboardPage(BonesApiClient ApiClient) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load in this dashboard

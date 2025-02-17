@@ -8,7 +8,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Create project page
 /// </summary>
-public partial class CreateProjectPage : ComponentBase
+public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<CreateProjectPage> Logger) : ComponentBase
 {
     /// <summary>
     ///   Did the request to the API result in an error?

@@ -63,6 +63,75 @@
             }
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates the current users profile",
+        "operationId": "UpdateMyProfileAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMyProfileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/Anonymous/register": {
@@ -621,7 +690,7 @@
         }
       }
     },
-    "/Project/P{projectId}/dashboard": {
+    "/Project/{projectId}/dashboard": {
       "get": {
         "tags": [
           "Project"
@@ -700,7 +769,7 @@
         }
       }
     },
-    "/Project/P{projectId}/I{initiativeId}/dashboard": {
+    "/Project/{projectId}/{initiativeId}/dashboard": {
       "get": {
         "tags": [
           "Project"
@@ -789,7 +858,7 @@
         }
       }
     },
-    "/Project/P{projectId}/settings": {
+    "/Project/{projectId}/settings": {
       "get": {
         "tags": [
           "Project"
@@ -868,7 +937,7 @@
         }
       }
     },
-    "/Project/P{projectId}/fields": {
+    "/Project/{projectId}/fields": {
       "get": {
         "tags": [
           "Project"
@@ -941,7 +1010,7 @@
         }
       }
     },
-    "/Project/P{projectId}/fields/F{fieldId}/latest": {
+    "/Project/{projectId}/fields/{fieldId}/latest": {
       "get": {
         "tags": [
           "Project"
@@ -1024,7 +1093,7 @@
         }
       }
     },
-    "/Project/P{projectId}/layouts/L{layoutId}/latest": {
+    "/Project/{projectId}/layouts/{layoutId}/latest": {
       "get": {
         "tags": [
           "Project"
@@ -1179,7 +1248,7 @@
         }
       }
     },
-    "/Project/P{projectId}/initiative/create": {
+    "/Project/{projectId}/initiative/create": {
       "post": {
         "tags": [
           "Project"
@@ -1263,7 +1332,7 @@
         }
       }
     },
-    "/Project/P{projectId}/fields/create": {
+    "/Project/{projectId}/fields/create": {
       "post": {
         "tags": [
           "Project"
@@ -1347,7 +1416,7 @@
         }
       }
     },
-    "/Project/P{projectId}/fields/F{fieldId}": {
+    "/Project/{projectId}/fields/{fieldId}": {
       "post": {
         "tags": [
           "Project"
@@ -1441,7 +1510,7 @@
         }
       }
     },
-    "/Project/P{projectId}/layouts/create": {
+    "/Project/{projectId}/layouts/create": {
       "post": {
         "tags": [
           "Project"
@@ -1525,7 +1594,7 @@
         }
       }
     },
-    "/Project/P{projectId}/layouts/L{layoutId}": {
+    "/Project/{projectId}/layouts/{layoutId}": {
       "post": {
         "tags": [
           "Project"
@@ -2062,7 +2131,8 @@
           "displayName",
           "email",
           "emailConfirmed",
-          "isSysAdmin"
+          "isSysAdmin",
+          "passwordLastSetDateTime"
         ],
         "type": "object",
         "properties": {
@@ -2091,13 +2161,18 @@
             "description": "The date and time the user was created",
             "format": "date-time"
           },
+          "passwordLastSetDateTime": {
+            "type": "string",
+            "description": "The date and time the user last set their password",
+            "format": "date-time"
+          },
           "isSysAdmin": {
             "type": "boolean",
             "description": "Is the user a system administrator?"
           }
         },
         "additionalProperties": false,
-        "description": "Response for the GetMyProfile endpoint"
+        "description": "Response for the GetMyProfileAsync endpoint"
       },
       "GetProjectDashboardResponse": {
         "required": [
@@ -2495,6 +2570,21 @@
           }
         },
         "additionalProperties": false
+      },
+      "UpdateMyProfileRequest": {
+        "required": [
+          "displayName"
+        ],
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "The display name to set for the user",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request for the UpdateMyProfileAsync endpoint"
       },
       "WorkItemQueueListModel": {
         "required": [

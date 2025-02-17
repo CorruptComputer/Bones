@@ -7,7 +7,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Create Item Layout page
 /// </summary>
-public partial class CreateItemLayoutPage : ComponentBase
+public partial class CreateItemLayoutPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<CreateItemFieldPage> Logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load in this dashboard

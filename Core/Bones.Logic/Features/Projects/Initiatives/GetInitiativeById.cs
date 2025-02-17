@@ -4,26 +4,30 @@ using Bones.Database.Operations.ProjectManagement.Initiatives;
 
 namespace Bones.Logic.Features.Projects.Initiatives;
 
-/// <summary>
-///   Gets the initiative by ID
-/// </summary>
-/// <param name="InitiativeId"></param>
-/// <param name="RequestingUser"></param>
-public sealed record GetInitiativeByIdQuery(Guid InitiativeId, BonesUser RequestingUser) : IRequest<QueryResponse<Initiative>>;
-
-internal sealed class GetInitiativeByIdQueryValidator : AbstractValidator<GetInitiativeByIdQuery>
+/// <inheritdoc />
+public sealed class GetInitiativeById(ISender sender) : IRequestHandler<GetInitiativeById.Query, QueryResponse<Initiative>>
 {
-    public GetInitiativeByIdQueryValidator()
+    /// <summary>
+    ///   Gets the initiative by ID
+    /// </summary>
+    /// <param name="InitiativeId"></param>
+    /// <param name="RequestingUser"></param>
+    public sealed record Query(Guid InitiativeId, BonesUser RequestingUser) : IRequest<QueryResponse<Initiative>>;
+
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
     {
-        RuleFor(x => x.InitiativeId).NotNull().NotEmpty();
-        RuleFor(x => x.RequestingUser).NotNull();
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.InitiativeId).NotNull().NotEmpty();
+            RuleFor(x => x.RequestingUser).NotNull();
+        }
     }
-}
 
-internal sealed class GetInitiativeByIdHandler(ISender sender) : IRequestHandler<GetInitiativeByIdQuery, QueryResponse<Initiative>>
-{
-    public async Task<QueryResponse<Initiative>> Handle(GetInitiativeByIdQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<Initiative>> Handle(Query request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new GetInitiativesByIdDbQuery(request.InitiativeId), cancellationToken);
+        return await sender.Send(new GetInitiativesByIdDb.Query(request.InitiativeId), cancellationToken);
     }
 }

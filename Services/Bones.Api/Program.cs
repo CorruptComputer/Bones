@@ -5,8 +5,6 @@ using Bones.Api.Models;
 using Bones.Logic;
 using Bones.Database;
 using Bones.Shared.Exceptions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Reflection;
 

@@ -1,4 +1,4 @@
-using Bones.Database.Operations.WorkItemManagement.WorkItems.CreateWorkItemDb;
+using Bones.Database.Operations.WorkItemManagement.WorkItems;
 
 namespace Bones.Logic.Features.Projects.WorkItems.CreateWorkItem;
 
@@ -6,6 +6,6 @@ internal sealed class CreateWorkItemHandler(ISender sender) : IRequestHandler<Cr
 {
     public async Task<CommandResponse> Handle(CreateWorkItemCommand request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new CreateWorkItemDbCommand(request.Name, request.QueueId, request.ItemLayoutId), cancellationToken);
+        return await sender.Send(new CreateWorkItemDb.Command(request.Name, request.QueueId, request.ItemLayoutId), cancellationToken);
     }
 }

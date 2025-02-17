@@ -54,7 +54,7 @@ public sealed class CreateItemFieldVersion(ISender sender) : IRequestHandler<Cre
 
         const string perm = BonesClaimTypes.Role.Project.EDIT_PROJECT_SETTINGS;
         bool? hasProjectPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(field.Project.Id, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermission.Query(field.Project.Id, request.RequestingUser, perm), cancellationToken);
 
         if (hasProjectPermission != true)
         {

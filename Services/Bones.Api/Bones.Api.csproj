@@ -57,11 +57,5 @@
         <Compile Update="Controllers\AnonymousController.Requests.cs">
             <DependentUpon>AnonymousController.cs</DependentUpon>
         </Compile>
-        <Compile Update="Controllers\AccountController.Responses.cs">
-            <DependentUpon>AccountController.cs</DependentUpon>
-        </Compile>
-        <Compile Update="Controllers\AccountController.Requests.cs">
-            <DependentUpon>AccountController.cs</DependentUpon>
-        </Compile>
     </ItemGroup>
 </Project>

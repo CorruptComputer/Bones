@@ -1,4 +1,5 @@
 using Bones.Api.Client;
+using Bones.WebUI.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -7,7 +8,7 @@ namespace Bones.WebUI.Components.Auth;
 /// <summary>
 ///   Page to login
 /// </summary>
-public partial class LoginComponent : ComponentBase
+public partial class LoginComponent(BonesApiClient ApiClient, BonesAuthenticationStateProvider AuthStateProvider) : ComponentBase
 {
     /// <summary>
     ///   Is the form valid?

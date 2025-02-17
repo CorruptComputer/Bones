@@ -26,6 +26,7 @@ public sealed class GetItemFieldVersionByIdDb(BonesDbContext dbContext) : IReque
     {
         return await dbContext.ItemFieldVersions
             .Include(x => x.PossibleValues)
+            .Include(x => x.GenericItemField)
             .FirstOrDefaultAsync(x => x.Id == request.ItemFieldVersionId, cancellationToken);
     }
 }

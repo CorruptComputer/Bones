@@ -1,4 +1,3 @@
-using Bones.Logic.Features.Accounts;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.System;
 using Bones.Shared.Backend.Models;
@@ -6,12 +5,14 @@ using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Identity;
+using Bones.Logic.Features.System;
+using Bones.Logic.Features.Accounts;
 
 namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
 public class QueueConfirmationEmailTests : TestBase
 {
-    private readonly QueueConfirmationEmailCommandValidator _validator = new();
+    private readonly QueueConfirmationEmail.Validator _validator = new();
 
     /// <summary>
     ///     Checks that the handlers stops this.
@@ -19,7 +20,7 @@ public class QueueConfirmationEmailTests : TestBase
     [Fact]
     public async Task QueueConfirmationEmail_ShouldFailWhenAlreadyInQueue()
     {
-        RegisterUserQuery createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
+        RegisterUser.Query createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
 
         QueryResponse<IdentityResult> result = await Sender.Send(createUserRequest);
         result.Success.Should().BeTrue();
@@ -33,8 +34,8 @@ public class QueueConfirmationEmailTests : TestBase
         confirmation.Should().NotBeNull();
         confirmation.ConfirmationLink.Should().NotBeNullOrEmpty();
 
-        QueueConfirmationEmailCommand confirmationEmailCommand = new(createdUser, createUserRequest.Email);
-        TestValidationResult<QueueConfirmationEmailCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
+        QueueConfirmationEmail.Command confirmationEmailCommand = new(createdUser, createUserRequest.Email);
+        TestValidationResult<QueueConfirmationEmail.Command> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse confirmationCommand = await Sender.Send(confirmationEmailCommand);

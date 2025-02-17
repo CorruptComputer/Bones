@@ -9,7 +9,7 @@ namespace Bones.WebUI.Layout;
 /// <summary>
 /// 
 /// </summary>
-public partial class MainLayout(BonesAuthenticationStateProvider authStateProvider) : LayoutComponentBase
+public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvider, ILogger<MainLayout> Logger, BonesApiClient ApiClient, NavigationManager NavManager) : LayoutComponentBase
 {
     private MudTheme? _theme = null;
 
@@ -87,7 +87,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
     private async Task UpdateProjectList()
     {
         // Only load the project list if the user is authenticated
-        if ((await authStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated != true)
+        if ((await AuthStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated != true)
         {
             return;
         }

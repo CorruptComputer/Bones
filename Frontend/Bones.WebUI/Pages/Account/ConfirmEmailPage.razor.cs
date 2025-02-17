@@ -1,3 +1,4 @@
+using Bones.Api.Client;
 using Microsoft.AspNetCore.Components;
 
 namespace Bones.WebUI.Pages.Account;
@@ -5,7 +6,7 @@ namespace Bones.WebUI.Pages.Account;
 /// <summary>
 ///   Confirms the users email
 /// </summary>
-public partial class ConfirmEmailPage : ComponentBase
+public partial class ConfirmEmailPage(BonesApiClient ApiClient) : ComponentBase
 {
     /// <summary>
     ///   The ID of the user this request is for

@@ -1,5 +1,7 @@
+using Bones.Api.Models;
+using Bones.Api.Models.Account;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Shared.Consts;
+using Bones.Shared.Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
@@ -24,14 +26,26 @@ public sealed partial class AccountController(ISender sender) : BonesControllerB
     {
         BonesUser user = await GetCurrentBonesUserAsync();
 
-        return new GetMyProfileResponse
+        return GetMyProfileResponse.FromUser(user, User);
+    }
+
+    /// <summary>
+    ///     Updates the current users profile
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <returns>true if successful, what went wrong otherwise</returns>
+    [HttpPut("my/profile", Name = "UpdateMyProfileAsync")]
+    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<bool>> UpdateMyProfileAsync([FromBody] UpdateMyProfileRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(await GetCurrentBonesUserAsync()));
+
+        if (!response.Success)
         {
-            Email = user.Email ?? string.Empty,
-            EmailConfirmed = user.EmailConfirmed,
-            EmailConfirmedDateTime = user.EmailConfirmedDateTime,
-            DisplayName = user.DisplayName ?? "Unknown",
-            CreateDateTime = user.CreateDateTime,
-            IsSysAdmin = User.IsInRole(SystemRoles.SYSTEM_ADMINISTRATORS)
-        };
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Success;
     }
 }

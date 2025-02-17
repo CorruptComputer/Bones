@@ -7,7 +7,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Modify a project page
 /// </summary>
-public partial class ModifyProjectPage : ComponentBase
+public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load

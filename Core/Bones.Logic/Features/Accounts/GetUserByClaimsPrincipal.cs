@@ -4,23 +4,27 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Logic.Features.Accounts;
 
-/// <summary>
-///   Backend request for getting a <see cref="BonesUser" /> by a <see cref="ClaimsPrincipal" />.
-/// </summary>
-/// <param name="ClaimsPrincipal"></param>
-public sealed record GetUserByClaimsPrincipalQuery(ClaimsPrincipal? ClaimsPrincipal) : IRequest<QueryResponse<BonesUser>>;
-
-internal sealed class GetUserByClaimsPrincipalQueryValidator : AbstractValidator<GetUserByClaimsPrincipalQuery>
+/// <inheritdoc />
+public sealed class GetUserByClaimsPrincipal(UserManager<BonesUser> userManager) : IRequestHandler<GetUserByClaimsPrincipal.Query, QueryResponse<BonesUser>>
 {
-    public GetUserByClaimsPrincipalQueryValidator()
+    /// <summary>
+    ///   Backend request for getting a <see cref="BonesUser" /> by a <see cref="ClaimsPrincipal" />.
+    /// </summary>
+    /// <param name="ClaimsPrincipal"></param>
+    public sealed record Query(ClaimsPrincipal? ClaimsPrincipal) : IRequest<QueryResponse<BonesUser>>;
+
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
     {
-        RuleFor(x => x.ClaimsPrincipal).NotNull();
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ClaimsPrincipal).NotNull();
+        }
     }
-}
 
-internal sealed class GetUserByClaimsPrincipalHandler(UserManager<BonesUser> userManager) : IRequestHandler<GetUserByClaimsPrincipalQuery, QueryResponse<BonesUser>>
-{
-    public async Task<QueryResponse<BonesUser>> Handle(GetUserByClaimsPrincipalQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<BonesUser>> Handle(Query request, CancellationToken cancellationToken)
     {
         if (request.ClaimsPrincipal != null)
         {

@@ -2,25 +2,27 @@ using Bones.Database.DbSets.ProjectManagement;
 
 namespace Bones.Database.Operations.ProjectManagement.Projects;
 
-/// <summary>
-///   DB Query to get the project by its ID.
-/// </summary>
-/// <param name="ProjectId">The Project ID</param>
-public sealed record GetProjectByIdDbQuery(Guid ProjectId) : IRequest<QueryResponse<Project>>;
-
-internal sealed class GetProjectByIdDbQueryValidator : AbstractValidator<GetProjectByIdDbQuery>
+/// <inheritdoc />
+public sealed class GetProjectByIdDb(BonesDbContext dbContext) : IRequestHandler<GetProjectByIdDb.Query, QueryResponse<Project>>
 {
-    public override Task<ValidationResult> ValidateAsync(ValidationContext<GetProjectByIdDbQuery> context, CancellationToken cancellation = new())
+    /// <summary>
+    ///   DB Query to get the project by its ID.
+    /// </summary>
+    /// <param name="ProjectId">The Project ID</param>
+    public sealed record Query(Guid ProjectId) : IRequest<QueryResponse<Project>>;
+
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
     {
-        RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
-
-        return base.ValidateAsync(context, cancellation);
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
+        }
     }
-}
 
-internal sealed class GetProjectByIdDb(BonesDbContext dbContext) : IRequestHandler<GetProjectByIdDbQuery, QueryResponse<Project>>
-{
-    public async Task<QueryResponse<Project>> Handle(GetProjectByIdDbQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<Project>> Handle(Query request, CancellationToken cancellationToken)
     {
         Project? project = await dbContext.Projects
             .Include(p => p.OwningOrganization)

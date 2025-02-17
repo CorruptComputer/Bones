@@ -6,25 +6,33 @@ using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
 
-/// <summary>
-///     Query for getting the item fields in a project
-/// </summary>
-/// <param name="ProjectId">Internal ID of the project</param>
-/// <param name="RequestingUser">The user requesting this</param>
-public record GetItemFieldsByProjectQuery(Guid ProjectId, BonesUser RequestingUser) : IRequest<QueryResponse<List<GenericItemField>>>;
-
-internal sealed class GetItemFieldsByProjectQueryValidator : AbstractValidator<GetItemFieldsByProjectQuery>
+/// <inheritdoc />
+public sealed class GetItemFieldsByProject(ISender sender) : IRequestHandler<GetItemFieldsByProject.Query, QueryResponse<List<GenericItemField>>>
 {
+    /// <summary>
+    ///     Query for getting the item fields in a project
+    /// </summary>
+    /// <param name="ProjectId">Internal ID of the project</param>
+    /// <param name="RequestingUser">The user requesting this</param>
+    public record Query(Guid ProjectId, BonesUser RequestingUser) : IRequest<QueryResponse<List<GenericItemField>>>;
 
-}
+    /// <inheritdoc />
+    public sealed class Validator : AbstractValidator<Query>
+    {
+        /// <inheritdoc />
+        public Validator()
+        {
+            RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.RequestingUser).NotNull();
+        }
+    }
 
-internal sealed class GetItemFieldsByProjectHandler(ISender sender) : IRequestHandler<GetItemFieldsByProjectQuery, QueryResponse<List<GenericItemField>>>
-{
-    public async Task<QueryResponse<List<GenericItemField>>> Handle(GetItemFieldsByProjectQuery request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<QueryResponse<List<GenericItemField>>> Handle(Query request, CancellationToken cancellationToken)
     {
         const string perm = BonesClaimTypes.Role.Project.VIEW_PROJECT;
         bool? hasProjectPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(request.ProjectId, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermission.Query(request.ProjectId, request.RequestingUser, perm), cancellationToken);
 
         if (hasProjectPermission != true)
         {

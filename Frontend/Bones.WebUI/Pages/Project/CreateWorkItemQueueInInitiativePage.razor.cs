@@ -6,8 +6,8 @@ namespace Bones.WebUI.Pages.Project;
 
 /// <summary>
 ///   Page to create a work item queue in an initiative
-/// </summary>
-public partial class CreateWorkItemQueueInInitiativePage : ComponentBase
+/// </summary>                                          BonesApiClient ApiClient, NavigationManager NavManager, 
+public partial class CreateWorkItemQueueInInitiativePage(ILogger<CreateWorkItemQueueInInitiativePage> Logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project

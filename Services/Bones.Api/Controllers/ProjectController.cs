@@ -31,7 +31,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     public async ValueTask<ActionResult<Dictionary<Guid, string>>> GetProjectsByOwnerAsync([FromBody] GetProjectsByOwnerRequest request)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
-        QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsByOwnerQuery(request.OwnerType, request.OrganizationId ?? currentUser.Id, currentUser));
+        QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsByOwner.Query(request.OwnerType, request.OrganizationId ?? currentUser.Id, currentUser));
         if (!response.Success)
         {
             return BadRequest(response.FailureReasons);
@@ -58,7 +58,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
         BonesUser currentUser = await GetCurrentBonesUserAsync();
 
         // TODO: Make this customizable 
-        QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsUserCanAccessQuery(currentUser));
+        QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsUserCanAccess.Query(currentUser));
         if (!response.Success)
         {
             return BadRequest(response.FailureReasons);
@@ -82,14 +82,14 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// </summary>
     /// <param name="projectId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("P{projectId:guid}/dashboard", Name = "GetProjectDashboardAsync")]
+    [HttpGet("{projectId:guid}/dashboard", Name = "GetProjectDashboardAsync")]
     [ProducesResponseType<GetProjectDashboardResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetProjectDashboardResponse>> GetProjectDashboardAsync(Guid projectId)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
-        QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectByIdQuery(projectId, currentUser));
-        QueryResponse<List<Initiative>> initiativesResponse = await Sender.Send(new GetInitiativesByProjectQuery(projectId, currentUser));
+        QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectById.Query(projectId, currentUser));
+        QueryResponse<List<Initiative>> initiativesResponse = await Sender.Send(new GetInitiativesByProject.Query(projectId, currentUser));
 
         if (!projectResponse.Success || projectResponse.Result is null)
         {
@@ -137,13 +137,13 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="projectId"></param>
     /// <param name="initiativeId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("P{projectId:guid}/I{initiativeId:guid}/dashboard", Name = "GetInitiativeDashboardAsync")]
+    [HttpGet("{projectId:guid}/{initiativeId:guid}/dashboard", Name = "GetInitiativeDashboardAsync")]
     [ProducesResponseType<GetInitiativeDashboardResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetInitiativeDashboardResponse>> GetInitiativeDashboardAsync(Guid projectId, Guid initiativeId)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
-        QueryResponse<Initiative> initiativeResponse = await Sender.Send(new GetInitiativeByIdQuery(initiativeId, currentUser));
+        QueryResponse<Initiative> initiativeResponse = await Sender.Send(new GetInitiativeById.Query(initiativeId, currentUser));
 
         if (!initiativeResponse.Success || initiativeResponse.Result is null)
         {
@@ -175,21 +175,21 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// </summary>
     /// <param name="projectId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("P{projectId:guid}/settings", Name = "GetProjectSettingsAsync")]
+    [HttpGet("{projectId:guid}/settings", Name = "GetProjectSettingsAsync")]
     [ProducesResponseType<GetProjectSettingsResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetProjectSettingsResponse>> GetProjectSettingsAsync(Guid projectId)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
-        QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectByIdQuery(projectId, currentUser));
+        QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectById.Query(projectId, currentUser));
 
         if (!projectResponse.Success || projectResponse.Result is null)
         {
             return BadRequest(projectResponse.FailureReasons);
         }
 
-        QueryResponse<List<GenericItemField>> itemFields = await Sender.Send(new GetItemFieldsByProjectQuery(projectId, currentUser));
-        QueryResponse<List<GenericItemLayout>> itemLayouts = await Sender.Send(new GetItemLayoutsByProjectQuery(projectId, currentUser));
+        QueryResponse<List<GenericItemField>> itemFields = await Sender.Send(new GetItemFieldsByProject.Query(projectId, currentUser));
+        QueryResponse<List<GenericItemLayout>> itemLayouts = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, currentUser));
 
         if (!itemFields.Success || itemFields.Result is null)
         {
@@ -211,12 +211,12 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// </summary>
     /// <param name="projectId">The ID of the project</param>
     /// <returns>The item fields in the project.</returns>
-    [HttpGet("P{projectId:guid}/fields", Name = "GetProjectItemFieldsAsync")]
+    [HttpGet("{projectId:guid}/fields", Name = "GetProjectItemFieldsAsync")]
     [ProducesResponseType<GetProjectItemFieldsResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetProjectItemFieldsResponse>> GetProjectItemFieldsAsync(Guid projectId)
     {
-        QueryResponse<List<GenericItemField>> fieldResponse = await Sender.Send(new GetItemFieldsByProjectQuery(projectId, await GetCurrentBonesUserAsync()));
+        QueryResponse<List<GenericItemField>> fieldResponse = await Sender.Send(new GetItemFieldsByProject.Query(projectId, await GetCurrentBonesUserAsync()));
 
         if (!fieldResponse.Success || fieldResponse.Result is null)
         {
@@ -232,7 +232,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="projectId">The ID of the project</param>
     /// <param name="fieldId">The ID of the field</param>
     /// <returns>The latest version of the requested field.</returns>
-    [HttpGet("P{projectId:guid}/fields/F{fieldId:guid}/latest", Name = "GetLatestItemFieldVersionAsync")]
+    [HttpGet("{projectId:guid}/fields/{fieldId:guid}/latest", Name = "GetLatestItemFieldVersionAsync")]
     [ProducesResponseType<GetLatestItemFieldVersionResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetLatestItemFieldVersionResponse>> GetLatestItemFieldVersionAsync(Guid projectId, Guid fieldId)
@@ -253,7 +253,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="projectId">The ID of the project</param>
     /// <param name="layoutId">The ID of the layout</param>
     /// <returns>The latest version of the requested layout.</returns>
-    [HttpGet("P{projectId:guid}/layouts/L{layoutId:guid}/latest", Name = "GetLatestItemLayoutVersionAsync")]
+    [HttpGet("{projectId:guid}/layouts/{layoutId:guid}/latest", Name = "GetLatestItemLayoutVersionAsync")]
     [ProducesResponseType<GetLatestItemLayoutVersionResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetLatestItemLayoutVersionResponse>> GetLatestItemLayoutVersionAsync(Guid projectId, Guid layoutId)
@@ -280,7 +280,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateProjectAsync([FromBody] CreateProjectRequest request)
     {
-        CommandResponse response = await Sender.Send(new CreateProjectCommand(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
+        CommandResponse response = await Sender.Send(new CreateProject.Command(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
         if (!response.Success)
         {
             return BadRequest(ErrorResponse.FromCommandResponse(response));
@@ -295,12 +295,12 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("P{projectId:guid}/initiative/create", Name = "CreateInitiativeAsync")]
+    [HttpPost("{projectId:guid}/initiative/create", Name = "CreateInitiativeAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateInitiativeAsync(Guid projectId, [FromBody] CreateInitiativeRequest request)
     {
-        CommandResponse response = await Sender.Send(new CreateInitiativeCommand(request.Name, projectId, await GetCurrentBonesUserAsync()));
+        CommandResponse response = await Sender.Send(new CreateInitiative.Command(request.Name, projectId, await GetCurrentBonesUserAsync()));
         if (!response.Success)
         {
             return BadRequest(ErrorResponse.FromCommandResponse(response));
@@ -315,7 +315,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("P{projectId:guid}/fields/create", Name = "CreateItemFieldAsync")]
+    [HttpPost("{projectId:guid}/fields/create", Name = "CreateItemFieldAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateItemFieldAsync(Guid projectId, [FromBody] CreateItemFieldRequest request)
@@ -336,7 +336,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="fieldId">The ID of the field to add this version to</param>
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("P{projectId:guid}/fields/F{fieldId:guid}", Name = "CreateItemFieldVersionAsync")]
+    [HttpPost("{projectId:guid}/fields/{fieldId:guid}", Name = "CreateItemFieldVersionAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateItemFieldVersionAsync(Guid projectId, Guid fieldId, [FromBody] CreateItemFieldVersionRequest request)
@@ -356,7 +356,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("P{projectId:guid}/layouts/create", Name = "CreateItemLayoutAsync")]
+    [HttpPost("{projectId:guid}/layouts/create", Name = "CreateItemLayoutAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateItemLayoutAsync(Guid projectId, [FromBody] CreateItemLayoutRequest request)
@@ -377,7 +377,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     /// <param name="layoutId">The ID of the layout to add this version to</param>
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("P{projectId:guid}/layouts/L{layoutId:guid}", Name = "CreateItemLayoutVersionAsync")]
+    [HttpPost("{projectId:guid}/layouts/{layoutId:guid}", Name = "CreateItemLayoutVersionAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateItemLayoutVersionAsync(Guid projectId, Guid layoutId, [FromBody] CreateItemLayoutVersionRequest request)

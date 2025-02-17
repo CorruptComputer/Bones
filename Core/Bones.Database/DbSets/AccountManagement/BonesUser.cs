@@ -20,13 +20,17 @@ public class BonesUser : IdentityUser<Guid>
     /// <summary>
     ///     When the account was created.
     /// </summary>
-    [Required]
     public DateTimeOffset CreateDateTime { get; } = DateTimeOffset.Now;
 
     /// <summary>
     ///     When was it confirmed, if at all?
     /// </summary>
     public DateTimeOffset? EmailConfirmedDateTime { get; set; }
+
+    /// <summary>
+    ///   When was the password last set?
+    /// </summary>
+    public DateTimeOffset PasswordLastSetDateTime { get; set; } = DateTimeOffset.Now;
 
     /// <summary>
     ///   If their password is expired, we don't want to allow them to login.

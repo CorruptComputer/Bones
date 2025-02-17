@@ -41,7 +41,7 @@ public class CreateItemLayout(ISender sender) : IRequestHandler<CreateItemLayout
     {
         const string perm = BonesClaimTypes.Role.Project.EDIT_PROJECT_SETTINGS;
         bool? hasProjectPermission =
-            await sender.Send(new UserHasProjectPermissionQuery(request.ProjectId, request.RequestingUser, perm), cancellationToken);
+            await sender.Send(new UserHasProjectPermission.Query(request.ProjectId, request.RequestingUser, perm), cancellationToken);
 
         if (hasProjectPermission != true)
         {

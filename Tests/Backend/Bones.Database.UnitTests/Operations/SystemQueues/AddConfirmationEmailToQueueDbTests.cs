@@ -1,13 +1,11 @@
-using Bones.Database.Operations.SystemQueues.ConfirmationEmail.AddConfirmationEmailToQueueDb;
+using Bones.Database.Operations.System;
 using Bones.Shared.Backend.Models;
-using Bones.Testing.Shared.Backend;
-using FluentValidation.TestHelper;
 
 namespace Bones.Database.UnitTests.Operations.SystemQueues;
 
 public class AddConfirmationEmailToQueueDbTests : TestBase
 {
-    private readonly AddConfirmationEmailToQueueDbCommandValidator _validator = new();
+    private readonly AddConfirmationEmailToQueueDb.Validator _validator = new();
 
     /// <summary>
     ///     Checks that the handler stops this.
@@ -24,8 +22,8 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
     [InlineData("InvalidEmail")]
     public async Task InvalidEmail_ShouldFail(string email)
     {
-        AddConfirmationEmailToQueueDbCommand confirmationEmailCommand = new(email, "http://localhost/confirm-pls");
-        TestValidationResult<AddConfirmationEmailToQueueDbCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
+        AddConfirmationEmailToQueueDb.Command confirmationEmailCommand = new(email, "http://localhost/confirm-pls");
+        TestValidationResult<AddConfirmationEmailToQueueDb.Command> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldHaveAnyValidationError();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
@@ -40,8 +38,8 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
     {
         const string emailAddress = "DuplicateConfirmation@example.com";
 
-        AddConfirmationEmailToQueueDbCommand confirmationEmailCommand = new(emailAddress, "http://localhost/confirm-pls");
-        TestValidationResult<AddConfirmationEmailToQueueDbCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
+        AddConfirmationEmailToQueueDb.Command confirmationEmailCommand = new(emailAddress, "http://localhost/confirm-pls");
+        TestValidationResult<AddConfirmationEmailToQueueDb.Command> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
@@ -59,8 +57,8 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
     {
         const string emailAddress = "IAmAValidEmail@example.com";
 
-        AddConfirmationEmailToQueueDbCommand confirmationEmailCommand = new(emailAddress, "http://localhost/confirm-pls");
-        TestValidationResult<AddConfirmationEmailToQueueDbCommand> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
+        AddConfirmationEmailToQueueDb.Command confirmationEmailCommand = new(emailAddress, "http://localhost/confirm-pls");
+        TestValidationResult<AddConfirmationEmailToQueueDb.Command> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);

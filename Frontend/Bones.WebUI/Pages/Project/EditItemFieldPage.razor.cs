@@ -7,7 +7,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Edit Item Field page
 /// </summary>
-public partial class EditItemFieldPage : ComponentBase
+public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<EditItemFieldPage> Logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project the parent item field belongs to

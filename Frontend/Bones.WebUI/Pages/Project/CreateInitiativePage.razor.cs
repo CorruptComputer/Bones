@@ -8,7 +8,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Create Initiative page
 /// </summary>
-public partial class CreateInitiativePage : ComponentBase
+public partial class CreateInitiativePage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<CreateInitiativePage> Logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load in this dashboard
