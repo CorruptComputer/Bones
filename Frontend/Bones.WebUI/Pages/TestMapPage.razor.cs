@@ -11,7 +11,7 @@ namespace Bones.WebUI.Pages;
 /// <summary>
 ///   A page made for testing maps
 /// </summary>
-public partial class TestMapPage(JSRuntime JsRuntime) : ComponentBase
+public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
 {
     private readonly LatLon _startAt = new(31.887f, -100.360f, 7);
     private LatLon _markerAt = new(31.887f, -100.360f);
