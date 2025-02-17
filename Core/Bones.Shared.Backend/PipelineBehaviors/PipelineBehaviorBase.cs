@@ -117,7 +117,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
             return;
         }
 
-        Log.Debug($"Request Started [{typeof(TRequest).FullName}] TRequest = {request.ToString()}");
+        Log.Debug("Request Started [{TypeName}] TRequest = {RequestBody}", typeof(TRequest).FullName, request.ToString());
         _stopwatch = Stopwatch.StartNew();
     }
 
@@ -131,15 +131,20 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
         _stopwatch.Stop();
         if (exception != null)
         {
-            Log.Debug($"Uncaught Exception [{typeof(TRequest).FullName}] | Exception = {exception.Message} | TRequest = {request.ToString()}");
+            Log.Debug("Uncaught Exception [{TypeName}] | Exception = {ExceptionMesssage} | TRequest = {RequestBody}", typeof(TRequest).FullName, exception.Message, request.ToString());
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
             }
         }
 
-        Log.Debug(success
-            ? $"Succeeded [{typeof(TRequest).FullName}] in {_stopwatch.ElapsedMilliseconds}ms"
-            : $"Failed [{typeof(TRequest).FullName}] in {_stopwatch.ElapsedMilliseconds}ms | Reasons = {failReasons?.ToString() ?? "(none)"}");
+        if (success)
+        {
+            Log.Debug("Request Succeeded [{TypeName}] | TRequest = {RequestBody}", typeof(TRequest).FullName, request.ToString());
+        }
+        else
+        {
+            Log.Debug("Request Failed [{TypeName}] | TRequest = {RequestBody} | FailReasons = {FailReasons}", typeof(TRequest).FullName, request.ToString(), failReasons?.ToString() ?? "(none)");
+        }
     }
 }

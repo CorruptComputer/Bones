@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Api.Models;
+using Bones.Api.Models.Anonymous;
 using Bones.Logic.Features.Accounts;
 using Bones.Logic.Features.System;
 using Bones.Shared.Backend.Models;
@@ -14,7 +15,7 @@ namespace Bones.Api.Controllers;
 /// </summary>
 /// <param name="sender">MediatR sender</param>
 [AllowAnonymous]
-public sealed partial class AnonymousController(ISender sender) : BonesControllerBase(sender)
+public sealed class AnonymousController(ISender sender) : BonesControllerBase(sender)
 {
     /// <summary>
     ///   Registers a new user if all validations pass

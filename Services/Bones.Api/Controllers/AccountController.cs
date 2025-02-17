@@ -14,7 +14,7 @@ namespace Bones.Api.Controllers;
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
 /// </remarks>
-public sealed partial class AccountController(ISender sender) : BonesControllerBase(sender)
+public sealed class AccountController(ISender sender) : BonesControllerBase(sender)
 {
     /// <summary>
     ///   Returns a users own full profile info

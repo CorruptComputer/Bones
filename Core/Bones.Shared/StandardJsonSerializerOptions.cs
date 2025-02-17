@@ -6,7 +6,7 @@ namespace Bones.Shared;
 /// <summary>
 ///   Standard JSON serializer options
 /// </summary>
-public class StandardJsonSerializerOptions
+public static class StandardJsonSerializerOptions
 {
     /// <summary>
     ///   The default JSON serializer options to be used

@@ -1,4 +1,5 @@
 using Bones.Api.Models;
+using Bones.Api.Models.Login;
 using Bones.Database.DbSets.AccountManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,7 @@ namespace Bones.Api.Controllers;
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
 /// </remarks>
-public sealed partial class LoginController(SignInManager<BonesUser> signInManager, ISender sender) : BonesControllerBase(sender)
+public sealed class LoginController(SignInManager<BonesUser> signInManager, ISender sender) : BonesControllerBase(sender)
 {
     /// <summary>
     ///   Logs in a user, returns the active token as a cookie header if successful
