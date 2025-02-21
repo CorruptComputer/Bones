@@ -29,10 +29,9 @@ public static class Program
 
         builder.ConfigureContainer(new AutofacServiceProviderFactory(), containerBuilder =>
         {
-            containerBuilder.RegisterModule(new BonesBackgroundServiceModule(builder.Configuration,
-                [typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
+            containerBuilder.RegisterModule(new BonesBackgroundServiceModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
 
-            containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration, builder.Services));
+            containerBuilder.RegisterModule(new BonesBackendModule(builder.Services));
             containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
         });
 

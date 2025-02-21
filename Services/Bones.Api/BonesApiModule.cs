@@ -1,6 +1,5 @@
 using System.Reflection;
 using Autofac;
-using Bones.Api.Models;
 using Bones.Shared.Backend.PipelineBehaviors;
 using Bones.Shared.Exceptions;
 using MediatR.Extensions.Autofac.DependencyInjection;

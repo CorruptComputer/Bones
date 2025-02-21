@@ -47,7 +47,7 @@ public partial class CreateInitiativePage(BonesApiClient ApiClient, NavigationMa
                 Name = InitiativeName.Text
             });
 
-            NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
+            NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
         }
         catch (ApiException ex)
         {

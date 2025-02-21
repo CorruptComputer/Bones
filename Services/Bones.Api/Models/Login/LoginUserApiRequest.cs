@@ -1,5 +1,3 @@
-using System;
-
 namespace Bones.Api.Models.Login;
 
 /// <summary>

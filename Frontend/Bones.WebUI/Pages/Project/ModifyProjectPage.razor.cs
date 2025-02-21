@@ -20,6 +20,21 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     /// </summary>
     public string? ProjectName { get; set; }
 
+        /// <summary>
+    ///   The type of owner for the project, received from the API
+    /// </summary>
+    public OwnershipType? OwnerType { get; set; }
+
+    /// <summary>
+    ///   The ID of the owner of the project, received from the API
+    /// </summary>
+    public Guid? OwnerId { get; set; }
+
+    /// <summary>
+    ///   The name of the owner of the project, received from the API
+    /// </summary>
+    public string? OwnerName { get; set; }
+
     /// <summary>
     ///   The number of itemfields on the project, received from the API
     /// </summary>
@@ -75,6 +90,9 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     {
         GetProjectSettingsResponse settingsResponse = await ApiClient.GetProjectSettingsAsync(ProjectId);
         ProjectName = settingsResponse.ProjectName;
+        OwnerType = settingsResponse.OwnerType;
+        OwnerId = settingsResponse.OwnerId;
+        OwnerName = settingsResponse.OwnerDisplayName;
         ItemFieldsCount = settingsResponse.ItemFieldCount;
         ItemFieldsList = settingsResponse.ItemFields;
         ItemFieldsListLoading = false;
@@ -83,17 +101,39 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
         ItemLayoutsListLoading = false;
     }
 
-    private static string GetCreateItemFieldUrl(Guid projectId) => FrontEndUrls.Project.ItemField.CREATE_FIELD
-        .Replace("{ProjectId:guid}", projectId.ToString());
+    /// <summary>
+    ///   Gets the URL to create a new item field
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <returns></returns>
+    protected static string GetCreateItemFieldUrl(Guid projectId) => FrontEndUrls.Project.ItemField.CREATE_FIELD
+        .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString());
 
-    private static string GetEditItemFieldUrl(Guid projectId, Guid fieldId) => FrontEndUrls.Project.ItemField.EDIT_FIELD
-        .Replace("{ProjectId:guid}", projectId.ToString())
+    /// <summary>
+    ///   Gets the URL to edit an item field
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <param name="fieldId"></param>
+    /// <returns></returns>
+    protected static string GetEditItemFieldUrl(Guid projectId, Guid fieldId) => FrontEndUrls.Project.ItemField.EDIT_FIELD
+        .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString())
         .Replace("{ItemFieldId:guid}", fieldId.ToString());
 
-    private static string GetCreateItemLayoutUrl(Guid projectId) => FrontEndUrls.Project.ItemLayout.CREATE_LAYOUT
-        .Replace("{ProjectId:guid}", projectId.ToString());
+    /// <summary>
+    ///   Gets the URL to create a new item layout
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <returns></returns>
+    protected static string GetCreateItemLayoutUrl(Guid projectId) => FrontEndUrls.Project.ItemLayout.CREATE_LAYOUT
+        .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString());
 
-    private static string GetEditItemLayoutUrl(Guid projectId, Guid layoutId) => FrontEndUrls.Project.ItemLayout.EDIT_LAYOUT
-        .Replace("{ProjectId:guid}", projectId.ToString())
+    /// <summary>
+    ///   Gets the URL to edit an item layout
+    /// </summary>
+    /// <param name="projectId"></param>
+    /// <param name="layoutId"></param>
+    /// <returns></returns>
+    protected static string GetEditItemLayoutUrl(Guid projectId, Guid layoutId) => FrontEndUrls.Project.ItemLayout.EDIT_LAYOUT
+        .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString())
         .Replace("{ItemLayoutId:guid}", layoutId.ToString());
 }

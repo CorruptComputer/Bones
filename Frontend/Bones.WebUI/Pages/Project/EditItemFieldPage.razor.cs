@@ -108,7 +108,7 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
             CreateItemFieldVersionRequest request = GetRequest();
             await ApiClient.CreateItemFieldVersionAsync(ProjectId, ItemFieldId, request);
 
-            NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace("{ProjectId:guid}", ProjectId.ToString()));
+            NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()));
         }
         catch (ApiException ex)
         {

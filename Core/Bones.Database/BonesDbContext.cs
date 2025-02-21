@@ -1,6 +1,8 @@
+using System.Net;
 using Bones.Database.Converters;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.Audit;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
@@ -10,6 +12,7 @@ using Bones.Database.Models;
 using Bones.Shared.Exceptions;
 using GeoJSON.Text.Feature;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bones.Database;
 
@@ -26,6 +29,14 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
 
     #region AssetManagement
     internal DbSet<Asset> Assets { get; set; }
+    #endregion
+
+    #region Audit
+    internal DbSet<AccountAudit> AccountAudits { get; set; }
+
+    internal DbSet<LoginAudit> LoginAudits { get; set; }
+
+    internal DbSet<SystemAudit> SystemAudits { get; set; }
     #endregion
 
     #region DocumentationManagement
@@ -63,6 +74,8 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     internal DbSet<ForgotPasswordEmailDeadQueue> ForgotPasswordEmailDeadQueue { get; set; }
     internal DbSet<ForgotPasswordEmailQueue> ForgotPasswordEmailQueue { get; set; }
 
+    internal DbSet<SystemSetting> SystemSettings { get; set; }
+
     internal DbSet<TaskError> TaskErrors { get; set; }
     #endregion
 
@@ -81,6 +94,7 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
         configurationBuilder.Properties<DateTimeOffset>().HaveConversion<DateTimeOffsetUtcConverter>();
         configurationBuilder.Properties<Feature>().HaveConversion<GeoJsonFeatureToStringConverter>();
         configurationBuilder.Properties<FeatureCollection>().HaveConversion<GeoJsonFeatureCollectionToStringConverter>();
+        configurationBuilder.Properties<IPAddress>().HaveConversion<IPAddressToStringConverter>();
     }
 
     /// <summary>

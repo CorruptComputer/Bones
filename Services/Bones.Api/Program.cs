@@ -1,7 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Api.Handlers;
-using Bones.Api.Models;
 using Bones.Logic;
 using Bones.Database;
 using Bones.Shared.Exceptions;
@@ -35,7 +34,7 @@ public static class Program
         {
             containerBuilder.RegisterModule(new BonesApiModule(builder.Configuration,
                 [typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
-            containerBuilder.RegisterModule(new BonesBackendModule(builder.Configuration, builder.Services));
+            containerBuilder.RegisterModule(new BonesBackendModule(builder.Services));
             containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
         });
 

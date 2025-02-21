@@ -21,24 +21,6 @@ public record GetProjectDashboardResponse
     public required string ProjectName { get; init; }
 
     /// <summary>
-    ///   The type of owner
-    /// </summary>
-    [JsonRequired]
-    public required OwnershipType OwnerType { get; init; }
-
-    /// <summary>
-    ///   The ID of the owner
-    /// </summary>
-    [JsonRequired]
-    public required Guid OwnerId { get; init; }
-
-    /// <summary>
-    ///   The DisplayName of the owner
-    /// </summary>
-    [JsonRequired]
-    public required string OwnerDisplayName { get; init; }
-
-    /// <summary>
     ///   The number of initiatives in the project
     /// </summary>
     [JsonRequired]

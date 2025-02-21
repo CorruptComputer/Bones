@@ -1,11 +1,8 @@
-using Bones.Api.Models;
 using Bones.Logic.Features.Projects.Initiatives;
 using Bones.Logic.Features.Projects.Projects;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Shared.Backend.Enums;
-using Bones.Shared.Backend.Models;
-using Microsoft.AspNetCore.Mvc;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Api.Models.Project;
 using Bones.Logic.Features.GenericItem;
@@ -101,23 +98,10 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
             return BadRequest(initiativesResponse.FailureReasons);
         }
 
-        // We know they won't be null
-        Guid ownerId = projectResponse.Result.OwnerType == OwnershipType.User
-            ? projectResponse.Result.OwningUser!.Id
-            : projectResponse.Result.OwningOrganization!.Id;
-
-        string ownerDisplayName = projectResponse.Result.OwnerType == OwnershipType.User
-            // Default it to "Unknown", if someone hasn't set it yet and sees that it'll probably prompt them to add it lol
-            ? projectResponse.Result.OwningUser!.DisplayName ?? "Unknown"
-            : projectResponse.Result.OwningOrganization!.Name;
-
         GetProjectDashboardResponse resp = new()
         {
             ProjectId = projectResponse.Result.Id,
             ProjectName = projectResponse.Result.Name,
-            OwnerType = projectResponse.Result.OwnerType,
-            OwnerId = ownerId,
-            OwnerDisplayName = ownerDisplayName,
             InitiativeCount = initiativesResponse.Result.Count,
             Initiatives = initiativesResponse.Result.Select(i =>
                 new GetProjectDashboardResponse.InitiativeListModel()
@@ -125,45 +109,6 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
                     InitiativeId = i.Id,
                     InitiativeName = i.Name,
                     QueueCount = i.Queues.Count
-                })
-        };
-
-        return resp;
-    }
-
-    /// <summary>
-    ///     Gets a initiatives dashboard information
-    /// </summary>
-    /// <param name="projectId"></param>
-    /// <param name="initiativeId"></param>
-    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("{projectId:guid}/{initiativeId:guid}/dashboard", Name = "GetInitiativeDashboardAsync")]
-    [ProducesResponseType<GetInitiativeDashboardResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<GetInitiativeDashboardResponse>> GetInitiativeDashboardAsync(Guid projectId, Guid initiativeId)
-    {
-        BonesUser currentUser = await GetCurrentBonesUserAsync();
-        QueryResponse<Initiative> initiativeResponse = await Sender.Send(new GetInitiativeById.Query(initiativeId, currentUser));
-
-        if (!initiativeResponse.Success || initiativeResponse.Result is null)
-        {
-            return BadRequest(initiativeResponse.FailureReasons);
-        }
-
-        Initiative initiative = initiativeResponse.Result;
-
-        GetInitiativeDashboardResponse resp = new()
-        {
-            InitiativeId = initiative.Id,
-            InitiativeName = initiative.Name,
-            ProjectId = initiative.Project.Id,
-            WorkItemQueueCount = initiative.Queues.Count,
-            WorkItemQueues = initiative.Queues.Select(i =>
-                new GetInitiativeDashboardResponse.WorkItemQueueListModel
-                {
-                    WorkItemQueueId = i.Id,
-                    WorkItemQueueName = i.Name,
-                    WorkItemCount = i.WorkItems.Count
                 })
         };
 
@@ -226,47 +171,7 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
         return GetProjectItemFieldsResponse.FromInternalList(fieldResponse.Result);
     }
 
-    /// <summary>
-    ///     Gets the latest version of a field
-    /// </summary>
-    /// <param name="projectId">The ID of the project</param>
-    /// <param name="fieldId">The ID of the field</param>
-    /// <returns>The latest version of the requested field.</returns>
-    [HttpGet("{projectId:guid}/fields/{fieldId:guid}/latest", Name = "GetLatestItemFieldVersionAsync")]
-    [ProducesResponseType<GetLatestItemFieldVersionResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<GetLatestItemFieldVersionResponse>> GetLatestItemFieldVersionAsync(Guid projectId, Guid fieldId)
-    {
-        QueryResponse<GenericItemField?> fieldResponse = await Sender.Send(new GetItemFieldById.Query(fieldId, await GetCurrentBonesUserAsync()));
 
-        if (!fieldResponse.Success || fieldResponse.Result is null)
-        {
-            return BadRequest(ErrorResponse.FromQueryResponse(fieldResponse));
-        }
-
-        return GetLatestItemFieldVersionResponse.FromInternal(fieldResponse.Result);
-    }
-
-    /// <summary>
-    ///     Gets the latest version of a layout
-    /// </summary>
-    /// <param name="projectId">The ID of the project</param>
-    /// <param name="layoutId">The ID of the layout</param>
-    /// <returns>The latest version of the requested layout.</returns>
-    [HttpGet("{projectId:guid}/layouts/{layoutId:guid}/latest", Name = "GetLatestItemLayoutVersionAsync")]
-    [ProducesResponseType<GetLatestItemLayoutVersionResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<GetLatestItemLayoutVersionResponse>> GetLatestItemLayoutVersionAsync(Guid projectId, Guid layoutId)
-    {
-        QueryResponse<GenericItemLayout?> layoutResponse = await Sender.Send(new GetItemLayoutById.Query(layoutId, await GetCurrentBonesUserAsync()));
-
-        if (!layoutResponse.Success || layoutResponse.Result is null)
-        {
-            return BadRequest(ErrorResponse.FromQueryResponse(layoutResponse));
-        }
-
-        return GetLatestItemLayoutVersionResponse.FromInternal(layoutResponse.Result);
-    }
     #endregion
 
     #region POST
@@ -390,14 +295,6 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
 
         return response.Id ?? Guid.Empty;
     }
-
-    #endregion
-
-    #region PUT
-
-    #endregion
-
-    #region DELETE
 
     #endregion
 }

@@ -54,7 +54,12 @@ public static class FrontEndUrls
     public static class Project
     {
         private const string _project = "/Project";
-        private const string _projectWithId = $"{_project}/{{ProjectId:guid}}";
+        private const string _projectWithId = $"{_project}/{PROJECT_ID_PLACEHOLDER}";
+
+        /// <summary>
+        ///   The placeholder for the project ID in URLs
+        /// </summary>
+        public const string PROJECT_ID_PLACEHOLDER = "{ProjectId:guid}";
 
         /// <summary>
         ///   Create project page

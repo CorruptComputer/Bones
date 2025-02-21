@@ -42,7 +42,7 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
                 OrganizationId = null
             });
 
-            NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace("{ProjectId:guid}", projectId.ToString()));
+            NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString()));
         }
         catch (ApiException ex)
         {

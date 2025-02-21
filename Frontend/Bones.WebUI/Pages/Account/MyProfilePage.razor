@@ -7,12 +7,12 @@
         <MudPaper Class="pa-4">
             <!-- Just to show, can't edit them here -->
             <MudTextField T="string" Label="Account Created" Disabled="true" @bind-value="@CreateDateTime"/>
-            <div class="d-flex align-center justify-space-between">
+            <div>
                 <MudTextField T="string" Label="Password Last Set" Disabled="true" @bind-value="@PasswordLastSet"/>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@GoToChangePassword">Change Password</MudButton>
             </div>
             
-            <div class="d-flex align-center justify-space-between">
+            <div>
                 <MudTextField T="string" Label="Email" Disabled="true" @bind-value="@Email"/>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@GoToChangeEmail">Change Email</MudButton>
             </div>
@@ -24,7 +24,11 @@
                               Required="true"
                               RequiredError="Display name is required!"/>
 
-                <div class="d-flex align-center justify-space-between">
+                <div style="align-self: end;">
+                    <br />
+                    <a onclick="history.back();">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Go back</MudButton>
+                    </a>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@UpdateProfileAsync">Update Profile</MudButton>
                 </div>
             </MudForm>

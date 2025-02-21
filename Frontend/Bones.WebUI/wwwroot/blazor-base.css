@@ -37,10 +37,12 @@ a, .btn-link {
 }
 
 #blazor-error-ui {
+    color: #000000;
     background: lightyellow;
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     display: none;
+    justify-content: space-between;
     left: 0;
     padding: 0.6rem 1.25rem 0.7rem 1.25rem;
     position: fixed;
@@ -48,11 +50,15 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
+    #blazor-error-ui .container {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    #blazor-error-ui .reload {
+        padding-left: 20px;
     }
 
 .blazor-error-boundary {

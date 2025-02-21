@@ -1,6 +1,5 @@
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
 

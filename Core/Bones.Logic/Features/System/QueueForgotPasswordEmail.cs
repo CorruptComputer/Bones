@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.System;
-using Bones.Logic.Models;
+using Bones.Database.Operations.System.SystemSettings;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Bones.Logic.Features.System;
 
 /// <inheritdoc />
-public class QueueForgotPasswordEmail(UserManager<BonesUser> userManager, BackendConfiguration config, ISender sender) : IRequestHandler<QueueForgotPasswordEmail.Command, CommandResponse>
+public class QueueForgotPasswordEmail(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<QueueForgotPasswordEmail.Command, CommandResponse>
 {
     /// <summary>
     ///   Backend request for queueing a password reset email.
@@ -37,9 +37,10 @@ public class QueueForgotPasswordEmail(UserManager<BonesUser> userManager, Backen
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(config.WebUIBaseUrl))
+        string? webUiBaseUrl = await sender.Send(new GetWebUiBaseUrlDb.Query(), cancellationToken);
+        if (string.IsNullOrEmpty(webUiBaseUrl))
         {
-            throw new BonesException("BackendConfiguration:WebUIBaseUrl is not set in appsettings");
+            throw new BonesException("Web UI base URL is not set in system settings.");
         }
 
         BonesUser? user = await userManager.FindByEmailAsync(request.Email);
@@ -49,7 +50,7 @@ public class QueueForgotPasswordEmail(UserManager<BonesUser> userManager, Backen
             code = code.Base64UrlSafeEncode();
 
             // Generate ResetPassword URL
-            UriBuilder builder = new(config.WebUIBaseUrl)
+            UriBuilder builder = new(webUiBaseUrl)
             {
                 Path = FrontEndUrls.Account.RESET_PASSWORD,
                 Query = $"?email={request.Email}&code={code}"

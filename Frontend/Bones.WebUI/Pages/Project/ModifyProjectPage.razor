@@ -3,8 +3,13 @@
 <MudText Typo="Typo.h4">Modify Project</MudText>
 
 <MudPaper Class="pa-4">
-    <MudText>Project ID: @ProjectId</MudText>
+    <!-- TODO: figure out a better way to display this, it kinda looks like ass -->
+    <a onclick="history.back();">
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Go back</MudButton>
+    </a>
+
     <MudText>Project Name: @ProjectName</MudText>
+    <MudText>Owner Name: @OwnerName</MudText>
 </MudPaper>
 
 

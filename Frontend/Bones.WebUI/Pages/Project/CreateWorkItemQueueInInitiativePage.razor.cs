@@ -54,7 +54,7 @@ public partial class CreateWorkItemQueueInInitiativePage(ILogger<CreateWorkItemQ
             //    Name = WorkItemQueueName.Text
             //});
 
-            //NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", InitiativeId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
+            //NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, InitiativeId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
         }
         catch (ApiException ex)
         {

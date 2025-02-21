@@ -20,21 +20,6 @@ public partial class ProjectDashboardPage(BonesApiClient ApiClient) : ComponentB
     public string? ProjectName { get; set; }
 
     /// <summary>
-    ///   The type of owner for the project, received from the API
-    /// </summary>
-    public OwnershipType? OwnerType { get; set; }
-
-    /// <summary>
-    ///   The ID of the owner of the project, received from the API
-    /// </summary>
-    public Guid? OwnerId { get; set; }
-
-    /// <summary>
-    ///   The name of the owner of the project, received from the API
-    /// </summary>
-    public string? OwnerName { get; set; }
-
-    /// <summary>
     ///   The number of initiatives on the project, received from the API
     /// </summary>
     public int? InitiativeCount { get; set; }
@@ -74,9 +59,6 @@ public partial class ProjectDashboardPage(BonesApiClient ApiClient) : ComponentB
     {
         GetProjectDashboardResponse dashboardResponse = await ApiClient.GetProjectDashboardAsync(ProjectId);
         ProjectName = dashboardResponse.ProjectName;
-        OwnerType = dashboardResponse.OwnerType;
-        OwnerId = dashboardResponse.OwnerId;
-        OwnerName = dashboardResponse.OwnerDisplayName;
 
         InitiativeCount = dashboardResponse.InitiativeCount;
         InitiativeList = dashboardResponse.Initiatives;

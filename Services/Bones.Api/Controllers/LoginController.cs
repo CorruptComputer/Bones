@@ -1,9 +1,7 @@
-using Bones.Api.Models;
 using Bones.Api.Models.Login;
 using Bones.Database.DbSets.AccountManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Bones.Api.Controllers;

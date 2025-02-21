@@ -126,7 +126,7 @@ public partial class CreateItemLayoutPage(BonesApiClient ApiClient, NavigationMa
                 FieldVersions = SelectedItemFields
             });
 
-            NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace("{ProjectId:guid}", ProjectId.ToString()));
+            NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()));
         }
         catch (ApiException ex)
         {

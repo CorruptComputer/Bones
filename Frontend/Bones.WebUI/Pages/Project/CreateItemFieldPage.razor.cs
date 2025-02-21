@@ -62,7 +62,7 @@ public partial class CreateItemFieldPage(BonesApiClient ApiClient, NavigationMan
             CreateItemFieldRequest request = GetRequest();
             await ApiClient.CreateItemFieldAsync(ProjectId, request);
 
-            NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace("{ProjectId:guid}", ProjectId.ToString()));
+            NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()));
         }
         catch (ApiException ex)
         {

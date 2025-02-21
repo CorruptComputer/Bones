@@ -1,20 +1,27 @@
 @attribute [Route(FrontEndUrls.Project.PROJECT_DASHBOARD)]
 
 <div class="d-flex">
-    <MudText Typo="Typo.h4">Project Dashboard</MudText>
+    <MudText Typo="Typo.h4">@ProjectName</MudText>
     <MudSpacer/>
-    <MudButton Href="@FrontEndUrls.Project.MODIFY_PROJECT.Replace("{ProjectId:guid}", ProjectId.ToString())">Modify Project</MudButton>
+    <MudButton Href="@FrontEndUrls.Project.MODIFY_PROJECT.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString())">Modify Project</MudButton>
 </div>
 
 <MudPaper Class="pa-4">
+    <!-- 
+        Thinking some quick project overview type stuff:
+          - # of open work items
+          - # of work items closed in the last X days (possibly configurable?)
+          - # of assets being tracked
+          - # of documentation items
+    -->
     <MudText>Project Name: @ProjectName</MudText>
-    <MudText>Owner Name: @OwnerName</MudText>
+    
 </MudPaper>
 
 <div class="d-flex">
     <MudText Typo="Typo.h4">Initiatives</MudText>
     <MudSpacer/>
-    <MudButton Href="@FrontEndUrls.Project.Initiative.CREATE_INITIATIVE.Replace("{ProjectId:guid}", ProjectId.ToString())">Create Initiative</MudButton>
+    <MudButton Href="@FrontEndUrls.Project.Initiative.CREATE_INITIATIVE.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString())">Create Initiative</MudButton>
 </div>
 
 
@@ -30,7 +37,7 @@
         <RowTemplate>
             <MudTd DataLabel="Initiative Name">@context.InitiativeName</MudTd>
             <MudTd DataLabel="Queue Count">@context.QueueCount</MudTd>
-            <MudTd DataLabel="Go to Initiative"><MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", context.InitiativeId.ToString())">Dashboard</MudButton></MudTd>
+            <MudTd DataLabel="Go to Initiative"><MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()).Replace("{InitiativeId:guid}", context.InitiativeId.ToString())">Dashboard</MudButton></MudTd>
         </RowTemplate>
     </MudTable>
 </MudPaper>

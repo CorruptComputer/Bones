@@ -1,13 +1,17 @@
 @attribute [Route(FrontEndUrls.Project.Initiative.CREATE_INITIATIVE)]
 
-<h3>Create Initiative</h3>
+<MudText Typo="Typo.h4">Create Initiative</MudText>
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
                 <MudTextField T="string" Label="Initiative Name" Required="true" RequiredError="Initiative name is required!" @ref="@InitiativeName"/>
                 
-                <div class="d-flex align-center justify-space-between">
+                <div style="align-self: end;">
+                    <br />
+                    <a onclick="history.back();">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+                    </a>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
                 </div>
             </MudForm>

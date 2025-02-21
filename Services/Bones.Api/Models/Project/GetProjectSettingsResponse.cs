@@ -22,6 +22,24 @@ public record GetProjectSettingsResponse
     public required string ProjectName { get; init; }
 
     /// <summary>
+    ///   The type of owner
+    /// </summary>
+    [JsonRequired]
+    public required OwnershipType OwnerType { get; init; }
+
+    /// <summary>
+    ///   The ID of the owner
+    /// </summary>
+    [JsonRequired]
+    public required Guid OwnerId { get; init; }
+
+    /// <summary>
+    ///   The DisplayName of the owner
+    /// </summary>
+    [JsonRequired]
+    public required string OwnerDisplayName { get; init; }
+
+    /// <summary>
     ///   The total number of item fields in the project
     /// </summary>
     [JsonRequired]
@@ -47,10 +65,23 @@ public record GetProjectSettingsResponse
 
     internal static GetProjectSettingsResponse FromInternal(Database.DbSets.ProjectManagement.Project project, List<GenericItemField> itemFields, List<GenericItemLayout> itemLayouts)
     {
+        // We know they won't be null
+        Guid ownerId = project.OwnerType == OwnershipType.User
+            ? project.OwningUser!.Id
+            : project.OwningOrganization!.Id;
+
+        string ownerDisplayName = project.OwnerType == OwnershipType.User
+            // Default it to "Unknown", if someone hasn't set it yet and sees that it'll probably prompt them to add it
+            ? project.OwningUser!.DisplayName ?? "Unknown"
+            : project.OwningOrganization!.Name;
+
         return new()
         {
             ProjectId = project.Id,
             ProjectName = project.Name,
+            OwnerType = project.OwnerType,
+            OwnerId = ownerId,
+            OwnerDisplayName = ownerDisplayName,
             ItemFieldCount = itemFields.Count,
             ItemFields = itemFields.Select(i =>
                 new ItemFieldModel

@@ -1,6 +1,6 @@
 @attribute [Route(FrontEndUrls.Project.ItemField.EDIT_FIELD)]
 
-<h3>Edit Item Field</h3>
+<MudText Typo="Typo.h4">Edit Item Field</MudText>
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
@@ -48,7 +48,11 @@
                 
                 <MudCheckBox Label="Is Required?" @bind-value="@IsRequired"/>
 
-                <div class="d-flex align-center justify-space-between">
+                <div style="align-self: end;">
+                    <br />
+                    <a onclick="history.back();">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+                    </a>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
                 </div>
             </MudForm>

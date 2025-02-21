@@ -9,6 +9,8 @@ internal static class SchemaNames
 
     internal const string AssetManagement = "AssetManagement";
 
+    internal const string Audit = "Audit";
+
     internal const string GenericItem = "GenericItem";
 
     internal const string MappingManagement = "MappingManagement";

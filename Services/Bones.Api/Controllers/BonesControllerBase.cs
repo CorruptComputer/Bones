@@ -1,11 +1,9 @@
 using System.Net.Mime;
-using Bones.Api.Models;
 using Bones.Logic.Features.Accounts;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Bones.Api.Controllers;
 

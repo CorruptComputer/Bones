@@ -3,7 +3,7 @@ using Bones.Database.Models;
 namespace Bones.Database.Operations.Setup;
 
 /// <inheritdoc />
-public sealed class SetupDb(BonesDbContext dbContext, DatabaseConfiguration config, ISender sender) : IRequestHandler<SetupDb.Command, CommandResponse>
+public sealed class SetupDb(BonesDbContext dbContext, DatabaseConfiguration config) : IRequestHandler<SetupDb.Command, CommandResponse>
 {
     /// <summary>
     ///   Command to set up the Database
@@ -25,8 +25,6 @@ public sealed class SetupDb(BonesDbContext dbContext, DatabaseConfiguration conf
         {
             Log.Information("Database is up to date.");
         }
-
-        await sender.Send(new SetupSystemAdminUserAndRole.Command(), cancellationToken);
 
         return CommandResponse.Pass();
     }

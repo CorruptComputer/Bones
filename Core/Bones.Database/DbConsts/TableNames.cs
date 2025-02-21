@@ -19,6 +19,15 @@ internal static class TableNames
         internal const string Assets = "Assets";
     }
 
+    internal static class Audit
+    {
+        internal const string AccountAudits = "AccountAudits";
+        internal const string LoginAudits = "LoginAudits";
+        internal const string ProjectAudits = "ProjectAudits";
+        internal const string SystemAdminAudits = "SystemAdminAudits";
+        internal const string SystemAudits = "SystemAudits";
+    }
+
     internal static class GenericItem
     {
         internal const string GenericItemFields = "GenericItemFields";
@@ -57,6 +66,8 @@ internal static class TableNames
 
         internal const string ForgotPasswordEmailDeadQueue = "ForgotPasswordEmailDeadQueue";
         internal const string ForgotPasswordEmailQueue = "ForgotPasswordEmailQueue";
+
+        internal const string SystemSettings = "SystemSettings";
 
         internal const string TaskErrors = "TaskErrors";
     }

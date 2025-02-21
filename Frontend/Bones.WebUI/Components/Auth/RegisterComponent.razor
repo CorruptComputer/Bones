@@ -15,7 +15,7 @@
                     <MudTextField T="string" Label="Password" HelperText="Repeat the password" @ref="@PasswordAgain" 
                                   InputType="InputType.Password" Validation="@(new Func<string?>(PasswordMatch))" />
 
-                    <div class="d-flex align-center justify-space-between">
+                    <div>
                         <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!"  />
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@DoRegistrationAsync">Register</MudButton>
                     </div>

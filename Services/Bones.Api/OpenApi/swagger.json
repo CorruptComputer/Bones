@@ -415,6 +415,251 @@
         }
       }
     },
+    "/GenericItem/{projectId}/fields/{fieldId}/latest": {
+      "get": {
+        "tags": [
+          "GenericItem"
+        ],
+        "summary": "Gets the latest version of a field",
+        "operationId": "GetLatestItemFieldVersionAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "fieldId",
+            "in": "path",
+            "description": "The ID of the field",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestItemFieldVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GenericItem/{projectId}/layouts/{layoutId}/latest": {
+      "get": {
+        "tags": [
+          "GenericItem"
+        ],
+        "summary": "Gets the latest version of a layout",
+        "operationId": "GetLatestItemLayoutVersionAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestItemLayoutVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Initiative/{initiativeId}/dashboard": {
+      "get": {
+        "tags": [
+          "Initiative"
+        ],
+        "summary": "Gets a initiatives dashboard information",
+        "operationId": "GetInitiativeDashboardAsync",
+        "parameters": [
+          {
+            "name": "initiativeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetInitiativeDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Login/login": {
       "post": {
         "tags": [
@@ -769,95 +1014,6 @@
         }
       }
     },
-    "/Project/{projectId}/{initiativeId}/dashboard": {
-      "get": {
-        "tags": [
-          "Project"
-        ],
-        "summary": "Gets a initiatives dashboard information",
-        "operationId": "GetInitiativeDashboardAsync",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "initiativeId",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetInitiativeDashboardResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/Project/{projectId}/settings": {
       "get": {
         "tags": [
@@ -993,172 +1149,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetProjectItemFieldsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Project/{projectId}/fields/{fieldId}/latest": {
-      "get": {
-        "tags": [
-          "Project"
-        ],
-        "summary": "Gets the latest version of a field",
-        "operationId": "GetLatestItemFieldVersionAsync",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "description": "The ID of the project",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "fieldId",
-            "in": "path",
-            "description": "The ID of the field",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetLatestItemFieldVersionResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Project/{projectId}/layouts/{layoutId}/latest": {
-      "get": {
-        "tags": [
-          "Project"
-        ],
-        "summary": "Gets the latest version of a layout",
-        "operationId": "GetLatestItemLayoutVersionAsync",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "description": "The ID of the project",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "layoutId",
-            "in": "path",
-            "description": "The ID of the layout",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetLatestItemLayoutVersionResponse"
                 }
               }
             }
@@ -2178,9 +2168,6 @@
         "required": [
           "initiativeCount",
           "initiatives",
-          "ownerDisplayName",
-          "ownerId",
-          "ownerType",
           "projectId",
           "projectName"
         ],
@@ -2194,19 +2181,6 @@
           "projectName": {
             "type": "string",
             "description": "The name of the project",
-            "nullable": true
-          },
-          "ownerType": {
-            "$ref": "#/components/schemas/OwnershipType"
-          },
-          "ownerId": {
-            "type": "string",
-            "description": "The ID of the owner",
-            "format": "uuid"
-          },
-          "ownerDisplayName": {
-            "type": "string",
-            "description": "The DisplayName of the owner",
             "nullable": true
           },
           "initiativeCount": {
@@ -2271,6 +2245,9 @@
           "itemFields",
           "itemLayoutCount",
           "itemLayouts",
+          "ownerDisplayName",
+          "ownerId",
+          "ownerType",
           "projectId",
           "projectName"
         ],
@@ -2284,6 +2261,19 @@
           "projectName": {
             "type": "string",
             "description": "The name of the project",
+            "nullable": true
+          },
+          "ownerType": {
+            "$ref": "#/components/schemas/OwnershipType"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "The ID of the owner",
+            "format": "uuid"
+          },
+          "ownerDisplayName": {
+            "type": "string",
+            "description": "The DisplayName of the owner",
             "nullable": true
           },
           "itemFieldCount": {

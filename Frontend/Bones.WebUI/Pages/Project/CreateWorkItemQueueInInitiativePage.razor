@@ -1,13 +1,17 @@
 @attribute [Route(FrontEndUrls.Project.Initiative.INITIATIVE_CREATE_WORKITEM_QUEUE)]
 
-<h3>Create Work Item Queue</h3>
+<MudText Typo="Typo.h4">Create Work Item Queue</MudText>
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
                 <MudTextField T="string" Label="Work Item Queue Name" Required="true" RequiredError="Work Item Queue name is required!" @ref="@WorkItemQueueName"/>
                 
-                <div class="d-flex align-center justify-space-between">
+                <div style="align-self: end;">
+                    <br />
+                    <a onclick="history.back();">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+                    </a>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
                 </div>
             </MudForm>

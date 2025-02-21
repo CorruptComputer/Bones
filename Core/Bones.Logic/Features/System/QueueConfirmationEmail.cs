@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.System;
-using Bones.Logic.Models;
+using Bones.Database.Operations.System.SystemSettings;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Bones.Logic.Features.System;
 
 /// <inheritdoc />
-public class QueueConfirmationEmail(UserManager<BonesUser> userManager, BackendConfiguration config, ISender sender) : IRequestHandler<QueueConfirmationEmail.Command, CommandResponse>
+public class QueueConfirmationEmail(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<QueueConfirmationEmail.Command, CommandResponse>
 {
     /// <summary>
     ///   Backend command for queueing a confirmation email.
@@ -38,9 +38,10 @@ public class QueueConfirmationEmail(UserManager<BonesUser> userManager, BackendC
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(config.WebUIBaseUrl))
+        string? webUiBaseUrl = await sender.Send(new GetWebUiBaseUrlDb.Query(), cancellationToken);
+        if (string.IsNullOrEmpty(webUiBaseUrl))
         {
-            throw new BonesException("BackendConfiguration:WebUIBaseUrl is not set in appsettings");
+            throw new BonesException("Web UI base URL is not set in system settings.");
         }
 
         string code = request.IsChange
@@ -49,7 +50,7 @@ public class QueueConfirmationEmail(UserManager<BonesUser> userManager, BackendC
 
         code = code.Base64UrlSafeEncode();
 
-        UriBuilder builder = new(config.WebUIBaseUrl)
+        UriBuilder builder = new(webUiBaseUrl)
         {
             Path = FrontEndUrls.Account.CONFIRM_EMAIL
         };

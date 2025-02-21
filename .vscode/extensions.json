@@ -5,7 +5,6 @@
         "sonarsource.sonarlint-vscode",
         "ms-dotnettools.vscode-dotnet-runtime",
         "ms-ossdata.vscode-postgresql",
-        "firefox-devtools.vscode-firefox-debug",
         "richardwillis.vscode-entity-framework",
         "github.vscode-github-actions"
     ]

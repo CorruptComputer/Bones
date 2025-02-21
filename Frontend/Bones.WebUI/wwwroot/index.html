@@ -6,9 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bones.WebUI</title>
     <base href="/" />
+
+    <!-- Mud Blazor -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
-    <link rel="stylesheet" href="css/app.css" />
+
+    <link rel="stylesheet" href="blazor-base.css" />
+    <link href="Bones.WebUI.styles.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
@@ -26,12 +30,15 @@
     </div>
 
     <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
+        <div class="container">
+            <p>An unhandled error has occurred. Please report the issue <a href="https://github.com/CorruptComputer/Bones/issues">here</a>!</p>
+            <a href="" class="reload">Reload</a>
+        </div>
     </div>
-    
+
+    <!-- Mud Blazor -->
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+
     <script src="_framework/blazor.webassembly.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"

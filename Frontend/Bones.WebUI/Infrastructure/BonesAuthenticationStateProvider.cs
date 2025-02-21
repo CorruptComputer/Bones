@@ -9,7 +9,8 @@ namespace Bones.WebUI.Infrastructure;
 ///   Provides the state of authentication
 /// </summary>
 /// <param name="localStorageService"></param>
-public class BonesAuthenticationStateProvider(LocalStorageService localStorageService) : AuthenticationStateProvider
+/// <param name="logger"></param>
+public class BonesAuthenticationStateProvider(LocalStorageService localStorageService, ILogger<BonesAuthenticationStateProvider> logger) : AuthenticationStateProvider
 {
     /// <inheritdoc />
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -29,10 +30,14 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         // SysAdmin stuff is dynamically hidden from the UI, organizational roles are handled server side 
         if (currentUser.IsSysAdmin)
         {
-            claims.Add(new(ClaimTypes.Role, BonesClaimTypes.Role.System.SYSTEM_ADMINISTRATOR));
+            logger.LogInformation("User is a system administrator");
+            claims.Add(new(ClaimsIdentity.DefaultRoleClaimType, SystemRoles.SYSTEM_ADMINISTRATORS));
         }
 
-        return new(new(new ClaimsIdentity(claims, authenticationType: nameof(BonesAuthenticationStateProvider))));
+        ClaimsIdentity identity = new(claims, authenticationType: nameof(BonesAuthenticationStateProvider));
+        ClaimsPrincipal principal = new(identity);
+
+        return new(principal);
     }
 
     /// <summary>

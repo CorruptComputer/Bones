@@ -1,5 +1,3 @@
-using Bones.Shared.Backend.Models;
-
 namespace Bones.Api.Models;
 
 /// <summary>

@@ -4,9 +4,6 @@
     "dev-http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:9080",
-      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "applicationUrl": "http://localhost:9080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",

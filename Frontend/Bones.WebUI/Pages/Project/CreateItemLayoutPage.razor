@@ -1,6 +1,6 @@
 @attribute [Route(FrontEndUrls.Project.ItemLayout.CREATE_LAYOUT)]
 
-<h3>Create Item Layout</h3>
+<MudText Typo="Typo.h4">Create Item Layout</MudText>
 
 <MudPaper Class="pa-7">
     <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
@@ -55,7 +55,11 @@
             </div>
         </div>
         
-        <div class="d-flex align-center justify-space-between">
+        <div style="align-self: end;">
+            <br />
+            <a onclick="history.back();">
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+            </a>
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
         </div>
     </MudForm>

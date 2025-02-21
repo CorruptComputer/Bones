@@ -271,6 +271,97 @@ namespace Bones.Database.Migrations
                     b.ToTable("Assets", "AssetManagement");
                 });
 
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.AccountAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("ActionDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ActionTaken")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ActionTakenById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("ActionTakenById");
+
+                    b.ToTable("AccountAudits", "Audit");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.LoginAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LoginDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RequestingIpAddress")
+                        .IsRequired()
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<bool>("Successful")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UnknownEmail")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("LoginAudits", "Audit");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.SystemAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("ActionDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ActionTaken")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ActionTakenById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<int?>("SettingChanged")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionTakenById");
+
+                    b.ToTable("SystemAudits", "Audit");
+                });
+
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -838,6 +929,19 @@ namespace Bones.Database.Migrations
                     b.ToTable("ForgotPasswordEmailQueue", "System");
                 });
 
+            modelBuilder.Entity("Bones.Database.DbSets.System.SystemSetting", b =>
+                {
+                    b.Property<int>("Setting")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Setting");
+
+                    b.ToTable("SystemSettings", "System");
+                });
+
             modelBuilder.Entity("Bones.Database.DbSets.System.TaskError", b =>
                 {
                     b.Property<Guid>("Id")
@@ -989,6 +1093,45 @@ namespace Bones.Database.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.AccountAudit", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenBy")
+                        .WithMany()
+                        .HasForeignKey("ActionTakenById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("ActionTakenBy");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.LoginAudit", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId");
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.SystemAudit", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenBy")
+                        .WithMany()
+                        .HasForeignKey("ActionTakenById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ActionTakenBy");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItem", b =>

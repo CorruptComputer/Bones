@@ -8,7 +8,7 @@
 <div class="d-flex">
     <MudText Typo="Typo.h4">Queues</MudText>
     <MudSpacer/>
-    <MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_CREATE_WORKITEM_QUEUE.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{InitiativeId:guid}", InitiativeId.ToString())">Create Work Item Queue</MudButton>
+    <MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_CREATE_WORKITEM_QUEUE.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()).Replace("{InitiativeId:guid}", InitiativeId.ToString())">Create Work Item Queue</MudButton>
 </div>
 
 
@@ -24,7 +24,7 @@
         <RowTemplate>
             <MudTd DataLabel="Work Item Queue Name">@context.WorkItemQueueName</MudTd>
             <MudTd DataLabel="Work Item Count">@context.WorkItemCount</MudTd>
-            <MudTd DataLabel="Go to Work Item Queue"><MudButton Href="@FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace("{ProjectId:guid}", ProjectId.ToString()).Replace("{WorkItemQueueId:guid}", context.WorkItemQueueId.ToString())">Dashboard</MudButton></MudTd>
+            <MudTd DataLabel="Go to Work Item Queue"><MudButton Href="@FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()).Replace("{WorkItemQueueId:guid}", context.WorkItemQueueId.ToString())">Dashboard</MudButton></MudTd>
         </RowTemplate>
     </MudTable>
 </MudPaper>
