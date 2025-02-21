@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="8.0.1" />
+        <PackageReference Include="FluentAssertions" Version="8.1.0" />
     </ItemGroup>
 
     <ItemGroup>
