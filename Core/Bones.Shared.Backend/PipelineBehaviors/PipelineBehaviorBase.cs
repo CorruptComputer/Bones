@@ -85,7 +85,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
                 }
             }
         }
-        catch (Exception e) when (e is not ForbiddenAccessException)
+        catch (Exception e) when (e is not ForbiddenException)
         {
             Log.Error(e, "Uncaught Exception [{RequestName}] | ExceptionMessage = {Message}", typeof(TRequest).FullName, e.Message);
 
@@ -102,7 +102,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
         {
             // Stop the whole call stack here, we don't want anything with this request to go any further.
             // The API Controller should catch this and return a forbidden status code.
-            throw new ForbiddenAccessException();
+            throw new ForbiddenException();
         }
 
         StopDebugLog(request, success, failReasons, exception);

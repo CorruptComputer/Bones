@@ -1,4 +1,4 @@
-using Bones.Database.Operations.Setup;
+using Bones.Database.Operations.System;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bones.Database.Extensions;
@@ -13,10 +13,10 @@ public static class ServiceProviderExtensions
     /// </summary>
     /// <param name="serviceProvider"></param>
     /// <param name="cancellationToken"></param>
-    public static async Task SetupDatabase(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+    public static async Task MigrateDatabase(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
     {
         using IServiceScope scope = serviceProvider.CreateScope();
         ISender sender = scope.ServiceProvider.GetRequiredService<ISender>();
-        await sender.Send(new SetupDb.Command(), cancellationToken);
+        await sender.Send(new MigrateDb.Command(), cancellationToken);
     }
 }

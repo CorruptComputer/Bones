@@ -53,7 +53,7 @@ public static class Program
 
     private static async Task RunBonesBackgroundService(this IHost host)
     {
-        await host.Services.SetupDatabase();
+        await host.Services.MigrateDatabase();
 
         Log.Information("Startup complete");
         await host.RunAsync();

@@ -10,7 +10,7 @@ namespace Bones.Api.Controllers;
 /// <param name="sender">MediatR sender</param>
 public sealed class GenericItemController(ISender sender) : BonesControllerBase(sender)
 {
-        /// <summary>
+    /// <summary>
     ///     Gets the latest version of a field
     /// </summary>
     /// <param name="projectId">The ID of the project</param>

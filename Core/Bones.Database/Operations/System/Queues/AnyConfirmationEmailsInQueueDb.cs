@@ -1,4 +1,4 @@
-namespace Bones.Database.Operations.System;
+namespace Bones.Database.Operations.System.Queues;
 
 /// <inheritdoc />
 public sealed class AnyConfirmationEmailsInQueueDb(BonesDbContext dbContext) : IRequestHandler<AnyConfirmationEmailsInQueueDb.Query, QueryResponse<bool>>

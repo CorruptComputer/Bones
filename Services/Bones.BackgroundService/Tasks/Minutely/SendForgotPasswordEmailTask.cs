@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Mail;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.System;
-using Bones.Database.Operations.System;
+using Bones.Database.Operations.System.Queues;
 using Bones.Database.Operations.System.SystemSettings;
 using Bones.Database.Operations.System.SystemSettings.Models;
 
@@ -49,15 +49,15 @@ internal class SendForgotPasswordEmailTask(ISender sender) : MinutelyTaskBase(se
 
         using SmtpClient client = new(smtpConfig.Server, smtpConfig.Port.Value);
         client.EnableSsl = smtpConfig.UseSsl.Value;
-        if (smtpConfig.Username is not null) 
+        if (smtpConfig.Username is not null)
         {
             client.Credentials = new NetworkCredential(smtpConfig.Username, smtpConfig.Password);
         }
-        
+
         string? emailFrom = smtpConfig.FromAddress ?? backgroundServiceUser.Email;
-        
+
         // Shouldn't really be possible, but to get the warning out of the way
-        if (emailFrom is null) 
+        if (emailFrom is null)
         {
             Log.Warning("No From Address configured for SMTP.");
             return;

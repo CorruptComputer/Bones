@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Bones.Database.Operations.System;
 
 namespace Bones.Testing.Shared.Backend;
 
@@ -21,7 +22,11 @@ internal static class TestFactory
 
         ClearInMemoryDb(provider.GetRequiredService<BonesDbContext>());
 
-        return provider.GetRequiredService<ISender>();
+        ISender sender = provider.GetRequiredService<ISender>();
+
+        sender.Send(new SetupDb.Command()).Wait();
+
+        return sender;
     }
 
     private static void ClearInMemoryDb(BonesDbContext dbContext)
@@ -63,7 +68,7 @@ internal static class TestFactory
 
             hostBuilder.ConfigureContainer<ContainerBuilder>((containerCtx, containerBuilder) =>
             {
-                containerBuilder.RegisterModule(new BonesBackendModule(containerCtx.Configuration, services));
+                containerBuilder.RegisterModule(new BonesBackendModule(services));
                 containerBuilder.RegisterModule(new BonesDatabaseModule(containerCtx.Configuration, services));
                 containerBuilder.RegisterModule(new UnitTestModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
             });

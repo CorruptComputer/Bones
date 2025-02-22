@@ -1,9 +1,9 @@
 using Bones.Database.Models;
 
-namespace Bones.Database.Operations.Setup;
+namespace Bones.Database.Operations.System;
 
 /// <inheritdoc />
-public sealed class SetupDb(BonesDbContext dbContext, DatabaseConfiguration config) : IRequestHandler<SetupDb.Command, CommandResponse>
+public sealed class MigrateDb(BonesDbContext dbContext, DatabaseConfiguration config) : IRequestHandler<MigrateDb.Command, CommandResponse>
 {
     /// <summary>
     ///   Command to set up the Database

@@ -1,4 +1,4 @@
-using Bones.Database.Operations.System;
+using Bones.Database.Operations.System.Queues;
 using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.UnitTests.Operations.SystemQueues;

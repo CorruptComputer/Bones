@@ -25,7 +25,7 @@ public static class ServiceCollectionExtensions
 
     private static void RegisterStartupTasks(this IServiceCollection services)
     {
-        services.RegisterHostedService<SetupSystemSettings>();
+        services.RegisterHostedService<SetupDatabase>();
     }
 
     private static void RegisterMinutelyTasks(this IServiceCollection services)
@@ -36,10 +36,10 @@ public static class ServiceCollectionExtensions
 
     // By default it does singleton scope, which kinda sucks since all of our services end up using the same db context
     // EF throws if multiple threads try to use the same context at the same time, need to scope to each hosted service
-    private static void RegisterHostedService<T>(this IServiceCollection services) 
+    private static void RegisterHostedService<T>(this IServiceCollection services)
         where T : class, IHostedService
     {
-        services.AddHostedService(serviceProvider => 
+        services.AddHostedService(serviceProvider =>
         {
             IServiceScope scope = serviceProvider.CreateScope();
             ConstructorInfo ctor = typeof(T).GetConstructors()[0];
@@ -51,7 +51,7 @@ public static class ServiceCollectionExtensions
                 args[i] = scope.ServiceProvider.GetRequiredService(parameters[i].ParameterType);
             }
 
-            return Activator.CreateInstance(typeof(T), args) as T 
+            return Activator.CreateInstance(typeof(T), args) as T
                 ?? throw new BonesException("Failed to create hosted service");
         });
     }

@@ -2,7 +2,6 @@ using Bones.Logic.Features.Projects.Initiatives;
 using Bones.Logic.Features.Projects.Projects;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Shared.Backend.Enums;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Api.Models.Project;
 using Bones.Logic.Features.GenericItem;

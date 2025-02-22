@@ -35,8 +35,7 @@ public class BonesControllerBase(ISender sender) : ControllerBase
     {
         BonesUser? user = await Sender.Send(new GetUserByClaimsPrincipal.Query(User));
 
-        // I don't think this should really happen, if their claims principal was invalid the auth should have stopped the request already
-        return user ?? throw new ForbiddenAccessException();
+        return user ?? throw new UnauthenticatedException();
     }
 
     /// <summary>

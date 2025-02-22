@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.System;
 
-namespace Bones.Database.Operations.System;
+namespace Bones.Database.Operations.System.Queues;
 
 /// <inheritdoc />
 public sealed class GetConfirmationEmailsInQueueDb(BonesDbContext dbContext) : IRequestHandler<GetConfirmationEmailsInQueueDb.Query, QueryResponse<List<ConfirmationEmailQueue>>>

@@ -1,14 +1,14 @@
 using Bones.Database.DbSets.System;
 
-namespace Bones.Database.Operations.System;
+namespace Bones.Database.Operations.System.Queues;
 
 /// <inheritdoc />
-public sealed class RemoveConfirmationEmailFromQueueByIdDb(BonesDbContext dbContext) : IRequestHandler<RemoveConfirmationEmailFromQueueByIdDb.Command, CommandResponse>
+public sealed class IncrementFailedConfirmationEmailById(BonesDbContext dbContext) : IRequestHandler<IncrementFailedConfirmationEmailById.Command, CommandResponse>
 {
     /// <summary>
     ///   Checks if any confirmation emails are in the queue
     /// </summary>
-    public sealed record Command(Guid Id) : IRequest<CommandResponse>;
+    public sealed record Command(Guid Id, string FailureReason) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
@@ -17,6 +17,7 @@ public sealed class RemoveConfirmationEmailFromQueueByIdDb(BonesDbContext dbCont
         public Validator()
         {
             RuleFor(x => x.Id).NotEmpty().NotEqual(Guid.Empty);
+            RuleFor(x => x.FailureReason).NotEmpty();
         }
     }
 
@@ -30,7 +31,17 @@ public sealed class RemoveConfirmationEmailFromQueueByIdDb(BonesDbContext dbCont
             return CommandResponse.Fail("Could not find confirmation email in queue.");
         }
 
-        dbContext.ConfirmationEmailQueue.Remove(queue);
+        queue.LastTry = DateTimeOffset.Now;
+        queue.RetryCount++;
+        queue.FailureReasons.Add(request.FailureReason);
+
+        if (queue.RetryCount >= 5)
+        {
+            await dbContext.ConfirmationEmailDeadQueue.AddAsync(ConfirmationEmailDeadQueue.FromConfirmationEmailQueue(queue), cancellationToken);
+            dbContext.ConfirmationEmailQueue.Remove(queue);
+            Log.Warning("Moving email to Confirmation Email Dead Queue: {Id}", queue.Id);
+        }
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return CommandResponse.Pass();

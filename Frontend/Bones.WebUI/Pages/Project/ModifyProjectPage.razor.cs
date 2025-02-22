@@ -20,7 +20,7 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     /// </summary>
     public string? ProjectName { get; set; }
 
-        /// <summary>
+    /// <summary>
     ///   The type of owner for the project, received from the API
     /// </summary>
     public OwnershipType? OwnerType { get; set; }

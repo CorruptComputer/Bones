@@ -15,7 +15,7 @@ public class GetBackgroundServiceUserDb(BonesDbContext dbContext) : IRequestHand
     public async Task<QueryResponse<BonesUser?>> Handle(Query request, CancellationToken cancellationToken)
     {
         SystemSetting? setting = await dbContext.SystemSettings.FirstOrDefaultAsync(s => s.Setting == SystemSetting.SettingType.BackgroundServiceUserId, cancellationToken);
-        
+
         Guid? backgroundServiceUserId;
         if (setting?.Value == null)
         {
@@ -24,7 +24,7 @@ public class GetBackgroundServiceUserDb(BonesDbContext dbContext) : IRequestHand
         else
         {
             bool success = Guid.TryParse(setting.Value, out var id);
-            if (success) 
+            if (success)
             {
                 backgroundServiceUserId = id;
             }

@@ -42,6 +42,11 @@ public record BonesResponseBase
     public const string FORBIDDEN_ERROR_VALUE = "Forbidden.";
 
     /// <summary>
+    ///   Unauthorized access was detected
+    /// </summary>
+    public const string UNAUTHORIZED_ERROR_VALUE = "Unauthorized.";
+
+    /// <summary>
     ///   Something went wrong, and we don't know what, oops!
     /// </summary>
     public const string UNKNOWN_ERROR_VALUE = "Unknown failure reason";

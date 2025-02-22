@@ -3,7 +3,7 @@ using Bones.Shared.Extensions;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Bones.Database.Operations.System;
+namespace Bones.Database.Operations.System.Queues;
 
 /// <inheritdoc />
 public sealed class AddForgotPasswordEmailToQueueDb(BonesDbContext dbContext) : IRequestHandler<AddForgotPasswordEmailToQueueDb.Command, CommandResponse>

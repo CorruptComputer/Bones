@@ -21,7 +21,7 @@ public class SaveSmtpConfigDb(BonesDbContext dbContext) : IRequestHandler<SaveSm
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         SystemSetting? setting = await dbContext.SystemSettings.FirstOrDefaultAsync(s => s.Setting == SystemSetting.SettingType.Smtp, cancellationToken);
-        
+
         if (setting == null)
         {
             setting = new SystemSetting
@@ -48,7 +48,7 @@ public class SaveSmtpConfigDb(BonesDbContext dbContext) : IRequestHandler<SaveSm
         dbContext.SystemAudits.Add(audit);
 
         await dbContext.SaveChangesAsync(cancellationToken);
-        
+
         return CommandResponse.Pass();
     }
 }

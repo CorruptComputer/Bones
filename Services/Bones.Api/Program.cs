@@ -112,6 +112,8 @@ public static class Program
                 .AllowCredentials();
         });
 
+        app.UseExceptionHandler(opt => { });
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

@@ -3,7 +3,7 @@ namespace Bones.Database.Operations.System.SystemSettings.Models;
 /// <summary>
 ///   System settings for SMTP connections
 /// </summary>
-public class SmtpConfig 
+public class SmtpConfig
 {
     /// <summary>
     ///   The SMTP server to use for sending emails

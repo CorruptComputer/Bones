@@ -13,7 +13,22 @@ public class ApiExceptionHandler : IExceptionHandler
     /// <inheritdoc />
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        if (exception is ForbiddenAccessException)
+        if (exception is UnauthenticatedException)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            httpContext.Response.ContentType = "application/json";
+            httpContext.Response.Body = await JsonSerializer.Serialize(new ErrorResponse()
+            {
+                Errors = new()
+                {
+                    { BonesResponseBase.GENERIC_SERVER_ERROR_KEY, [BonesResponseBase.UNAUTHORIZED_ERROR_VALUE] }
+                }
+            }).ToStreamAsync(cancellationToken);
+
+            return true;
+        }
+
+        if (exception is ForbiddenException)
         {
             httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
             httpContext.Response.ContentType = "application/json";

@@ -15,7 +15,7 @@ public class GetSystemAdminMaskUserDb(BonesDbContext dbContext) : IRequestHandle
     public async Task<QueryResponse<BonesUser?>> Handle(Query request, CancellationToken cancellationToken)
     {
         SystemSetting? setting = await dbContext.SystemSettings.FirstOrDefaultAsync(s => s.Setting == SystemSetting.SettingType.SystemAdminMaskUserId, cancellationToken);
-        
+
         Guid? systemAdminMaskUserId;
         if (setting?.Value == null)
         {
@@ -24,7 +24,7 @@ public class GetSystemAdminMaskUserDb(BonesDbContext dbContext) : IRequestHandle
         else
         {
             bool success = Guid.TryParse(setting.Value, out var id);
-            if (success) 
+            if (success)
             {
                 systemAdminMaskUserId = id;
             }

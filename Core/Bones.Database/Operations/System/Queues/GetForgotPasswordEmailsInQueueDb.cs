@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.System;
 
-namespace Bones.Database.Operations.System;
+namespace Bones.Database.Operations.System.Queues;
 
 /// <inheritdoc />
 public sealed class GetForgotPasswordEmailsInQueueDb(BonesDbContext dbContext) : IRequestHandler<GetForgotPasswordEmailsInQueueDb.Query, QueryResponse<List<ForgotPasswordEmailQueue>>>

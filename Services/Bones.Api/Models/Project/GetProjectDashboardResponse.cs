@@ -1,5 +1,3 @@
-using Bones.Shared.Backend.Enums;
-
 namespace Bones.Api.Models.Project;
 
 /// <summary>

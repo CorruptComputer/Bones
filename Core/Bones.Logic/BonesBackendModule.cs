@@ -1,6 +1,4 @@
 using Autofac;
-using Bones.Shared.Exceptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bones.Logic;

@@ -1,4 +1,4 @@
-namespace Bones.Database.Operations.System;
+namespace Bones.Database.Operations.System.Queues;
 
 /// <inheritdoc />
 public sealed class AnyForgotPasswordEmailsInQueueDb(BonesDbContext dbContext) : IRequestHandler<AnyForgotPasswordEmailsInQueueDb.Query, QueryResponse<bool>>
