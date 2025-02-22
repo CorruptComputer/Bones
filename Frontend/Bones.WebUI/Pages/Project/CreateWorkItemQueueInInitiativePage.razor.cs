@@ -1,5 +1,3 @@
-using Bones.Api.Client;
-using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace Bones.WebUI.Pages.Project;

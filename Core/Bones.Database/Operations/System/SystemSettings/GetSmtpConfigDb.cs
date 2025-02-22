@@ -15,10 +15,10 @@ public class GetSmtpConfigDb(BonesDbContext dbContext) : IRequestHandler<GetSmtp
     /// <inheritdoc />
     public async Task<QueryResponse<SmtpConfig?>> Handle(Query request, CancellationToken cancellationToken)
     {
-        SystemSetting? setting = await dbContext.SystemSettings.FirstOrDefaultAsync(s => s.Setting == SystemSetting.SettingType.Smtp, cancellationToken);
+        SystemSetting? configSetting = await dbContext.SystemSettings.FirstOrDefaultAsync(s => s.Setting == SystemSetting.SettingType.SmtpConfig, cancellationToken);
 
         SmtpConfig? smtpConfig;
-        if (setting?.Value == null)
+        if (configSetting?.Value == null)
         {
             smtpConfig = null;
         }
@@ -26,7 +26,7 @@ public class GetSmtpConfigDb(BonesDbContext dbContext) : IRequestHandler<GetSmtp
         {
             // If parsing fails, oh well! Time to reconfigure it you sad administator (probably me).
             // I should really make every effort to ensure that these are valid and backwards compatible though.
-            smtpConfig = JsonSerializer.Deserialize<SmtpConfig>(setting.Value);
+            smtpConfig = JsonSerializer.Deserialize<SmtpConfig>(configSetting.Value);
         }
 
         return QueryResponse<SmtpConfig?>.Pass(smtpConfig);

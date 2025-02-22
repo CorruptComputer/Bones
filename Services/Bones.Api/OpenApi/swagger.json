@@ -27,7 +27,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -86,7 +86,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -157,7 +157,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -253,7 +253,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -315,7 +315,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -377,7 +377,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -450,7 +450,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -533,7 +533,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -606,7 +606,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -683,7 +683,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -717,6 +717,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -734,7 +744,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -795,7 +805,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -868,7 +878,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -960,7 +970,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1039,7 +1049,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1118,7 +1128,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1189,7 +1199,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1273,7 +1283,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1357,7 +1367,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1451,7 +1461,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1535,7 +1545,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1629,7 +1639,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1678,20 +1688,341 @@
         }
       }
     },
-    "/SysAdmin/ping": {
-      "post": {
+    "/SysAdmin/dashboard": {
+      "get": {
         "tags": [
           "SysAdmin"
         ],
-        "summary": "Ping, pong!",
-        "operationId": "PingAsync",
+        "summary": "Gets the system admin dashboard",
+        "operationId": "GetSystemAdminDashboardAsync",
         "responses": {
           "401": {
             "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedResult"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSystemAdminDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SysAdmin/settings/background-service-user-config": {
+      "get": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Gets the background service user config",
+        "operationId": "GetBackgroundServiceUserConfigAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBackgroundServiceUserConfigResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Saves the background service user config",
+        "operationId": "SaveBackgroundServiceUserConfigAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveBackgroundServiceUserConfigRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SysAdmin/settings/system-admin-mask-user-config": {
+      "get": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Gets the system admin mask user config",
+        "operationId": "GetSystemAdminMaskUserConfigAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSystemAdminMaskUserConfigResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Saves the system admin mask user config",
+        "operationId": "SaveSystemAdminMaskUserConfigAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSystemAdminMaskUserConfigRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SysAdmin/settings/web-ui-base-url": {
+      "get": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Gets the Web UI's base URL configured",
+        "operationId": "GetWebUiBaseUrlAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1725,6 +2056,215 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Saves the Web UI's base URL",
+        "operationId": "SaveWebUiBaseUrlAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveWebUiBaseUrlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SysAdmin/settings/smtp-config": {
+      "get": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Gets the SMTP configuration",
+        "operationId": "GetSmtpConfigAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSmtpConfigResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SysAdmin"
+        ],
+        "summary": "Saves the SMTP configuration",
+        "operationId": "SaveSmtpConfigAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSmtpConfigRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -1753,8 +2293,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the initiative to create",
-            "nullable": true
+            "description": "Name of the initiative to create"
           }
         },
         "additionalProperties": false,
@@ -1770,8 +2309,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the item field to create",
-            "nullable": true
+            "description": "Name of the item field to create"
           },
           "isRequired": {
             "type": "boolean",
@@ -1813,8 +2351,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the item field to create",
-            "nullable": true
+            "description": "Name of the item field to create"
           },
           "isRequired": {
             "type": "boolean",
@@ -1857,8 +2394,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the item layout to create",
-            "nullable": true
+            "description": "Name of the item layout to create"
           },
           "enabledFor": {
             "$ref": "#/components/schemas/ItemLayoutUses"
@@ -1866,8 +2402,7 @@
           "friendlyIdPrefix": {
             "maxLength": 6,
             "type": "string",
-            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.",
-            "nullable": true
+            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters."
           },
           "fieldVersions": {
             "type": "array",
@@ -1875,8 +2410,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "The field versions to use for the initial layout version",
-            "nullable": true
+            "description": "The field versions to use for the initial layout version"
           }
         },
         "additionalProperties": false,
@@ -1892,8 +2426,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the item layout to create",
-            "nullable": true
+            "description": "Name of the item layout to create"
           },
           "enabledFor": {
             "$ref": "#/components/schemas/ItemLayoutUses"
@@ -1904,8 +2437,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "The field versions to use for this layout version",
-            "nullable": true
+            "description": "The field versions to use for this layout version"
           }
         },
         "additionalProperties": false,
@@ -1919,8 +2451,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the project to create",
-            "nullable": true
+            "description": "Name of the project to create"
           },
           "organizationId": {
             "type": "string",
@@ -1976,6 +2507,25 @@
         ],
         "type": "string"
       },
+      "GetBackgroundServiceUserConfigResponse": {
+        "required": [
+          "displayName",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email of the background service user"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the background service user"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetBackgroundServiceUserConfigAsync endpoint"
+      },
       "GetInitiativeDashboardResponse": {
         "required": [
           "initiativeId",
@@ -1993,8 +2543,7 @@
           },
           "initiativeName": {
             "type": "string",
-            "description": "The name of the Initiative",
-            "nullable": true
+            "description": "The name of the Initiative"
           },
           "projectId": {
             "type": "string",
@@ -2011,8 +2560,7 @@
             "items": {
               "$ref": "#/components/schemas/WorkItemQueueListModel"
             },
-            "description": "A list of the initiatives in the project",
-            "nullable": true
+            "description": "A list of the initiatives in the project"
           }
         },
         "additionalProperties": false,
@@ -2046,8 +2594,7 @@
           },
           "name": {
             "type": "string",
-            "description": "Name of the item field",
-            "nullable": true
+            "description": "Name of the item field"
           },
           "isRequired": {
             "type": "boolean",
@@ -2090,8 +2637,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the item layout",
-            "nullable": true
+            "description": "Name of the item layout"
           },
           "enabledFor": {
             "$ref": "#/components/schemas/ItemLayoutUses"
@@ -2099,8 +2645,7 @@
           "friendlyIdPrefix": {
             "maxLength": 6,
             "type": "string",
-            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.",
-            "nullable": true
+            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters."
           },
           "fieldVersions": {
             "type": "array",
@@ -2108,8 +2653,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "The field versions",
-            "nullable": true
+            "description": "The field versions"
           }
         },
         "additionalProperties": false,
@@ -2128,8 +2672,7 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": "The email address of the user",
-            "nullable": true
+            "description": "The email address of the user"
           },
           "emailConfirmed": {
             "type": "boolean",
@@ -2143,8 +2686,7 @@
           },
           "displayName": {
             "type": "string",
-            "description": "The display name of the user, defaults to their email if they don't have one set",
-            "nullable": true
+            "description": "The display name of the user, defaults to their email if they don't have one set"
           },
           "createDateTime": {
             "type": "string",
@@ -2180,8 +2722,7 @@
           },
           "projectName": {
             "type": "string",
-            "description": "The name of the project",
-            "nullable": true
+            "description": "The name of the project"
           },
           "initiativeCount": {
             "type": "integer",
@@ -2193,8 +2734,7 @@
             "items": {
               "$ref": "#/components/schemas/InitiativeListModel"
             },
-            "description": "A list of the initiatives in the project",
-            "nullable": true
+            "description": "A list of the initiatives in the project"
           }
         },
         "additionalProperties": false,
@@ -2211,8 +2751,7 @@
             "items": {
               "$ref": "#/components/schemas/ProjectItemFieldModel"
             },
-            "description": "List of item fields associated with the project",
-            "nullable": true
+            "description": "List of item fields associated with the project"
           }
         },
         "additionalProperties": false,
@@ -2232,8 +2771,7 @@
           },
           "projectName": {
             "type": "string",
-            "description": "The name of the project",
-            "nullable": true
+            "description": "The name of the project"
           }
         },
         "additionalProperties": false,
@@ -2260,8 +2798,7 @@
           },
           "projectName": {
             "type": "string",
-            "description": "The name of the project",
-            "nullable": true
+            "description": "The name of the project"
           },
           "ownerType": {
             "$ref": "#/components/schemas/OwnershipType"
@@ -2273,8 +2810,7 @@
           },
           "ownerDisplayName": {
             "type": "string",
-            "description": "The DisplayName of the owner",
-            "nullable": true
+            "description": "The DisplayName of the owner"
           },
           "itemFieldCount": {
             "type": "integer",
@@ -2286,8 +2822,7 @@
             "items": {
               "$ref": "#/components/schemas/ItemFieldModel"
             },
-            "description": "A list of the item fields in the project",
-            "nullable": true
+            "description": "A list of the item fields in the project"
           },
           "itemLayoutCount": {
             "type": "integer",
@@ -2299,8 +2834,7 @@
             "items": {
               "$ref": "#/components/schemas/ItemLayoutModel"
             },
-            "description": "A list of the item layouts in the project",
-            "nullable": true
+            "description": "A list of the item layouts in the project"
           }
         },
         "additionalProperties": false,
@@ -2325,6 +2859,113 @@
         "additionalProperties": false,
         "description": "Request to get the projects for a given User/Organization"
       },
+      "GetSmtpConfigResponse": {
+        "required": [
+          "fromAddress",
+          "fromName",
+          "isEnabled",
+          "password",
+          "port",
+          "server",
+          "username",
+          "useSsl"
+        ],
+        "type": "object",
+        "properties": {
+          "isEnabled": {
+            "type": "boolean",
+            "description": "Is SMTP enabled?"
+          },
+          "server": {
+            "type": "string",
+            "description": "The SMTP server to use for sending emails"
+          },
+          "port": {
+            "type": "integer",
+            "description": "The port to use for the SMTP server",
+            "format": "int32"
+          },
+          "useSsl": {
+            "type": "boolean",
+            "description": "Whether to use SSL for the connection"
+          },
+          "username": {
+            "type": "string",
+            "description": "The username to use for the SMTP server"
+          },
+          "password": {
+            "type": "string",
+            "description": "The password to use for the SMTP server"
+          },
+          "fromAddress": {
+            "type": "string",
+            "description": "The email address to use as the from address for emails sent by this system"
+          },
+          "fromName": {
+            "type": "string",
+            "description": "The name to use as the from name for emails sent by this system"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetSmtpConfigAsync endpoint"
+      },
+      "GetSystemAdminDashboardResponse": {
+        "required": [
+          "itemCount",
+          "organizationCount",
+          "projectCount",
+          "userCount"
+        ],
+        "type": "object",
+        "properties": {
+          "userCount": {
+            "type": "integer",
+            "description": "The number of users in the system",
+            "format": "int32"
+          },
+          "organizationCount": {
+            "type": "integer",
+            "description": "The number of organizations in the system",
+            "format": "int32"
+          },
+          "projectCount": {
+            "type": "integer",
+            "description": "The number of projects in the system",
+            "format": "int32"
+          },
+          "itemCount": {
+            "type": "integer",
+            "description": "The number of items in the system",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": ""
+      },
+      "GetSystemAdminMaskUserConfigResponse": {
+        "required": [
+          "displayName",
+          "email",
+          "isEnabled"
+        ],
+        "type": "object",
+        "properties": {
+          "isEnabled": {
+            "type": "boolean",
+            "description": "Is the system admin mask user enabled?"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email of the system admin mask user"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the system admin mask user"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetSystemAdminMaskUserConfigAsync endpoint"
+      },
       "InitiativeListModel": {
         "required": [
           "initiativeId",
@@ -2340,8 +2981,7 @@
           },
           "initiativeName": {
             "type": "string",
-            "description": "The name of the initiative",
-            "nullable": true
+            "description": "The name of the initiative"
           },
           "queueCount": {
             "type": "integer",
@@ -2374,8 +3014,7 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this ItemField",
-            "nullable": true
+            "description": "The name of this ItemField"
           },
           "isRequired": {
             "type": "boolean",
@@ -2403,13 +3042,11 @@
           },
           "name": {
             "type": "string",
-            "description": "The name for this Item layout",
-            "nullable": true
+            "description": "The name for this Item layout"
           },
           "enabledFor": {
             "type": "string",
-            "description": "The uses this layout is applicable to",
-            "nullable": true
+            "description": "The uses this layout is applicable to"
           }
         },
         "additionalProperties": false,
@@ -2432,13 +3069,11 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": "The users email address",
-            "nullable": true
+            "description": "The users email address"
           },
           "password": {
             "type": "string",
-            "description": "The users password",
-            "nullable": true
+            "description": "The users password"
           },
           "twoFactorCode": {
             "type": "string",
@@ -2489,8 +3124,7 @@
           },
           "name": {
             "type": "string",
-            "description": "Name of the item field",
-            "nullable": true
+            "description": "Name of the item field"
           },
           "isRequired": {
             "type": "boolean",
@@ -2531,17 +3165,142 @@
         "properties": {
           "email": {
             "type": "string",
-            "description": "Email, must be valid and unique",
-            "nullable": true
+            "description": "Email, must be valid and unique"
           },
           "password": {
             "type": "string",
-            "description": "Password, must pass validation (1 upper, 1 lower, 1 number, 1 special character, and at least 8 characters long)",
-            "nullable": true
+            "description": "Password, must pass validation (1 upper, 1 lower, 1 number, 1 special character, and at least 8 characters long)"
           }
         },
         "additionalProperties": false,
         "description": "Request to register a new user"
+      },
+      "SaveBackgroundServiceUserConfigRequest": {
+        "required": [
+          "changeReason",
+          "displayName",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email of the background service user"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the background service user"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "The reason for the change"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request for the SaveBackgroundServiceUserConfigAsync endpoint"
+      },
+      "SaveSmtpConfigRequest": {
+        "required": [
+          "changeReason",
+          "fromAddress",
+          "fromName",
+          "isEnabled",
+          "password",
+          "port",
+          "server",
+          "username",
+          "useSsl"
+        ],
+        "type": "object",
+        "properties": {
+          "isEnabled": {
+            "type": "boolean",
+            "description": "Is SMTP enabled?"
+          },
+          "server": {
+            "type": "string",
+            "description": "The SMTP server to use for sending emails"
+          },
+          "port": {
+            "type": "integer",
+            "description": "The port to use for the SMTP server",
+            "format": "int32"
+          },
+          "useSsl": {
+            "type": "boolean",
+            "description": "Whether to use SSL for the connection"
+          },
+          "username": {
+            "type": "string",
+            "description": "The username to use for the SMTP server"
+          },
+          "password": {
+            "type": "string",
+            "description": "The password to use for the SMTP server"
+          },
+          "fromAddress": {
+            "type": "string",
+            "description": "The email address to use as the from address for emails sent by this system"
+          },
+          "fromName": {
+            "type": "string",
+            "description": "The name to use as the from name for emails sent by this system"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "The reason for the change"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the SaveSmtpConfigAsync endpoint"
+      },
+      "SaveSystemAdminMaskUserConfigRequest": {
+        "required": [
+          "changeReason",
+          "displayName",
+          "email",
+          "isEnabled"
+        ],
+        "type": "object",
+        "properties": {
+          "isEnabled": {
+            "type": "boolean",
+            "description": "Should the system admin mask user be enabled?"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email of the system admin mask user"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the system admin mask user"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "The reason for the change"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request for the SaveSystemAdminMaskUserConfigAsync endpoint"
+      },
+      "SaveWebUiBaseUrlRequest": {
+        "required": [
+          "baseUrl",
+          "changeReason"
+        ],
+        "type": "object",
+        "properties": {
+          "baseUrl": {
+            "type": "string",
+            "description": "The base URL for the web UI"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "The reason for the change"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request for the SaveWebUiBaseUrlAsync endpoint"
       },
       "StringValueMatchingType": {
         "enum": [
@@ -2551,16 +3310,6 @@
         ],
         "type": "string"
       },
-      "UnauthorizedResult": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
       "UpdateMyProfileRequest": {
         "required": [
           "displayName"
@@ -2569,8 +3318,7 @@
         "properties": {
           "displayName": {
             "type": "string",
-            "description": "The display name to set for the user",
-            "nullable": true
+            "description": "The display name to set for the user"
           }
         },
         "additionalProperties": false,
@@ -2591,8 +3339,7 @@
           },
           "workItemQueueName": {
             "type": "string",
-            "description": "The name of the work item queue",
-            "nullable": true
+            "description": "The name of the work item queue"
           },
           "workItemCount": {
             "type": "integer",

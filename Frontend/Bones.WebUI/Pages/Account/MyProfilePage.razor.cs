@@ -1,7 +1,5 @@
 using System.Globalization;
-using Bones.Api.Client;
 using Bones.Shared.Consts;
-using Microsoft.AspNetCore.Components;
 
 namespace Bones.WebUI.Pages.Account;
 

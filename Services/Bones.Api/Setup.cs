@@ -2,6 +2,7 @@ using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Extensions;
 using Bones.Shared.Consts;
+using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,19 @@ internal static class Setup
 {
     internal static void AddApiAuthenticationAndAuthorization(this IServiceCollection services)
     {
+        CookieAuthenticationEvents defaultCookieEvents = new()
+        {
+            OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync,
+            OnRedirectToAccessDenied = context =>
+            {
+                throw new ForbiddenException();
+            },
+            OnRedirectToLogin = context =>
+    {
+        throw new UnauthenticatedException();
+    }
+        };
+
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
@@ -25,17 +39,8 @@ internal static class Setup
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
             }).AddCookie(IdentityConstants.ApplicationScheme, o =>
             {
-                // Does this by default, had to copy the entire AddIdentity<TUser, TRole>() method just to change this shit
-                //o.LoginPath = new PathString("/Account/Login")
-                o.Events = new CookieAuthenticationEvents
-                {
-                    OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync,
-                    OnRedirectToLogin = context =>
-                    {
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        return Task.CompletedTask;
-                    }
-                };
+                o.Events = defaultCookieEvents;
+
             }).AddCookie(IdentityConstants.ExternalScheme, o =>
             {
                 o.Cookie.Name = IdentityConstants.ExternalScheme;
@@ -43,17 +48,13 @@ internal static class Setup
             }).AddCookie(IdentityConstants.TwoFactorRememberMeScheme, o =>
             {
                 o.Cookie.Name = IdentityConstants.TwoFactorRememberMeScheme;
-                o.Events = new CookieAuthenticationEvents
-                {
-                    OnValidatePrincipal = SecurityStampValidator.ValidateAsync<ITwoFactorSecurityStampValidator>
-                };
+                o.Events = defaultCookieEvents;
+                o.Events.OnValidatePrincipal = SecurityStampValidator.ValidateAsync<ITwoFactorSecurityStampValidator>;
             }).AddCookie(IdentityConstants.TwoFactorUserIdScheme, o =>
             {
                 o.Cookie.Name = IdentityConstants.TwoFactorUserIdScheme;
-                o.Events = new CookieAuthenticationEvents
-                {
-                    OnRedirectToReturnUrl = _ => Task.CompletedTask
-                };
+                o.Events = defaultCookieEvents;
+                o.Events.OnRedirectToReturnUrl = _ => Task.CompletedTask;
                 o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
             });
 

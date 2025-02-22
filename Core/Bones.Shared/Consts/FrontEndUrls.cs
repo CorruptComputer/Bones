@@ -163,8 +163,13 @@ public static class FrontEndUrls
         private const string _systemAdmin = "/SystemAdmin";
 
         /// <summary>
-        ///   Confirm email page
+        ///   System admin dashboard page
         /// </summary>
         public const string DASHBOARD = $"{_systemAdmin}/Dashboard";
+
+        /// <summary>
+        ///   Modify system settings page
+        /// </summary>
+        public const string MODIFY_SYSTEM_SETTINGS = $"{_systemAdmin}/ModifySystemSettings";
     }
 }

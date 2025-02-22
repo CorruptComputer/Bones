@@ -48,7 +48,7 @@ public sealed record CommandResponse : BonesResponseBase
         Success = false,
         FailureReasons = new()
         {
-            { GENERIC_SERVER_ERROR_KEY, [ failureReason ?? UNKNOWN_ERROR_VALUE ] }
+            { SERVER_ERROR_KEY, [ failureReason ?? UNKNOWN_ERROR_VALUE ] }
         }
     };
 
@@ -61,7 +61,7 @@ public sealed record CommandResponse : BonesResponseBase
         Success = false,
         FailureReasons = new()
         {
-            { GENERIC_SERVER_ERROR_KEY, [ FORBIDDEN_ERROR_VALUE ] }
+            { SERVER_ERROR_KEY, [ FORBIDDEN_ERROR_VALUE ] }
         },
         Forbidden = true
     };

@@ -79,6 +79,8 @@ public static class Program
 
             string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            options.SupportNonNullableReferenceTypes();
+            options.NonNullableReferenceTypesAsRequired();
         });
 
         builder.Services.AddSerilog((serviceProvider, loggerConfig) =>

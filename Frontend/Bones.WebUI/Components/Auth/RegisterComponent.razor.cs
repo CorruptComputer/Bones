@@ -1,7 +1,5 @@
 using System.Net;
-using Bones.Api.Client;
 using Bones.Shared;
-using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace Bones.WebUI.Components.Auth;

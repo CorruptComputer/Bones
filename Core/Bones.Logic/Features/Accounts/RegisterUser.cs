@@ -22,7 +22,7 @@ public class RegisterUser(UserManager<BonesUser> userManager, ISender sender) : 
     public sealed class Validator : AbstractValidator<Query>
     {
         /// <inheritdoc />
-        public override Task<ValidationResult> ValidateAsync(ValidationContext<Query> context, CancellationToken cancellation = default)
+        public Validator()
         {
             RuleFor(request => request.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
             {
@@ -59,8 +59,6 @@ public class RegisterUser(UserManager<BonesUser> userManager, ISender sender) : 
                     ctx.AddFailure(new ValidationFailure(nameof(Query.Password), "Password must contain at least one special character"));
                 }
             });
-
-            return base.ValidateAsync(context, cancellation);
         }
     }
 

@@ -20,32 +20,32 @@ public class SaveSmtpConfigDb(BonesDbContext dbContext) : IRequestHandler<SaveSm
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        SystemSetting? setting = await dbContext.SystemSettings.FirstOrDefaultAsync(s => s.Setting == SystemSetting.SettingType.Smtp, cancellationToken);
+        SystemSetting? configSetting = await dbContext.SystemSettings.FirstOrDefaultAsync(s => s.Setting == SystemSetting.SettingType.SmtpConfig, cancellationToken);
 
-        if (setting == null)
+        if (configSetting == null)
         {
-            setting = new SystemSetting
+            configSetting = new SystemSetting
             {
-                Setting = SystemSetting.SettingType.Smtp,
+                Setting = SystemSetting.SettingType.SmtpConfig,
                 Value = JsonSerializer.Serialize(request.SmtpConfig)
             };
-            dbContext.SystemSettings.Add(setting);
+            dbContext.SystemSettings.Add(configSetting);
         }
         else
         {
-            setting.Value = JsonSerializer.Serialize(request.SmtpConfig);
-            dbContext.SystemSettings.Update(setting);
+            configSetting.Value = JsonSerializer.Serialize(request.SmtpConfig);
+            dbContext.SystemSettings.Update(configSetting);
         }
 
-        SystemAudit audit = new()
+        SystemAudit configAudit = new()
         {
             ActionDateTime = DateTimeOffset.Now,
             ActionTaken = SystemAudit.Actions.SystemSettingUpdate,
-            SettingChanged = SystemSetting.SettingType.Smtp,
+            SettingChanged = SystemSetting.SettingType.SmtpConfig,
             ActionTakenBy = request.ActionTakenBy,
             Reason = request.Reason
         };
-        dbContext.SystemAudits.Add(audit);
+        dbContext.SystemAudits.Add(configAudit);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

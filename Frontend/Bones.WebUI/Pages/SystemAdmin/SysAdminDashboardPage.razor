@@ -1,0 +1,15 @@
+@attribute [Route(FrontEndUrls.SystemAdmin.DASHBOARD)]
+@layout SysAdminLayout
+
+<div class="d-flex">
+    <MudText Typo="Typo.h4">System Administrator Dashboard</MudText>
+    <MudSpacer/>
+    <MudButton Href="@FrontEndUrls.SystemAdmin.MODIFY_SYSTEM_SETTINGS">Modify System Settings</MudButton>
+</div>
+
+<MudPaper Class="pa-4">
+    <MudText>Number of users: @UserCount</MudText>
+    <MudText>Number of organizations: @OrganizationCount</MudText>
+    <MudText>Number of projects: @ProjectCount</MudText>
+    <MudText>Number of items: @ItemCount</MudText>
+</MudPaper>

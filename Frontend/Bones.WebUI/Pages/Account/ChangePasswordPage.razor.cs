@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components;
-
 namespace Bones.WebUI.Pages.Account;
 
 /// <summary>

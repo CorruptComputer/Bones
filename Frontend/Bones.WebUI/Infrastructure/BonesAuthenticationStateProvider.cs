@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Bones.Api.Client;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components.Authorization;
 

@@ -1,7 +1,5 @@
-using Bones.Api.Client;
 using Bones.Shared.Consts;
 using Bones.WebUI.Infrastructure;
-using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace Bones.WebUI.Layout;

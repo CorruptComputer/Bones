@@ -43,4 +43,6 @@ public class LoginAudit
     public required IPAddress RequestingIpAddress { get; init; }
 
     // Ideally I'd also like to add a bool for if the password used has been flagged by HaveIBeenPwned
+    // https://haveibeenpwned.com/API/v3#PwnedPasswords
+    // https://github.com/IEvangelist/pwned-client?tab=readme-ov-file#dependency-injection
 }

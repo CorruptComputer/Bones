@@ -33,18 +33,28 @@ public class SystemSetting
         BackgroundServiceUserId = 1,
 
         /// <summary>
-        ///   The ID of the user that actions taken by system admins should be attributed to, if 
+        ///   Should the system admin mask user be enabled?
         /// </summary>
-        SystemAdminMaskUserId = 2,
+        SystemAdminMaskUserEnabled = 2,
+
+        /// <summary>
+        ///   The ID of the user that actions taken by system admins should be attributed to
+        /// </summary>
+        SystemAdminMaskUserId = 3,
 
         /// <summary>
         ///   The base URL for the web UI, used for generating links in the background service
         /// </summary>
-        WebUIBaseUrl = 3,
+        WebUIBaseUrl = 4,
+
+        /// <summary>
+        ///   Is SMTP enabled?
+        /// </summary>
+        SmtpEnabled = 5,
 
         /// <summary>
         ///   The SMTP configuration
         /// </summary>
-        Smtp = 4,
+        SmtpConfig = 6,
     }
 }

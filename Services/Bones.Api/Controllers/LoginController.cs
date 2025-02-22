@@ -1,5 +1,6 @@
 using Bones.Api.Models.Login;
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Logic.Features.Audits;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -24,6 +25,7 @@ public sealed class LoginController(SignInManager<BonesUser> signInManager, ISen
     /// <returns>200 OK if successful, 401 Unauthorized otherwise</returns>
     [HttpPost("login", Name = "LoginAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<EmptyResponse>(StatusCodes.Status400BadRequest)]
     [AllowAnonymous]
     public async ValueTask<ActionResult<EmptyResponse>> LoginAsync([FromBody] LoginUserApiRequest login)
     {
@@ -43,17 +45,20 @@ public sealed class LoginController(SignInManager<BonesUser> signInManager, ISen
             }
             else
             {
-                Log.Warning("Two-factor code was not provided and is required for login: {Login}", login.Email);
-                return Unauthorized(EmptyResponse.Value);
+                Log.Warning("Two-factor code was not provided and is required for login: {Login} | From IP Address: {IPAddress}", login.Email, RequestingIpAddress);
+                return BadRequest(EmptyResponse.Value);
             }
         }
 
+        await Sender.Send(new AddLoginAudit.Command(login.Email, result.Succeeded, RequestingIpAddress));
+
         if (!result.Succeeded)
         {
-            Log.Warning("Invalid login attempt: {Login}", login.Email);
-            return Unauthorized(EmptyResponse.Value);
+            Log.Warning("Invalid login attempt on account: {Login} | From IP Address: {IPAddress}", login.Email, RequestingIpAddress);
+            return BadRequest(EmptyResponse.Value);
         }
 
+        // signInManager sets the cookie header, so there isn't anything for us to do here
         return EmptyResponse.Value;
     }
 

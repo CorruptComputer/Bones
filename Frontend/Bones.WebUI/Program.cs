@@ -1,5 +1,4 @@
 using System.Net.Http.Headers;
-using Bones.Api.Client;
 using Bones.Shared.Exceptions;
 using Bones.WebUI.Infrastructure;
 using Microsoft.AspNetCore.Components.Authorization;

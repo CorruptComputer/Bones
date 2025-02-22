@@ -21,7 +21,7 @@ public class ApiExceptionHandler : IExceptionHandler
             {
                 Errors = new()
                 {
-                    { BonesResponseBase.GENERIC_SERVER_ERROR_KEY, [BonesResponseBase.UNAUTHORIZED_ERROR_VALUE] }
+                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE] }
                 }
             }).ToStreamAsync(cancellationToken);
 
@@ -36,7 +36,7 @@ public class ApiExceptionHandler : IExceptionHandler
             {
                 Errors = new()
                 {
-                    { BonesResponseBase.GENERIC_SERVER_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
+                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
                 }
             }).ToStreamAsync(cancellationToken);
 
@@ -49,7 +49,7 @@ public class ApiExceptionHandler : IExceptionHandler
         {
             Errors = new()
             {
-                { BonesResponseBase.GENERIC_SERVER_ERROR_KEY, [exception.Message] }
+                { BonesResponseBase.SERVER_ERROR_KEY, [exception.Message] }
             }
         }).ToStreamAsync(cancellationToken);
 

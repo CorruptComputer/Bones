@@ -1,0 +1,20 @@
+﻿@attribute [Route(FrontEndUrls.SystemAdmin.MODIFY_SYSTEM_SETTINGS)]
+@layout SysAdminLayout
+@using Bones.WebUI.Components.SystemAdmin.SystemSettings;
+
+<MudText Typo="Typo.h4">Modify System Settings</MudText>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <BackgroundServiceUserConfigurationComponent />
+    </MudItem>
+    <MudItem xs="12" sm="7">
+        <SystemAdminMaskUserConfigComponent />
+    </MudItem>
+    <MudItem xs="12" sm="7">
+        <WebUiBaseUrlComponent />
+    </MudItem>
+    <MudItem xs="12" sm="7">
+        <SmtpConfigurationComponent />
+    </MudItem>
+</MudGrid>

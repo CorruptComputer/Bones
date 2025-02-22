@@ -4,6 +4,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Net;
 
 namespace Bones.Api.Controllers;
 
@@ -16,16 +17,22 @@ namespace Bones.Api.Controllers;
 [Route("[controller]")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
-[ProducesResponseType<UnauthorizedResult>(StatusCodes.Status401Unauthorized)]
-[ProducesResponseType<ErrorResponse>(StatusCodes.Status403Forbidden)]
-[ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)]
+[ProducesResponseType<UnauthorizedResult>(StatusCodes.Status401Unauthorized)] // Returned by the [Authorize] attribute
+[ProducesResponseType<ErrorResponse>(StatusCodes.Status401Unauthorized)] // Returned by UnauthenticatedException
+[ProducesResponseType<ErrorResponse>(StatusCodes.Status403Forbidden)] // Returned by ForbiddenException
+[ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError)] // Returned by any other exception
 public class BonesControllerBase(ISender sender) : ControllerBase
 {
     /// <summary>
-    ///     MediatR sender for commands and queries to the backend, you can technically send things straight to the DB here,
-    ///     but don't do that.
+    ///     MediatR sender for commands and queries to the Logic layer,
+    ///     you can technically send things straight to the DB here, but don't do that.
     /// </summary>
     protected ISender Sender => sender;
+
+    /// <summary>
+    ///   Gets the IP address of the client making the request, or IPAddress.None if it can't be determined.
+    /// </summary>
+    protected IPAddress RequestingIpAddress => Request.HttpContext.Connection.RemoteIpAddress ?? IPAddress.None;
 
     /// <summary>
     ///   Gets the user for the current request

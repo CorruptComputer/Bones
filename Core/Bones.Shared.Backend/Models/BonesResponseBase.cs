@@ -32,9 +32,14 @@ public record BonesResponseBase
     public Dictionary<string, List<string>>? FailureReasons { get; init; }
 
     /// <summary>
-    ///   It's from the server, not a validation issue with the query
+    ///   It's from the server, not an issue with the request
     /// </summary>
-    public const string GENERIC_SERVER_ERROR_KEY = "server";
+    public const string SERVER_ERROR_KEY = "server";
+
+    /// <summary>
+    ///   It's from the request, not a server issue
+    /// </summary>
+    public const string REQUEST_ERROR_KEY = "request";
 
     /// <summary>
     ///   Forbidden access was detected
@@ -42,9 +47,9 @@ public record BonesResponseBase
     public const string FORBIDDEN_ERROR_VALUE = "Forbidden.";
 
     /// <summary>
-    ///   Unauthorized access was detected
+    ///   Unauthenticated access was detected
     /// </summary>
-    public const string UNAUTHORIZED_ERROR_VALUE = "Unauthorized.";
+    public const string UNAUTHENTICATED_ERROR_VALUE = "Unauthenticated.";
 
     /// <summary>
     ///   Something went wrong, and we don't know what, oops!

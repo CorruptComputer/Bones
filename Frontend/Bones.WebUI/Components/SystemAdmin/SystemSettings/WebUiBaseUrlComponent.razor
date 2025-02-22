@@ -1,0 +1,14 @@
+﻿<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h5">Web UI Base URL</MudText>
+
+    <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+        <MudTextField T="string" Label="Web UI Base URL" @bind-value="@BaseUrl" 
+                        InputType="InputType.Url" Required="true" RequiredError="Web UI Base URL is required!" />
+
+        <div style="display: flex;">
+            <MudTextField T="string" Label="Reason for change" @bind-value="@ChangeReason"
+                        InputType="InputType.Text" Required="true" RequiredError="Change reason is required!"/>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@Update">Update</MudButton>
+        </div>
+    </MudForm>
+</MudPaper>

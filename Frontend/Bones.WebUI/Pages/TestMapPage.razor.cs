@@ -3,7 +3,6 @@ using Bones.WebUI.Leaflet;
 using Bones.WebUI.Leaflet.Data;
 using Bones.WebUI.Leaflet.Models;
 using Bones.WebUI.Leaflet.Models.Events;
-using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace Bones.WebUI.Pages;

@@ -75,7 +75,8 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
                 Email = defaultEmail,
                 EmailConfirmed = true,
                 EmailConfirmedDateTime = DateTimeOffset.Now,
-                PasswordExpired = false
+                PasswordExpired = true,
+                DisplayName = "System"
             };
 
             await userManager.CreateAsync(userToCreate);
@@ -87,7 +88,7 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
 
             await sender.Send(new AddAccountAuditDb.Command(user, AccountAudit.Actions.Create, user, AuditActionReasons.DbSetup), cancellationToken);
             await sender.Send(new SaveBackgroundServiceUserIdDb.Command(user.Id, AuditActionReasons.DbSetup, user), cancellationToken);
-            
+
             Log.Information("Background Service user created: {UserId}", user.Id);
         }
 
@@ -160,6 +161,7 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
                 UseSsl = false,
             };
 
+            await sender.Send(new SaveSmtpEnabledDb.Command(true, AuditActionReasons.DbSetup, backgroundServiceUser), cancellationToken);
             await sender.Send(new SaveSmtpConfigDb.Command(smtpConfig, AuditActionReasons.DbSetup, backgroundServiceUser), cancellationToken);
             Log.Information("SMTP Config created for local environment.");
         }

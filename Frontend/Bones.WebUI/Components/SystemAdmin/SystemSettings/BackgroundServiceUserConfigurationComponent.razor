@@ -1,0 +1,17 @@
+﻿<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h5">Background Service User</MudText>
+
+    <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+        <MudTextField T="string" Label="Email" @bind-value="@Email" 
+                        InputType="InputType.Email" Required="true" RequiredError="Email is required!" />
+
+        <MudTextField T="string" Label="Display Name" @bind-value="@DisplayName"
+                        InputType="InputType.Text" Required="true" RequiredError="Display Name is required!"/>
+
+        <div style="display: flex;">
+            <MudTextField T="string" Label="Reason for change" @bind-value="@ChangeReason"
+                        InputType="InputType.Text" Required="true" RequiredError="Change reason is required!"/>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@Update">Update</MudButton>
+        </div>
+    </MudForm>
+</MudPaper>
