@@ -28,6 +28,13 @@ jobs:
         with:
           fetch-depth: 0 # Need to disable shallow clone for SonarCloud to scan properly: https://stackoverflow.com/a/62500400
 
+      - name: Cache .NET
+        uses: actions/cache@v4
+        with:
+          path: /usr/share/dotnet
+          key: dotnet
+          restore-keys: dotnet
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -58,33 +65,22 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache SonarQube Cloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v4
-        with:
-          path: ./.sonar/scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
+          key: sonar
+          restore-keys: sonar
 
       - name: Install SonarQube Cloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: bash
         run: |
-          mkdir ./.sonar ./.sonar/scanner
-          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+          dotnet tool update dotnet-sonarscanner --global
       
-      # Test
       - name: Test and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"CorruptComputer_Bones" /o:"corruptcomputer" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=./Tests/*/*.UnitTests/TestResults/*/coverage.opencover.xml /d:sonar.scanner.scanAll=false
+          dotnet-sonarscanner begin /k:"CorruptComputer_Bones" /o:"corruptcomputer" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=./Tests/*/*.UnitTests/TestResults/*/coverage.opencover.xml /d:sonar.scanner.scanAll=false
           
           dotnet build --configuration Debug --no-incremental
           dotnet test --no-build --collect:"XPlat Code Coverage;Format=opencover"
           
-          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
