@@ -1,0 +1,49 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+  schedule:
+    - cron: '2 0 * * *'
+
+jobs:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: 'ubuntu-latest'
+    permissions:
+      # required for all workflows
+      security-events: write
+      # required to fetch internal or private CodeQL packs
+      packages: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Restore Tools
+      run: |
+        cd Services/Bones.Api
+        dotnet tool restore
+        cd ../..
+        cd Services/Bones.BackgroundService
+        dotnet tool restore
+        cd ../..
+        cd Frontend/Bones.Api.Client
+        dotnet tool restore
+        cd ../..
+        cd Frontend/Bones.WebUI
+        dotnet workload restore
+        cd ../..
+    
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: csharp
+        build-mode: none
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:csharp"
