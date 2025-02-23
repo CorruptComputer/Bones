@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\publish-client.yml = .github\workflows\publish-client.yml
 		.github\workflows\publish-server.yml = .github\workflows\publish-server.yml
 		.github\workflows\sonarcloud.yml = .github\workflows\sonarcloud.yml
+		.github\workflows\codeql.yml = .github\workflows\codeql.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sonarlint", ".sonarlint", "{B1DE1A41-4DFD-5B27-44E1-D40881FCE43A}"
@@ -81,6 +82,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Testing.Shared", "Tests\Bones.Testing.Shared\Bones.Testing.Shared.csproj", "{C4168260-D19D-4919-B100-CCA86C9A6B68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.AppHost", "Services\Bones.AppHost\Bones.AppHost.csproj", "{007B84A2-EA4E-4352-9E2B-BEAC8D276331}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setup-env", "setup-env", "{2ADBDF2B-C451-FE0A-163A-CA9160A0B0DB}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\setup-env\action.yml = .github\workflows\setup-env\action.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,5 +179,6 @@ Global
 		{CFB559B0-C8D7-4D43-B58D-0075876F7A79} = {C1C3F97D-6CB5-4A9B-A088-8DC828824C3D}
 		{C4168260-D19D-4919-B100-CCA86C9A6B68} = {AFD22481-8267-4E6C-89D9-AB37A3FE020C}
 		{007B84A2-EA4E-4352-9E2B-BEAC8D276331} = {93B535AC-0A5C-4FC5-909E-832DD1AE52B0}
+		{2ADBDF2B-C451-FE0A-163A-CA9160A0B0DB} = {BD87C076-72F0-7B48-4AE3-45E7A5947060}
 	EndGlobalSection
 EndGlobal
