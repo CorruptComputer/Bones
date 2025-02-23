@@ -9,9 +9,6 @@ on:
       - '*'
   workflow_dispatch:
 
-env:
-  DOTNET_VERSION: '9.0.x'
-
 jobs:
   server:
     name: Publish Server
@@ -19,18 +16,11 @@ jobs:
     env:
       DatabaseConfiguration__UseInMemoryDb: true
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - uses: ./.github/actions/setup-env
 
       - name: Build API Packages
         run: |
           cd Services/Bones.Api
-          dotnet tool restore
           dotnet deb --configuration Release --version-suffix commit --output ../../publish/
           dotnet rpm --configuration Release --version-suffix commit --output ../../publish/
           cd ../..
@@ -38,7 +28,6 @@ jobs:
       - name: Build Background Service Packages
         run: |
           cd Services/Bones.BackgroundService
-          dotnet tool restore
           dotnet deb --configuration Release --version-suffix commit --output ../../publish/
           dotnet rpm --configuration Release --version-suffix commit --output ../../publish/
           cd ../..

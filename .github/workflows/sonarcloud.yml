@@ -9,9 +9,6 @@ on:
       - 'develop'
   workflow_dispatch:
 
-env:
-  DOTNET_VERSION: '9.0.x'
-
 jobs:
   scan:
     name: SonarCloud Scan
@@ -21,31 +18,7 @@ jobs:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_ENVIRONMENT: "Development"
     steps:
-      # Setup
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Need to disable shallow clone for SonarCloud to scan properly: https://stackoverflow.com/a/62500400
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Restore Tools
-        run: |
-          cd Services/Bones.Api
-          dotnet tool restore
-          cd ../..
-          cd Services/Bones.BackgroundService
-          dotnet tool restore
-          cd ../..
-          cd Frontend/Bones.Api.Client
-          dotnet tool restore
-          cd ../..
-          cd Frontend/Bones.WebUI
-          dotnet workload restore
-          cd ../..
+      - uses: ./.github/actions/setup-env
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4

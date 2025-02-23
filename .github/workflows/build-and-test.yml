@@ -9,9 +9,6 @@ on:
       - '*'
   workflow_dispatch:
 
-env:
-  DOTNET_VERSION: '9.0.x'
-
 jobs:
   test:
     name: Build & Test
@@ -21,33 +18,7 @@ jobs:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_ENVIRONMENT: "Development"
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Print .NET version
-        run: |
-          dotnet --version
-          dotnet --list-sdks
-
-      - name: Restore Tools
-        run: |
-          cd Services/Bones.Api
-          dotnet tool restore
-          cd ../..
-          cd Services/Bones.BackgroundService
-          dotnet tool restore
-          cd ../..
-          cd Frontend/Bones.Api.Client
-          dotnet tool restore
-          cd ../..
-          cd Frontend/Bones.WebUI
-          dotnet workload restore
-          cd ../..
+      - uses: ./.github/actions/setup-env
 
       - name: Build
         run: |

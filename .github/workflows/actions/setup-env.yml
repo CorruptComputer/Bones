@@ -1,0 +1,33 @@
+name: Setup Environment
+env:
+  DOTNET_VERSION: '9.0.x'
+runs:
+  using: composite
+  steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+      dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Print .NET version
+      run: |
+        dotnet --version
+        dotnet --list-sdks
+
+    - name: Restore Tools
+      run: |
+        cd Services/Bones.Api
+        dotnet tool restore
+        cd ../..
+        cd Services/Bones.BackgroundService
+        dotnet tool restore
+        cd ../..
+        cd Frontend/Bones.Api.Client
+        dotnet tool restore
+        cd ../..
+        cd Frontend/Bones.WebUI
+        dotnet workload restore
+        cd ../..
