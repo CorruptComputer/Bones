@@ -9,11 +9,13 @@ runs:
         dotnet-version: '9.0.x'
 
     - name: Print .NET version and SDKs
+      shell: bash
       run: |
         dotnet --version
         dotnet --list-sdks
 
     - name: Restore Tools
+      shell: bash
       run: |
         cd Services/Bones.Api
         dotnet tool restore
