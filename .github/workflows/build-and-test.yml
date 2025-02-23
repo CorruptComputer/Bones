@@ -18,6 +18,9 @@ jobs:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_ENVIRONMENT: "Development"
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup-env
 
       - name: Build

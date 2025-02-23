@@ -16,6 +16,9 @@ jobs:
     env:
       DatabaseConfiguration__UseInMemoryDb: true
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
       - uses: ./.github/actions/setup-env
 
       - name: Publish

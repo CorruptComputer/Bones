@@ -18,6 +18,11 @@ jobs:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_ENVIRONMENT: "Development"
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
       - uses: ./.github/actions/setup-env
 
       - name: Set up JDK 21
