@@ -1,4 +1,5 @@
-name: Setup Environment
+name: setup-env
+description: Setup Environment
 
 runs:
   using: composite
