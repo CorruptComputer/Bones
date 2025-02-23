@@ -498,6 +498,90 @@
         }
       }
     },
+    "/GenericItem/{projectId}/layouts": {
+      "get": {
+        "tags": [
+          "GenericItem"
+        ],
+        "summary": "",
+        "operationId": "GetProjectLayoutsAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "enabledFor",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "$ref": "#/components/schemas/ItemLayoutUses"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetProjectLayoutsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/GenericItem/{projectId}/layouts/{layoutId}/latest": {
       "get": {
         "tags": [
@@ -637,6 +721,172 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetInitiativeDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Initiative/{initiativeId}/work-item-queues": {
+      "get": {
+        "tags": [
+          "Initiative"
+        ],
+        "summary": "",
+        "operationId": "GetWorkItemQueuesInInitiativeAsync",
+        "parameters": [
+          {
+            "name": "initiativeId",
+            "in": "path",
+            "description": "The ID of the initiative",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetWorkItemQueuesInInitiativeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Initiative/{initiativeId}/create-queue": {
+      "post": {
+        "tags": [
+          "Initiative"
+        ],
+        "summary": "Creates a queue in an initiative",
+        "operationId": "CreateQueueInInitiativeAsync",
+        "parameters": [
+          {
+            "name": "initiativeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQueueInInitiativeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
                 }
               }
             }
@@ -1159,6 +1409,82 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetProjectItemFieldsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/{projectId}/initiatives": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "",
+        "operationId": "GetInitiativesInProjectAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetInitiativesInProjectResponse"
+                  }
                 }
               }
             }
@@ -2268,6 +2594,164 @@
           }
         }
       }
+    },
+    "/WorkItem/{workItemQueueId}/dashboard": {
+      "get": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Gets the dashboard for a work item queue",
+        "operationId": "GetWorkItemQueueDashboardAsync",
+        "parameters": [
+          {
+            "name": "workItemQueueId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWorkItemQueueDashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/{workItemQueueId}": {
+      "get": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Gets a work item queue by its ID",
+        "operationId": "GetWorkItemQueueByIdAsync",
+        "parameters": [
+          {
+            "name": "workItemQueueId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWorkItemQueueByIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2463,6 +2947,51 @@
         "additionalProperties": false,
         "description": "Request to create a new project"
       },
+      "CreateQueueInInitiativeRequest": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the queue"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the CreateQueueInInitiativeAsync endpoint"
+      },
+      "DashboardWorkItemModel": {
+        "required": [
+          "addedToQueueDateTime",
+          "friendlyId",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the work item",
+            "format": "uuid"
+          },
+          "friendlyId": {
+            "type": "string",
+            "description": "The friendly ID of the work item"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the work item"
+          },
+          "addedToQueueDateTime": {
+            "type": "string",
+            "description": "The date and time the work item was added to the queue",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for a work item in the dashboard"
+      },
       "EmptyResponse": {
         "type": "object",
         "additionalProperties": false,
@@ -2566,6 +3095,26 @@
         "additionalProperties": false,
         "description": "Response for the GetInitiativeDashboardAsync endpoint"
       },
+      "GetInitiativesInProjectResponse": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the initiative",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the initiative"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetInitiativesInProjectAsync endpoint"
+      },
       "GetLatestItemFieldVersionResponse": {
         "required": [
           "fieldId",
@@ -2661,6 +3210,7 @@
       },
       "GetMyProfileResponse": {
         "required": [
+          "accountAudits",
           "createDateTime",
           "displayName",
           "email",
@@ -2701,6 +3251,13 @@
           "isSysAdmin": {
             "type": "boolean",
             "description": "Is the user a system administrator?"
+          },
+          "accountAudits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MyAccountAuditModel"
+            },
+            "description": "A list of audits that have been performed on the account"
           }
         },
         "additionalProperties": false,
@@ -2756,6 +3313,43 @@
         },
         "additionalProperties": false,
         "description": "API response for the GetProjectItemFieldsAsync endpoint"
+      },
+      "GetProjectLayoutsResponse": {
+        "required": [
+          "currentLayoutVersionId",
+          "currentVersionNumber",
+          "friendlyIdPrefix",
+          "layoutId",
+          "layoutName"
+        ],
+        "type": "object",
+        "properties": {
+          "layoutId": {
+            "type": "string",
+            "description": "ID of the layout",
+            "format": "uuid"
+          },
+          "currentLayoutVersionId": {
+            "type": "string",
+            "description": "ID of the current layout version",
+            "format": "uuid"
+          },
+          "currentVersionNumber": {
+            "type": "integer",
+            "description": "The current version number of the layout",
+            "format": "int64"
+          },
+          "layoutName": {
+            "type": "string",
+            "description": "Name of the layout"
+          },
+          "friendlyIdPrefix": {
+            "type": "string",
+            "description": "The friendly ID prefix for this layout"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API response for the GetLatestItemLayoutVersionAsync endpoint"
       },
       "GetProjectQuickSelectResponse": {
         "required": [
@@ -2966,6 +3560,62 @@
         "additionalProperties": false,
         "description": "Response for the GetSystemAdminMaskUserConfigAsync endpoint"
       },
+      "GetWorkItemQueueByIdResponse": {
+        "required": [
+          "queueName"
+        ],
+        "type": "object",
+        "properties": {
+          "queueName": {
+            "type": "string",
+            "description": "The name of the queue"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetWorkItemQueueByIdAsync endpoint"
+      },
+      "GetWorkItemQueueDashboardResponse": {
+        "required": [
+          "queueName",
+          "workItems"
+        ],
+        "type": "object",
+        "properties": {
+          "queueName": {
+            "type": "string",
+            "description": "The name of the queue"
+          },
+          "workItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardWorkItemModel"
+            },
+            "description": "The work items in this queue, ordered by date added from oldest to newest"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetWorkItemQueueDashboardAsync endpoint"
+      },
+      "GetWorkItemQueuesInInitiativeResponse": {
+        "required": [
+          "queueId",
+          "queueName"
+        ],
+        "type": "object",
+        "properties": {
+          "queueId": {
+            "type": "string",
+            "description": "The ID of the queue",
+            "format": "uuid"
+          },
+          "queueName": {
+            "type": "string",
+            "description": "The name of the queue"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetWorkItemQueuesInInitiativeAsync endpoint"
+      },
       "InitiativeListModel": {
         "required": [
           "initiativeId",
@@ -3088,6 +3738,31 @@
         },
         "additionalProperties": false,
         "description": "Request to login"
+      },
+      "MyAccountAuditModel": {
+        "required": [
+          "action",
+          "actionBy",
+          "dateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dateTime": {
+            "type": "string",
+            "description": "The date and time the action was taken",
+            "format": "date-time"
+          },
+          "action": {
+            "type": "string",
+            "description": "The action that took place"
+          },
+          "actionBy": {
+            "type": "string",
+            "description": "Who is responsible for the action"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents an audit of a user account"
       },
       "OwnershipType": {
         "enum": [

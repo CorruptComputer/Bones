@@ -1,18 +1,18 @@
+@using System.Globalization
 @attribute [Route(FrontEndUrls.Account.MY_PROFILE)]
 
-<h3>My Profile</h3>
-
+<MudText Typo="Typo.h4">My Profile</MudText>
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <!-- Just to show, can't edit them here -->
             <MudTextField T="string" Label="Account Created" Disabled="true" @bind-value="@CreateDateTime"/>
-            <div>
+            <div style="display: flex;">
                 <MudTextField T="string" Label="Password Last Set" Disabled="true" @bind-value="@PasswordLastSet"/>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@GoToChangePassword">Change Password</MudButton>
             </div>
             
-            <div>
+            <div style="display: flex;">
                 <MudTextField T="string" Label="Email" Disabled="true" @bind-value="@Email"/>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@GoToChangeEmail">Change Email</MudButton>
             </div>
@@ -35,11 +35,21 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="5">
-        @foreach (string error in ValidationErrors)
-        {
-        <MudItem Class="pa-2">
-            <MudAlert Severity="Severity.Error">@error</MudAlert>
-        </MudItem>
-        }
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.h5">My Account History</MudText>
+
+            <MudTable Items="@AccountAudits" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@AccountAuditsLoading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Action Time</MudTh>
+                    <MudTh>Action</MudTh>
+                    <MudTh>Action By</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Action Time">@context.DateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture)</MudTd>
+                    <MudTd DataLabel="Queue Action">@context.Action</MudTd>
+                    <MudTd DataLabel="Action By">@context.ActionBy</MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudPaper>
     </MudItem>
 </MudGrid>

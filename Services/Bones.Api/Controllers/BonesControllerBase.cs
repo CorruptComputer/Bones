@@ -52,7 +52,7 @@ public class BonesControllerBase(ISender sender) : ControllerBase
     /// <returns></returns>
     protected static Dictionary<string, string[]> ReadErrorsFromIdentityResult(IdentityResult result)
     {
-        Dictionary<string, string[]> errorDictionary = new();
+        Dictionary<string, string[]> errorDictionary = [];
 
         foreach (IdentityError error in result.Errors)
         {

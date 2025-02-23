@@ -13,7 +13,8 @@ namespace Bones.WebUI.Pages;
 public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
 {
     private readonly LatLon _startAt = new(31.887f, -100.360f, 7);
-    private LatLon _markerAt = new(31.887f, -100.360f);
+
+    private LatLon _markerAt = new(31.441500f, -100.465396f);
 
     private Map? _map;
 
@@ -83,8 +84,7 @@ public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
             Marker marker = new(_markerAt)
             {
                 Draggable = true,
-                Title = "Marker 1",
-                Popup = new() { Content = $"I am at {_markerAt.Lat:0.00}° lat, {_markerAt.Lon:0.00}° lon" },
+                Popup = new() { Content = $"I am at {_markerAt.Lat:0.0000}° lat, {_markerAt.Lon:0.0000}° lon" },
                 Tooltip = new() { Content = "Click and drag to move me" }
             };
 

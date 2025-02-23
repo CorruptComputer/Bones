@@ -14,7 +14,12 @@ public class GenericItem
     ///     Internal ID for the Item
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
+
+    /// <summary>
+    ///   The friendly ID for this item
+    /// </summary>
+    public required string FriendlyId { get; init; }
 
     /// <summary>
     ///   The date and time this item was created

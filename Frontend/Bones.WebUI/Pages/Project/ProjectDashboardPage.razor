@@ -1,6 +1,6 @@
 @attribute [Route(FrontEndUrls.Project.PROJECT_DASHBOARD)]
 
-<div class="d-flex">
+<div style="display: flex;">
     <MudText Typo="Typo.h4">@ProjectName</MudText>
     <MudSpacer/>
     <MudButton Href="@FrontEndUrls.Project.MODIFY_PROJECT.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString())">Modify Project</MudButton>
@@ -14,14 +14,14 @@
           - # of assets being tracked
           - # of documentation items
     -->
-    <MudText>Project Name: @ProjectName</MudText>
+    <MudText>Bleep bloop I'm some information</MudText>
     
 </MudPaper>
 
-<div class="d-flex">
+<div style="display: flex;">
     <MudText Typo="Typo.h4">Initiatives</MudText>
     <MudSpacer/>
-    <MudButton Href="@FrontEndUrls.Project.Initiative.CREATE_INITIATIVE.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString())">Create Initiative</MudButton>
+    <MudButton Href="@FrontEndUrls.Project.CREATE_INITIATIVE.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString())">Create Initiative</MudButton>
 </div>
 
 

@@ -16,7 +16,7 @@ public record UpdateMyProfileRequest
     [JsonRequired]
     public required string DisplayName { get; init; }
 
-    internal UpdateProfile.Command ToInternal(BonesUser user)
+    internal UpdateMyProfile.Command ToInternal(BonesUser user)
     {
         return new(DisplayName, user);
     }

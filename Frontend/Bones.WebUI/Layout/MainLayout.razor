@@ -14,8 +14,6 @@
             <Authorized>
                 <div>
                     <MudSelect SelectedValuesChanged="OnGoToProjectChanged"
-                               Placeholder="Go to project..."
-                               class="project-quick-select"
                                KeyDownPreventDefault="true"
                                KeyUpPreventDefault="true"
                                MultiSelection="false"
@@ -65,7 +63,6 @@
                     <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.SystemAdmin.DASHBOARD">System Admin Dashboard</MudNavLink>
                 </Authorized>
             </AuthorizeView>
-            
         </MudNavMenu>
     </MudDrawer>
     <!-- Content -->

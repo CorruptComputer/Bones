@@ -127,7 +127,7 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
         if (request.Type is Api.Client.FieldType.ValueList)
         {
             // TODO: Implement this
-            request.PossibleValues = new();
+            request.PossibleValues = [];
         }
         else if (request.Type is Api.Client.FieldType.Integer or Api.Client.FieldType.Decimal)
         {

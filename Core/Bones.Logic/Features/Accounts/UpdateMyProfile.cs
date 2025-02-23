@@ -1,10 +1,13 @@
+using Bones.Database.DbConsts;
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Audit;
 using Bones.Database.Operations.AccountManagement;
+using Bones.Database.Operations.Audit;
 
 namespace Bones.Logic.Features.Accounts;
 
 /// <inheritdoc />
-public class UpdateProfile(ISender sender) : IRequestHandler<UpdateProfile.Command, CommandResponse>
+public class UpdateMyProfile(ISender sender) : IRequestHandler<UpdateMyProfile.Command, CommandResponse>
 {
     /// <summary>
     ///   Request to update the profile of a user
@@ -27,6 +30,9 @@ public class UpdateProfile(ISender sender) : IRequestHandler<UpdateProfile.Comma
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        return await sender.Send(new UpdateProfileDb.Command(request.RequestingUser.Id, request.DisplayName), cancellationToken);
+        CommandResponse resp = await sender.Send(new UpdateProfileDb.Command(request.RequestingUser.Id, request.DisplayName), cancellationToken);
+        await sender.Send(new AddAccountAuditDb.Command(request.RequestingUser, AccountAudit.Actions.UpdateProfile, request.RequestingUser, AuditActionReasons.UserRequested), cancellationToken);
+
+        return resp;
     }
 }

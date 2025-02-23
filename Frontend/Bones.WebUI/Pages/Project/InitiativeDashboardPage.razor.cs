@@ -6,12 +6,6 @@ namespace Bones.WebUI.Pages.Project;
 public partial class InitiativeDashboardPage(BonesApiClient ApiClient) : ComponentBase
 {
     /// <summary>
-    ///   The ID of the project to load in this dashboard
-    /// </summary>
-    [Parameter]
-    public Guid ProjectId { get; set; }
-
-    /// <summary>
     ///   The ID of the initiative to load in this dashboard
     /// </summary>
     [Parameter]

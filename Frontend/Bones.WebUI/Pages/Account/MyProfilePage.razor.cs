@@ -30,6 +30,10 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
 
     private string DisplayName { get; set; } = string.Empty;
 
+    private bool AccountAuditsLoading { get; set; } = true;
+
+    private IOrderedEnumerable<MyAccountAuditModel>? AccountAudits { get; set; }
+
     /// <summary>
     ///   Event for when the page is loaded
     /// </summary>
@@ -53,6 +57,8 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
 
     private async Task FetchFromApi()
     {
+        AccountAuditsLoading = true;
+
         GetMyProfileResponse response = await ApiClient.GetMyProfileAsync();
 
         CreateDateTime = response.CreateDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture);
@@ -60,6 +66,8 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
         Email = response.Email;
         EmailConfirmed = response.EmailConfirmed ? response.EmailConfirmedDateTime?.LocalDateTime.ToString(CultureInfo.CurrentCulture) ?? "Not confirmed" : "Not confirmed";
         DisplayName = response.DisplayName;
+        AccountAudits = response.AccountAudits.OrderByDescending(x => x.DateTime);
+        AccountAuditsLoading = false;
     }
 
     /// <summary>
@@ -76,6 +84,8 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
         {
             DisplayName = DisplayName
         });
+
+        await FetchFromApi();
     }
 
     /// <summary>

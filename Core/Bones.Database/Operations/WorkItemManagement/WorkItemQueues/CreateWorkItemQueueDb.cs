@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 
 /// <inheritdoc />
-public sealed class CreateQueueDb(BonesDbContext dbContext) : IRequestHandler<CreateQueueDb.Command, CommandResponse>
+public sealed class CreateWorkItemQueueDb(BonesDbContext dbContext) : IRequestHandler<CreateWorkItemQueueDb.Command, CommandResponse>
 {
     /// <summary>
     ///     DB Command for creating a Queue.

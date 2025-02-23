@@ -1,7 +1,10 @@
+using Bones.Api.Models.Initiatives;
 using Bones.Api.Models.Project;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Logic.Features.Projects.Initiatives;
+using Bones.Logic.Features.WorkItems.Queue;
 
 namespace Bones.Api.Controllers;
 
@@ -49,10 +52,50 @@ public sealed class InitiativeController(ISender sender) : BonesControllerBase(s
 
         return resp;
     }
+
+    /// <summary>
+    ///     
+    /// </summary>
+    /// <param name="initiativeId">The ID of the initiative</param>
+    /// <returns>The work item queues in the initiative.</returns>
+    [HttpGet("{initiativeId:guid}/work-item-queues", Name = "GetWorkItemQueuesInInitiativeAsync")]
+    [ProducesResponseType<List<GetWorkItemQueuesInInitiativeResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<List<GetWorkItemQueuesInInitiativeResponse>>> GetWorkItemQueuesInInitiativeAsync(Guid initiativeId)
+    {
+        QueryResponse<List<WorkItemQueue>> initiativeResponse = await Sender.Send(new GetWorkItemQueuesByInitiative.Query(initiativeId, await GetCurrentBonesUserAsync()));
+
+        if (!initiativeResponse.Success || initiativeResponse.Result is null)
+        {
+            return BadRequest(ErrorResponse.FromQueryResponse(initiativeResponse));
+        }
+
+        return GetWorkItemQueuesInInitiativeResponse.FromInternalList(initiativeResponse.Result);
+    }
     #endregion
 
     #region POST
+    /// <summary>
+    ///     Creates a queue in an initiative
+    /// </summary>
+    /// <param name="initiativeId"></param>
+    /// <param name="request"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("{initiativeId:guid}/create-queue", Name = "CreateQueueInInitiativeAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<Guid>> CreateQueueInInitiativeAsync(Guid initiativeId, [FromBody] CreateQueueInInitiativeRequest request)
+    {
+        BonesUser currentUser = await GetCurrentBonesUserAsync();
+        CommandResponse resp = await Sender.Send(request.ToInternal(initiativeId, currentUser));
 
+        if (!resp.Success || resp.Id == null)
+        {
+            return BadRequest(resp.FailureReasons);
+        }
+
+        return resp.Id;
+    }
     #endregion
 }
 

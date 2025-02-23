@@ -2,12 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Shared.Backend.Enums;
 
-namespace Bones.Api.Models.Project;
+namespace Bones.Api.Models.GenericItem;
 
 /// <summary>
 ///   API response for the GetLatestItemLayoutVersionAsync endpoint
 /// </summary>
-public class GetLatestItemLayoutVersionResponse
+[JsonSerializable(typeof(GetLatestItemLayoutVersionResponse))]
+public sealed record GetLatestItemLayoutVersionResponse
 {
     /// <summary>
     ///   Name of the item layout

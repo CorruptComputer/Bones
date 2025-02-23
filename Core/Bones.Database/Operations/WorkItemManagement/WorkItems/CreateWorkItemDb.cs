@@ -45,14 +45,17 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
         EntityEntry<WorkItem> created = await dbContext.WorkItems.AddAsync(new()
         {
             WorkItemQueue = queue,
-            AddedToQueueDateTime = DateTimeOffset.UtcNow,
+            AddedToQueueDateTime = DateTimeOffset.Now,
             Item = new()
             {
+                FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
                 Name = request.Name,
                 Project = itemLayout.Project,
                 GenericItemLayout = itemLayout
             }
         }, cancellationToken);
+
+        dbContext.ItemLayouts.Update(itemLayout);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

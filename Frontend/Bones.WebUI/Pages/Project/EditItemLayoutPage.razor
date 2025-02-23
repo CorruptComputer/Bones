@@ -5,13 +5,13 @@
     <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
         <MudTextField T="string" Label="Layout Name" Required="true" RequiredError="Layout name is required!" @bind-value="@LayoutName"/>
         <MudText>Enabled For</MudText>
-        <div class="d-flex">
+        <div style="display: flex;">
             <MudCheckBox T="bool" Label="WorkItems" @bind-value="@EnabledForWorkItems"/>
             <MudCheckBox T="bool" Label="Assets" @bind-value="@EnabledForAssets"/>
         </div>
         <MudTextField T="string" Label="ID Prefix (cannot be changed)" MaxLength="6" Disabled @bind-value="@FriendlyIdPrefix"/>
 
-        <div class="d-flex" style="justify-content: space-between;">
+        <div style="display: flex; justify-content: space-between;">
             <div style="width:49%">
                 <MudText Typo="Typo.h4">Available Fields</MudText>
 

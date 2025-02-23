@@ -1,5 +1,7 @@
 using Bones.Api.Models.Account;
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Audit;
+using Bones.Logic.Features.Audits;
 
 namespace Bones.Api.Controllers;
 
@@ -22,8 +24,9 @@ public sealed class AccountController(ISender sender) : BonesControllerBase(send
     public async ValueTask<ActionResult<GetMyProfileResponse>> GetMyProfileAsync()
     {
         BonesUser user = await GetCurrentBonesUserAsync();
+        List<AccountAudit> audits = (await Sender.Send(new GetMyAccountAudits.Query(user))).Result ?? [];
 
-        return GetMyProfileResponse.FromUser(user, User);
+        return GetMyProfileResponse.FromUser(user, claims: User, audits);
     }
 
     /// <summary>

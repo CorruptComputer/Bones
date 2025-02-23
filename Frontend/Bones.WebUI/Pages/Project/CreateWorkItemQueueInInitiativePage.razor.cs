@@ -1,18 +1,13 @@
+using Bones.Shared.Consts;
 using MudBlazor;
 
 namespace Bones.WebUI.Pages.Project;
 
 /// <summary>
 ///   Page to create a work item queue in an initiative
-/// </summary>                                          BonesApiClient ApiClient, NavigationManager NavManager, 
-public partial class CreateWorkItemQueueInInitiativePage(ILogger<CreateWorkItemQueueInInitiativePage> Logger) : ComponentBase
+/// </summary>                                           
+public partial class CreateWorkItemQueueInInitiativePage(BonesApiClient apiClient, NavigationManager navManager, ILogger<CreateWorkItemQueueInInitiativePage> logger) : ComponentBase
 {
-    /// <summary>
-    ///   The ID of the project
-    /// </summary>
-    [Parameter]
-    public Guid ProjectId { get; set; }
-
     /// <summary>
     ///   The ID of the initiative
     /// </summary>
@@ -47,16 +42,16 @@ public partial class CreateWorkItemQueueInInitiativePage(ILogger<CreateWorkItemQ
 
             await Task.CompletedTask;
 
-            //Guid workItemQueueId = await ApiClient.CreateWorkItemQueueAsync(InitiativeId, new()
-            //{
-            //    Name = WorkItemQueueName.Text
-            //});
+            await apiClient.CreateQueueInInitiativeAsync(InitiativeId, new()
+            {
+                Name = WorkItemQueueName.Text
+            });
 
-            //NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, InitiativeId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
+            navManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.Initiative.INITIATIVE_ID_PLACEHOLDER, InitiativeId.ToString()));
         }
         catch (ApiException ex)
         {
-            Logger.LogError(ex, "Error while creating the work item queue");
+            logger.LogError(ex, "Error while creating the work item queue");
             ApiError = true;
         }
     }

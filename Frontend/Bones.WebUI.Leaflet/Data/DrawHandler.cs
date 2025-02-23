@@ -18,7 +18,7 @@ public class DrawHandler : IDisposable
     private readonly Rectangle _rectangle = new();
     private readonly Circle _circle = new();
     private readonly Polygon _polygon = new();
-    private readonly List<MouseEvent> _mouseClickEvents = new();
+    private readonly List<MouseEvent> _mouseClickEvents = [];
     private DrawState _drawState;
 
     /// <summary>

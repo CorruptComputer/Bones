@@ -4,7 +4,7 @@ using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Logic.Features.Projects.Initiatives;
 using Bones.Shared.Consts;
 
-namespace Bones.Logic.Features.Projects.WorkItems;
+namespace Bones.Logic.Features.WorkItems.Queue;
 
 /// <inheritdoc />
 public sealed class GetWorkItemQueuesByInitiative(ISender sender) : IRequestHandler<GetWorkItemQueuesByInitiative.Query, QueryResponse<List<WorkItemQueue>>>

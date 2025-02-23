@@ -15,37 +15,37 @@ public static class FrontEndUrls
     /// </summary>
     public static class Account
     {
-        private const string _account = "/Account";
+        private const string _account = "/account";
 
         /// <summary>
         ///   Confirm email page
         /// </summary>
-        public const string CHANGE_EMAIL = $"{_account}/ChangeEmail";
+        public const string CHANGE_EMAIL = $"{_account}/change-email";
 
         /// <summary>
         ///   Confirm email page
         /// </summary>
-        public const string CHANGE_PASSWORD = $"{_account}/ChangePassword";
+        public const string CHANGE_PASSWORD = $"{_account}/change-password";
 
         /// <summary>
         ///   Confirm email page
         /// </summary>
-        public const string CONFIRM_EMAIL = $"{_account}/ConfirmEmail";
+        public const string CONFIRM_EMAIL = $"{_account}/confirm-email";
 
         /// <summary>
         ///   My profile page
         /// </summary>
-        public const string MY_PROFILE = $"{_account}/MyProfile";
+        public const string MY_PROFILE = $"{_account}/my-profile";
 
         /// <summary>
         ///   Confirm email page
         /// </summary>
-        public const string FORGOT_PASSWORD = $"{_account}/ForgotPassword";
+        public const string FORGOT_PASSWORD = $"{_account}/forgot-password";
 
         /// <summary>
         ///   Confirm email page
         /// </summary>
-        public const string RESET_PASSWORD = $"{_account}/ResetPassword";
+        public const string RESET_PASSWORD = $"{_account}/reset-password";
     }
 
     /// <summary>
@@ -53,23 +53,23 @@ public static class FrontEndUrls
     /// </summary>
     public static class Project
     {
-        private const string _project = "/Project";
-        private const string _projectWithId = $"{_project}/{PROJECT_ID_PLACEHOLDER}";
-
         /// <summary>
         ///   The placeholder for the project ID in URLs
         /// </summary>
         public const string PROJECT_ID_PLACEHOLDER = "{ProjectId:guid}";
 
+        private const string _project = "/project";
+        private const string _projectWithId = $"{_project}/{PROJECT_ID_PLACEHOLDER}";
+
         /// <summary>
         ///   Create project page
         /// </summary>
-        public const string CREATE = $"{_project}/Create";
+        public const string CREATE = $"{_project}/create";
 
         /// <summary>
         ///   Project dashboard page
         /// </summary>
-        public const string PROJECT_DASHBOARD = $"{_projectWithId}/Dashboard";
+        public const string PROJECT_DASHBOARD = $"{_projectWithId}/dashboard";
 
         /// <summary>
         ///   Project dashboard page
@@ -77,11 +77,16 @@ public static class FrontEndUrls
         public const string MODIFY_PROJECT = $"{_projectWithId}/edit";
 
         /// <summary>
+        ///   Create initiative page
+        /// </summary>
+        public const string CREATE_INITIATIVE = $"{_projectWithId}/create-initiative";
+
+        /// <summary>
         ///   Project Item Field pages
         /// </summary>
         public static class ItemField
         {
-            private const string _itemField = $"{_projectWithId}/ItemField";
+            private const string _itemField = $"{_projectWithId}/item-field";
             private const string _itemFieldWithId = $"{_itemField}/{{ItemFieldId:guid}}";
 
             /// <summary>
@@ -100,7 +105,7 @@ public static class FrontEndUrls
         /// </summary>
         public static class ItemLayout
         {
-            private const string _itemLayout = $"{_projectWithId}/ItemLayout";
+            private const string _itemLayout = $"{_projectWithId}/item-layout";
             private const string _itemLayoutWithId = $"{_itemLayout}/{{ItemLayoutId:guid}}";
 
             /// <summary>
@@ -119,23 +124,25 @@ public static class FrontEndUrls
         /// </summary>
         public static class Initiative
         {
-            private const string _initiative = $"{_projectWithId}/Initiative";
-            private const string _initiativeWithId = $"{_initiative}/{{InitiativeId:guid}}";
-
             /// <summary>
-            ///   Create initiative page
+            ///   The placeholder for the initiative ID in URLs
             /// </summary>
-            public const string CREATE_INITIATIVE = $"{_initiative}/Create";
+            public const string INITIATIVE_ID_PLACEHOLDER = "{InitiativeId:guid}";
+
+            private const string _initiative = $"Initiative";
+            private const string _initiativeWithId = $"{_initiative}/{INITIATIVE_ID_PLACEHOLDER}";
+
+
 
             /// <summary>
             ///   Initiative dashboard page
             /// </summary>
-            public const string INITIATIVE_DASHBOARD = $"{_initiativeWithId}/Dashboard";
+            public const string INITIATIVE_DASHBOARD = $"{_initiativeWithId}/dashboard";
 
             /// <summary>
             ///   Page to create a work item queue within an initiative
             /// </summary>
-            public const string INITIATIVE_CREATE_WORKITEM_QUEUE = $"{_initiativeWithId}/CreateWorkItemQueue";
+            public const string INITIATIVE_CREATE_WORKITEM_QUEUE = $"{_initiativeWithId}/create-work-item-queue";
         }
     }
 
@@ -144,14 +151,38 @@ public static class FrontEndUrls
     /// </summary>
     public static class WorkItem
     {
+        /// <summary>
+        ///   Placeholder for the work item ID in URLs
+        /// </summary>
+        public const string WORKITEM_ID_PLACEHOLDER = "{WorkItemId:guid}";
+
+        /// <summary>
+        ///   Placeholder for the work item queue ID in URLs
+        /// </summary>
+        public const string WORKITEM_QUEUE_ID_PLACEHOLDER = "{WorkItemQueueId:guid}";
+
         private const string _workItem = "/WorkItem";
 
-        private const string _workItemQueueWithId = $"{_workItem}/Q{{WorkItemQueueId:guid}}";
+        private const string _workItemWithId = $"{_workItem}/{WORKITEM_ID_PLACEHOLDER}";
+
+        private const string _workItemQueue = "/WorkItemQueue";
+
+        private const string _workItemQueueWithId = $"{_workItemQueue}/{WORKITEM_QUEUE_ID_PLACEHOLDER}";
 
         /// <summary>
         ///   Work item queue dashboard page
         /// </summary>
-        public const string WORKITEM_QUEUE_DASHBOARD = $"{_workItemQueueWithId}/Dashboard";
+        public const string WORKITEM_QUEUE_DASHBOARD = $"{_workItemQueueWithId}/dashboard";
+
+        /// <summary>
+        ///   Create work item page
+        /// </summary>
+        public const string CREATE_WORK_ITEM = $"{_workItem}/create";
+
+        /// <summary>
+        ///   Create work item page
+        /// </summary>
+        public const string CREATE_WORK_ITEM_IN_QUEUE = $"{_workItem}/create?work-item-queue-id={WORKITEM_QUEUE_ID_PLACEHOLDER}";
 
     }
 

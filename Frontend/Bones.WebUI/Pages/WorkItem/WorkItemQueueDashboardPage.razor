@@ -1,0 +1,23 @@
+﻿@attribute [Route(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD)]
+
+<div style="display: flex;">
+    <MudText Typo="Typo.h4">@QueueName</MudText>
+    <MudSpacer/>
+    <MudButton Href="@FrontEndUrls.WorkItem.CREATE_WORK_ITEM_IN_QUEUE.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, WorkItemQueueId.ToString())">Create Work Item in Queue</MudButton>
+</div>
+
+
+<MudPaper Class="pa-4">
+    <MudTable Items="@WorkItems" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@WorkItemsLoading" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>Added to Queue At</MudTh>
+            <MudTh>Friendly ID</MudTh>
+            <MudTh>Name</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Added to Queue At">@context.AddedToQueueDateTime</MudTd>
+            <MudTd DataLabel="Friendly ID">@context.FriendlyId</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>

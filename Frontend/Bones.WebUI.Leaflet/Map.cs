@@ -63,7 +63,7 @@ public class Map
     /// </summary>
     public string Id { get; }
 
-    private readonly ObservableCollection<Layer> _layers = new();
+    private readonly ObservableCollection<Layer> _layers = [];
 
     private readonly IJSRuntime _jsRuntime;
 

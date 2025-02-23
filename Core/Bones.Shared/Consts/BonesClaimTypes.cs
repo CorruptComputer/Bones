@@ -181,7 +181,7 @@ public static class BonesClaimTypes
             /// <param name="queueId"></param>
             /// <param name="permissionName"></param>
             /// <returns></returns>
-            public static string GetQueueClaimType(Guid queueId, string permissionName)
+            public static string GetWorkItemQueueClaimType(Guid queueId, string permissionName)
             {
                 return $"Q{queueId}|{permissionName}";
             }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Bones.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bones.Database.Migrations
 {
     [DbContext(typeof(BonesDbContext))]
-    partial class BonesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250222201909_Goof")]
+    partial class Goof
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,10 +382,6 @@ namespace Bones.Database.Migrations
 
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("FriendlyId")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<Guid>("GenericItemLayoutId")
                         .HasColumnType("uuid");

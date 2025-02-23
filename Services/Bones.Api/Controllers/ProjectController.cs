@@ -170,6 +170,25 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
         return GetProjectItemFieldsResponse.FromInternalList(fieldResponse.Result);
     }
 
+    /// <summary>
+    ///     
+    /// </summary>
+    /// <param name="projectId">The ID of the project</param>
+    /// <returns>The initiatives in the project.</returns>
+    [HttpGet("{projectId:guid}/initiatives", Name = "GetInitiativesInProjectAsync")]
+    [ProducesResponseType<List<GetInitiativesInProjectResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<List<GetInitiativesInProjectResponse>>> GetInitiativesInProjectAsync(Guid projectId)
+    {
+        QueryResponse<List<Initiative>> initiativeResponse = await Sender.Send(new GetInitiativesByProject.Query(projectId, await GetCurrentBonesUserAsync()));
+
+        if (!initiativeResponse.Success || initiativeResponse.Result is null)
+        {
+            return BadRequest(ErrorResponse.FromQueryResponse(initiativeResponse));
+        }
+
+        return GetInitiativesInProjectResponse.FromInternalList(initiativeResponse.Result);
+    }
 
     #endregion
 

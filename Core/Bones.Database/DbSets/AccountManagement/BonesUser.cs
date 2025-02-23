@@ -20,7 +20,7 @@ public class BonesUser : IdentityUser<Guid>
     /// <summary>
     ///     When the account was created.
     /// </summary>
-    public DateTimeOffset CreateDateTime { get; } = DateTimeOffset.Now;
+    public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
     ///     When was it confirmed, if at all?

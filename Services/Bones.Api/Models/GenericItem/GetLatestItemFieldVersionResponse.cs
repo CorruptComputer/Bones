@@ -1,12 +1,13 @@
 using Bones.Database.DbSets.GenericItems;
 using Bones.Shared.Backend.Enums;
 
-namespace Bones.Api.Models.Project;
+namespace Bones.Api.Models.GenericItem;
 
 /// <summary>
 ///   API response for the GetLatestItemFieldVersionAsync endpoint
 /// </summary>
-public class GetLatestItemFieldVersionResponse
+[JsonSerializable(typeof(GetLatestItemFieldVersionResponse))]
+public sealed record GetLatestItemFieldVersionResponse
 {
     /// <summary>
     ///   ID of the item field
