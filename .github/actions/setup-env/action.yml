@@ -1,15 +1,14 @@
 name: Setup Environment
-env:
-  DOTNET_VERSION: '9.0.x'
+
 runs:
   using: composite
   steps:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: '9.0.x'
 
-    - name: Print .NET version
+    - name: Print .NET version and SDKs
       run: |
         dotnet --version
         dotnet --list-sdks

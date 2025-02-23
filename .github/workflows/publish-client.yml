@@ -19,7 +19,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - uses: ./.github/workflows/setup-env
+      - uses: ./.github/actions/setup-env
 
       - name: Publish
         run: |

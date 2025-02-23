@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: ./.github/workflows/setup-env
+      - uses: ./.github/actions/setup-env
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
