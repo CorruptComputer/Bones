@@ -27,20 +27,6 @@ jobs:
         with:
           fetch-depth: 0 # Need to disable shallow clone for SonarCloud to scan properly: https://stackoverflow.com/a/62500400
 
-      - name: Cache .NET
-        uses: actions/cache@v4
-        with:
-          path: /usr/share/dotnet
-          key: dotnet
-          restore-keys: dotnet
-
-      - name: Cache .NET Tools
-        uses: actions/cache@v4
-        with:
-          path: ~/.dotnet
-          key: dotnet-tools
-          restore-keys: dotnet-tools
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
