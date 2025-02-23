@@ -21,7 +21,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - uses: ./.github/actions/setup-env
+      - uses: ./.github/workflows/setup-env
 
       - name: Build
         run: |
