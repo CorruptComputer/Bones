@@ -43,9 +43,9 @@ public class GenericItemLayoutVersion
     public required long Version { get; init; }
 
     /// <summary>
-    ///   The field versions associated with this layout version
+    ///   The field links associated with this layout version
     /// </summary>
-    public List<GenericItemFieldVersion> Fields { get; init; } = [];
+    public List<GenericItemLayoutFieldVersionLink> FieldLinks { get; init; } = [];
 
     /// <summary>
     ///   Disables creating of new items using this layout version,

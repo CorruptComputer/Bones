@@ -122,7 +122,7 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     /// </summary>
     /// <param name="projectId"></param>
     /// <returns></returns>
-    protected static string GetCreateItemLayoutUrl(Guid projectId) => FrontEndUrls.Project.ItemLayout.CREATE_LAYOUT
+    protected static string GetCreateItemLayoutUrl(Guid projectId) => FrontEndUrls.Project.ItemLayout.ITEM_LAYOUT
         .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString());
 
     /// <summary>
@@ -131,7 +131,7 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     /// <param name="projectId"></param>
     /// <param name="layoutId"></param>
     /// <returns></returns>
-    protected static string GetEditItemLayoutUrl(Guid projectId, Guid layoutId) => FrontEndUrls.Project.ItemLayout.EDIT_LAYOUT
+    protected static string GetEditItemLayoutUrl(Guid projectId, Guid layoutId) => FrontEndUrls.Project.ItemLayout.ITEM_LAYOUT_WITH_ID
         .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString())
-        .Replace("{ItemLayoutId:guid}", layoutId.ToString());
+        .Replace(FrontEndUrls.Project.ItemLayout.ITEM_LAYOUT_ID_PLACEHOLDER, layoutId.ToString());
 }

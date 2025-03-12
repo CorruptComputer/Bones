@@ -23,7 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\nightly-build-server.yml = .github\workflows\nightly-build-server.yml
 		.github\workflows\publish-client.yml = .github\workflows\publish-client.yml
 		.github\workflows\publish-server.yml = .github\workflows\publish-server.yml
-		.github\workflows\sonarcloud.yml = .github\workflows\sonarcloud.yml
 		.github\workflows\codeql.yml = .github\workflows\codeql.yml
 	EndProjectSection
 EndProject
@@ -37,7 +36,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{8C68
 		.vscode\Bones.code-workspace = .vscode\Bones.code-workspace
 		.vscode\extensions.json = .vscode\extensions.json
 		.vscode\launch.json = .vscode\launch.json
-		.vscode\settings.json = .vscode\settings.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}"

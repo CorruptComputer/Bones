@@ -35,6 +35,7 @@ internal static class TableNames
         internal const string GenericItemFieldVersions = "GenericItemFieldVersions";
 
         internal const string GenericItemLayouts = "GenericItemLayouts";
+        internal const string GenericItemLayoutFieldVersionLinks = "GenericItemLayoutFieldVersionLinks";
         internal const string GenericItemLayoutVersions = "GenericItemLayoutVersions";
 
         internal const string GenericItems = "GenericItems";

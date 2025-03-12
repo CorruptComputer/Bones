@@ -1,7 +1,6 @@
 using System.Reflection;
 using Autofac;
 using Bones.Shared.Backend.PipelineBehaviors;
-using Bones.Shared.Exceptions;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Module = Autofac.Module;
@@ -11,7 +10,8 @@ namespace Bones.Api;
 /// <summary>
 ///     Autofac module for the Bones database
 /// </summary>
-public class BonesApiModule(IConfiguration config, List<Assembly> additionalMediatRAssemblies) : Module
+/// <param name="additionalMediatRAssemblies">Additional assemblies to register with MediatR</param>
+public class BonesApiModule(List<Assembly> additionalMediatRAssemblies) : Module
 {
     /// <inheritdoc />
     protected override void Load(ContainerBuilder builder)
@@ -27,10 +27,5 @@ public class BonesApiModule(IConfiguration config, List<Assembly> additionalMedi
             ]);
 
         builder.RegisterMediatR(mediatrConfig.Build());
-
-        ApiConfiguration apiConfig = config.GetSection(nameof(ApiConfiguration)).Get<ApiConfiguration>()
-                                     ?? throw new BonesException($"Missing '{nameof(ApiConfiguration)}' configuration section.");
-
-        builder.RegisterInstance(apiConfig);
     }
 }

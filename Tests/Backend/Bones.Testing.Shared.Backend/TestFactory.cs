@@ -49,13 +49,9 @@ internal static class TestFactory
             // Want to make sure we aren't picking up any appsettings.json files
             configBuilder.Sources.Clear();
 
-            configBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string?>>()
-            {
-                //new("BackgroundService:BackgroundTasksUserEmail", string.Empty),
-                new("BackendConfiguration:WebUIBaseUrl", "http://localhost:9080"),
-                new("DatabaseConfiguration:ConnectionString", string.Empty),
-                new("DatabaseConfiguration:UseInMemoryDb", "true"),
-            });
+            configBuilder.AddInMemoryCollection([
+                new("BonesBackendConfiguration:UseInMemoryDb", "true"),
+            ]);
         });
 
         hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -69,7 +65,7 @@ internal static class TestFactory
             hostBuilder.ConfigureContainer<ContainerBuilder>((containerCtx, containerBuilder) =>
             {
                 containerBuilder.RegisterModule(new BonesBackendModule(services));
-                containerBuilder.RegisterModule(new BonesDatabaseModule(containerCtx.Configuration, services));
+                containerBuilder.RegisterModule(new BonesDatabaseModule(services));
                 containerBuilder.RegisterModule(new UnitTestModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
             });
 

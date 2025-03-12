@@ -8,7 +8,6 @@ using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.System;
 using Bones.Database.DbSets.WorkItemManagement;
-using Bones.Database.Models;
 using Bones.Shared.Exceptions;
 using GeoJSON.Text.Feature;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,8 +18,8 @@ namespace Bones.Database;
 /// <summary>
 ///     Database context for the application.
 /// </summary>
-/// <param name="dbConfig">Database configuration</param>
-public class BonesDbContext(DatabaseConfiguration dbConfig)
+/// <param name="backendConfig">Backend configuration</param>
+public class BonesDbContext(BonesBackendConfiguration backendConfig)
     : IdentityDbContext<BonesUser, BonesRole, Guid, BonesUserClaim, BonesUserRole, BonesUserLogin, BonesRoleClaim, BonesUserToken>
 {
     #region AccountManagement
@@ -105,7 +104,7 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Should only be used for unit testing
-        if (dbConfig.UseInMemoryDb ?? false)
+        if (backendConfig.UseInMemoryDb)
         {
             // Name needs to be unique, else the tests will clobber each other
             optionsBuilder.UseInMemoryDatabase($"BonesInMemoryDb-{Guid.NewGuid()}",
@@ -113,12 +112,12 @@ public class BonesDbContext(DatabaseConfiguration dbConfig)
         }
         else
         {
-            if (string.IsNullOrWhiteSpace(dbConfig.ConnectionString))
+            if (string.IsNullOrWhiteSpace(backendConfig.DatabaseConnectionString))
             {
-                throw new BonesException("DatabaseConfiguration:ConnectionString is missing.");
+                throw new BonesException("BonesBackendConfiguration:DatabaseConnectionString is missing.");
             }
 
-            optionsBuilder.UseNpgsql(dbConfig.ConnectionString, options =>
+            optionsBuilder.UseNpgsql(backendConfig.DatabaseConnectionString, options =>
             {
                 options.MigrationsHistoryTable("__EFMigrationsHistory", "System");
                 options.MigrationsAssembly(typeof(BonesDbContext).Assembly.FullName);

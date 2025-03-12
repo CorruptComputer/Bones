@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
+/// <summary>
+///   Tests for user registration
+/// </summary>
 public class RegisterUserTests : TestBase
 {
     private readonly RegisterUser.Validator _validator = new();
@@ -93,11 +96,11 @@ public class RegisterUserTests : TestBase
         result.Success.Should().BeTrue();
         result.Result?.Succeeded.Should().BeTrue();
 
-        List<BonesUser>? allUsers = await Sender.Send(new GetAllUsersQuery());
+        List<BonesUser>? allUsers = await Sender.Send(new GetAllUsers.Query());
         BonesUser? createdUser = allUsers?.Find(u => u.Email == request.Email);
         createdUser.Should().NotBeNull();
 
-        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(request.Email));
+        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmail.Query(request.Email));
         confirmation.Should().NotBeNull();
         confirmation.ConfirmationLink.Should().NotBeNullOrEmpty();
     }

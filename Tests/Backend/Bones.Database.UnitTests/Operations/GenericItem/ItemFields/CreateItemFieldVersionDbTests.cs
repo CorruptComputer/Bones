@@ -4,10 +4,17 @@ using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.UnitTests.Operations.GenericItem.ItemFields;
 
+/// <summary>
+///   Tests for creating item field versions
+/// </summary>
 public class CreateItemFieldVersionDbTests : TestBase
 {
     private readonly CreateItemFieldVersionDb.Validator _validator = new();
 
+    /// <summary>
+    ///   Test for creating a required text field
+    /// </summary>
+    /// <returns></returns>
     [Fact(Skip = "Requires a project, which requires a user")]
     public async Task RequiredTextFieldVersion()
     {

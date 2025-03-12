@@ -6,11 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 
-public record GetEmailConfirmationByUserEmailQuery(string Email) : IRequest<QueryResponse<ConfirmationEmailQueue>>;
-
-public class GetEmailConfirmationByUserEmail(BonesDbContext dbContext) : IRequestHandler<GetEmailConfirmationByUserEmailQuery, QueryResponse<ConfirmationEmailQueue>>
+/// <inheritdoc />
+public class GetEmailConfirmationByUserEmail(BonesDbContext dbContext) : IRequestHandler<GetEmailConfirmationByUserEmail.Query, QueryResponse<ConfirmationEmailQueue>>
 {
-    public async Task<QueryResponse<ConfirmationEmailQueue>> Handle(GetEmailConfirmationByUserEmailQuery request, CancellationToken cancellationToken)
+    /// <summary>
+    ///   TESTING QUERY: Get email confirmation by user email
+    /// </summary>
+    /// <param name="Email"></param>
+    public record Query(string Email) : IRequest<QueryResponse<ConfirmationEmailQueue>>;
+
+    /// <inheritdoc />
+    public async Task<QueryResponse<ConfirmationEmailQueue>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.ConfirmationEmailQueue
             .FirstOrDefaultAsync(x => x.EmailTo == request.Email, cancellationToken);

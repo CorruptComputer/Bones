@@ -1,18 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <OutputType>Library</OutputType>
+        <!-- Build info -->
         <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <OutputType>Library</OutputType>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <LangVersion>latest</LangVersion>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        
+        <!-- Assembly info -->
+        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
+        <Authors>Nickolas Gupton</Authors>
+        <RepositoryUrl>https://github.com/CorruptComputer/Bones</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+        <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
+        <SourceRevisionId>develop</SourceRevisionId>
     </PropertyGroup>
 
-    <PropertyGroup Condition="$(Configuration) == 'Debug'">
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- This seems like it could be useful -->
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
+
+    <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
+    <Target Condition="$(Configuration) == 'Release'" Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
+        <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8"
+              ConsoleToMSBuild="True" IgnoreExitCode="False">
+            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
+        </Exec>
+    </Target>
 
     <ItemGroup>
         <SupportedPlatform Include="browser"/>

@@ -10,6 +10,9 @@ using Bones.Logic.Features.Accounts;
 
 namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
+/// <summary>
+///   Tests for the confirmation email queue
+/// </summary>
 public class QueueConfirmationEmailTests : TestBase
 {
     private readonly QueueConfirmationEmail.Validator _validator = new();
@@ -26,11 +29,11 @@ public class QueueConfirmationEmailTests : TestBase
         result.Success.Should().BeTrue();
         result.Result?.Succeeded.Should().BeTrue();
 
-        List<BonesUser>? allUsers = await Sender.Send(new GetAllUsersQuery());
+        List<BonesUser>? allUsers = await Sender.Send(new GetAllUsers.Query());
         BonesUser? createdUser = allUsers?.Find(u => u.Email == createUserRequest.Email);
         createdUser.Should().NotBeNull();
 
-        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmailQuery(createUserRequest.Email));
+        ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmail.Query(createUserRequest.Email));
         confirmation.Should().NotBeNull();
         confirmation.ConfirmationLink.Should().NotBeNullOrEmpty();
 

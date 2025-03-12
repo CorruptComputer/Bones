@@ -1,9 +1,7 @@
-using Bones.Database.Models;
-
 namespace Bones.Database.Operations.System;
 
 /// <inheritdoc />
-public sealed class MigrateDb(BonesDbContext dbContext, DatabaseConfiguration config) : IRequestHandler<MigrateDb.Command, CommandResponse>
+public sealed class MigrateDb(BonesDbContext dbContext, BonesBackendConfiguration config) : IRequestHandler<MigrateDb.Command, CommandResponse>
 {
     /// <summary>
     ///   Command to set up the Database
@@ -13,7 +11,7 @@ public sealed class MigrateDb(BonesDbContext dbContext, DatabaseConfiguration co
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        if (!(config.UseInMemoryDb ?? false) && (await dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
+        if (!config.UseInMemoryDb && (await dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
         {
             // TODO: Remove this at some point, just easier to do this while still in development and major DB changes are still happening
             await dbContext.Database.EnsureDeletedAsync(cancellationToken);

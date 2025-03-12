@@ -415,7 +415,7 @@
         }
       }
     },
-    "/GenericItem/{projectId}/fields/{fieldId}/latest": {
+    "/GenericItem/fields/{fieldId}/latest": {
       "get": {
         "tags": [
           "GenericItem"
@@ -423,16 +423,6 @@
         "summary": "Gets the latest version of a field",
         "operationId": "GetLatestItemFieldVersionAsync",
         "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "description": "The ID of the project",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "fieldId",
             "in": "path",
@@ -582,7 +572,7 @@
         }
       }
     },
-    "/GenericItem/{projectId}/layouts/{layoutId}/latest": {
+    "/GenericItem/layouts/{layoutId}/latest": {
       "get": {
         "tags": [
           "GenericItem"
@@ -590,16 +580,6 @@
         "summary": "Gets the latest version of a layout",
         "operationId": "GetLatestItemLayoutVersionAsync",
         "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "description": "The ID of the project",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "layoutId",
             "in": "path",
@@ -648,6 +628,82 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetLatestItemLayoutVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GenericItem/layouts/{layoutId}/latest/fields": {
+      "get": {
+        "tags": [
+          "GenericItem"
+        ],
+        "summary": "Gets the latest version of a layout",
+        "operationId": "GetLatestItemLayoutVersionFieldsAsync",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetLatestItemLayoutVersionFieldsResponse"
+                  }
                 }
               }
             }
@@ -2889,8 +2945,8 @@
             "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters."
           },
           "fieldVersions": {
-            "type": "array",
-            "items": {
+            "type": "object",
+            "additionalProperties": {
               "type": "string",
               "format": "uuid"
             },
@@ -2916,8 +2972,8 @@
             "$ref": "#/components/schemas/ItemLayoutUses"
           },
           "fieldVersions": {
-            "type": "array",
-            "items": {
+            "type": "object",
+            "additionalProperties": {
               "type": "string",
               "format": "uuid"
             },
@@ -3175,6 +3231,47 @@
         "additionalProperties": false,
         "description": "API response for the GetLatestItemFieldVersionAsync endpoint"
       },
+      "GetLatestItemLayoutVersionFieldsResponse": {
+        "required": [
+          "id",
+          "isRequired",
+          "name",
+          "orderNumber",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID for the ItemFieldVersion",
+            "format": "uuid"
+          },
+          "orderNumber": {
+            "type": "integer",
+            "description": "The order number for which this field should be displayed",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 512,
+            "type": "string",
+            "description": "The name of this ItemFieldVersion"
+          },
+          "type": {
+            "$ref": "#/components/schemas/FieldType"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Is this field required to have a value?"
+          },
+          "canBeNegative": {
+            "type": "boolean",
+            "description": "If the Type of this field is either an Integer or Decimal, can it be negative?",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API response for the GetLatestItemLayoutVersionFieldsAsync endpoint"
+      },
       "GetLatestItemLayoutVersionResponse": {
         "required": [
           "enabledFor",
@@ -3197,8 +3294,8 @@
             "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters."
           },
           "fieldVersions": {
-            "type": "array",
-            "items": {
+            "type": "object",
+            "additionalProperties": {
               "type": "string",
               "format": "uuid"
             },

@@ -8,6 +8,9 @@ using Bones.Logic.Features.System;
 
 namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
+/// <summary>
+///   Tests for the forgot password email queue
+/// </summary>
 public class QueueForgotPasswordEmailTests : TestBase
 {
     private readonly QueueForgotPasswordEmail.Validator _validator = new();
@@ -20,7 +23,7 @@ public class QueueForgotPasswordEmailTests : TestBase
     {
         RegisterUser.Query createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
         await Sender.Send(createUserRequest);
-        await Sender.Send(new ConfirmUserByEmailCommand(createUserRequest.Email));
+        await Sender.Send(new ConfirmUserByEmail.Command(createUserRequest.Email));
 
         QueueForgotPasswordEmail.Command forgotPasswordCommand = new(createUserRequest.Email);
 
@@ -30,7 +33,7 @@ public class QueueForgotPasswordEmailTests : TestBase
         CommandResponse result = await Sender.Send(forgotPasswordCommand);
         result.Success.Should().BeTrue();
 
-        ForgotPasswordEmailQueue? queueItem = await Sender.Send(new GetForgotPasswordQueueItemByUserEmailQuery(createUserRequest.Email));
+        ForgotPasswordEmailQueue? queueItem = await Sender.Send(new GetForgotPasswordQueueItemByUserEmail.Query(createUserRequest.Email));
         queueItem.Should().NotBeNull();
         queueItem.EmailTo.Should().Be(createUserRequest.Email);
         queueItem.PasswordResetLink.Should().NotBeNullOrEmpty();

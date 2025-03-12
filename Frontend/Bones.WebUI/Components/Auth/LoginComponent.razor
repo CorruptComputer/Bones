@@ -10,10 +10,10 @@
             
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
                 <MudTextField T="string" Label="Email" @ref="@EmailAddress" 
-                             InputType="InputType.Email" Required="true" RequiredError="Email is required!" />
+                             InputType="InputType.Email" Required="true" RequiredError="Email is required!" Immediate="true" />
 
                 <MudTextField T="string" Label="Password" @ref="@Password"
-                              InputType="InputType.Password" Required="true" RequiredError="Password is required!"/>
+                              InputType="InputType.Password" Required="true" RequiredError="Password is required!" Immediate="true" />
 
                 <div>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@DoLoginAsync">Login</MudButton>

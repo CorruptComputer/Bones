@@ -27,10 +27,12 @@ public sealed class GetItemLayoutByIdDb(BonesDbContext dbContext) : IRequestHand
         return await dbContext.ItemLayouts
             .Include(x => x.Project)
             .Include(x => x.Versions)
-            .ThenInclude(x => x.Fields)
+            .ThenInclude(x => x.FieldLinks)
+            .ThenInclude(x => x.FieldVersion)
             .ThenInclude(x => x.GenericItemField)
             .Include(x => x.Versions)
-            .ThenInclude(x => x.Fields)
+            .ThenInclude(x => x.FieldLinks)
+            .ThenInclude(x => x.FieldVersion)
             .ThenInclude(x => x.PossibleValues)
             .FirstOrDefaultAsync(x => x.Id == request.ItemLayoutId, cancellationToken);
     }

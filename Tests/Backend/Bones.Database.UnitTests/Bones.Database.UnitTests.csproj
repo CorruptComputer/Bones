@@ -1,17 +1,40 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <!-- Build info -->
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>latest</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <ImplicitUsings>enable</ImplicitUsings>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <IsPackable>false</IsPackable>
         <IsPublishable>false</IsPublishable>
         <IsTestProject>true</IsTestProject>
+        
+        <!-- Assembly info -->
+        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
+        <Authors>Nickolas Gupton</Authors>
+        <RepositoryUrl>https://github.com/CorruptComputer/Bones</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+        <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
+        <SourceRevisionId>develop</SourceRevisionId>
     </PropertyGroup>
+
+    <!-- This seems like it could be useful -->
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+    <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
+    <Target Condition="$(Configuration) == 'Release'" Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
+        <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8"
+              ConsoleToMSBuild="True" IgnoreExitCode="False">
+            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
+        </Exec>
+    </Target>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />

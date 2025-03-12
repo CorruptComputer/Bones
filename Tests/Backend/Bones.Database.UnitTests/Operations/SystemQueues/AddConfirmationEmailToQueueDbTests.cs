@@ -3,6 +3,9 @@ using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.UnitTests.Operations.SystemQueues;
 
+/// <summary>
+///   Tests for the confirmation email queue
+/// </summary>
 public class AddConfirmationEmailToQueueDbTests : TestBase
 {
     private readonly AddConfirmationEmailToQueueDb.Validator _validator = new();

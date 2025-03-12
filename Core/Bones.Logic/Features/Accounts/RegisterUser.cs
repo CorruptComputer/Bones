@@ -1,6 +1,5 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.System;
-using Bones.Shared;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
 using FluentValidation.Results;
@@ -39,22 +38,22 @@ public class RegisterUser(UserManager<BonesUser> userManager, ISender sender) : 
                     return;
                 }
 
-                if (!StandardRegexes.PasswordContainsUpper().IsMatch(password))
+                if (!password.Any(char.IsUpper))
                 {
                     ctx.AddFailure(new ValidationFailure(nameof(Query.Password), "Password must contain at least one capital letter"));
                 }
 
-                if (!StandardRegexes.PasswordContainsLower().IsMatch(password))
+                if (!password.Any(char.IsLower))
                 {
                     ctx.AddFailure(new ValidationFailure(nameof(Query.Password), "Password must contain at least one lowercase letter"));
                 }
 
-                if (!StandardRegexes.PasswordContainsNumber().IsMatch(password))
+                if (!password.Any(char.IsDigit))
                 {
                     ctx.AddFailure(new ValidationFailure(nameof(Query.Password), "Password must contain at least one digit"));
                 }
 
-                if (!StandardRegexes.PasswordContainsSpecial().IsMatch(password))
+                if (!password.Any(c => !char.IsUpper(c) && !char.IsLower(c) && !char.IsDigit(c)))
                 {
                     ctx.AddFailure(new ValidationFailure(nameof(Query.Password), "Password must contain at least one special character"));
                 }

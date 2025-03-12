@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bones.Database.Migrations
 {
     [DbContext(typeof(BonesDbContext))]
-    [Migration("20250216195157_PasswordLastSet")]
-    partial class PasswordLastSet
+    [Migration("20250223070019_GenericItemLayoutFieldVersionLink")]
+    partial class GenericItemLayoutFieldVersionLink
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,9 @@ namespace Bones.Database.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreateDateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DisplayName")
                         .HasMaxLength(256)
@@ -274,6 +277,97 @@ namespace Bones.Database.Migrations
                     b.ToTable("Assets", "AssetManagement");
                 });
 
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.AccountAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("ActionDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ActionTaken")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ActionTakenById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("ActionTakenById");
+
+                    b.ToTable("AccountAudits", "Audit");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.LoginAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("LoginDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RequestingIpAddress")
+                        .IsRequired()
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<bool>("Successful")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UnknownEmail")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("LoginAudits", "Audit");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.SystemAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("ActionDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ActionTaken")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ActionTakenById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<int?>("SettingChanged")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActionTakenById");
+
+                    b.ToTable("SystemAudits", "Audit");
+                });
+
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -288,6 +382,10 @@ namespace Bones.Database.Migrations
 
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("FriendlyId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("GenericItemLayoutId")
                         .HasColumnType("uuid");
@@ -375,9 +473,6 @@ namespace Bones.Database.Migrations
                     b.Property<Guid>("GenericItemFieldId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("GenericItemLayoutVersionId")
-                        .HasColumnType("uuid");
-
                     b.Property<int?>("GeoLocationType")
                         .HasColumnType("integer");
 
@@ -401,8 +496,6 @@ namespace Bones.Database.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GenericItemFieldId");
-
-                    b.HasIndex("GenericItemLayoutVersionId");
 
                     b.ToTable("GenericItemFieldVersions", "GenericItem");
                 });
@@ -435,6 +528,33 @@ namespace Bones.Database.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("GenericItemLayouts", "GenericItem");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutFieldVersionLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("FieldVersionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LayoutVersionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("OrderNumber")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FieldVersionId");
+
+                    b.HasIndex("LayoutVersionId");
+
+                    b.ToTable("GenericItemLayoutFieldVersionLinks", "GenericItem");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", b =>
@@ -841,6 +961,19 @@ namespace Bones.Database.Migrations
                     b.ToTable("ForgotPasswordEmailQueue", "System");
                 });
 
+            modelBuilder.Entity("Bones.Database.DbSets.System.SystemSetting", b =>
+                {
+                    b.Property<int>("Setting")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("Setting");
+
+                    b.ToTable("SystemSettings", "System");
+                });
+
             modelBuilder.Entity("Bones.Database.DbSets.System.TaskError", b =>
                 {
                     b.Property<Guid>("Id")
@@ -994,6 +1127,45 @@ namespace Bones.Database.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.AccountAudit", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenBy")
+                        .WithMany()
+                        .HasForeignKey("ActionTakenById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("ActionTakenBy");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.LoginAudit", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId");
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.SystemAudit", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenBy")
+                        .WithMany()
+                        .HasForeignKey("ActionTakenById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ActionTakenBy");
+                });
+
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItem", b =>
                 {
                     b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayout", "GenericItemLayout")
@@ -1041,10 +1213,6 @@ namespace Bones.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", null)
-                        .WithMany("Fields")
-                        .HasForeignKey("GenericItemLayoutVersionId");
-
                     b.Navigation("GenericItemField");
                 });
 
@@ -1057,6 +1225,25 @@ namespace Bones.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutFieldVersionLink", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemFieldVersion", "FieldVersion")
+                        .WithMany()
+                        .HasForeignKey("FieldVersionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", "LayoutVersion")
+                        .WithMany("FieldLinks")
+                        .HasForeignKey("LayoutVersionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FieldVersion");
+
+                    b.Navigation("LayoutVersion");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", b =>
@@ -1210,7 +1397,7 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemLayoutVersion", b =>
                 {
-                    b.Navigation("Fields");
+                    b.Navigation("FieldLinks");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.GenericItems.GenericItemVersion", b =>

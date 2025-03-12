@@ -32,7 +32,7 @@ jobs:
     permissions:
       contents: write
     env:
-      DatabaseConfiguration__UseInMemoryDb: true
+      BonesBackendConfiguration__UseInMemoryDb: true
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4

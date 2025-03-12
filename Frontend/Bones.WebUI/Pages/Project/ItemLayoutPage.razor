@@ -1,0 +1,89 @@
+﻿@attribute [Route(FrontEndUrls.Project.ItemLayout.ITEM_LAYOUT)]
+
+<MudText Typo="Typo.h4">@TitleText</MudText>
+
+<MudForm @ref="@Form" @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+    <MudTextField T="string" Label="Layout Name" Required="true" RequiredError="Layout name is required!" @bind-value="@LayoutName"/>
+    <MudText>Enabled For</MudText>
+    <div style="display: flex;">
+        <MudCheckBox T="bool" Label="WorkItems" @bind-value="@EnabledForWorkItems"/>
+        <MudCheckBox T="bool" Label="Assets" @bind-value="@EnabledForAssets"/>
+    </div>
+
+    @if (ItemLayoutId.HasValue) 
+    {
+        <MudTextField T="string" Label="ID Prefix (cannot be changed)" MaxLength="6" Disabled @bind-value="@FriendlyIdPrefix"/>
+    }
+    else
+    {
+        <MudTextField T="string" Label="ID Prefix (must be unique within your project)" Required="true" RequiredError="ID Prefix is required!" MaxLength="6" @bind-value="@FriendlyIdPrefix"/>
+    }
+
+    <br />
+
+    <div style="display: flex; justify-content: space-between;">
+        <div style="width:49%">
+            <MudText Typo="Typo.h5">Available Fields</MudText>
+
+            <MudTable Items="@ItemFieldsList.Where(f => !SelectedItemFields.Values.Any(s => s.FieldVersionId == f.FieldVersionId))" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemFieldsListLoading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Controls</MudTh>
+                    <MudTh>Field Name</MudTh>
+                    <MudTh>Is Required?</MudTh>
+                    <MudTh>Field Type</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Controls">
+                        <div style="display: flex;">
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => AddField(context.FieldVersionId))" />
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Field Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Is Required?">@context.IsRequired</MudTd>
+                    <MudTd DataLabel="Field Type">@context.Type</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="@TableConsts.PageSizeOptions" />
+                </PagerContent>
+            </MudTable>
+        </div>
+        <div style="width:49%">
+            <MudText Typo="Typo.h5">Added Fields</MudText>
+
+            <MudTable Items="@SelectedItemFields.OrderBy(s => s.Key)" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@SelectedItemFieldsLoading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Controls</MudTh>
+                    <MudTh>Field Name</MudTh>
+                    <MudTh>Is Required?</MudTh>
+                    <MudTh>Field Type</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Controls">
+                        <div style="display: flex;">
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary" aria-label="move up" OnClick="@(() => MoveFieldUp(context.Value.FieldVersionId))" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" aria-label="move down" OnClick="@(() => MoveFieldDown(context.Value.FieldVersionId))" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="remove" OnClick="@(() => RemoveField(context.Value.FieldVersionId))" />
+                        </div>
+                    </MudTd>
+                    <MudTd DataLabel="Field Name">@context.Value.Name</MudTd>
+                    <MudTd DataLabel="Is Required?">@context.Value.IsRequired</MudTd>
+                    <MudTd DataLabel="Field Type">@context.Value.Type</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="@TableConsts.PageSizeOptions" />
+                </PagerContent>
+            </MudTable>
+        </div>
+    </div>
+    
+    <div style="align-self: end;">
+        <br />
+        <a onclick="history.back();">
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+        </a>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">
+            @SaveButtonText
+        </MudButton>
+    </div>
+</MudForm>
+

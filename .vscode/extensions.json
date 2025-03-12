@@ -2,7 +2,6 @@
     "recommendations": [
         "ms-dotnettools.csharp",
         "ms-dotnettools.vscodeintellicode-csharp",
-        "sonarsource.sonarlint-vscode",
         "ms-dotnettools.vscode-dotnet-runtime",
         "ms-ossdata.vscode-postgresql",
         "richardwillis.vscode-entity-framework",

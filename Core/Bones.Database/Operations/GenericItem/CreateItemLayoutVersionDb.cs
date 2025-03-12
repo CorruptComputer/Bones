@@ -14,7 +14,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
     /// <param name="Name"></param>
     /// <param name="EnabledFor"></param>
     /// <param name="FieldVersions"></param>
-    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, List<Guid> FieldVersions) : IRequest<CommandResponse>;
+    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, Dictionary<uint, Guid> FieldVersions) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>
@@ -36,7 +36,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
             return CommandResponse.Fail("ItemLayout not found");
         }
 
-        List<GenericItemFieldVersion> fieldVersions = await dbContext.ItemFieldVersions.Where(x => request.FieldVersions.Contains(x.Id)).ToListAsync(cancellationToken);
+        List<GenericItemFieldVersion> fieldVersions = await dbContext.ItemFieldVersions.Where(x => request.FieldVersions.Values.Contains(x.Id)).ToListAsync(cancellationToken);
         List<GenericItemField> fields = await dbContext.ItemFields.Where(f => fieldVersions.Select(v => v.Id).Contains(f.Id)).ToListAsync(cancellationToken);
 
         // Check that all fields found are in the same project as the layout
@@ -47,19 +47,28 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
 
         if (fieldVersions.Count != request.FieldVersions.Count)
         {
-            IEnumerable<Guid> missingFieldVersions = request.FieldVersions.Except(fieldVersions.Select(x => x.Id));
+            IEnumerable<Guid> missingFieldVersions = request.FieldVersions.Values.Except(fieldVersions.Select(x => x.Id));
             return CommandResponse.Fail($"Field versions not found: {string.Join(", ", missingFieldVersions)}");
         }
 
-        EntityEntry<GenericItemLayoutVersion> added = dbContext.ItemLayoutVersions.Add(new()
+        GenericItemLayoutVersion lv = new()
         {
             ItemLayout = layout,
             Name = request.Name,
             EnabledFor = request.EnabledFor,
             Version = (layout.CurrentVersion?.Version ?? 0) + 1,
             CreateDateTime = DateTimeOffset.Now,
-            Fields = fieldVersions
-        });
+            FieldLinks = []
+        };
+
+        lv.FieldLinks.AddRange(request.FieldVersions.Select(fv => new GenericItemLayoutFieldVersionLink
+        {
+            OrderNumber = fv.Key,
+            LayoutVersion = lv,
+            FieldVersion = fieldVersions.Single(f => f.Id == fv.Value)
+        }));
+
+        EntityEntry<GenericItemLayoutVersion> added = dbContext.ItemLayoutVersions.Add(lv);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

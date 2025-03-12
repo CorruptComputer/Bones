@@ -18,7 +18,7 @@ public class CreateItemLayoutVersion(ISender sender) : IRequestHandler<CreateIte
     /// <param name="EnabledFor"></param>
     /// <param name="FieldVersions"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, List<Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
+    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, Dictionary<uint, Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>
@@ -53,7 +53,7 @@ public class CreateItemLayoutVersion(ISender sender) : IRequestHandler<CreateIte
             return CommandResponse.Forbid();
         }
 
-        foreach (Guid fieldVersionId in request.FieldVersions)
+        foreach (Guid fieldVersionId in request.FieldVersions.Values)
         {
             GenericItemFieldVersion? fieldVersion = await sender.Send(new GetItemFieldVersionByIdDb.Query(fieldVersionId), cancellationToken);
             if (fieldVersion == null)

@@ -105,18 +105,20 @@ public static class FrontEndUrls
         /// </summary>
         public static class ItemLayout
         {
-            private const string _itemLayout = $"{_projectWithId}/item-layout";
-            private const string _itemLayoutWithId = $"{_itemLayout}/{{ItemLayoutId:guid}}";
+            /// <summary>
+            ///   Item Layout Page
+            /// </summary>
+            public const string ITEM_LAYOUT = $"{_projectWithId}/item-layout";
 
             /// <summary>
-            ///   Create layout page
+            ///   The placeholder for the item layout ID in URLs
             /// </summary>
-            public const string CREATE_LAYOUT = $"{_itemLayout}/create";
+            public const string ITEM_LAYOUT_ID_PLACEHOLDER = "{ItemLayoutId:guid}";
 
             /// <summary>
-            ///   Edit layout page
+            ///   Item Layout Page with item layout ID provided
             /// </summary>
-            public const string EDIT_LAYOUT = $"{_itemLayoutWithId}/edit";
+            public const string ITEM_LAYOUT_WITH_ID = $"{ITEM_LAYOUT}?itemLayoutId={ITEM_LAYOUT_ID_PLACEHOLDER}"; 
         }
 
         /// <summary>
@@ -162,8 +164,6 @@ public static class FrontEndUrls
         public const string WORKITEM_QUEUE_ID_PLACEHOLDER = "{WorkItemQueueId:guid}";
 
         private const string _workItem = "/WorkItem";
-
-        private const string _workItemWithId = $"{_workItem}/{WORKITEM_ID_PLACEHOLDER}";
 
         private const string _workItemQueue = "/WorkItemQueue";
 

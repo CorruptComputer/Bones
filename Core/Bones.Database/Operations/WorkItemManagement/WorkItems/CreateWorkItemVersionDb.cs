@@ -33,19 +33,26 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        WorkItem? workItem = await dbContext.WorkItems.Include(item => item.Item).FirstOrDefaultAsync(i => i.Id == request.WorkItemId, cancellationToken);
+        WorkItem? workItem = await dbContext.WorkItems
+            .Include(item => item.Item)
+            .FirstOrDefaultAsync(i => i.Id == request.WorkItemId, cancellationToken);
+
         if (workItem == null)
         {
             return CommandResponse.Fail("Invalid WorkItem ID.");
         }
 
-        GenericItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions.Include(layoutVersion => layoutVersion.Fields).FirstOrDefaultAsync(lv => lv.Id == request.WorkItemLayoutVersionId, cancellationToken);
+        GenericItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions
+            .Include(lv => lv.FieldLinks)
+            .ThenInclude(fl => fl.FieldVersion)
+            .FirstOrDefaultAsync(lv => lv.Id == request.WorkItemLayoutVersionId, cancellationToken);
+
         if (layoutVersion == null)
         {
             return CommandResponse.Fail("Invalid LayoutVersionId.");
         }
 
-        if (request.Values.Count > layoutVersion.Fields.Count)
+        if (request.Values.Count > layoutVersion.FieldLinks.Count)
         {
             return CommandResponse.Fail("Invalid values provided.");
         }
@@ -54,7 +61,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
 
         foreach ((string? key, object? value) in request.Values)
         {
-            GenericItemFieldVersion? field = layoutVersion.Fields.Find(f => f.Name == key);
+            GenericItemFieldVersion? field = layoutVersion.FieldLinks.Find(f => f.FieldVersion.Name == key)?.FieldVersion;
             if (field == null)
             {
                 return CommandResponse.Fail($"Invalid field name provided: {key}");

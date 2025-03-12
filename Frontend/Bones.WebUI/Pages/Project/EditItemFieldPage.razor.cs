@@ -35,7 +35,7 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
     public string[] ValidationErrors { get; set; } = [];
 
     private string FieldName { get; set; } = string.Empty;
-    private Api.Client.FieldType FieldType { get; set; }
+    private FieldType FieldType { get; set; }
     private bool IsRequired { get; set; }
 
     private bool CanBeNegative { get; set; }
@@ -72,7 +72,7 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
 
     private async Task FetchFromAPI()
     {
-        GetLatestItemFieldVersionResponse latestVersion = await ApiClient.GetLatestItemFieldVersionAsync(ProjectId, ItemFieldId);
+        GetLatestItemFieldVersionResponse latestVersion = await ApiClient.GetLatestItemFieldVersionAsync(ItemFieldId);
         FieldName = latestVersion.Name;
         FieldType = latestVersion.Type;
         IsRequired = latestVersion.IsRequired;

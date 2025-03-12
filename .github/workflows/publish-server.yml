@@ -14,7 +14,7 @@ jobs:
     name: Publish Server
     runs-on: ubuntu-latest
     env:
-      DatabaseConfiguration__UseInMemoryDb: true
+      BonesBackendConfiguration__UseInMemoryDb: true
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4

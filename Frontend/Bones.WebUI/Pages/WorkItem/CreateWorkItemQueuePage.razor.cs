@@ -1,12 +1,12 @@
 using Bones.Shared.Consts;
 using MudBlazor;
 
-namespace Bones.WebUI.Pages.Project;
+namespace Bones.WebUI.Pages.WorkItem;
 
 /// <summary>
 ///   Page to create a work item queue in an initiative
 /// </summary>                                           
-public partial class CreateWorkItemQueueInInitiativePage(BonesApiClient apiClient, NavigationManager navManager, ILogger<CreateWorkItemQueueInInitiativePage> logger) : ComponentBase
+public partial class CreateWorkItemQueuePage(BonesApiClient apiClient, NavigationManager navManager, ILogger<CreateWorkItemQueuePage> logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the initiative

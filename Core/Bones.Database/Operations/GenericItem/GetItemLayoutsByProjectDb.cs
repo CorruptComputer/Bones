@@ -26,7 +26,8 @@ public sealed class GetItemLayoutsByProjectDb(BonesDbContext dbContext) : IReque
     {
         return await dbContext.ItemLayouts
             .Include(x => x.Versions)
-            .ThenInclude(x => x.Fields)
+            .ThenInclude(x => x.FieldLinks)
+            .ThenInclude(x => x.FieldVersion)
             .Where(x => x.Project.Id == request.ProjectId)
             .ToListAsync(cancellationToken);
     }

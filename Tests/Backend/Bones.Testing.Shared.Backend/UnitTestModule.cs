@@ -7,7 +7,7 @@ using Module = Autofac.Module;
 
 namespace Bones.Testing.Shared.Backend;
 
-internal class UnitTestModule(List<Assembly> additionalMediatRAssemblies) : Module
+internal sealed class UnitTestModule(List<Assembly> additionalMediatRAssemblies) : Module
 {
     protected override void Load(ContainerBuilder builder)
     {

@@ -6,11 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 
-public record GetForgotPasswordQueueItemByUserEmailQuery(string Email) : IRequest<QueryResponse<ForgotPasswordEmailQueue>>;
-
-public class GetForgotPasswordQueueItemByUserEmail(BonesDbContext dbContext) : IRequestHandler<GetForgotPasswordQueueItemByUserEmailQuery, QueryResponse<ForgotPasswordEmailQueue>>
+/// <inheritdoc />
+public class GetForgotPasswordQueueItemByUserEmail(BonesDbContext dbContext) : IRequestHandler<GetForgotPasswordQueueItemByUserEmail.Query, QueryResponse<ForgotPasswordEmailQueue>>
 {
-    public async Task<QueryResponse<ForgotPasswordEmailQueue>> Handle(GetForgotPasswordQueueItemByUserEmailQuery request, CancellationToken cancellationToken)
+    /// <summary>
+    ///   TESTING QUERY: Get forgot password queue item by user email
+    /// </summary>
+    /// <param name="Email"></param>
+    public record Query(string Email) : IRequest<QueryResponse<ForgotPasswordEmailQueue>>;
+
+    /// <inheritdoc />
+    public async Task<QueryResponse<ForgotPasswordEmailQueue>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.ForgotPasswordEmailQueue
             .FirstOrDefaultAsync(x => x.EmailTo == request.Email, cancellationToken);

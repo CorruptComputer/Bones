@@ -4,6 +4,9 @@ using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.UnitTests.Operations.GenericItem.ItemFields;
 
+/// <summary>
+///   Tests for creating item fields
+/// </summary>
 public class CreateItemFieldDbTests : TestBase
 {
     private readonly CreateItemFieldDb.Validator _validator = new();

@@ -4,8 +4,10 @@ using Bones.Api.Handlers;
 using Bones.Logic;
 using Bones.Database;
 using Bones.Shared.Exceptions;
+using Bones.Shared.Extensions;
 using System.Text.Json;
 using System.Reflection;
+using Bones.Shared.Backend.Extensions;
 
 namespace Bones.Api;
 
@@ -14,6 +16,8 @@ namespace Bones.Api;
 /// </summary>
 public static class Program
 {
+    private static BonesBackendConfiguration? config = null;
+
     /// <summary>
     ///     The main character of the project.
     /// </summary>
@@ -25,17 +29,21 @@ public static class Program
 
     private static WebApplication BuildBonesApi(this WebApplicationBuilder builder)
     {
-        builder.AddAspire();
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.AddAspire();
+        }
 
-        builder.Configuration.AddEnvironmentVariables();
+        builder.Services.AddBonesGlobalSerilogConfiguration();
+        config = builder.Configuration.AddBonesBackendConfiguration(builder.Environment);
+        builder.Services.AddSingleton(config);
 
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {
-            containerBuilder.RegisterModule(new BonesApiModule(builder.Configuration,
-                [typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
+            containerBuilder.RegisterModule(new BonesApiModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
             containerBuilder.RegisterModule(new BonesBackendModule(builder.Services));
-            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
+            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Services));
         });
 
         builder.WebHost.UseKestrel().ConfigureKestrel(kestrelServerOptions =>
@@ -83,12 +91,6 @@ public static class Program
             options.NonNullableReferenceTypesAsRequired();
         });
 
-        builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
-            loggerConfig
-                .ReadFrom.Services(serviceProvider)
-                .ReadFrom.Configuration(builder.Configuration)
-        );
-
         builder.Services.AddDbContext<BonesDbContext>();
 
         return builder.Build();
@@ -97,9 +99,8 @@ public static class Program
     private static async Task RunBonesApiAsync(this WebApplication app)
     {
         using IServiceScope scope = app.Services.CreateScope();
-        ApiConfiguration apiConfig = scope.ServiceProvider.GetRequiredService<ApiConfiguration>();
-        string[] corsAllowedOrigins = apiConfig.CorsAllowedOrigins
-            ?? throw new BonesException("ApiConfiguration:CorsAllowedOrigins missing from appsettings.");
+        string[] corsAllowedOrigins = config?.CorsAllowedOrigins
+            ?? throw new BonesException("BonesBackendConfiguration:CorsAllowedOrigins missing from appsettings.");
 
         Log.Information("Environment: {Environment}\nAllowed origins: {Origins}",
             app.Environment.EnvironmentName,
@@ -137,7 +138,10 @@ public static class Program
         app.UseAuthorization();
         app.MapControllers();
 
-        app.UseAspire();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseAspire();
+        }
 
         Log.Information("Startup complete");
         await app.RunAsync();

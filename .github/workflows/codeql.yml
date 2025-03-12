@@ -18,7 +18,7 @@ jobs:
       # required to fetch internal or private CodeQL packs
       packages: read
     env:
-      DatabaseConfiguration__UseInMemoryDb: true
+      BonesBackendConfiguration__UseInMemoryDb: true
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_ENVIRONMENT: "Development"
     steps:
@@ -34,7 +34,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: csharp
-          build-mode: none
+          build-mode: autobuild
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3

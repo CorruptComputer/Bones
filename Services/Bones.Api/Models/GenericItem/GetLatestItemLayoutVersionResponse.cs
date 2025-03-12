@@ -33,7 +33,7 @@ public sealed record GetLatestItemLayoutVersionResponse
     ///   The field versions
     /// </summary>
     [JsonRequired]
-    public required List<Guid> FieldVersions { get; init; }
+    public required Dictionary<uint, Guid> FieldVersions { get; init; }
 
     internal static GetLatestItemLayoutVersionResponse FromInternal(GenericItemLayout layout)
     {
@@ -42,7 +42,7 @@ public sealed record GetLatestItemLayoutVersionResponse
             Name = layout.CurrentVersion?.Name ?? string.Empty,
             EnabledFor = layout.CurrentVersion?.EnabledFor ?? ItemLayoutUses.None,
             FriendlyIdPrefix = layout.FriendlyIdPrefix,
-            FieldVersions = [.. layout.CurrentVersion?.Fields.Select(fv => fv.Id) ?? []]
+            FieldVersions = layout.CurrentVersion?.FieldLinks.ToDictionary(fl => fl.OrderNumber, fl => fl.FieldVersion.Id) ?? []
         };
     }
 }

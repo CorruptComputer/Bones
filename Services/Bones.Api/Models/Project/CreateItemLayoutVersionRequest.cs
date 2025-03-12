@@ -25,7 +25,7 @@ public class CreateItemLayoutVersionRequest
     ///   The field versions to use for this layout version
     /// </summary>
     [JsonRequired]
-    public required List<Guid> FieldVersions { get; init; }
+    public required Dictionary<uint, Guid> FieldVersions { get; init; }
 
     internal CreateItemLayoutVersion.Command ToInternal(Guid projectId, BonesUser user)
     {

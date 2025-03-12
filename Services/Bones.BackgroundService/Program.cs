@@ -6,6 +6,8 @@ using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Extensions;
 using Bones.Shared.Backend.Extensions;
+using Bones.Shared.Extensions;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.BackgroundService;
 
@@ -14,6 +16,8 @@ namespace Bones.BackgroundService;
 /// </summary>
 public static class Program
 {
+    private static BonesBackendConfiguration? config = null;
+    
     /// <summary>
     ///   Gets it going
     /// </summary>
@@ -25,25 +29,27 @@ public static class Program
 
     private static IHost BuildBonesBackgroundService(this HostApplicationBuilder builder)
     {
-        builder.Configuration.AddEnvironmentVariables();
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.AddAspire();
+        }
+        
+        builder.Services.AddBonesGlobalSerilogConfiguration();
+        config = builder.Configuration.AddBonesBackendConfiguration(builder.Environment);
+        builder.Services.AddSingleton(config);
 
+        // Background service specific setup
         builder.ConfigureContainer(new AutofacServiceProviderFactory(), containerBuilder =>
         {
             containerBuilder.RegisterModule(new BonesBackgroundServiceModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
 
             containerBuilder.RegisterModule(new BonesBackendModule(builder.Services));
-            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Configuration, builder.Services));
+            containerBuilder.RegisterModule(new BonesDatabaseModule(builder.Services));
         });
 
         builder.Services.AddIdentityCore<BonesUser>(options => options.AddBonesIdentityOptions())
             .AddRoles<BonesRole>()
             .AddEntityFrameworkStores<BonesDbContext>();
-
-        builder.Services.AddSerilog((serviceProvider, loggerConfig) =>
-            loggerConfig
-                .ReadFrom.Services(serviceProvider)
-                .ReadFrom.Configuration(builder.Configuration)
-        );
 
         builder.Services.RegisterBackgroundTasks();
         builder.Services.AddDbContext<BonesDbContext>();

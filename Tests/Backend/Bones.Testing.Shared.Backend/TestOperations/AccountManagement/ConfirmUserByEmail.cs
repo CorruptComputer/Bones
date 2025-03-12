@@ -5,12 +5,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 
-
-public record ConfirmUserByEmailCommand(string Email) : IRequest<CommandResponse>;
-
-public class ConfirmUserByEmail(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmUserByEmailCommand, CommandResponse>
+/// <inheritdoc />
+public class ConfirmUserByEmail(UserManager<BonesUser> userManager) : IRequestHandler<ConfirmUserByEmail.Command, CommandResponse>
 {
-    public async Task<CommandResponse> Handle(ConfirmUserByEmailCommand request, CancellationToken cancellationToken)
+    /// <summary>
+    ///   TESTING COMMAND: Confirm a user by email
+    /// </summary>
+    /// <param name="Email"></param>
+    public record Command(string Email) : IRequest<CommandResponse>;
+
+    /// <inheritdoc />
+    public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         BonesUser? user = await userManager.FindByEmailAsync(request.Email);
 
