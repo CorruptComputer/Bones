@@ -8,6 +8,7 @@ updates:
     groups:
       Core:
         patterns:
+          - "Aspire.Hosting.AppHost"
           - "Autofac"
           - "Autofac.*"
           - "DnsClient"
