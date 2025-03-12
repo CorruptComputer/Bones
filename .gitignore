@@ -10,3 +10,4 @@ coverage.xml
 TestResults/
 /publish-background-service/
 /publish-api/
+codeql-pack.lock.yml

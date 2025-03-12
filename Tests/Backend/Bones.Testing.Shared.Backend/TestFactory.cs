@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Bones.Database.Operations.System;
+using Bones.Shared.Backend.Models;
 
 namespace Bones.Testing.Shared.Backend;
 
@@ -48,11 +49,12 @@ internal static class TestFactory
         {
             // Want to make sure we aren't picking up any appsettings.json files
             configBuilder.Sources.Clear();
-
-            configBuilder.AddInMemoryCollection([
-                new("BonesBackendConfiguration:UseInMemoryDb", "true"),
-            ]);
         });
+
+        BonesBackendConfiguration config = new()
+        {
+            UseInMemoryDb = true
+        };
 
         hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         hostBuilder.ConfigureServices((context, services) =>
@@ -74,6 +76,8 @@ internal static class TestFactory
                 .AddDefaultTokenProviders()
                 .AddRoles<BonesRole>()
                 .AddEntityFrameworkStores<BonesDbContext>();
+
+            services.AddSingleton(config);
 
             services.AddDbContext<BonesDbContext>();
         });

@@ -88,6 +88,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setup-env", "setup-env", "{
 		.github\actions\setup-env\action.yml = .github\actions\setup-env\action.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql", "codeql", "{E09E9E3E-44EF-35F0-27C0-87C6E00EB51B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql-custom-queries-csharp", "codeql-custom-queries-csharp", "{1AD4E5AB-E08B-10B9-2CFA-D44867C7BF1E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\codeql\codeql-custom-queries-csharp\unused_local_var.ql = .github\codeql\codeql-custom-queries-csharp\unused_local_var.ql
+		.github\codeql\codeql-custom-queries-csharp\switch_case.ql = .github\codeql\codeql-custom-queries-csharp\switch_case.ql
+		.github\codeql\codeql-custom-queries-csharp\eq_true.ql = .github\codeql\codeql-custom-queries-csharp\eq_true.ql
+		.github\codeql\codeql-custom-queries-csharp\codeql-pack.yml = .github\codeql\codeql-custom-queries-csharp\codeql-pack.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,5 +191,7 @@ Global
 		{007B84A2-EA4E-4352-9E2B-BEAC8D276331} = {93B535AC-0A5C-4FC5-909E-832DD1AE52B0}
 		{F6425AAE-A5C1-DBED-87C4-5D0A3DCEAB22} = {EB4F2664-935A-A444-46ED-837C0A2A4A29}
 		{2DF28F2F-224E-BF36-3637-C4E34E7B064B} = {F6425AAE-A5C1-DBED-87C4-5D0A3DCEAB22}
+		{E09E9E3E-44EF-35F0-27C0-87C6E00EB51B} = {EB4F2664-935A-A444-46ED-837C0A2A4A29}
+		{1AD4E5AB-E08B-10B9-2CFA-D44867C7BF1E} = {E09E9E3E-44EF-35F0-27C0-87C6E00EB51B}
 	EndGlobalSection
 EndGlobal

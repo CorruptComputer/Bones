@@ -1,0 +1,7 @@
+---
+library: false
+warnOnImplicitThis: false
+name: bones-csharp
+version: 1.0.0
+dependencies:
+  codeql/csharp-all: ^5.1.1
