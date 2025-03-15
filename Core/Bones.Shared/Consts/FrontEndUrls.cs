@@ -118,7 +118,7 @@ public static class FrontEndUrls
             /// <summary>
             ///   Item Layout Page with item layout ID provided
             /// </summary>
-            public const string ITEM_LAYOUT_WITH_ID = $"{ITEM_LAYOUT}?itemLayoutId={ITEM_LAYOUT_ID_PLACEHOLDER}"; 
+            public const string ITEM_LAYOUT_WITH_ID = $"{ITEM_LAYOUT}?itemLayoutId={ITEM_LAYOUT_ID_PLACEHOLDER}";
         }
 
         /// <summary>

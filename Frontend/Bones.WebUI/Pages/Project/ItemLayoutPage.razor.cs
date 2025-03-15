@@ -35,7 +35,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
     private MudForm Form { get; set; } = new();
 
     private bool FormValid { get; set; }
-    
+
     private string[] ValidationErrors { get; set; } = [];
 
     private List<ProjectItemFieldModel> ItemFieldsList { get; set; } = [];
@@ -88,7 +88,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         LayoutName = layoutResponse.Name;
         EnabledForWorkItems = layoutResponse.EnabledFor.HasFlag(ItemLayoutUses.WorkItems);
         EnabledForAssets = layoutResponse.EnabledFor.HasFlag(ItemLayoutUses.Assets);
-        FriendlyIdPrefix = layoutResponse.FriendlyIdPrefix;        
+        FriendlyIdPrefix = layoutResponse.FriendlyIdPrefix;
         SelectedItemFields = ItemFieldsList.Where(f => layoutResponse.FieldVersions.ContainsValue(f.FieldVersionId))
             .ToDictionary(f => uint.Parse(layoutResponse.FieldVersions.First(v => v.Value == f.FieldVersionId).Key), f => new SelectedItemFieldVersionModel(f.FieldVersionId, f.Name, f.IsRequired, f.Type));
 

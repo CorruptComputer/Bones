@@ -17,7 +17,7 @@ namespace Bones.BackgroundService;
 public static class Program
 {
     private static BonesBackendConfiguration? config = null;
-    
+
     /// <summary>
     ///   Gets it going
     /// </summary>
@@ -33,7 +33,7 @@ public static class Program
         {
             builder.AddAspire();
         }
-        
+
         builder.Services.AddBonesGlobalSerilogConfiguration();
         config = builder.Configuration.AddBonesBackendConfiguration(builder.Environment);
         builder.Services.AddSingleton(config);

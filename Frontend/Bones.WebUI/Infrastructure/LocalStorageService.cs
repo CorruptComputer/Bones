@@ -33,11 +33,11 @@ public sealed class LocalStorageService(IJSRuntime jsRuntime)
     public async Task<T?> GetItemAsync<T>(string key, string base64LocalStorageKey, CancellationToken cancellationToken)
     {
         // This is the only one not encrypted, needs to be read to get the encryption key to read the rest
-        if (key == SESSION_ID_KEY) 
+        if (key == SESSION_ID_KEY)
         {
             string? sessionId = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", cancellationToken, key);
-            return sessionId == null 
-                ? default 
+            return sessionId == null
+                ? default
                 : JsonSerializer.Deserialize<T>(sessionId);
         }
 
@@ -49,21 +49,21 @@ public sealed class LocalStorageService(IJSRuntime jsRuntime)
         }
 
         EncryptionResult? encrypted = JsonSerializer.Deserialize<EncryptionResult>(encryptedJson);
-        
+
         if (encrypted == null || !encrypted.Succeeded
             || string.IsNullOrEmpty(encrypted.IV)
             || string.IsNullOrEmpty(encrypted.CipherText))
         {
             return default;
         }
-        
+
         DecryptionResult? decryptionResult = await SubtleCryptoInterop.DecryptAsync(jsRuntime, base64LocalStorageKey, encrypted.IV, encrypted.CipherText);
-        
+
         if (string.IsNullOrEmpty(decryptionResult?.PlainText))
         {
             return default;
         }
-        
+
         return JsonSerializer.Deserialize<T>(decryptionResult.PlainText);
     }
 
@@ -78,7 +78,7 @@ public sealed class LocalStorageService(IJSRuntime jsRuntime)
     public async Task<bool> SetItemAsync<T>(string key, T value, string base64LocalStorageKey, CancellationToken cancellationToken)
     {
         // This is the only one not encrypted, needs to be read to get the encryption key to read the rest
-        if (key == SESSION_ID_KEY) 
+        if (key == SESSION_ID_KEY)
         {
             await jsRuntime.InvokeVoidAsync("localStorage.setItem", cancellationToken, key, JsonSerializer.Serialize(value));
             return true;
@@ -86,7 +86,7 @@ public sealed class LocalStorageService(IJSRuntime jsRuntime)
 
         string json = JsonSerializer.Serialize(value);
         EncryptionResult? encryptedValue = await SubtleCryptoInterop.EncryptAsync(jsRuntime, base64LocalStorageKey, json);
-        
+
         if (encryptedValue == null || !encryptedValue.Succeeded
             || string.IsNullOrEmpty(encryptedValue.IV)
             || string.IsNullOrEmpty(encryptedValue.CipherText))

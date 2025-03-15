@@ -52,12 +52,12 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
                 ErrorLoggingIn = true;
                 return;
             }
-            
+
             GetOrCreateMySessionResponse session = await apiClient.GetOrCreateMySessionAsync(null, CancellationToken.None);
 
             await authStateProvider.SaveCurrentUserInBrowserStorageAsync(me, session.SessionId, session.Base64LocalStorageKey, CancellationToken.None);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             logger.LogError(e, "Error logging in");
             ErrorLoggingIn = true;

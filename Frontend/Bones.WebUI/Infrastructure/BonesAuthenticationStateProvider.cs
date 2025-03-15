@@ -26,7 +26,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
                 logger.LogInformation("No session ID found in local storage");
                 return new(new());
             }
-            
+
             // This class is Singleton scoped, so we need to create a new scope for every request to get the ApiClient.
             using IServiceScope scope = serviceProvider.CreateScope();
             BonesApiClient client = scope.ServiceProvider.GetRequiredService<BonesApiClient>();

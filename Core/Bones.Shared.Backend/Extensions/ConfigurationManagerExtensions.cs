@@ -29,7 +29,7 @@ public static class ConfigurationManagerExtensions
         }
 
         BonesBackendConfiguration? backendConfig = configurationBuilder.GetSection("BonesBackendConfiguration").Get<BonesBackendConfiguration>();
-        
+
         if (backendConfig is null)
         {
             if (environment.IsDevelopment())

@@ -35,8 +35,8 @@ public sealed class GetMySession(ISender sender) : IRequestHandler<GetMySession.
         BonesUserSession? session = await sender.Send(new GetBonesUserSessionDb.Query(request.SessionId), cancellationToken);
 
         // If something funky is happening just invalidate the session and force them to login again
-        if (session is not null 
-            && (!session.IpAddress.Equals(request.RequestingIp) 
+        if (session is not null
+            && (!session.IpAddress.Equals(request.RequestingIp)
                 || session.User.Id != request.RequestingUser.Id))
         {
             // Don't care about the return value, just send it

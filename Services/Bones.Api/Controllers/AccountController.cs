@@ -63,7 +63,7 @@ public sealed class AccountController(ISender sender) : BonesControllerBase(send
     public async ValueTask<ActionResult<GetOrCreateMySessionResponse>> GetOrCreateMySessionAsync([FromQuery] Guid? sessionId = null)
     {
         BonesUser user = await GetCurrentBonesUserAsync();
-        
+
         BonesUserSession? session;
         if (sessionId is null)
         {

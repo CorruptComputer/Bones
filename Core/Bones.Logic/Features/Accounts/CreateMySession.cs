@@ -31,7 +31,7 @@ public sealed class CreateMySession(ISender sender) : IRequestHandler<CreateMySe
     {
         string base64LocalStorageKey = EncryptionHelper.GenerateAESKey();
         BonesUserSession? session = await sender.Send(new CreateAndGetBonesUserSessionDb.Query(request.RequestingUser, request.RequestingIp, base64LocalStorageKey), cancellationToken);
-        
+
         return session;
     }
 }

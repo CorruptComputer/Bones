@@ -56,7 +56,6 @@ public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
         }
     }
 
-
     /// <inheritdoc />
     protected override void OnInitialized()
     {

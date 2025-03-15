@@ -31,7 +31,7 @@ public static class SubtleCryptoInterop
             result.Succeeded = false;
             result.ErrorMessage = err.Message;
         }
-        
+
         return result;
     }
 
@@ -57,7 +57,7 @@ public static class SubtleCryptoInterop
             result.Succeeded = false;
             result.ErrorMessage = err.Message;
         }
-        
+
         return result;
     }
 }
