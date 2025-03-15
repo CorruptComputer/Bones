@@ -6,7 +6,10 @@ namespace Bones.WebUI.Components.Auth;
 /// <summary>
 ///   Page to login
 /// </summary>
-public partial class LoginComponent(BonesApiClient ApiClient, BonesAuthenticationStateProvider AuthStateProvider) : ComponentBase
+/// <param name="apiClient"></param>
+/// <param name="authStateProvider"></param>
+/// <param name="logger"></param>
+public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticationStateProvider authStateProvider, ILogger<LoginComponent> logger) : ComponentBase
 {
     /// <summary>
     ///   Is the form valid?
@@ -35,24 +38,28 @@ public partial class LoginComponent(BonesApiClient ApiClient, BonesAuthenticatio
         {
             // We won't get anything useful back in the response, instead the browser will be told to save the login as a cookie with the headers
             // if this fails it'll throw an exception
-            await ApiClient.LoginAsync(new()
+            await apiClient.LoginAsync(new()
             {
                 Email = EmailAddress.Text,
                 Password = Password.Text
             });
 
             // Now refresh the Authentication State:
-            GetMyProfileResponse? me = await ApiClient.GetMyProfileAsync();
+            GetMyProfileResponse? me = await apiClient.GetMyProfileAsync();
             if (me == null)
             {
+                logger.LogError("Error getting my profile after logging in");
                 ErrorLoggingIn = true;
                 return;
             }
+            
+            GetOrCreateMySessionResponse session = await apiClient.GetOrCreateMySessionAsync(null, CancellationToken.None);
 
-            await AuthStateProvider.SaveCurrentUserInBrowserStorageAsync(me, CancellationToken.None);
+            await authStateProvider.SaveCurrentUserInBrowserStorageAsync(me, session.SessionId, session.Base64LocalStorageKey, CancellationToken.None);
         }
-        catch
+        catch(Exception e)
         {
+            logger.LogError(e, "Error logging in");
             ErrorLoggingIn = true;
         }
     }

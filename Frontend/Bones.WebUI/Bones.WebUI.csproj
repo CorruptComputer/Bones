@@ -54,6 +54,7 @@
         <ProjectReference Include="..\..\Core\Bones.Shared\Bones.Shared.csproj" />
         <ProjectReference Include="..\Bones.Api.Client\Bones.Api.Client.csproj" />
         <ProjectReference Include="..\Bones.WebUI.Leaflet\Bones.WebUI.Leaflet.csproj" />
+        <ProjectReference Include="..\Bones.WebUI.SubtleCrypto\Bones.WebUI.SubtleCrypto.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,6 +1,7 @@
 using Bones.Api.Models.Account;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.Audit;
+using Bones.Logic.Features.Accounts;
 using Bones.Logic.Features.Audits;
 
 namespace Bones.Api.Controllers;
@@ -47,5 +48,37 @@ public sealed class AccountController(ISender sender) : BonesControllerBase(send
         }
 
         return response.Success;
+    }
+
+    /// <summary>
+    ///   Gets or creates a session token for the user and an encryption key to be used for the session.
+    ///   All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.
+    ///   
+    ///   This encryption key should not be saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
+    /// </summary>
+    /// <param name="sessionId">The session token to use, if null a new one will be created</param>
+    /// <returns></returns>
+    [HttpGet("my/session", Name = "GetOrCreateMySessionAsync")]
+    [ProducesResponseType<GetOrCreateMySessionResponse>(StatusCodes.Status200OK)]
+    public async ValueTask<ActionResult<GetOrCreateMySessionResponse>> GetOrCreateMySessionAsync([FromQuery] Guid? sessionId = null)
+    {
+        BonesUser user = await GetCurrentBonesUserAsync();
+        
+        BonesUserSession? session;
+        if (sessionId is null)
+        {
+            session = await Sender.Send(new CreateMySession.Query(RequestingIpAddress, user));
+        }
+        else
+        {
+            session = await Sender.Send(new GetMySession.Query(sessionId.Value, RequestingIpAddress, user));
+        }
+
+        if (session is null)
+        {
+            return NotFound();
+        }
+
+        return GetOrCreateMySessionResponse.FromSession(session);
     }
 }

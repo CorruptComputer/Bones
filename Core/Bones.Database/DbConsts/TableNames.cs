@@ -11,6 +11,7 @@ internal static class TableNames
         internal const string BonesUserClaims = "BonesUserClaims";
         internal const string BonesUserLogins = "BonesUserLogins";
         internal const string BonesUserRoles = "BonesUserRoles";
+        internal const string BonesUserSessions = "BonesUserSessions";
         internal const string BonesUserTokens = "BonesUserTokens";
     }
 

@@ -23,7 +23,8 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     : IdentityDbContext<BonesUser, BonesRole, Guid, BonesUserClaim, BonesUserRole, BonesUserLogin, BonesRoleClaim, BonesUserToken>
 {
     #region AccountManagement
-    /// These are all added by the base class, however we do override the base settings in <see cref="OnModelCreating(ModelBuilder)"/>
+    internal DbSet<BonesUserSession> UserSessions { get; set; }
+    /// The rest are all added by the base class, however we do override the base settings in <see cref="OnModelCreating(ModelBuilder)"/>
     #endregion
 
     #region AssetManagement
@@ -135,13 +136,13 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
         // Go ahead and let the base class do its thing
         base.OnModelCreating(builder);
 
-        // Want to override these to change the names and schemas that the base gives them,
-        // every other table should just have it set via attributes.
+        // Then set what we want
         builder.Entity<BonesUser>(BonesUser.BuildTable);
         builder.Entity<BonesUserRole>(BonesUserRole.BuildTable);
         builder.Entity<BonesUserLogin>(BonesUserLogin.BuildTable);
         builder.Entity<BonesUserClaim>(BonesUserClaim.BuildTable);
         builder.Entity<BonesUserToken>(BonesUserToken.BuildTable);
+        builder.Entity<BonesUserSession>(BonesUserSession.BuildTable);
         builder.Entity<BonesRole>(BonesRole.BuildTable);
         builder.Entity<BonesRoleClaim>(BonesRoleClaim.BuildTable);
     }

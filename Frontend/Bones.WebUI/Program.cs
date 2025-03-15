@@ -26,6 +26,7 @@ public static class Program
 
         builder.Services.AddMudServices();
         builder.Services.AddSingleton<LocalStorageService>();
+        builder.Services.AddSingleton<SessionStorageService>();
 
         builder.Services.AddAuthorizationCore();
         builder.Services.AddCascadingAuthenticationState();

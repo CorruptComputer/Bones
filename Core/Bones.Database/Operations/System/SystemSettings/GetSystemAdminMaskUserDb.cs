@@ -23,7 +23,7 @@ public class GetSystemAdminMaskUserDb(BonesDbContext dbContext) : IRequestHandle
         }
         else
         {
-            bool success = Guid.TryParse(setting.Value, out var id);
+            bool success = Guid.TryParse(setting.Value, out Guid id);
             if (success)
             {
                 systemAdminMaskUserId = id;

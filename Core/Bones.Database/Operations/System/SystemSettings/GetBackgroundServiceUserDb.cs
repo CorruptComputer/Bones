@@ -23,7 +23,7 @@ public class GetBackgroundServiceUserDb(BonesDbContext dbContext) : IRequestHand
         }
         else
         {
-            bool success = Guid.TryParse(setting.Value, out var id);
+            bool success = Guid.TryParse(setting.Value, out Guid id);
             if (success)
             {
                 backgroundServiceUserId = id;
