@@ -35,4 +35,4 @@ public class SessionAttemptAudit
     ///   When the attempt was made
     /// </summary>
     public required DateTimeOffset AttemptDateTime { get; init; }
-} 
+}

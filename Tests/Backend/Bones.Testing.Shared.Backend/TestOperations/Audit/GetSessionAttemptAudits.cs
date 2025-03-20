@@ -26,4 +26,4 @@ public class GetSessionAttemptAudits(BonesDbContext dbContext) : IRequestHandler
 
         return audits;
     }
-} 
+}

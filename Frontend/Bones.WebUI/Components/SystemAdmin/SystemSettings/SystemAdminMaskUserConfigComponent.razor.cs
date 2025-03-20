@@ -30,7 +30,8 @@ public partial class SystemAdminMaskUserConfigComponent(BonesApiClient apiClient
     {
         ApiError = false;
 
-        try {
+        try
+        {
             GetSystemAdminMaskUserConfigResponse maskUserConfig = await apiClient.GetSystemAdminMaskUserConfigAsync();
 
             Model = new()

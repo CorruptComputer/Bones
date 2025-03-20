@@ -31,7 +31,7 @@ public class UpdateSessionAttemptAuditTimes(BonesDbContext dbContext) : IRequest
         dbContext.SessionAttemptAudits.RemoveRange(audits);
         await dbContext.SessionAttemptAudits.AddRangeAsync(newAudits, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
-        
+
         return CommandResponse.Pass();
     }
-} 
+}

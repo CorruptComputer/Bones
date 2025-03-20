@@ -1,5 +1,3 @@
-using System;
-
 namespace Bones.WebUI.SubtleCrypto.Models;
 
 /// <summary>

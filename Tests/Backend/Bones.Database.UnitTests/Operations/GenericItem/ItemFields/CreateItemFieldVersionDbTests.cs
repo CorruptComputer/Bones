@@ -14,19 +14,431 @@ public class CreateItemFieldVersionDbTests : TestBase
     /// <summary>
     ///   Test for creating a required text field
     /// </summary>
-    /// <returns></returns>
-    [Fact(Skip = "Requires a project, which requires a user")]
+    [Fact]
     public async Task RequiredTextFieldVersion()
     {
-        CreateItemFieldDb.Command createItemFieldCommand = new(Guid.NewGuid());
-        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        Guid projectId = await CreateEmptyProject("Test Project");
 
-        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(createFieldResponse.Id!.Value, "Required Text", true, FieldType.Text, null, null, null, null);
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Required Text",
+            true,
+            FieldType.Text,
+            null,
+            null,
+            null,
+            null
+        );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse response = await Sender.Send(createFieldVersionCommand);
         response.Success.ShouldBeTrue();
+    }
+
+    /// <summary>
+    ///   Test for creating an optional text field
+    /// </summary>
+    [Fact]
+    public async Task OptionalTextFieldVersion()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Optional Text",
+            false,
+            FieldType.Text,
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldNotHaveAnyValidationErrors();
+
+        CommandResponse response = await Sender.Send(createFieldVersionCommand);
+        response.Success.ShouldBeTrue();
+    }
+
+    /// <summary>
+    ///   Test for creating a number field with constraints
+    /// </summary>
+    [Fact]
+    public async Task NumberFieldWithConstraints()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Number Field",
+            true,
+            FieldType.Decimal,
+            false, // CanBeNegative
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldNotHaveAnyValidationErrors();
+
+        CommandResponse response = await Sender.Send(createFieldVersionCommand);
+        response.Success.ShouldBeTrue();
+    }
+
+    /// <summary>
+    ///   Test for creating a date field with default value
+    /// </summary>
+    [Fact]
+    public async Task DateFieldWithDefaultValue()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Date Field",
+            true,
+            FieldType.DateTime,
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldNotHaveAnyValidationErrors();
+
+        CommandResponse response = await Sender.Send(createFieldVersionCommand);
+        response.Success.ShouldBeTrue();
+    }
+
+    /// <summary>
+    ///   Test for creating a field with invalid constraints
+    /// </summary>
+    [Fact]
+    public async Task InvalidConstraints_ShouldFail()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Invalid Field",
+            true,
+            FieldType.Decimal,
+            null, // CanBeNegative is required for decimal fields
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldHaveAnyValidationError();
+    }
+
+    /// <summary>
+    ///   Test for creating a field with invalid name
+    /// </summary>
+    [Fact]
+    public async Task InvalidName_ShouldFail()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            new('a', 513), // Name too long
+            true,
+            FieldType.Text,
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldHaveAnyValidationError();
+    }
+
+    /// <summary>
+    ///   Test for creating a field with invalid field type
+    /// </summary>
+    [Fact]
+    public async Task InvalidFieldType_ShouldFail()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Invalid Field Type",
+            true,
+            (FieldType)999, // Invalid field type value
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldHaveAnyValidationError();
+    }
+
+    /// <summary>
+    ///   Test for creating a field with missing CanBeNegative for numeric type
+    /// </summary>
+    [Fact]
+    public async Task MissingCanBeNegativeForNumericType_ShouldFail()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Numeric Field",
+            true,
+            FieldType.Decimal,
+            null, // CanBeNegative is required for decimal fields
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldHaveAnyValidationError();
+    }
+
+    /// <summary>
+    ///   Test for creating a field with missing GeoLocation type
+    /// </summary>
+    [Fact]
+    public async Task MissingGeoLocationType_ShouldFail()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Geo Field",
+            true,
+            FieldType.GeoLocation,
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldHaveAnyValidationError();
+    }
+
+    /// <summary>
+    ///   Test for creating a field with missing required address fields
+    /// </summary>
+    [Fact]
+    public async Task MissingRequiredAddressFields_ShouldFail()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "GeoLocation Field",
+            true,
+            FieldType.GeoLocation,
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldHaveAnyValidationError();
+    }
+
+    /// <summary>
+    ///   Test for creating a field with missing possible values for value list type
+    /// </summary>
+    [Fact]
+    public async Task MissingPossibleValuesForValueListType_ShouldFail()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            createFieldResponse.Id!.Value,
+            "Value List Field",
+            true,
+            FieldType.ValueList,
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldHaveAnyValidationError();
+    }
+
+    /// <summary>
+    ///   Test for creating a field version for a non-existent field
+    /// </summary>
+    [Fact]
+    public async Task NonExistentField_ShouldFail()
+    {
+        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+            Guid.NewGuid(),
+            "Non-existent Field",
+            true,
+            FieldType.Text,
+            null,
+            null,
+            null,
+            null
+        );
+
+        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+        validationResult.ShouldNotHaveAnyValidationErrors();
+
+        CommandResponse response = await Sender.Send(createFieldVersionCommand);
+        response.Success.ShouldBeFalse();
+        response.FailureReasons.ShouldContainKey(BonesResponseBase.SERVER_ERROR_KEY);
+        response.FailureReasons[BonesResponseBase.SERVER_ERROR_KEY].ShouldContain("Field not found");
+    }
+
+    /// <summary>
+    ///   Test for creating multiple versions of a field
+    /// </summary>
+    [Fact]
+    public async Task MultipleVersions_ShouldSucceed()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        // Create multiple versions
+        for (int i = 0; i < 5; i++)
+        {
+            CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+                createFieldResponse.Id!.Value,
+                $"Version {i}",
+                true,
+                FieldType.Text,
+                null,
+                null,
+                null,
+                null
+            );
+
+            TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
+            validationResult.ShouldNotHaveAnyValidationErrors();
+
+            CommandResponse response = await Sender.Send(createFieldVersionCommand);
+            response.Success.ShouldBeTrue();
+        }
+    }
+
+    /// <summary>
+    ///   Test for handling concurrent access
+    /// </summary>
+    [Fact]
+    public async Task ConcurrentAccess_ShouldHandleCorrectly()
+    {
+        Guid projectId = await CreateEmptyProject("Test Project");
+
+        // Create a field
+        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
+        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
+        createFieldResponse.Success.ShouldBeTrue();
+        createFieldResponse.Id.ShouldNotBeNull();
+
+        // Create multiple versions concurrently
+        Task<CommandResponse>[] tasks = Enumerable.Range(0, 5)
+            .Select(i =>
+            {
+                CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
+                    createFieldResponse.Id!.Value,
+                    $"Version {i}",
+                    true,
+                    FieldType.Text,
+                    null,
+                    null,
+                    null,
+                    null
+                );
+
+                return Sender.Send(createFieldVersionCommand);
+            })
+            .ToArray();
+
+        CommandResponse[] results = await Task.WhenAll(tasks);
+
+        // All should succeed since we're creating new versions
+        results.All(r => r.Success).ShouldBeTrue();
     }
 }

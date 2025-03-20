@@ -5,6 +5,7 @@ using Bones.Testing.Shared.Backend;
 using Bones.Testing.Shared.Backend.TestOperations.AccountManagement;
 using FluentValidation.TestHelper;
 using Bones.Logic.Features.System;
+using Bones.Database.Operations.System.SystemSettings;
 
 namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
@@ -21,6 +22,9 @@ public class QueueForgotPasswordEmailTests : TestBase
     [Fact]
     public async Task QueueForgotPasswordEmail_ShouldPassForValidUserEmail()
     {
+        // Set up the WebUiBaseUrl
+        await Sender.Send(new SaveWebUiBaseUrlDb.Command("http://localhost:9080", "Test setup", await GetBackgroundServiceUserAsync()));
+
         RegisterUser.Query createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
         await Sender.Send(createUserRequest);
         await Sender.Send(new ConfirmUserByEmail.Command(createUserRequest.Email));
@@ -45,6 +49,9 @@ public class QueueForgotPasswordEmailTests : TestBase
     [Fact]
     public async Task QueueForgotPasswordEmail_ShouldPassForUnknownUserEmail()
     {
+        // Set up the WebUiBaseUrl
+        await Sender.Send(new SaveWebUiBaseUrlDb.Command("http://localhost:9080", "Test setup", await GetBackgroundServiceUserAsync()));
+
         CommandResponse result = await Sender.Send(new QueueForgotPasswordEmail.Command("UnknownEmail@example.com"));
         result.Success.ShouldBeTrue();
     }

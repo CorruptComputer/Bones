@@ -106,13 +106,13 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
                 CreateItemFieldRequest request = GetNewFieldRequest();
                 await ApiClient.CreateItemFieldAsync(ProjectId, request);
             }
-            else 
+            else
             {
                 CreateItemFieldVersionRequest request = GetNewVersionRequest();
                 await ApiClient.CreateItemFieldVersionAsync(ProjectId, ItemFieldId.Value, request);
             }
 
-            
+
 
             NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()));
         }

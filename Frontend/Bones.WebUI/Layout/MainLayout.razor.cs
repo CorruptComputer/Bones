@@ -121,7 +121,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
             {
                 NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, selected.Value.ToString()));
             }
-            
+
             _projectSelect.SelectOption(null);
         }
     }

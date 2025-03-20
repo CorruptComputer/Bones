@@ -30,7 +30,8 @@ public partial class SmtpConfigurationComponent(BonesApiClient apiClient) : Comp
     {
         ApiError = false;
 
-        try {
+        try
+        {
             GetSmtpConfigResponse smtpConfig = await apiClient.GetSmtpConfigAsync();
 
             Model = new()
@@ -45,7 +46,7 @@ public partial class SmtpConfigurationComponent(BonesApiClient apiClient) : Comp
                 FromName = smtpConfig.FromName
             };
         }
-        catch 
+        catch
         {
             ApiError = true;
         }
@@ -82,7 +83,7 @@ public partial class SmtpConfigurationComponent(BonesApiClient apiClient) : Comp
 
         [Required(ErrorMessage = "Server is required!")]
         public string? Server { get; set; }
-        
+
         [Required(ErrorMessage = "Port is required!")]
         public string? Port { get; set; }
 

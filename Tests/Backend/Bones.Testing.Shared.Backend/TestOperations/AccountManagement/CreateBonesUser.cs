@@ -28,4 +28,4 @@ public class CreateBonesUser(UserManager<BonesUser> userManager) : IRequestHandl
         var result = await userManager.CreateAsync(user, request.Password);
         return result;
     }
-} 
+}

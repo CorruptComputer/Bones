@@ -7,6 +7,7 @@ using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Identity;
 using Bones.Logic.Features.System;
 using Bones.Logic.Features.Accounts;
+using Bones.Database.Operations.System.SystemSettings;
 
 namespace Bones.Logic.UnitTests.Features.AccountManagement;
 
@@ -18,11 +19,14 @@ public class QueueConfirmationEmailTests : TestBase
     private readonly QueueConfirmationEmail.Validator _validator = new();
 
     /// <summary>
-    ///     Checks that the handlers stops this.
+    ///   Checks that the handlers stops this.
     /// </summary>
     [Fact]
     public async Task QueueConfirmationEmail_ShouldFailWhenAlreadyInQueue()
     {
+        // Set up the WebUiBaseUrl
+        await Sender.Send(new SaveWebUiBaseUrlDb.Command("http://localhost:9080", "Test setup", await GetBackgroundServiceUserAsync()));
+
         RegisterUser.Query createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
 
         QueryResponse<IdentityResult> result = await Sender.Send(createUserRequest);

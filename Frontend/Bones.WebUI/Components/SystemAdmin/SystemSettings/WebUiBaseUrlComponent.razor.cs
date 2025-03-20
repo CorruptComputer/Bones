@@ -12,7 +12,7 @@ public partial class WebUiBaseUrlComponent(BonesApiClient apiClient) : Component
 
     private WebUiBaseUrlFormModel Model { get; set; } = new();
 
-    
+
 
     /// <summary>
     ///   Fires when the page is loaded

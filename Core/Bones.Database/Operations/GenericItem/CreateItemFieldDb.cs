@@ -29,7 +29,7 @@ public sealed class CreateItemFieldDb(BonesDbContext dbContext) : IRequestHandle
     {
         Project? project = await dbContext.Projects.FindAsync([request.ProjectId], cancellationToken);
 
-        if (project == null)
+        if (project == null || project.DeleteFlag)
         {
             return CommandResponse.Fail("Project not found");
         }

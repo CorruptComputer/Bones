@@ -31,9 +31,9 @@ public class GetBonesUserSessionDb(BonesDbContext dbContext) : IRequestHandler<G
         // Check for too many failed attempts from this IP
         DateTimeOffset cutoffTime = DateTimeOffset.UtcNow.AddMinutes(-10);
         int failedAttempts = await dbContext.SessionAttemptAudits
-            .CountAsync(x => x.IpAddress.Equals(request.RequestingIp) 
-                && !x.Successful 
-                && x.AttemptDateTime >= cutoffTime, 
+            .CountAsync(x => x.IpAddress.Equals(request.RequestingIp)
+                && !x.Successful
+                && x.AttemptDateTime >= cutoffTime,
                 cancellationToken);
 
         if (failedAttempts >= 10)
@@ -47,7 +47,7 @@ public class GetBonesUserSessionDb(BonesDbContext dbContext) : IRequestHandler<G
                 AttemptDateTime = DateTimeOffset.UtcNow
             }, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
-            
+
             return QueryResponse<BonesUserSession?>.Fail("Too many failed attempts. Please try again later.");
         }
 

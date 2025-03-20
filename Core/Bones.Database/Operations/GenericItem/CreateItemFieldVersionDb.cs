@@ -29,6 +29,7 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
         /// <inheritdoc />
         public Validator()
         {
+            RuleFor(x => x.ItemFieldId).NotEmpty().NotEqual(Guid.Empty);
             RuleFor(x => x.Name).NotEmpty().MaximumLength(512);
             RuleFor(x => x.Type).IsInEnum();
             RuleFor(x => x.CanBeNegative).NotNull().When(x => x.Type is FieldType.Integer or FieldType.Decimal);
@@ -43,14 +44,9 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
     {
         GenericItemField? field = await dbContext.ItemFields.FindAsync([request.ItemFieldId], cancellationToken);
 
-        if (field is null)
+        if (field is null || field.DeleteFlag)
         {
-            return CommandResponse.Fail("Item field not found");
-        }
-
-        if (field.DeleteFlag)
-        {
-            return CommandResponse.Fail("Item field is marked for deletion");
+            return CommandResponse.Fail("Field not found");
         }
 
         EntityEntry<GenericItemFieldVersion> added = dbContext.ItemFieldVersions.Add(new()
@@ -66,19 +62,19 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
             RequiredAddressFields = request.RequiredAddressFields
         });
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-
-        if (request.Type == FieldType.ValueList && field.CurrentVersion != null)
+        if (request.Type == FieldType.ValueList)
         {
-            field.CurrentVersion.PossibleValues = request.PossibleValues?.Select(x => new GenericItemFieldListEntry
+            added.Entity.PossibleValues = request.PossibleValues?.Select(x => new GenericItemFieldListEntry
             {
                 GenericItemFieldVersionId = added.Entity.Id,
                 Value = x.Key,
                 MatchingType = x.Value
             }).ToList();
 
-            await dbContext.SaveChangesAsync(cancellationToken);
+            dbContext.ItemFieldVersions.Update(added.Entity);
         }
+
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return CommandResponse.Pass(added.Entity.Id);
     }

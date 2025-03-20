@@ -1,4 +1,3 @@
-using System;
 using Bones.WebUI.SubtleCrypto.Models;
 using Microsoft.JSInterop;
 
