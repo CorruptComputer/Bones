@@ -30,7 +30,7 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
         validationResult.ShouldHaveAnyValidationError();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
-        confirmationResult.Success.Should().BeFalse();
+        confirmationResult.Success.ShouldBeFalse();
     }
 
     /// <summary>
@@ -46,10 +46,10 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
-        confirmationResult.Success.Should().BeTrue();
+        confirmationResult.Success.ShouldBeTrue();
 
         CommandResponse confirmationResult2 = await Sender.Send(confirmationEmailCommand);
-        confirmationResult2.Success.Should().BeFalse();
+        confirmationResult2.Success.ShouldBeFalse();
     }
 
     /// <summary>
@@ -65,6 +65,6 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
-        confirmationResult.Success.Should().BeTrue();
+        confirmationResult.Success.ShouldBeTrue();
     }
 }

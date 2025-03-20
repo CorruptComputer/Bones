@@ -39,8 +39,8 @@ public class RegisterUserTests : TestBase
         validationResult.ShouldHaveValidationErrorFor(x => x.Email);
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
-        result.Success.Should().BeFalse();
-        result.Result?.Succeeded.Should().BeFalse();
+        result.Success.ShouldBeFalse();
+        result.Result?.Succeeded.ShouldBeFalse();
     }
 
     /// <summary>
@@ -57,13 +57,14 @@ public class RegisterUserTests : TestBase
     [InlineData("abcdEFGH1")] // No special char
     public async Task InvalidPassword_ShouldFail(string? password)
     {
-        RegisterUser.Query request = new("InvalidPassword@example.com", password!);
+        RegisterUser.Query request = new("test@example.com", password!);
+
         TestValidationResult<RegisterUser.Query> validationResult = await _validator.TestValidateAsync(request);
         validationResult.ShouldHaveValidationErrorFor(x => x.Password);
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
-        result.Success.Should().BeFalse();
-        result.Result?.Succeeded.Should().BeFalse();
+        result.Success.ShouldBeFalse();
+        result.Result?.Succeeded.ShouldBeFalse();
     }
 
     /// <summary>
@@ -78,8 +79,8 @@ public class RegisterUserTests : TestBase
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
-        result.Success.Should().BeTrue();
-        result.Result?.Succeeded.Should().BeTrue();
+        result.Success.ShouldBeTrue();
+        result.Result?.Succeeded.ShouldBeTrue();
     }
 
     /// <summary>
@@ -93,16 +94,16 @@ public class RegisterUserTests : TestBase
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
-        result.Success.Should().BeTrue();
-        result.Result?.Succeeded.Should().BeTrue();
+        result.Success.ShouldBeTrue();
+        result.Result?.Succeeded.ShouldBeTrue();
 
         List<BonesUser>? allUsers = await Sender.Send(new GetAllUsers.Query());
         BonesUser? createdUser = allUsers?.Find(u => u.Email == request.Email);
-        createdUser.Should().NotBeNull();
+        createdUser.ShouldNotBeNull();
 
         ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmail.Query(request.Email));
-        confirmation.Should().NotBeNull();
-        confirmation.ConfirmationLink.Should().NotBeNullOrEmpty();
+        confirmation.ShouldNotBeNull();
+        confirmation.ConfirmationLink.ShouldNotBeNullOrEmpty();
     }
 
     /// <summary>
@@ -118,15 +119,15 @@ public class RegisterUserTests : TestBase
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result = await Sender.Send(request);
-        result.Success.Should().BeTrue();
-        result.Result?.Succeeded.Should().BeTrue();
+        result.Success.ShouldBeTrue();
+        result.Result?.Succeeded.ShouldBeTrue();
 
         // Do it again
         TestValidationResult<RegisterUser.Query> validationResult2 = await _validator.TestValidateAsync(request);
         validationResult2.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<IdentityResult> result2 = await Sender.Send(request);
-        result2.Success.Should().BeFalse();
-        result2.Result?.Succeeded.Should().BeFalse();
+        result2.Success.ShouldBeFalse();
+        result2.Result?.Succeeded.ShouldBeFalse();
     }
 }

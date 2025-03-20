@@ -26,22 +26,22 @@ public class QueueConfirmationEmailTests : TestBase
         RegisterUser.Query createUserRequest = new("ValidEmailAndPassword@example.com", "abcdEFGH1!");
 
         QueryResponse<IdentityResult> result = await Sender.Send(createUserRequest);
-        result.Success.Should().BeTrue();
-        result.Result?.Succeeded.Should().BeTrue();
+        result.Success.ShouldBeTrue();
+        result.Result?.Succeeded.ShouldBeTrue();
 
         List<BonesUser>? allUsers = await Sender.Send(new GetAllUsers.Query());
         BonesUser? createdUser = allUsers?.Find(u => u.Email == createUserRequest.Email);
-        createdUser.Should().NotBeNull();
+        createdUser.ShouldNotBeNull();
 
         ConfirmationEmailQueue? confirmation = await Sender.Send(new GetEmailConfirmationByUserEmail.Query(createUserRequest.Email));
-        confirmation.Should().NotBeNull();
-        confirmation.ConfirmationLink.Should().NotBeNullOrEmpty();
+        confirmation.ShouldNotBeNull();
+        confirmation.ConfirmationLink.ShouldNotBeNullOrEmpty();
 
         QueueConfirmationEmail.Command confirmationEmailCommand = new(createdUser, createUserRequest.Email);
         TestValidationResult<QueueConfirmationEmail.Command> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse confirmationCommand = await Sender.Send(confirmationEmailCommand);
-        confirmationCommand.Success.Should().BeFalse();
+        confirmationCommand.Success.ShouldBeFalse();
     }
 }

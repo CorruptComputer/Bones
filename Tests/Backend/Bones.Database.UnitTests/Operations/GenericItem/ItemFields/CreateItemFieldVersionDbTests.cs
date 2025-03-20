@@ -27,6 +27,6 @@ public class CreateItemFieldVersionDbTests : TestBase
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse response = await Sender.Send(createFieldVersionCommand);
-        response.Success.Should().BeTrue();
+        response.Success.ShouldBeTrue();
     }
 }

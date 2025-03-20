@@ -37,7 +37,7 @@
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="8.1.1" />
+        <PackageReference Include="Shouldly" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -19,7 +19,7 @@ public class StringExtensionsTests : TestBase
     [InlineData("_test@example.com")]
     public async Task ValidEmail_ShouldReturnTrue(string email)
     {
-        (await email.IsValidEmailAsync()).Should().BeTrue();
+        (await email.IsValidEmailAsync()).ShouldBeTrue();
     }
 
     /// <summary>
@@ -38,6 +38,6 @@ public class StringExtensionsTests : TestBase
     [InlineData("test")]
     public async Task InvalidEmail_ShouldFail(string email)
     {
-        (await email.IsValidEmailAsync()).Should().BeFalse();
+        (await email.IsValidEmailAsync()).ShouldBeFalse();
     }
 }

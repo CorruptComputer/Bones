@@ -31,12 +31,12 @@ public class QueueForgotPasswordEmailTests : TestBase
         validationResult.ShouldNotHaveAnyValidationErrors();
 
         CommandResponse result = await Sender.Send(forgotPasswordCommand);
-        result.Success.Should().BeTrue();
+        result.Success.ShouldBeTrue();
 
         ForgotPasswordEmailQueue? queueItem = await Sender.Send(new GetForgotPasswordQueueItemByUserEmail.Query(createUserRequest.Email));
-        queueItem.Should().NotBeNull();
-        queueItem.EmailTo.Should().Be(createUserRequest.Email);
-        queueItem.PasswordResetLink.Should().NotBeNullOrEmpty();
+        queueItem.ShouldNotBeNull();
+        queueItem.EmailTo.ShouldBe(createUserRequest.Email);
+        queueItem.PasswordResetLink.ShouldNotBeNullOrEmpty();
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class QueueForgotPasswordEmailTests : TestBase
     public async Task QueueForgotPasswordEmail_ShouldPassForUnknownUserEmail()
     {
         CommandResponse result = await Sender.Send(new QueueForgotPasswordEmail.Command("UnknownEmail@example.com"));
-        result.Success.Should().BeTrue();
+        result.Success.ShouldBeTrue();
     }
 
     /// <summary>
