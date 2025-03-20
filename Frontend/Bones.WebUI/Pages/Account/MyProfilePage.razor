@@ -22,7 +22,7 @@
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
                 <MudTextField T="string" Label="Display Name" @bind-value="@DisplayName"
                               Required="true"
-                              RequiredError="Display name is required!"/>
+                              RequiredError="Display name is required!" Immediate="true" />
 
                 <div style="align-self: end;">
                     <br />

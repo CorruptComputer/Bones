@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
+using MudExtensions.Services;
 
 namespace Bones.WebUI;
 
@@ -25,6 +26,7 @@ public static class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services.AddMudServices();
+        builder.Services.AddMudExtensions();
         builder.Services.AddSingleton<LocalStorageService>();
         builder.Services.AddSingleton<SessionStorageService>();
 

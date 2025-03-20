@@ -37,6 +37,7 @@
     </Target>
 
     <ItemGroup Condition="$(Configuration) == 'Debug'">
+        <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="8.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.3" PrivateAssets="all" />
     </ItemGroup>
 

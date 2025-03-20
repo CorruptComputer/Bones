@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 
 /// <summary>
@@ -6,90 +8,75 @@ namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 /// <param name="apiClient"></param>
 public partial class SystemAdminMaskUserConfigComponent(BonesApiClient apiClient) : ComponentBase
 {
-    /// <summary>
-    ///   Is the form valid?
-    /// </summary>
-    protected bool FormValid { get; set; }
+    private bool ApiError { get; set; } = false;
 
-    /// <summary>
-    ///   The issues with the users input
-    /// </summary>
-    protected string[] ValidationErrors { get; set; } = [];
+    private SystemAdminMaskUserFormModel Model { get; set; } = new();
 
-    /// <summary>
-    ///   Is the mask user enabled?
-    /// </summary>
-    public bool? IsEnabled { get; set; }
-
-    /// <summary>
-    ///   The email of the mask user
-    /// </summary>
-    public string? Email { get; set; }
-
-    /// <summary>
-    ///   The display name of the mask user
-    /// </summary>
-    public string? DisplayName { get; set; }
-
-    /// <summary>
-    ///   If updating, the reason for the change
-    /// </summary>
-    public string? ChangeReason { get; set; }
-
-    /// <summary>
-    ///   Fires when the page is loaded
-    /// </summary>
+    /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         await FetchFromAPI();
-
         await base.OnInitializedAsync();
     }
 
-    /// <summary>
-    ///   Fires if the same page but with a different parameter is loaded
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await FetchFromAPI();
-
         await base.OnParametersSetAsync();
     }
 
     private async Task FetchFromAPI()
     {
-        GetSystemAdminMaskUserConfigResponse maskUserConfig = await apiClient.GetSystemAdminMaskUserConfigAsync();
+        ApiError = false;
 
-        IsEnabled = maskUserConfig.IsEnabled;
-        Email = maskUserConfig.Email;
-        DisplayName = maskUserConfig.DisplayName;
+        try {
+            GetSystemAdminMaskUserConfigResponse maskUserConfig = await apiClient.GetSystemAdminMaskUserConfigAsync();
+
+            Model = new()
+            {
+                IsEnabled = maskUserConfig.IsEnabled,
+                Email = maskUserConfig.Email,
+                DisplayName = maskUserConfig.DisplayName
+            };
+        }
+        catch
+        {
+            ApiError = true;
+        }
     }
 
-    /// <summary>
-    ///   Sends the request to update the background service user configuration
-    /// </summary>
-    /// <returns></returns>
-    protected async Task Update()
+    private async Task Update()
     {
-        if (!FormValid)
-        {
-            return;
-        }
+        ApiError = false;
 
         try
         {
             await apiClient.SaveSystemAdminMaskUserConfigAsync(new()
             {
-                IsEnabled = IsEnabled ?? false,
-                Email = Email,
-                DisplayName = DisplayName,
-                ChangeReason = ChangeReason
+                IsEnabled = Model.IsEnabled,
+                Email = Model.Email,
+                DisplayName = Model.DisplayName,
+                ChangeReason = Model.ChangeReason
             });
         }
-        catch (ApiException e)
+        catch
         {
-            ValidationErrors = [e.Message];
+            ApiError = true;
         }
+    }
+
+    private class SystemAdminMaskUserFormModel
+    {
+        public bool IsEnabled { get; set; }
+
+        [Required(ErrorMessage = "Email is required!")]
+        public string? Email { get; set; }
+
+        [Required(ErrorMessage = "Display Name is required!")]
+        public string? DisplayName { get; set; }
+
+        [Required(ErrorMessage = "Change reason is required!")]
+        public string? ChangeReason { get; set; }
     }
 }

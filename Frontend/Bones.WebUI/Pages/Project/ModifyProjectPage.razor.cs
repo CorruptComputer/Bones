@@ -104,7 +104,7 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     /// </summary>
     /// <param name="projectId"></param>
     /// <returns></returns>
-    protected static string GetCreateItemFieldUrl(Guid projectId) => FrontEndUrls.Project.ItemField.CREATE_FIELD
+    protected static string GetCreateItemFieldUrl(Guid projectId) => FrontEndUrls.Project.ItemField.ITEM_FIELD
         .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString());
 
     /// <summary>
@@ -113,9 +113,9 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     /// <param name="projectId"></param>
     /// <param name="fieldId"></param>
     /// <returns></returns>
-    protected static string GetEditItemFieldUrl(Guid projectId, Guid fieldId) => FrontEndUrls.Project.ItemField.EDIT_FIELD
+    protected static string GetEditItemFieldUrl(Guid projectId, Guid fieldId) => FrontEndUrls.Project.ItemField.ITEM_FIELD_WITH_ID
         .Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString())
-        .Replace("{ItemFieldId:guid}", fieldId.ToString());
+        .Replace(FrontEndUrls.Project.ItemField.ITEM_FIELD_ID_PLACEHOLDER, fieldId.ToString());
 
     /// <summary>
     ///   Gets the URL to create a new item layout

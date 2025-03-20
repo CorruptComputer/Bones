@@ -5,7 +5,7 @@
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
-                <MudTextField T="string" Label="Work Item Queue Name" Required="true" RequiredError="Work Item Queue name is required!" @ref="@WorkItemQueueName"/>
+                <MudTextField T="string" Label="Work Item Queue Name" Required="true" RequiredError="Work Item Queue name is required!" @bind-Value="@WorkItemQueueName" Immediate="true" />
                 
                 <div style="align-self: end;">
                     <br />

@@ -1,11 +1,11 @@
-@attribute [Route(FrontEndUrls.Project.ItemField.CREATE_FIELD)]
+@attribute [Route(FrontEndUrls.Project.ItemField.ITEM_FIELD)]
 
-<MudText Typo="Typo.h4">Create Item Field</MudText>
+<MudText Typo="Typo.h4">@TitleText</MudText>
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
-                <MudTextField T="string" Label="Field Name" Required="true" RequiredError="Field name is required!" @bind-value="@FieldName"/>
+                <MudTextField T="string" Label="Field Name" Required="true" RequiredError="Field name is required!" @bind-value="@FieldName" Immediate="true" />
 
                 <MudSelect T="Api.Client.FieldType" Label="Field Type" Required="true" RequiredError="Field type is required!" @bind-value="@FieldType">
                     <MudSelectItem Value="Api.Client.FieldType.Text">Text</MudSelectItem>
@@ -32,29 +32,28 @@
                 }
                 else if (FieldType == Api.Client.FieldType.Decimal || FieldType == Api.Client.FieldType.Integer)
                 {
-                    <MudCheckBox T="bool" Label="Can be negative?" @bind-value="@CanBeNegative"/>
+                    <MudCheckBox Label="Can be negative?" @bind-value="@CanBeNegative"/>
                 }
 
                 @if (GeoLocationType == Api.Client.GeoLocationType.Address)
                 {
-                    <MudCheckBox T="bool" Label="Street number required?" @bind-value="@StreetNumberRequired"/>
-                    <MudCheckBox T="bool" Label="Street name required?" @bind-value="@StreetNameRequired"/>
-                    <MudCheckBox T="bool" Label="City or Place required?" @bind-value="@CityOrPlaceRequired"/>
-                    <MudCheckBox T="bool" Label="State or Province required?" @bind-value="@StateOrProvinceRequired"/>
-                    <MudCheckBox T="bool" Label="Postal code required?" @bind-value="@PostalCodeRequired"/>
-                    <MudCheckBox T="bool" Label="County required?" @bind-value="@CountyRequired"/>
-                    <MudCheckBox T="bool" Label="Country required?" @bind-value="@CountryRequired"/>
+                    <MudCheckBox Label="Street number required?" @bind-value="@StreetNumberRequired"/>
+                    <MudCheckBox Label="Street name required?" @bind-value="@StreetNameRequired"/>
+                    <MudCheckBox Label="City or Place required?" @bind-value="@CityOrPlaceRequired"/>
+                    <MudCheckBox Label="State or Province required?" @bind-value="@StateOrProvinceRequired"/>
+                    <MudCheckBox Label="Postal code required?" @bind-value="@PostalCodeRequired"/>
+                    <MudCheckBox Label="County required?" @bind-value="@CountyRequired"/>
+                    <MudCheckBox Label="Country required?" @bind-value="@CountryRequired"/>
                 }
                 
-
-                <MudCheckBox T="bool" Label="Is Required?" @bind-value="@IsRequired"/>
+                <MudCheckBox Label="Is Required?" @bind-value="@IsRequired"/>
 
                 <div style="align-self: end;">
                     <br />
                     <a onclick="history.back();">
                         <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
                     </a>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">@SaveButtonText</MudButton>
                 </div>
             </MudForm>
         </MudPaper>

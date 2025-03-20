@@ -1,20 +1,18 @@
 using Bones.Shared.Consts;
 using Bones.WebUI.Infrastructure;
 using MudBlazor;
+using MudExtensions;
 
 namespace Bones.WebUI.Layout;
 
 /// <summary>
-/// 
+///   The main layout of the application
 /// </summary>
 public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvider, ILogger<MainLayout> Logger, BonesApiClient ApiClient, NavigationManager NavManager) : LayoutComponentBase
 {
     private MudTheme? _theme = null;
 
-    /// <summary>
-    ///   The theme this app is going to use
-    /// </summary>
-    protected MudTheme Theme
+    private MudTheme Theme
     {
         get
         {
@@ -28,31 +26,21 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
         }
     }
 
+    private MudSelectExtended<ProjectDropDownModel> _projectSelect = new();
+
     private bool _open = false;
 
     private bool _login = true;
 
-    private sealed record ProjectDropDownModel
-    {
-        public required string ProjectName { get; init; }
-
-        public required Guid? ProjectId { get; init; }
-
-        public override string ToString()
+    private ICollection<ProjectDropDownModel> Projects { get; set; } = [
+        new()
         {
-            return ProjectName;
+            ProjectName = "(loading)",
+            ProjectId = null
         }
-    }
+    ];
 
-    private List<ProjectDropDownModel> Projects { get; set; } = [new()
-    {
-        ProjectName = "(loading)",
-        ProjectId = null
-    }];
-
-    /// <summary>
-    ///   Event for when the page is loaded
-    /// </summary>
+    /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         await UpdateProjectList();
@@ -60,10 +48,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
         await base.OnInitializedAsync();
     }
 
-    /// <summary>
-    ///   Event for when the page is changed without a full site reload
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await UpdateProjectList();
@@ -71,10 +56,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
         await base.OnParametersSetAsync();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    protected async Task LogoutAsync()
+    private async Task LogoutAsync()
     {
         await ApiClient.LogoutAsync();
         await AuthStateProvider.ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
@@ -116,29 +98,19 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
         });
     }
 
-    /// <summary>
-    ///   Toggles the nav drawer
-    /// </summary>
-    protected void ToggleDrawer()
+    private void ToggleDrawer()
     {
         _open = !_open;
     }
 
-    /// <summary>
-    ///   Toggles the nav drawer
-    /// </summary>
-    protected void ToggleLoginRegister()
+    private void ToggleLoginRegister()
     {
         _login = !_login;
     }
 
-    /// <summary>
-    ///    Navigates to the selected project
-    /// </summary>
-    /// <param name="selectedProject"></param>
-    protected void OnGoToProjectChanged(IEnumerable<Guid?>? selectedProject)
+    private void OnGoToProjectChanged(IEnumerable<ProjectDropDownModel>? selectedProject)
     {
-        Guid? selected = selectedProject?.FirstOrDefault();
+        Guid? selected = selectedProject?.FirstOrDefault()?.ProjectId;
         if (selected.HasValue)
         {
             if (selected.Value == Guid.Empty)
@@ -149,6 +121,25 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
             {
                 NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, selected.Value.ToString()));
             }
+            
+            _projectSelect.SelectOption(null);
+        }
+    }
+
+    private sealed record ProjectDropDownModel
+    {
+        public required string ProjectName { get; init; }
+
+        public required Guid? ProjectId { get; init; }
+
+        public override string ToString()
+        {
+            return ProjectName;
+        }
+
+        public static implicit operator string(ProjectDropDownModel model)
+        {
+            return model.ToString();
         }
     }
 }

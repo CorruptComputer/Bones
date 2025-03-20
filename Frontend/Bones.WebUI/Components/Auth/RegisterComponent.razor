@@ -3,36 +3,19 @@
     <MudGrid>
         <MudItem xs="12" sm="7">
             <MudPaper Class="pa-4">
-                <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
-                    <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!" @ref="@EmailAddress"
-                                  Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid"})" Immediate="true" />
-                
-                    <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @ref="@Password"
-                                  InputType="InputType.Password"
-                                  Validation="@(new Func<IEnumerable<string>>(PasswordStrengthCheck))" Required="true"
-                                  RequiredError="Password is required!" Immediate="true" />
-                
-                    <MudTextField T="string" Label="Password" HelperText="Repeat the password" @ref="@PasswordAgain" 
-                                  InputType="InputType.Password" Validation="@(new Func<string?>(PasswordMatch))" Immediate="true" />
+                <BonesForm Model="RegisterForm" OnSubmit="DoRegistrationAsync" SubmitText="Register" ShowGoBack="false">
+                    <BonesTextField Label="Email" InputType="InputType.Email" @bind-Value="@RegisterForm.Email" />
+                    <BonesTextField Label="Password" InputType="InputType.Password" HelperText="Choose a strong password" @bind-Value="@RegisterForm.Password" />
+                    <BonesTextField Label="Password" InputType="InputType.Password" HelperText="Repeat the password" @bind-Value="@RegisterForm.PasswordAgain" />
 
-                    <div>
-                        <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!"  />
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@DoRegistrationAsync">Register</MudButton>
-                    </div>
-                </MudForm>
+                    <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!"  />
+                </BonesForm>
             </MudPaper>
         </MudItem>
         <MudItem xs="12" sm="5">
             <MudItem Class="pa-2" hidden="@(!RegistrationApiError)">
                 <MudAlert Severity="Severity.Error">There was an error with the registration, please try again.</MudAlert>
             </MudItem>
-        
-            @foreach (string error in ValidationErrors)
-            {
-                <MudItem Class="pa-2">
-                    <MudAlert  Severity="Severity.Error">@error</MudAlert>
-                </MudItem>
-            }
         </MudItem>
     </MudGrid>
 }

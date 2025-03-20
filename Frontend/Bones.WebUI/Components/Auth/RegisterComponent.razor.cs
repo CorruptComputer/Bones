@@ -1,6 +1,5 @@
-using System.Net;
+using System.ComponentModel.DataAnnotations;
 using Bones.Shared;
-using MudBlazor;
 
 namespace Bones.WebUI.Components.Auth;
 
@@ -9,35 +8,13 @@ namespace Bones.WebUI.Components.Auth;
 /// </summary>
 public partial class RegisterComponent(BonesApiClient ApiClient) : ComponentBase
 {
-    /// <summary>
-    ///   Was the registration finished successfully?
-    /// </summary>
     private bool RegistrationSuccess { get; set; } = false;
 
-    /// <summary>
-    ///   Did the request to the API result in an error?
-    /// </summary>
-    public bool RegistrationApiError { get; set; } = false;
+    private bool RegistrationApiError { get; set; } = false;
 
-    /// <summary>
-    ///   Is the form valid?
-    /// </summary>
-    public bool FormValid { get; set; }
+    private RegisterFormModel RegisterForm { get; set; } = new();
 
-    /// <summary>
-    ///   The issues with the users inputs
-    /// </summary>
-    public string[] ValidationErrors { get; set; } = [];
-
-    private MudTextField<string> EmailAddress { get; set; } = new();
-
-    private MudTextField<string> Password { get; set; } = new();
-    private MudTextField<string> PasswordAgain { get; set; } = new();
-
-    /// <summary>
-    ///   Send the request to register to the API, if it errors tell the user what went wrong.
-    /// </summary>
-    public async Task DoRegistrationAsync()
+    private async Task DoRegistrationAsync()
     {
         try
         {
@@ -45,24 +22,11 @@ public partial class RegisterComponent(BonesApiClient ApiClient) : ComponentBase
 
             await ApiClient.RegisterAsync(new()
             {
-                Email = EmailAddress.Text,
-                Password = Password.Text
+                Email = RegisterForm.Email,
+                Password = RegisterForm.Password
             });
 
             RegistrationSuccess = true;
-        }
-        catch (ApiException<Dictionary<string, List<string>>> ex)
-        {
-            if (ex.StatusCode == (int)HttpStatusCode.BadRequest)
-            {
-                List<string> apiErrors = [];
-                foreach (KeyValuePair<string, List<string>> kvp in ex.Result)
-                {
-                    apiErrors.AddRange(kvp.Value.Select(error => $"{kvp.Key}: {error}"));
-                }
-
-                ValidationErrors = apiErrors.ToArray();
-            }
         }
         catch
         {
@@ -71,55 +35,19 @@ public partial class RegisterComponent(BonesApiClient ApiClient) : ComponentBase
         }
     }
 
-    /// <summary>
-    ///   Checks the strength of the currently entered password
-    /// </summary>
-    /// <returns></returns>
-    protected IEnumerable<string> PasswordStrengthCheck()
+    private sealed class RegisterFormModel
     {
-        if (string.IsNullOrWhiteSpace(Password.Text))
-        {
-            yield return "Password is required!";
-            yield break;
-        }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
 
-        if (Password.Text.Length <= 8)
-        {
-            yield return "Password be at least 8 characters long.";
-        }
+        [Required]
+        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long")]
+        [RegularExpression(StandardRegexes.VALID_PASSWORD, ErrorMessage = "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character")]
+        public string Password { get; set; } = string.Empty;
 
-        if (!StandardRegexes.PasswordContainsUpper().IsMatch(Password.Text))
-        {
-            yield return "Password must contain at least one capital letter";
-        }
-
-        if (!StandardRegexes.PasswordContainsLower().IsMatch(Password.Text))
-        {
-            yield return "Password must contain at least one lowercase letter";
-        }
-
-        if (!StandardRegexes.PasswordContainsNumber().IsMatch(Password.Text))
-        {
-            yield return "Password must contain at least one digit";
-        }
-
-        if (!StandardRegexes.PasswordContainsSpecial().IsMatch(Password.Text))
-        {
-            yield return "Password must contain at least one special character";
-        }
-    }
-
-    /// <summary>
-    ///   Checks if the password and password again fields match
-    /// </summary>
-    /// <returns>null if they match</returns>
-    protected string? PasswordMatch()
-    {
-        if (Password.Text != PasswordAgain.Text)
-        {
-            return "Passwords don't match";
-        }
-
-        return null;
+        [Required]
+        [Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
+        public string PasswordAgain { get; set; } = string.Empty;
     }
 }

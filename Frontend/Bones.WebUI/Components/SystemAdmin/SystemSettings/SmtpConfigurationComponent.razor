@@ -1,25 +1,22 @@
 ﻿<MudPaper Class="pa-4">
     <MudText Typo="Typo.h5">SMTP Configuration</MudText>
 
-    <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
-        <MudCheckBox Label="Enable SMTP" @bind-value="@IsEnabled" />
+    <BonesForm Model="@Model" OnSubmit="Update" SubmitText="Update" ShowGoBack="false">
+        <MudCheckBox Label="Enable SMTP" @bind-value="@Model.IsEnabled" />
         
-        <MudTextField T="string" Label="Server" @bind-value="@Server" 
-                        InputType="InputType.Text" Required="true" RequiredError="Server is required!" />
+        <BonesTextField Label="Server" InputType="InputType.Text" @bind-Value="@Model.Server" />
+        <BonesTextField Label="Port" InputType="InputType.Number" @bind-Value="@Model.Port" />
 
-        <MudTextField T="string" Label="Port" @bind-value="@Port"
-                        InputType="InputType.Number" Required="true" RequiredError="Port is required!" />
+        <MudCheckBox Label="Use SSL" @bind-value="@Model.UseSsl" />
+        <BonesTextField Label="Username" InputType="InputType.Text" @bind-Value="@Model.Username" />
+        <BonesTextField Label="Password" InputType="InputType.Password" @bind-Value="@Model.Password" />
+        <BonesTextField Label="From Email" InputType="InputType.Email" @bind-Value="@Model.FromAddress" />
+        <BonesTextField Label="From Name" InputType="InputType.Text" @bind-Value="@Model.FromName" />
+        <BonesTextField Label="Reason for change" InputType="InputType.Text" @bind-Value="@Model.ChangeReason" />
+    </BonesForm>
 
-        <MudCheckBox Label="Use SSL" @bind-value="@UseSsl" />
-        <MudTextField T="string" Label="Username" @bind-value="@Username" InputType="InputType.Text" />
-        <MudTextField T="string" Label="Password" @bind-value="@Password" InputType="InputType.Password" />
-        <MudTextField T="string" Label="From Email" @bind-value="@FromAddress" InputType="InputType.Email" />
-        <MudTextField T="string" Label="From Name" @bind-value="@FromName" InputType="InputType.Text" />
-
-        <div style="display: flex;">
-            <MudTextField T="string" Label="Reason for change" @bind-value="@ChangeReason"
-                        InputType="InputType.Text" Required="true" RequiredError="Change reason is required!"/>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@Update">Update</MudButton>
-        </div>
-    </MudForm>
+    @if (ApiError)
+    {
+        <MudAlert Severity="Severity.Error">There was an error, please try again.</MudAlert>
+    }
 </MudPaper>

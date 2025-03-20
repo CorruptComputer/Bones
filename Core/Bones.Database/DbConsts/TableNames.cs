@@ -27,6 +27,7 @@ internal static class TableNames
         internal const string ProjectAudits = "ProjectAudits";
         internal const string SystemAdminAudits = "SystemAdminAudits";
         internal const string SystemAudits = "SystemAudits";
+        internal const string SessionAttemptAudits = "SessionAttemptAudits";
     }
 
     internal static class GenericItem

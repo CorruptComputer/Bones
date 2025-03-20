@@ -5,7 +5,7 @@
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
-                <MudTextField T="string" Label="Project Name" Required="true" RequiredError="Project name is required!" @ref="@ProjectName"/>
+                <MudTextField T="string" Label="Project Name" Required="true" RequiredError="Project name is required!" @bind-Value="@ProjectName" Immediate="true" />
                 
                 <div style="align-self: end;">
                     <br />

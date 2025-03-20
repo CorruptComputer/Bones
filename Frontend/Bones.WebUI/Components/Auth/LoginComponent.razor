@@ -4,21 +4,15 @@
             <div>
                 <MudText Typo="Typo.h4">Hello there!</MudText>
                 <MudText>This project is something I am working on in my free time, and I cannot guarantee any sort of stability with it.</MudText>
+                <MudText>Also if you're on a mobile device, good luck! I have not started on mobile layouts at all.</MudText>
                 <br />
                 <MudText>If you'd like to check out the source, it is <MudLink Href="https://github.com/CorruptComputer/Bones">available here</MudLink>.</MudText>
             </div>
-            
-            <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
-                <MudTextField T="string" Label="Email" @ref="@EmailAddress" 
-                             InputType="InputType.Email" Required="true" RequiredError="Email is required!" Immediate="true" />
 
-                <MudTextField T="string" Label="Password" @ref="@Password"
-                              InputType="InputType.Password" Required="true" RequiredError="Password is required!" Immediate="true" />
-
-                <div>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@DoLoginAsync">Login</MudButton>
-                </div>
-            </MudForm>
+            <BonesForm Model="LoginForm" OnSubmit="DoLoginAsync" SubmitText="Login" ShowGoBack="false">
+                <BonesTextField Label="Email" InputType="InputType.Email" @bind-Value="@LoginForm.Email" />
+                <BonesTextField Label="Password" InputType="InputType.Password" @bind-Value="@LoginForm.Password" />
+            </BonesForm>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="5">

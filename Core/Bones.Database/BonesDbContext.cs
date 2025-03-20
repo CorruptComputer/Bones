@@ -36,6 +36,8 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
 
     internal DbSet<LoginAudit> LoginAudits { get; set; }
 
+    internal DbSet<SessionAttemptAudit> SessionAttemptAudits { get; set; }
+
     internal DbSet<SystemAudit> SystemAudits { get; set; }
     #endregion
 

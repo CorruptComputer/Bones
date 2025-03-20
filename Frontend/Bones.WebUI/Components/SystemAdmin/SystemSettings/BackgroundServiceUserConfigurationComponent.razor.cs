@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 
 /// <summary>
@@ -6,34 +8,11 @@ namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 /// <param name="apiClient"></param>
 public partial class BackgroundServiceUserConfigurationComponent(BonesApiClient apiClient) : ComponentBase
 {
-    /// <summary>
-    ///   Is the form valid?
-    /// </summary>
-    protected bool FormValid { get; set; }
+    private bool ApiError { get; set; } = false;
 
-    /// <summary>
-    ///   The issues with the users input
-    /// </summary>
-    protected string[] ValidationErrors { get; set; } = [];
+    private BackgroundServiceUserConfigFormModel Model { get; set; } = new();
 
-    /// <summary>
-    ///   The email of the background service user
-    /// </summary>
-    public string? Email { get; set; }
-
-    /// <summary>
-    ///   The display name of the background service user
-    /// </summary>
-    public string? DisplayName { get; set; }
-
-    /// <summary>
-    ///   If updating, the reason for the change
-    /// </summary>
-    public string? ChangeReason { get; set; }
-
-    /// <summary>
-    ///   Fires when the page is loaded
-    /// </summary>
+    /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         await FetchFromAPI();
@@ -41,10 +20,7 @@ public partial class BackgroundServiceUserConfigurationComponent(BonesApiClient 
         await base.OnInitializedAsync();
     }
 
-    /// <summary>
-    ///   Fires if the same page but with a different parameter is loaded
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await FetchFromAPI();
@@ -54,30 +30,49 @@ public partial class BackgroundServiceUserConfigurationComponent(BonesApiClient 
 
     private async Task FetchFromAPI()
     {
-        GetBackgroundServiceUserConfigResponse backgroundServiceUserConfig = await apiClient.GetBackgroundServiceUserConfigAsync();
+        ApiError = false;
 
-        Email = backgroundServiceUserConfig.Email;
-        DisplayName = backgroundServiceUserConfig.DisplayName;
+        try
+        {
+            GetBackgroundServiceUserConfigResponse backgroundServiceUserConfig = await apiClient.GetBackgroundServiceUserConfigAsync();
+
+            Model.Email = backgroundServiceUserConfig.Email;
+            Model.DisplayName = backgroundServiceUserConfig.DisplayName;
+        }
+        catch
+        {
+            ApiError = true;
+        }
     }
 
-    /// <summary>
-    ///   Sends the request to update the background service user configuration
-    /// </summary>
-    /// <returns></returns>
-    protected async Task Update()
+    private async Task Update()
     {
+        ApiError = false;
         try
         {
             await apiClient.SaveBackgroundServiceUserConfigAsync(new()
             {
-                Email = Email,
-                DisplayName = DisplayName,
-                ChangeReason = ChangeReason
+                Email = Model.Email,
+                DisplayName = Model.DisplayName,
+                ChangeReason = Model.ChangeReason
             });
         }
-        catch (ApiException e)
+        catch
         {
-            ValidationErrors = [e.Message];
+            ApiError = true;
         }
+    }
+
+    private sealed class BackgroundServiceUserConfigFormModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        public string DisplayName { get; set; } = string.Empty;
+
+        [Required]
+        public string ChangeReason { get; set; } = string.Empty;
     }
 }

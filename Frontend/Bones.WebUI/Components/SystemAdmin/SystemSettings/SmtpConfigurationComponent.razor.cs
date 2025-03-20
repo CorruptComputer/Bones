@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 
 /// <summary>
@@ -6,125 +8,95 @@ namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 /// <param name="apiClient"></param>
 public partial class SmtpConfigurationComponent(BonesApiClient apiClient) : ComponentBase
 {
-    /// <summary>
-    ///   Is the form valid?
-    /// </summary>
-    protected bool FormValid { get; set; }
+    private bool ApiError { get; set; } = false;
 
-    /// <summary>
-    ///   The issues with the users input
-    /// </summary>
-    protected string[] ValidationErrors { get; set; } = [];
+    private SmtpConfigurationFormModel Model { get; set; } = new();
 
-    /// <summary>
-    ///   Is SMTP enabled?
-    /// </summary>
-    public bool? IsEnabled { get; set; }
-
-    /// <summary>
-    ///   The SMTP server to use for sending emails
-    /// </summary>
-    public string? Server { get; set; }
-
-    /// <summary>
-    ///   The port to use for the SMTP server
-    /// </summary>
-    public string? Port { get; set; }
-
-    /// <summary>
-    ///   Whether to use SSL for the connection
-    /// </summary>
-    public bool? UseSsl { get; set; }
-
-    /// <summary>
-    ///   The username to use for the SMTP server
-    /// </summary>
-    public string? Username { get; set; }
-
-    /// <summary>
-    ///   The password to use for the SMTP server
-    /// </summary>
-    public string? Password { get; set; }
-
-    /// <summary>
-    ///   The email address to use as the from address for emails sent by this system
-    /// </summary>
-    public string? FromAddress { get; set; }
-
-    /// <summary>
-    ///   The name to use as the from name for emails sent by this system
-    /// </summary>
-    public string? FromName { get; set; }
-
-    /// <summary>
-    ///   The reason for the change
-    /// </summary>
-    public string? ChangeReason { get; set; }
-
-    /// <summary>
-    ///   Fires when the page is loaded
-    /// </summary>
+    /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         await FetchFromAPI();
-
         await base.OnInitializedAsync();
     }
 
-    /// <summary>
-    ///   Fires if the same page but with a different parameter is loaded
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         await FetchFromAPI();
-
         await base.OnParametersSetAsync();
     }
 
     private async Task FetchFromAPI()
     {
-        GetSmtpConfigResponse smtpConfig = await apiClient.GetSmtpConfigAsync();
+        ApiError = false;
 
-        IsEnabled = smtpConfig.IsEnabled;
-        Server = smtpConfig.Server;
-        Port = smtpConfig.Port.ToString();
-        UseSsl = smtpConfig.UseSsl;
-        Username = smtpConfig.Username;
-        Password = smtpConfig.Password;
-        FromAddress = smtpConfig.FromAddress;
-        FromName = smtpConfig.FromName;
+        try {
+            GetSmtpConfigResponse smtpConfig = await apiClient.GetSmtpConfigAsync();
+
+            Model = new()
+            {
+                IsEnabled = smtpConfig.IsEnabled,
+                Server = smtpConfig.Server,
+                Port = smtpConfig.Port.ToString(),
+                UseSsl = smtpConfig.UseSsl,
+                Username = smtpConfig.Username,
+                Password = smtpConfig.Password,
+                FromAddress = smtpConfig.FromAddress,
+                FromName = smtpConfig.FromName
+            };
+        }
+        catch 
+        {
+            ApiError = true;
+        }
     }
 
-    /// <summary>
-    ///   Sends the request to update the background service user configuration
-    /// </summary>
-    /// <returns></returns>
-    protected async Task Update()
+    private async Task Update()
     {
-        if (!FormValid)
-        {
-            return;
-        }
+        ApiError = false;
 
         try
         {
             await apiClient.SaveSmtpConfigAsync(new()
             {
-                IsEnabled = IsEnabled ?? false,
-                Server = Server,
-                Port = ushort.Parse(Port ?? "25"),
-                UseSsl = UseSsl ?? false,
-                Username = Username,
-                Password = Password,
-                FromAddress = FromAddress,
-                FromName = FromName,
-                ChangeReason = ChangeReason
+                IsEnabled = Model.IsEnabled,
+                Server = Model.Server,
+                Port = ushort.Parse(Model.Port ?? "25"),
+                UseSsl = Model.UseSsl,
+                Username = Model.Username,
+                Password = Model.Password,
+                FromAddress = Model.FromAddress,
+                FromName = Model.FromName,
+                ChangeReason = Model.ChangeReason
             });
         }
-        catch (ApiException e)
+        catch
         {
-            ValidationErrors = [e.Message];
+            ApiError = true;
         }
+    }
+
+    private class SmtpConfigurationFormModel
+    {
+        public bool IsEnabled { get; set; }
+
+        [Required(ErrorMessage = "Server is required!")]
+        public string? Server { get; set; }
+        
+        [Required(ErrorMessage = "Port is required!")]
+        public string? Port { get; set; }
+
+        public bool UseSsl { get; set; }
+
+        public string? Username { get; set; }
+
+        public string? Password { get; set; }
+
+        public string? FromAddress { get; set; }
+
+        public string? FromName { get; set; }
+
+        [Required(ErrorMessage = "Change reason is required!")]
+        public string? ChangeReason { get; set; }
     }
 }

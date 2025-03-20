@@ -1,5 +1,5 @@
+using System.ComponentModel.DataAnnotations;
 using Bones.WebUI.Infrastructure;
-using MudBlazor;
 
 namespace Bones.WebUI.Components.Auth;
 
@@ -11,26 +11,11 @@ namespace Bones.WebUI.Components.Auth;
 /// <param name="logger"></param>
 public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticationStateProvider authStateProvider, ILogger<LoginComponent> logger) : ComponentBase
 {
-    /// <summary>
-    ///   Is the form valid?
-    /// </summary>
-    public bool FormValid { get; set; }
-
-    /// <summary>
-    ///   The issues with the users input
-    /// </summary>
-    public string[] ValidationErrors { get; set; } = [];
-
-    private MudTextField<string> EmailAddress { get; set; } = new();
-
-    private MudTextField<string> Password { get; set; } = new();
+    private LoginFormModel LoginForm { get; set; } = new();
 
     private bool ErrorLoggingIn { get; set; } = false;
 
-    /// <summary>
-    ///   Sends the request to login, checks that it was successful, and redirects them somewhere else.
-    /// </summary>
-    public async Task DoLoginAsync()
+    private async Task DoLoginAsync()
     {
         ErrorLoggingIn = false;
 
@@ -40,8 +25,8 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
             // if this fails it'll throw an exception
             await apiClient.LoginAsync(new()
             {
-                Email = EmailAddress.Text,
-                Password = Password.Text
+                Email = LoginForm.Email,
+                Password = LoginForm.Password
             });
 
             // Now refresh the Authentication State:
@@ -62,5 +47,16 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
             logger.LogError(e, "Error logging in");
             ErrorLoggingIn = true;
         }
+    }
+
+    private sealed class LoginFormModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [MinLength(8)]
+        public string Password { get; set; } = string.Empty;
     }
 }

@@ -29,7 +29,7 @@ public partial class CreateInitiativePage(BonesApiClient ApiClient, NavigationMa
     /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
-    private MudTextField<string> InitiativeName { get; set; } = new();
+    private string InitiativeName { get; set; } = string.Empty;
 
     /// <summary>
     ///   Send the request to register to the API, if it errors tell the user what went wrong.
@@ -42,7 +42,7 @@ public partial class CreateInitiativePage(BonesApiClient ApiClient, NavigationMa
 
             Guid initiativeId = await ApiClient.CreateInitiativeAsync(ProjectId, new()
             {
-                Name = InitiativeName.Text
+                Name = InitiativeName
             });
 
             NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));

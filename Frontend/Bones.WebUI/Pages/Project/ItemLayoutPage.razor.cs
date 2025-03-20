@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Bones.Shared.Consts;
 using MudBlazor;
 
@@ -50,6 +51,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
     private bool SelectedItemFieldsLoading { get; set; } = true;
 
     private Dictionary<uint, SelectedItemFieldVersionModel> SelectedItemFields { get; set; } = [];
+
+    // This is a hack so we can bind this to the UI to show a validation error for
+    [Range(1, int.MaxValue, ErrorMessage = "At least one field must be selected")]
+    private int SelectedItemFieldsCount { get; set; } = 0;
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -162,6 +167,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         }
 
         SelectedItemFields.Add((uint)SelectedItemFields.Count, new(field.FieldVersionId, field.Name, field.IsRequired, field.Type));
+        SelectedItemFieldsCount = SelectedItemFields.Count;
 
         Form.Validate();
     }
@@ -178,6 +184,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
         SelectedItemFields[fieldToMoveDown.Key] = fieldToMoveUp.Value;
         SelectedItemFields[fieldToMoveUp.Key] = fieldToMoveDown.Value;
+        SelectedItemFieldsCount = SelectedItemFields.Count;
 
         Form.Validate();
     }
@@ -194,6 +201,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
         SelectedItemFields[fieldToMoveUp.Key] = fieldToMoveDown.Value;
         SelectedItemFields[fieldToMoveDown.Key] = fieldToMoveUp.Value;
+        SelectedItemFieldsCount = SelectedItemFields.Count;
 
         Form.Validate();
     }
@@ -219,6 +227,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         }
 
         SelectedItemFields.Remove((uint)(SelectedItemFields.Count - 1));
+        SelectedItemFieldsCount = SelectedItemFields.Count;
 
         Form.Validate();
     }

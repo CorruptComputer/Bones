@@ -86,18 +86,20 @@ public static class FrontEndUrls
         /// </summary>
         public static class ItemField
         {
-            private const string _itemField = $"{_projectWithId}/item-field";
-            private const string _itemFieldWithId = $"{_itemField}/{{ItemFieldId:guid}}";
+            /// <summary>
+            ///   Item Field Page
+            /// </summary>
+            public const string ITEM_FIELD = $"{_projectWithId}/item-field";
 
             /// <summary>
-            ///   Create item field page
+            ///   The placeholder for the item layout ID in URLs
             /// </summary>
-            public const string CREATE_FIELD = $"{_itemField}/create";
+            public const string ITEM_FIELD_ID_PLACEHOLDER = "{ItemFieldId:guid}";
 
             /// <summary>
-            ///   Edit item field page
+            ///   Item Layout Page with item layout ID provided
             /// </summary>
-            public const string EDIT_FIELD = $"{_itemFieldWithId}/edit";
+            public const string ITEM_FIELD_WITH_ID = $"{ITEM_FIELD}?itemFieldId={ITEM_FIELD_ID_PLACEHOLDER}";
         }
 
         /// <summary>

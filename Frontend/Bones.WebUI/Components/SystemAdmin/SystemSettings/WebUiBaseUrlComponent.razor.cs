@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 
 /// <summary>
@@ -6,25 +8,11 @@ namespace Bones.WebUI.Components.SystemAdmin.SystemSettings;
 /// <param name="apiClient"></param>
 public partial class WebUiBaseUrlComponent(BonesApiClient apiClient) : ComponentBase
 {
-    /// <summary>
-    ///   Is the form valid?
-    /// </summary>
-    protected bool FormValid { get; set; }
+    private bool ApiError { get; set; } = false;
 
-    /// <summary>
-    ///   The issues with the users input
-    /// </summary>
-    protected string[] ValidationErrors { get; set; } = [];
+    private WebUiBaseUrlFormModel Model { get; set; } = new();
 
-    /// <summary>
-    ///   The base url for the web UI
-    /// </summary>
-    public string? BaseUrl { get; set; }
-
-    /// <summary>
-    ///   If updating, the reason for the change
-    /// </summary>
-    public string? ChangeReason { get; set; }
+    
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -32,7 +20,6 @@ public partial class WebUiBaseUrlComponent(BonesApiClient apiClient) : Component
     protected override async Task OnInitializedAsync()
     {
         await FetchFromAPI();
-
         await base.OnInitializedAsync();
     }
 
@@ -43,33 +30,55 @@ public partial class WebUiBaseUrlComponent(BonesApiClient apiClient) : Component
     protected override async Task OnParametersSetAsync()
     {
         await FetchFromAPI();
-
         await base.OnParametersSetAsync();
     }
 
     private async Task FetchFromAPI()
     {
-        string baseUrl = await apiClient.GetWebUiBaseUrlAsync();
-        BaseUrl = baseUrl;
+        ApiError = false;
+
+        try
+        {
+            string baseUrl = await apiClient.GetWebUiBaseUrlAsync();
+            Model = new()
+            {
+                BaseUrl = baseUrl
+            };
+        }
+        catch
+        {
+            ApiError = true;
+        }
     }
 
     /// <summary>
-    ///   
+    ///   Sends the request to update the web UI base URL
     /// </summary>
     /// <returns></returns>
     protected async Task Update()
     {
+        ApiError = false;
+
         try
         {
             await apiClient.SaveWebUiBaseUrlAsync(new()
             {
-                BaseUrl = BaseUrl,
-                ChangeReason = ChangeReason
+                BaseUrl = Model.BaseUrl,
+                ChangeReason = Model.ChangeReason
             });
         }
-        catch (ApiException e)
+        catch
         {
-            ValidationErrors = [e.Message];
+            ApiError = true;
         }
+    }
+
+    private class WebUiBaseUrlFormModel
+    {
+        [Required(ErrorMessage = "Web UI Base URL is required!")]
+        public string? BaseUrl { get; set; }
+
+        [Required(ErrorMessage = "Change reason is required!")]
+        public string? ChangeReason { get; set; }
     }
 }

@@ -3,9 +3,9 @@ using Bones.Shared.Consts;
 namespace Bones.WebUI.Pages.Project;
 
 /// <summary>
-///   Edit Item Field page
+///   Item Field page
 /// </summary>
-public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<EditItemFieldPage> Logger) : ComponentBase
+public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<ItemFieldPage> Logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project the parent item field belongs to
@@ -17,37 +17,33 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
     ///   The ID of the item field to load on this page
     /// </summary>
     [Parameter]
-    public Guid ItemFieldId { get; set; }
+    [SupplyParameterFromQuery(Name = "itemFieldId")]
+    public Guid? ItemFieldId { get; set; }
 
-    /// <summary>
-    ///   Did the request to the API result in an error?
-    /// </summary>
-    public bool ApiError { get; set; } = false;
+    private string TitleText => ItemFieldId.HasValue ? "Edit Item Field" : "Create Item Field";
 
-    /// <summary>
-    ///   Is the form valid?
-    /// </summary>
-    public bool FormValid { get; set; }
+    private string SaveButtonText => ItemFieldId.HasValue ? "Save" : "Create";
 
-    /// <summary>
-    ///   The issues with the users inputs
-    /// </summary>
-    public string[] ValidationErrors { get; set; } = [];
+    private bool ApiError { get; set; } = false;
+
+    private bool FormValid { get; set; } = false;
+
+    private string[] ValidationErrors { get; set; } = [];
 
     private string FieldName { get; set; } = string.Empty;
-    private FieldType FieldType { get; set; }
-    private bool IsRequired { get; set; }
+    private FieldType FieldType { get; set; } = Api.Client.FieldType.Text;
+    private bool IsRequired { get; set; } = false;
 
-    private bool CanBeNegative { get; set; }
+    private bool CanBeNegative { get; set; } = false;
 
-    private GeoLocationType GeoLocationType { get; set; }
-    private bool StreetNumberRequired { get; set; }
-    private bool StreetNameRequired { get; set; }
-    private bool CityOrPlaceRequired { get; set; }
-    private bool StateOrProvinceRequired { get; set; }
-    private bool PostalCodeRequired { get; set; }
-    private bool CountyRequired { get; set; }
-    private bool CountryRequired { get; set; }
+    private GeoLocationType GeoLocationType { get; set; } = GeoLocationType.OsmObject;
+    private bool StreetNumberRequired { get; set; } = false;
+    private bool StreetNameRequired { get; set; } = false;
+    private bool CityOrPlaceRequired { get; set; } = false;
+    private bool StateOrProvinceRequired { get; set; } = false;
+    private bool PostalCodeRequired { get; set; } = false;
+    private bool CountyRequired { get; set; } = false;
+    private bool CountryRequired { get; set; } = false;
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -72,7 +68,12 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
 
     private async Task FetchFromAPI()
     {
-        GetLatestItemFieldVersionResponse latestVersion = await ApiClient.GetLatestItemFieldVersionAsync(ItemFieldId);
+        if (ItemFieldId == null)
+        {
+            return;
+        }
+
+        GetLatestItemFieldVersionResponse latestVersion = await ApiClient.GetLatestItemFieldVersionAsync(ItemFieldId.Value);
         FieldName = latestVersion.Name;
         FieldType = latestVersion.Type;
         IsRequired = latestVersion.IsRequired;
@@ -89,10 +90,7 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
         CountryRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.Country) ?? false;
     }
 
-    /// <summary>
-    ///   Send the request to create the new version to the API, if it errors tell the user what went wrong.
-    /// </summary>
-    public async Task SendCreateRequestAsync()
+    private async Task SendCreateRequestAsync()
     {
         if (!FormValid)
         {
@@ -103,8 +101,18 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
         {
             ApiError = false;
 
-            CreateItemFieldVersionRequest request = GetRequest();
-            await ApiClient.CreateItemFieldVersionAsync(ProjectId, ItemFieldId, request);
+            if (ItemFieldId == null)
+            {
+                CreateItemFieldRequest request = GetNewFieldRequest();
+                await ApiClient.CreateItemFieldAsync(ProjectId, request);
+            }
+            else 
+            {
+                CreateItemFieldVersionRequest request = GetNewVersionRequest();
+                await ApiClient.CreateItemFieldVersionAsync(ProjectId, ItemFieldId.Value, request);
+            }
+
+            
 
             NavManager.NavigateTo(FrontEndUrls.Project.MODIFY_PROJECT.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()));
         }
@@ -115,7 +123,73 @@ public partial class EditItemFieldPage(BonesApiClient ApiClient, NavigationManag
         }
     }
 
-    private CreateItemFieldVersionRequest GetRequest()
+    private CreateItemFieldRequest GetNewFieldRequest()
+    {
+        CreateItemFieldRequest request = new()
+        {
+            Name = FieldName,
+            IsRequired = IsRequired,
+            Type = FieldType,
+        };
+
+        if (request.Type is Api.Client.FieldType.ValueList)
+        {
+            // TODO: Implement this
+            request.PossibleValues = [];
+        }
+        else if (request.Type is Api.Client.FieldType.Integer or Api.Client.FieldType.Decimal)
+        {
+            request.CanBeNegative = CanBeNegative;
+        }
+        else if (request.Type is Api.Client.FieldType.GeoLocation)
+        {
+            request.GeoLocationType = GeoLocationType;
+
+            if (request.GeoLocationType is Api.Client.GeoLocationType.Address)
+            {
+                request.RequiredAddressFields = AddressFields.None;
+
+                if (StreetNumberRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.StreetNumber;
+                }
+
+                if (StreetNameRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.StreetName;
+                }
+
+                if (CityOrPlaceRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.CityOrPlace;
+                }
+
+                if (StateOrProvinceRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.StateOrProvince;
+                }
+
+                if (PostalCodeRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.PostalCode;
+                }
+
+                if (CountyRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.County;
+                }
+
+                if (CountryRequired)
+                {
+                    request.RequiredAddressFields |= AddressFields.Country;
+                }
+            }
+        }
+
+        return request;
+    }
+
+    private CreateItemFieldVersionRequest GetNewVersionRequest()
     {
         CreateItemFieldVersionRequest request = new()
         {

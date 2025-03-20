@@ -29,7 +29,7 @@ public partial class CreateWorkItemQueuePage(BonesApiClient apiClient, Navigatio
     /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
-    private MudTextField<string> WorkItemQueueName { get; set; } = new();
+    private string WorkItemQueueName { get; set; } = string.Empty;
 
     /// <summary>
     ///   Send the request to register to the API, if it errors tell the user what went wrong.
@@ -44,7 +44,7 @@ public partial class CreateWorkItemQueuePage(BonesApiClient apiClient, Navigatio
 
             await apiClient.CreateQueueInInitiativeAsync(InitiativeId, new()
             {
-                Name = WorkItemQueueName.Text
+                Name = WorkItemQueueName
             });
 
             navManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.Initiative.INITIATIVE_ID_PLACEHOLDER, InitiativeId.ToString()));

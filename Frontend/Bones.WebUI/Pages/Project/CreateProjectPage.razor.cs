@@ -23,7 +23,7 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
     /// </summary>
     public string[] ValidationErrors { get; set; } = [];
 
-    private MudTextField<string> ProjectName { get; set; } = new();
+    private string ProjectName { get; set; } = string.Empty;
 
     /// <summary>
     ///   Send the request to register to the API, if it errors tell the user what went wrong.
@@ -36,7 +36,7 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
 
             Guid projectId = await ApiClient.CreateProjectAsync(new()
             {
-                Name = ProjectName.Text,
+                Name = ProjectName,
                 OrganizationId = null
             });
 

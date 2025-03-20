@@ -1,7 +1,6 @@
 using System.Net;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.AccountManagement;
-using Bones.Shared.Backend;
 
 namespace Bones.Logic.Features.Accounts;
 
@@ -9,7 +8,7 @@ namespace Bones.Logic.Features.Accounts;
 public sealed class GetMySession(ISender sender) : IRequestHandler<GetMySession.Query, QueryResponse<BonesUserSession?>>
 {
     /// <summary>
-    ///   Backend request for getting or creating a session for the user
+    ///   Backend request for getting a session for the user
     /// </summary>
     /// <param name="SessionId"></param>
     /// <param name="RequestingIp"></param>
@@ -32,7 +31,7 @@ public sealed class GetMySession(ISender sender) : IRequestHandler<GetMySession.
     public async Task<QueryResponse<BonesUserSession?>> Handle(Query request, CancellationToken cancellationToken)
     {
 
-        BonesUserSession? session = await sender.Send(new GetBonesUserSessionDb.Query(request.SessionId), cancellationToken);
+        BonesUserSession? session = await sender.Send(new GetBonesUserSessionDb.Query(request.SessionId, request.RequestingIp), cancellationToken);
 
         // If something funky is happening just invalidate the session and force them to login again
         if (session is not null
@@ -44,6 +43,11 @@ public sealed class GetMySession(ISender sender) : IRequestHandler<GetMySession.
             session = null;
         }
 
-        return session;
+        if (session is null)
+        {
+            return QueryResponse<BonesUserSession?>.Fail("Session not found");
+        }
+
+        return QueryResponse<BonesUserSession?>.Pass(session);
     }
 }
