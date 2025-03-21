@@ -1,5 +1,6 @@
 using Bones.Api.Models.Login;
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Logic.Features.Accounts;
 using Bones.Logic.Features.Audits;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +30,14 @@ public sealed class LoginController(SignInManager<BonesUser> signInManager, ISen
     [AllowAnonymous]
     public async ValueTask<ActionResult<EmptyResponse>> LoginAsync([FromBody] LoginUserApiRequest login)
     {
+        bool? ipCanAttemptLogin = await Sender.Send(new CheckLoginRateLimit.Query(RequestingIpAddress));
+        bool? passwordIsExpired = await Sender.Send(new IsPasswordExpired.Query(login.Email));
+        if (ipCanAttemptLogin != true || passwordIsExpired == true)
+        {
+            await Sender.Send(new AddLoginAudit.Command(login.Email, false, RequestingIpAddress));
+            return BadRequest(EmptyResponse.Value);
+        }
+
         signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
 
         SignInResult result = await signInManager.PasswordSignInAsync(login.Email, login.Password, isPersistent: true, lockoutOnFailure: true);
@@ -46,6 +55,7 @@ public sealed class LoginController(SignInManager<BonesUser> signInManager, ISen
             else
             {
                 Log.Warning("Two-factor code was not provided and is required for login: {Login} | From IP Address: {IPAddress}", login.Email, RequestingIpAddress);
+                await Sender.Send(new AddLoginAudit.Command(login.Email, false, RequestingIpAddress));
                 return BadRequest(EmptyResponse.Value);
             }
         }
