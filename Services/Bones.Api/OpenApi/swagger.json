@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.4",
   "info": {
     "title": "Bones API",
     "description": "Its an API and it does stuff",
@@ -139,7 +139,7 @@
         "tags": [
           "Account"
         ],
-        "summary": "Gets or creates a session token for the user and an encryption key to be used for the session.\r\nAll data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.\r\n\r\nThis encryption key should not be saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.",
+        "summary": "Gets or creates a session token for the user and an encryption key to be used for the session.\nAll data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.\n\nThis encryption key should not be saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.",
         "operationId": "GetOrCreateMySessionAsync",
         "parameters": [
           {
