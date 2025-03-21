@@ -37,7 +37,7 @@ updates:
           - "Swashbuckle.*"
       Testing:
         patterns:
-          - "FluentAssertions"
+          - "Shouldly"
           - "Microsoft.NET.Test.Sdk"
           - "xunit"
           - "xunit.*"
