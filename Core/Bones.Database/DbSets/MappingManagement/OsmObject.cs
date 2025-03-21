@@ -1,6 +1,7 @@
 using Bones.Database.DbConsts;
 using Bones.Shared.Backend.Enums;
 using GeoJSON.Text.Feature;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.MappingManagement;
 
@@ -54,4 +55,10 @@ public class OsmObject
     ///   and when all references to it are deleted it will be removed.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
+
+    internal static void BuildTable(EntityTypeBuilder<OsmObject> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
 }

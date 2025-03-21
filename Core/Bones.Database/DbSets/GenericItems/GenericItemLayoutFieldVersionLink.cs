@@ -1,4 +1,5 @@
 using Bones.Database.DbConsts;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;
 
@@ -34,4 +35,10 @@ public class GenericItemLayoutFieldVersionLink
     ///   Disables usage of this, and when all items using it are deleted it will be removed.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
+
+    internal static void BuildTable(EntityTypeBuilder<GenericItemLayoutFieldVersionLink> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
 }

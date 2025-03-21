@@ -1,6 +1,7 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.ProjectManagement;
 using GeoJSON.Text.Feature;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.MappingManagement;
 
@@ -97,4 +98,10 @@ public sealed class GeoLocation
     ///   and when all references to it are deleted it will be removed.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
+
+    internal static void BuildTable(EntityTypeBuilder<GeoLocation> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
 }

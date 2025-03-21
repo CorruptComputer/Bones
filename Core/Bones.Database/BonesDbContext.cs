@@ -4,6 +4,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.Audit;
 using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.MappingManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.System;
@@ -147,5 +148,20 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
         builder.Entity<BonesUserSession>(BonesUserSession.BuildTable);
         builder.Entity<BonesRole>(BonesRole.BuildTable);
         builder.Entity<BonesRoleClaim>(BonesRoleClaim.BuildTable);
+        builder.Entity<WorkItem>(WorkItem.BuildTable);
+        builder.Entity<GenericItemLayoutFieldVersionLink>(GenericItemLayoutFieldVersionLink.BuildTable);
+        builder.Entity<OsmObject>(OsmObject.BuildTable);
+        builder.Entity<Asset>(Asset.BuildTable);
+        builder.Entity<Initiative>(Initiative.BuildTable);
+        builder.Entity<GenericItemVersion>(GenericItemVersion.BuildTable);
+        builder.Entity<GenericItemField>(GenericItemField.BuildTable);
+        builder.Entity<GenericItemFieldListEntry>(GenericItemFieldListEntry.BuildTable);
+        builder.Entity<GenericItem>(GenericItem.BuildTable);
+        builder.Entity<GenericItemValue>(GenericItemValue.BuildTable);
+        builder.Entity<GeoLocation>(GeoLocation.BuildTable);
+        builder.Entity<GenericItemLayoutVersion>(GenericItemLayoutVersion.BuildTable);
+        builder.Entity<GenericItemFieldVersion>(GenericItemFieldVersion.BuildTable);
+        builder.Entity<GenericItemLayout>(GenericItemLayout.BuildTable);
+        builder.Entity<Project>(Project.BuildTable);
     }
 }

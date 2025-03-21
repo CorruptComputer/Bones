@@ -1,5 +1,6 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.WorkItemManagement;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.ProjectManagement;
 
@@ -37,4 +38,10 @@ public class Initiative
     ///   when all items using it are deleted it will be removed.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
+
+    internal static void BuildTable(EntityTypeBuilder<Initiative> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
 }

@@ -3,6 +3,7 @@ using Bones.Database.DbSets.MappingManagement;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;
 
@@ -44,6 +45,12 @@ public class GenericItemValue
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    internal static void BuildTable(EntityTypeBuilder<GenericItemValue> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
+
     /// <summary>
     ///   Tries to set the value to the specified type, checking the Fields Type to ensure its valid.
     ///   Cannot be a null value, if the value is supposed to be null then just don't call this. It defaults to that.
@@ -52,7 +59,6 @@ public class GenericItemValue
     /// <typeparam name="T">The type to use for the value</typeparam>
     /// <returns>A flag for if this was successful; true for success, and false for failure.</returns>
     public bool TrySetValue<T>(T valueToSet)
-
         where T : notnull
     {
         bool success = Field.Type switch

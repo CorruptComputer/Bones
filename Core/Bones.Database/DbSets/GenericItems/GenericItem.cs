@@ -1,5 +1,6 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.ProjectManagement;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;
 
@@ -56,4 +57,10 @@ public class GenericItem
     ///   Disables access to this item and schedules deletion.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
+
+    internal static void BuildTable(EntityTypeBuilder<GenericItem> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
 }

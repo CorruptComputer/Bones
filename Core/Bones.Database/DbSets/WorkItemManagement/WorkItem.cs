@@ -1,5 +1,6 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.GenericItems;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.WorkItemManagement;
 
@@ -35,4 +36,10 @@ public class WorkItem
     ///   Disables viewing this item, and when safe to do so it will be removed.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
+
+    internal static void BuildTable(EntityTypeBuilder<WorkItem> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
 }

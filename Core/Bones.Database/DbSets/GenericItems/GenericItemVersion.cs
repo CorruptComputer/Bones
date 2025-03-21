@@ -1,4 +1,5 @@
 using Bones.Database.DbConsts;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;
 
@@ -44,4 +45,10 @@ public class GenericItemVersion
     ///   Disables viewing this item version, and when safe to do so it will be deleted.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
+
+    internal static void BuildTable(EntityTypeBuilder<GenericItemVersion> builder)
+    {
+        // Remove deleted items from being included in default queries
+        builder.HasQueryFilter(x => !x.DeleteFlag);
+    }
 }
