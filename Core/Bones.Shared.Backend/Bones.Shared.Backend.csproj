@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- Build info -->
@@ -54,7 +54,7 @@
         <PackageReference Include="FluentValidation" Version="11.11.0" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
         <PackageReference Include="GeoJSON.Text" Version="1.1.0" />
-        <PackageReference Include="MediatR" Version="12.4.1" />
+        <PackageReference Include="MediatR" Version="12.5.0" />
         <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.3" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.3" />
