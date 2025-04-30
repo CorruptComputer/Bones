@@ -6,7 +6,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      Core:
+      core:
         patterns:
           - "Aspire.Hosting.AppHost"
           - "Autofac"
@@ -27,15 +27,16 @@ updates:
           - "Microsoft.NET.Test.Sdk"
           - "Microsoft.AspNetCore.Components.WebAssembly"
           - "Microsoft.AspNetCore.Components.WebAssembly.*"
-      Frontend:
+      frontend:
         patterns:
           - "Microsoft.NET.Test.Sdk"
           - "Microsoft.AspNetCore.Components.WebAssembly"
           - "Microsoft.AspNetCore.Components.WebAssembly.*"
           - "MudBlazor"
+          - "CodeBeam.MudBlazor.Extensions"
           - "NSwag.ApiDescription.Client"
           - "Swashbuckle.*"
-      Testing:
+      testing:
         patterns:
           - "Shouldly"
           - "Microsoft.NET.Test.Sdk"
