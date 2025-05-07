@@ -13,12 +13,20 @@ public class BonesBackendConfiguration
     public string? DatabaseConnectionString { get; set; }
 
     /// <summary>
+    ///   The origins to allow through CORS
+    /// </summary>
+    public string[] CorsAllowedOrigins { get; init; } = [];
+
+    // The remaining properties are for local development or testing, they really shouldn't be used in production
+    // TODO: Might want to eventually add a check and give a warning if they are enabled in production
+
+    /// <summary>
     ///   If true, use an in-memory database
     /// </summary>
     public bool UseInMemoryDb { get; set; } = false;
 
     /// <summary>
-    ///   The origins to allow through CORS
+    ///   If true, setup the database for testing with default test data
     /// </summary>
-    public string[] CorsAllowedOrigins { get; init; } = [];
+    public bool SetupForTesting { get; set; } = false;
 }

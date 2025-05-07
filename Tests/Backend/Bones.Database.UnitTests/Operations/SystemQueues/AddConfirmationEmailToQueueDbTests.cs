@@ -28,7 +28,7 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
     {
         AddConfirmationEmailToQueueDb.Command confirmationEmailCommand = new(email, "http://localhost/confirm-pls");
         TestValidationResult<AddConfirmationEmailToQueueDb.Command> validationResult = await _validator.TestValidateAsync(confirmationEmailCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
 
         CommandResponse confirmationResult = await Sender.Send(confirmationEmailCommand);
         confirmationResult.Success.ShouldBeFalse();

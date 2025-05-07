@@ -64,14 +64,19 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
 
         if (request.Type == FieldType.ValueList)
         {
-            added.Entity.PossibleValues = request.PossibleValues?.Select(x => new GenericItemFieldListEntry
+            if (request.PossibleValues == null)
+            {
+                return CommandResponse.Fail("Possible values cannot be null for ValueList type");
+            }
+
+            IEnumerable<GenericItemFieldListEntry> possibleValues = request.PossibleValues.Select(x => new GenericItemFieldListEntry
             {
                 GenericItemFieldVersionId = added.Entity.Id,
                 Value = x.Key,
                 MatchingType = x.Value
-            }).ToList();
+            });
 
-            dbContext.ItemFieldVersions.Update(added.Entity);
+            await dbContext.ItemFieldListEntries.AddRangeAsync(possibleValues, cancellationToken);
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);

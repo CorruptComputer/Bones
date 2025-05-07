@@ -18,28 +18,21 @@ public static class ConfigurationManagerExtensions
     /// <returns></returns>
     public static BonesBackendConfiguration AddBonesBackendConfiguration(this ConfigurationManager configurationBuilder, IHostEnvironment environment)
     {
+        string configFilePath = environment.IsDevelopment() 
+                ? "appsettings.Development.json" 
+                : "/etc/bones/backend.json";
+        
+        Console.WriteLine($"Loading configuration from: {configFilePath}");
+
+        configurationBuilder.AddJsonFile(configFilePath, optional: true, reloadOnChange: true);
         configurationBuilder.AddEnvironmentVariables();
-        if (environment.IsDevelopment())
-        {
-            configurationBuilder.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
-        }
-        else
-        {
-            configurationBuilder.AddJsonFile("/etc/bones/backend.json", optional: true, reloadOnChange: true);
-        }
 
         BonesBackendConfiguration? backendConfig = configurationBuilder.GetSection("BonesBackendConfiguration").Get<BonesBackendConfiguration>();
 
         if (backendConfig is null)
         {
-            if (environment.IsDevelopment())
-            {
-                throw new BonesException("BonesBackendConfiguration is missing from appsettings.Development.json");
-            }
-            else
-            {
-                throw new BonesException("BonesBackendConfiguration is missing from /etc/bones/backend.json");
-            }
+            Console.WriteLine($"BonesBackendConfiguration is missing from {configFilePath}");
+            throw new BonesException($"BonesBackendConfiguration is missing from {configFilePath}");
         }
 
         return backendConfig;

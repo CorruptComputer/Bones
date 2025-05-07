@@ -11,19 +11,32 @@ public sealed class MigrateDb(BonesDbContext dbContext, BonesBackendConfiguratio
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        if (!config.UseInMemoryDb && (await dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
+        if (config.UseInMemoryDb)
         {
-            // TODO: Remove this at some point, just easier to do this while still in development and major DB changes are still happening
-            await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+            Log.Information("Using in-memory database, no migrations needed.");
+            
+            return CommandResponse.Pass();
+        }
 
+        if (config.SetupForTesting)
+        {
+            Log.Information("Resetting database for testing...");
+            await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+            await dbContext.Database.MigrateAsync(cancellationToken);
+
+            return CommandResponse.Pass();
+        }
+
+        IEnumerable<string> pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync(cancellationToken);
+        if (pendingMigrations.Any())
+        {
             await dbContext.Database.MigrateAsync(cancellationToken);
             Log.Information("Migration complete.");
-        }
-        else
-        {
-            Log.Information("Database is up to date.");
+
+            return CommandResponse.Pass();
         }
 
+        Log.Information("Database is up to date.");
         return CommandResponse.Pass();
     }
 }

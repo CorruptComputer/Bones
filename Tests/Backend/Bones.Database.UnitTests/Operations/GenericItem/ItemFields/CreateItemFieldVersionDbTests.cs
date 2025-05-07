@@ -165,7 +165,7 @@ public class CreateItemFieldVersionDbTests : TestBase
         );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public class CreateItemFieldVersionDbTests : TestBase
         );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
     }
 
     /// <summary>
@@ -222,7 +222,7 @@ public class CreateItemFieldVersionDbTests : TestBase
         );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
     }
 
     /// <summary>
@@ -251,7 +251,7 @@ public class CreateItemFieldVersionDbTests : TestBase
         );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
     }
 
     /// <summary>
@@ -280,7 +280,7 @@ public class CreateItemFieldVersionDbTests : TestBase
         );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
     }
 
     /// <summary>
@@ -309,7 +309,7 @@ public class CreateItemFieldVersionDbTests : TestBase
         );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
     }
 
     /// <summary>
@@ -338,7 +338,7 @@ public class CreateItemFieldVersionDbTests : TestBase
         );
 
         TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
     }
 
     /// <summary>

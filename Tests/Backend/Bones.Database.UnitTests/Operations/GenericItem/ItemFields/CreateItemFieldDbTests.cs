@@ -18,7 +18,7 @@ public class CreateItemFieldDbTests : TestBase
     {
         CreateItemFieldDb.Command command = new(Guid.Empty);
         TestValidationResult<CreateItemFieldDb.Command> validationResult = await _validator.TestValidateAsync(command);
-        validationResult.ShouldHaveAnyValidationError();
+        validationResult.ShouldHaveValidationErrors();
 
         CommandResponse result = await Sender.Send(command);
         result.Success.ShouldBeFalse();

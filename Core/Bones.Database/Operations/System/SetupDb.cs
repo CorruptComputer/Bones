@@ -5,6 +5,7 @@ using Bones.Database.DbSets.Audit;
 using Bones.Database.Operations.Audit;
 using Bones.Database.Operations.System.SystemSettings;
 using Bones.Database.Operations.System.SystemSettings.Models;
+using Bones.Database.Operations.System.TestingDataSetup;
 using Bones.Shared.Consts;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +15,7 @@ namespace Bones.Database.Operations.System;
 
 /// <inheritdoc />
 public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager,
-                     IHostEnvironment environment)
+                     IHostEnvironment environment, BonesBackendConfiguration config)
     : IRequestHandler<SetupDb.Command, CommandResponse>
 {
     /// <summary>
@@ -31,6 +32,12 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
         await CreateAdminUserIfNoneExistAsync(backgroundServiceUser, cancellationToken);
         await SetupWebUiBaseUrl(backgroundServiceUser, cancellationToken);
         await SetupStmpConfig(backgroundServiceUser, cancellationToken);
+
+        if (config.SetupForTesting)
+        {
+            Log.Information("Setting up testing data...");
+            await sender.Send(new SetupTestingDataDb.Command(), cancellationToken);
+        }
 
         return CommandResponse.Pass();
     }
@@ -116,7 +123,7 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
                 Email = defaultEmail,
                 EmailConfirmed = true,
                 EmailConfirmedDateTime = DateTimeOffset.Now,
-                PasswordExpired = true
+                PasswordExpired = false
             };
 
             await userManager.CreateAsync(userToCreate, "ChangeMe1!");
