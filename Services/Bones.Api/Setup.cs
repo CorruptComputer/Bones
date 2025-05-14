@@ -2,7 +2,6 @@ using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Extensions;
 using Bones.Shared.Consts;
-using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -19,11 +18,19 @@ internal static class Setup
             OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync,
             OnRedirectToAccessDenied = context =>
             {
-                throw new ForbiddenException();
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+                context.Response.WriteAsJsonAsync(new ErrorResponse(errorMessage: "You are not allowed to access this resource."));
+
+                return Task.CompletedTask;
             },
             OnRedirectToLogin = context =>
             {
-                throw new UnauthenticatedException();
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json";
+                context.Response.WriteAsJsonAsync(new ErrorResponse(errorMessage: "You are not authenticated."));
+
+                return Task.CompletedTask;
             }
         };
 

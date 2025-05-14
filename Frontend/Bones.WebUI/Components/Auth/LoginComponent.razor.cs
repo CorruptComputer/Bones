@@ -8,12 +8,31 @@ namespace Bones.WebUI.Components.Auth;
 /// </summary>
 /// <param name="apiClient"></param>
 /// <param name="authStateProvider"></param>
+/// <param name="configurationProvider"></param>
 /// <param name="logger"></param>
-public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticationStateProvider authStateProvider, ILogger<LoginComponent> logger) : ComponentBase
+public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticationStateProvider authStateProvider, BonesConfigurationProvider configurationProvider, ILogger<LoginComponent> logger) : ComponentBase
 {
+    private bool PrefilledTestUser { get; set; } = false;
+
     private LoginFormModel LoginForm { get; set; } = new();
 
     private bool ErrorLoggingIn { get; set; } = false;
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        WebUiConfigResponse config = await configurationProvider.GetWebUiConfigAsync(CancellationToken.None);
+        if (firstRender && config.PrefillTestUser)
+        {
+            logger.LogInformation("Prefilling test user");
+
+            LoginForm.Email = "user@example.com";
+            LoginForm.Password = "Example1!";
+            PrefilledTestUser = true;
+
+            StateHasChanged();
+        }
+    }
 
     private async Task DoLoginAsync()
     {

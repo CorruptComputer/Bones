@@ -477,6 +477,57 @@
         }
       }
     },
+    "/Anonymous/web-config": {
+      "post": {
+        "tags": [
+          "Anonymous"
+        ],
+        "summary": "Gets the WebUI's basic configuration",
+        "operationId": "GetWebConfigAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebUiConfigResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/GenericItem/fields/{fieldId}/latest": {
       "get": {
         "tags": [
@@ -3128,6 +3179,11 @@
             },
             "description": "The errors that occurred, with the key being either the input that was invalid and the list of reasons it was invalid, or 'server' with the list of server errors.",
             "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "The error message, if any.",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -4177,6 +4233,20 @@
         },
         "additionalProperties": false,
         "description": "Request for the UpdateMyProfileAsync endpoint"
+      },
+      "WebUiConfigResponse": {
+        "required": [
+          "prefillTestUser"
+        ],
+        "type": "object",
+        "properties": {
+          "prefillTestUser": {
+            "type": "boolean",
+            "description": "Should the test user be prefilled?"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response to the GetWebConfigAsync endpoint"
       },
       "WorkItemQueueListModel": {
         "required": [

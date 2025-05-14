@@ -9,6 +9,11 @@
                 <MudText>If you'd like to check out the source, it is <MudLink Href="https://github.com/CorruptComputer/Bones">available here</MudLink>.</MudText>
             </div>
 
+            @if (PrefilledTestUser)
+            {
+                <MudText>This system is setup to have a default account created and filled here for testing purposes, it can also be used as a demo account.</MudText>
+            }
+
             <BonesForm Model="LoginForm" OnSubmit="DoLoginAsync" SubmitText="Login" ShowGoBack="false">
                 <BonesTextField Label="Email" InputType="InputType.Email" @bind-Value="@LoginForm.Email" />
                 <BonesTextField Label="Password" InputType="InputType.Password" @bind-Value="@LoginForm.Password" />

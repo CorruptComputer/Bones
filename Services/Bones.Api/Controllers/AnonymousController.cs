@@ -11,8 +11,9 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to User Accounts
 /// </summary>
 /// <param name="sender">MediatR sender</param>
+/// <param name="config">System config</param>
 [AllowAnonymous]
-public sealed class AnonymousController(ISender sender) : BonesControllerBase(sender)
+public sealed class AnonymousController(ISender sender, BonesBackendConfiguration config) : BonesControllerBase(sender)
 {
     /// <summary>
     ///   Registers a new user if all validations pass
@@ -86,5 +87,19 @@ public sealed class AnonymousController(ISender sender) : BonesControllerBase(se
         await Sender.Send(new QueueForgotPasswordEmail.Command(email));
 
         return EmptyResponse.Value;
+    }
+
+    /// <summary>
+    ///   Gets the WebUI's basic configuration
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("web-config", Name = "GetWebConfigAsync")]
+    [ProducesResponseType<WebUiConfigResponse>(StatusCodes.Status200OK)]
+    public ActionResult<WebUiConfigResponse> GetWebConfigAsync()
+    {
+        return new WebUiConfigResponse()
+        {
+            PrefillTestUser = config.SetupForTesting
+        };
     }
 }

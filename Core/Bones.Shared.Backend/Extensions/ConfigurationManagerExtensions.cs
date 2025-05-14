@@ -18,10 +18,10 @@ public static class ConfigurationManagerExtensions
     /// <returns></returns>
     public static BonesBackendConfiguration AddBonesBackendConfiguration(this ConfigurationManager configurationBuilder, IHostEnvironment environment)
     {
-        string configFilePath = environment.IsDevelopment() 
-                ? "appsettings.Development.json" 
+        string configFilePath = environment.IsDevelopment()
+                ? "appsettings.Development.json"
                 : "/etc/bones/backend.json";
-        
+
         Console.WriteLine($"Loading configuration from: {configFilePath}");
 
         configurationBuilder.AddJsonFile(configFilePath, optional: true, reloadOnChange: true);

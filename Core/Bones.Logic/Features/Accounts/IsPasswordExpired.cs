@@ -28,4 +28,4 @@ public sealed class IsPasswordExpired(UserManager<BonesUser> userManager) : IReq
         BonesUser? user = await userManager.FindByEmailAsync(request.Email);
         return QueryResponse<bool>.Pass(user?.PasswordExpired == true);
     }
-} 
+}

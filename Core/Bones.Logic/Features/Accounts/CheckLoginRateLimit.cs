@@ -35,4 +35,4 @@ public sealed class CheckLoginRateLimit(ISender sender) : IRequestHandler<CheckL
 
         return QueryResponse<bool>.Pass(true);
     }
-} 
+}

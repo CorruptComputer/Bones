@@ -8,12 +8,14 @@ namespace Bones.Api.Models;
 public sealed record ErrorResponse
 {
     /// <summary>
-    /// 
+    ///   Creates an error response
     /// </summary>
     /// <param name="errors"></param>
-    public ErrorResponse(Dictionary<string, List<string>>? errors = null)
+    /// <param name="errorMessage"></param>
+    public ErrorResponse(Dictionary<string, List<string>>? errors = null, string? errorMessage = null)
     {
         Errors = errors;
+        ErrorMessage = errorMessage;
     }
 
     /// <summary>
@@ -34,4 +36,9 @@ public sealed record ErrorResponse
     ///   The errors that occurred, with the key being either the input that was invalid and the list of reasons it was invalid, or 'server' with the list of server errors.
     /// </summary>
     public Dictionary<string, List<string>>? Errors { get; init; }
+
+    /// <summary>
+    ///   The error message, if any.
+    /// </summary>
+    public string? ErrorMessage { get; init; }
 }

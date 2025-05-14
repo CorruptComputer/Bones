@@ -31,7 +31,7 @@ public class GetLoginAttemptsForRateLimitingDbTests : TestBase
     {
         DateTimeOffset cutoffTime = DateTimeOffset.UtcNow.AddMinutes(-10);
         GetLoginAttemptsForRateLimitingDb.Query query = new(_testIp, cutoffTime);
-        
+
         TestValidationResult<GetLoginAttemptsForRateLimitingDb.Query> validationResult = await _validator.TestValidateAsync(query);
         validationResult.ShouldNotHaveAnyValidationErrors();
 
@@ -54,7 +54,7 @@ public class GetLoginAttemptsForRateLimitingDbTests : TestBase
 
         GetLoginAttemptsForRateLimitingDb.Query query = new(_testIp, now.AddMinutes(-10));
         QueryResponse<int> response = await Sender.Send(query);
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBe(3);
     }
@@ -72,7 +72,7 @@ public class GetLoginAttemptsForRateLimitingDbTests : TestBase
 
         GetLoginAttemptsForRateLimitingDb.Query query = new(_testIp, now.AddMinutes(-10));
         QueryResponse<int> response = await Sender.Send(query);
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBe(1);
     }
@@ -90,8 +90,8 @@ public class GetLoginAttemptsForRateLimitingDbTests : TestBase
 
         GetLoginAttemptsForRateLimitingDb.Query query = new(_testIp, now.AddMinutes(10));
         QueryResponse<int> response = await Sender.Send(query);
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBe(0);
     }
-} 
+}

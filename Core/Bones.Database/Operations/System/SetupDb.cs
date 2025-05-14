@@ -78,12 +78,12 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
 
             BonesUser userToCreate = new()
             {
+                DisplayName = "System",
                 UserName = defaultEmail,
                 Email = defaultEmail,
                 EmailConfirmed = true,
                 EmailConfirmedDateTime = DateTimeOffset.Now,
-                PasswordExpired = true,
-                DisplayName = "System"
+                PasswordExpired = true // This user should never need to login
             };
 
             await userManager.CreateAsync(userToCreate);
@@ -115,19 +115,18 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
 
         if (shouldCreate)
         {
-            const string defaultEmail = "admin@example.com";
-
             BonesUser userToCreate = new()
             {
-                UserName = defaultEmail,
-                Email = defaultEmail,
+                DisplayName = "Administrator",
+                UserName = DefaultValues.DEFAULT_SYSTEM_ADMIN_EMAIL,
+                Email = DefaultValues.DEFAULT_SYSTEM_ADMIN_EMAIL,
                 EmailConfirmed = true,
                 EmailConfirmedDateTime = DateTimeOffset.Now,
                 PasswordExpired = false
             };
 
             await userManager.CreateAsync(userToCreate, "ChangeMe1!");
-            BonesUser? createdAdminUser = await userManager.FindByEmailAsync(defaultEmail);
+            BonesUser? createdAdminUser = await userManager.FindByEmailAsync(DefaultValues.DEFAULT_SYSTEM_ADMIN_EMAIL);
             if (createdAdminUser == null)
             {
                 return;

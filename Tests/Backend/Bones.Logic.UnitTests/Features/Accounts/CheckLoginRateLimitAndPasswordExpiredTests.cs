@@ -33,7 +33,7 @@ public class CheckLoginRateLimitAndPasswordExpiredTests : TestBase
     public async Task NewIp_ShouldBeAllowed()
     {
         QueryResponse<bool> response = await Sender.Send(new CheckLoginRateLimit.Query(_testIp));
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBeTrue();
     }
@@ -53,8 +53,8 @@ public class CheckLoginRateLimitAndPasswordExpiredTests : TestBase
         }
 
         QueryResponse<bool> response = await Sender.Send(new CheckLoginRateLimit.Query(_testIp));
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBeFalse();
     }
-} 
+}

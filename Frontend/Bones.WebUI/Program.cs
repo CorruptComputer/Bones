@@ -34,6 +34,7 @@ public static class Program
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddSingleton<BonesAuthenticationStateProvider>();
         builder.Services.AddSingleton<AuthenticationStateProvider>(s => s.GetRequiredService<BonesAuthenticationStateProvider>());
+        builder.Services.AddSingleton<BonesConfigurationProvider>();
 
         builder.Services.AddTransient<CookieDelegatingHandler>();
         builder.Services.AddTransient<UnauthorizedDelegatingHandler>();

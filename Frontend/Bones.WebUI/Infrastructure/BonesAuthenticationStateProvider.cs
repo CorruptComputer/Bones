@@ -104,6 +104,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     {
         logger.LogInformation("Clearing current user from browser storage");
         await localStorageService.RemoveItemAsync(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
+        await localStorageService.RemoveItemAsync(LocalStorageService.SESSION_ID_KEY, cancellationToken);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }

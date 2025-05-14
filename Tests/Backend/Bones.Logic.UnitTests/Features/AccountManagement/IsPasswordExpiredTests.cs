@@ -44,7 +44,7 @@ public class IsPasswordExpiredTests : TestBase
         user.PasswordExpired = true;
 
         QueryResponse<bool> response = await Sender.Send(new IsPasswordExpired.Query(email));
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBeFalse();
     }
@@ -62,7 +62,7 @@ public class IsPasswordExpiredTests : TestBase
         await Sender.Send(new CreateBonesUser.Query(email, password));
 
         QueryResponse<bool> response = await Sender.Send(new IsPasswordExpired.Query(email));
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBeFalse();
     }
@@ -75,7 +75,7 @@ public class IsPasswordExpiredTests : TestBase
     {
         const string email = "nonexistent@example.com";
         QueryResponse<bool> response = await Sender.Send(new IsPasswordExpired.Query(email));
-        
+
         response.Success.ShouldBeTrue();
         response.Result.ShouldBeFalse();
     }

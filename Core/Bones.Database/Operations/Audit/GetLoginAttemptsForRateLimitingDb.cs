@@ -35,4 +35,4 @@ public sealed class GetLoginAttemptsForRateLimitingDb(BonesDbContext dbContext) 
 
         return QueryResponse<int>.Pass(failedAttempts);
     }
-} 
+}

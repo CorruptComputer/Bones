@@ -14,7 +14,7 @@ public sealed class MigrateDb(BonesDbContext dbContext, BonesBackendConfiguratio
         if (config.UseInMemoryDb)
         {
             Log.Information("Using in-memory database, no migrations needed.");
-            
+
             return CommandResponse.Pass();
         }
 
