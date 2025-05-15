@@ -1,3 +1,4 @@
+using System.Reflection;
 using Bones.Shared.Consts;
 using Bones.WebUI.Infrastructure;
 using MudBlazor;
@@ -8,7 +9,7 @@ namespace Bones.WebUI.Layout;
 /// <summary>
 ///   The main layout of the application
 /// </summary>
-public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvider, ILogger<MainLayout> Logger, BonesApiClient ApiClient, NavigationManager NavManager) : LayoutComponentBase
+public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvider, ILogger<MainLayout> Logger, BonesApiClient ApiClient, NavigationManager NavManager, BonesConfigurationProvider configProvider) : LayoutComponentBase
 {
     private MudTheme? _theme = null;
 
@@ -25,6 +26,13 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
             return _theme;
         }
     }
+
+    private readonly string _webUiVersion = Assembly.GetEntryAssembly()
+                                                    ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                                                    // For example: 0.0.1+b9d1873a
+                                                    ?.InformationalVersion.Split('+')[1] ?? "ERROR";
+
+    private string _apiVersion = string.Empty;
 
     private MudSelectExtended<ProjectDropDownModel> _projectSelect = new();
 
@@ -43,6 +51,8 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
+        _apiVersion = (await configProvider.GetWebUiConfigAsync(default)).ApiVersion;
+
         await UpdateProjectList();
 
         await base.OnInitializedAsync();
@@ -130,6 +140,11 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
     {
         public required string ProjectName { get; init; }
 
+        /// <summary>
+        ///   If null, the selection will be ignored.
+        ///   If Guid.Empty, the user will be redirected to the create project page.
+        ///   If a valid Guid, the user will be redirected to the project dashboard.
+        /// </summary>
         public required Guid? ProjectId { get; init; }
 
         public override string ToString()

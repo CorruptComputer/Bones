@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using Bones.Api.Models.Anonymous;
 using Bones.Logic.Features.Accounts;
 using Bones.Logic.Features.System;
@@ -99,7 +100,11 @@ public sealed class AnonymousController(ISender sender, BonesBackendConfiguratio
     {
         return new WebUiConfigResponse()
         {
-            PrefillTestUser = config.SetupForTesting
+            PrefillTestUser = config.SetupForTesting,
+            ApiVersion = Assembly.GetEntryAssembly()?
+                                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                                 // For example: 0.0.1+b9d1873a
+                                 ?.InformationalVersion.Split('+')[1] ?? "ERROR"
         };
     }
 }

@@ -6501,6 +6501,14 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonPropertyName("prefillTestUser")]
         public bool PrefillTestUser { get; set; }
 
+        /// <summary>
+        /// The version for the API
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("apiVersion")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string ApiVersion { get; set; }
+
     }
 
     /// <summary>

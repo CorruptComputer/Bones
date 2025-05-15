@@ -11,4 +11,10 @@ public sealed record WebUiConfigResponse
     /// </summary>
     [JsonRequired]
     public required bool PrefillTestUser { get; init; }
+
+    /// <summary>
+    ///   The version for the API
+    /// </summary>
+    [JsonRequired]
+    public required string ApiVersion { get; init; }
 }

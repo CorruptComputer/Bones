@@ -4236,6 +4236,7 @@
       },
       "WebUiConfigResponse": {
         "required": [
+          "apiVersion",
           "prefillTestUser"
         ],
         "type": "object",
@@ -4243,6 +4244,10 @@
           "prefillTestUser": {
             "type": "boolean",
             "description": "Should the test user be prefilled?"
+          },
+          "apiVersion": {
+            "type": "string",
+            "description": "The version for the API"
           }
         },
         "additionalProperties": false,
