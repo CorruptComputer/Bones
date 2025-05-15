@@ -107,11 +107,11 @@ public class SetupTestProjectDb(ISender sender) : IRequestHandler<SetupTestProje
 
         CommandResponse layoutVersion = await sender.Send(new CreateItemLayoutVersionDb.Command(layout.Id.Value, "Test Layout Version 1", ItemLayoutUses.WorkItems, new Dictionary<uint, Guid>
         {
-            { 1, field1v1.Id.Value },
-            { 2, field2v1.Id.Value },
-            { 3, field3v1.Id.Value },
-            { 4, field4v1.Id.Value },
-            { 5, field5v1.Id.Value }
+            { 0, field1v1.Id.Value },
+            { 1, field2v1.Id.Value },
+            { 2, field3v1.Id.Value },
+            { 3, field4v1.Id.Value },
+            { 4, field5v1.Id.Value }
         }), cancellationToken);
 
         if (layoutVersion.Id == null)

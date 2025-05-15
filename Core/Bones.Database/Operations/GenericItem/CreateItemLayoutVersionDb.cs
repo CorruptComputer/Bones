@@ -23,6 +23,31 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
         public Validator()
         {
             RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(512);
+            RuleFor(x => x.EnabledFor).IsInEnum();
+            RuleFor(x => x.FieldVersions).NotEmpty()
+                .Must(x => x.All(f => f.Value != Guid.Empty)).WithMessage("Field version IDs cannot be empty")
+                .Must(x => {
+                    IEnumerable<IGrouping<Guid, KeyValuePair<uint, Guid>>> g = x.GroupBy(f => f.Value);
+                    if (!g.All(f => f.Count() == 1))
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }).WithMessage("Field versions must be unique")
+                .Must(x => x.All(f => f.Key < 0)).WithMessage("Field version order numbers cannot less than 0")
+                .Must(x => x.Any(f => f.Key == 0)).WithMessage("Field version order numbers must begin with 0")
+                .Must(x => x.All(f => f.Key < x.Count)).WithMessage("Field version order numbers must be within range")
+                .Must(x => {
+                    IEnumerable<IGrouping<uint, KeyValuePair<uint, Guid>>> g = x.GroupBy(f => f.Key);
+                    if (!g.All(f => f.Count() == 1))
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }).WithMessage("Field version order numbers must be unique");
         }
     }
 
