@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Shared.Backend.Enums;
 
@@ -37,6 +38,11 @@ public sealed record GetLatestItemLayoutVersionFieldsResponse
     public bool IsRequired { get; set; } = false;
 
     /// <summary>
+    ///   If the field type is a ValueList, this will contain the possible values for this field.
+    /// </summary>
+    public IEnumerable<string>? PossibleValues { get; set; }
+
+    /// <summary>
     ///   If the Type of this field is either an Integer or Decimal, can it be negative?
     /// </summary>
     public bool? CanBeNegative { get; set; }
@@ -50,6 +56,7 @@ public sealed record GetLatestItemLayoutVersionFieldsResponse
             Name = fl.FieldVersion.Name,
             Type = fl.FieldVersion.Type,
             IsRequired = fl.FieldVersion.IsRequired,
+            PossibleValues = fl.FieldVersion.PossibleValues?.Select(pv => pv.Value),
             CanBeNegative = fl.FieldVersion.CanBeNegative
         }).ToList() ?? [];
     }

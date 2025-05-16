@@ -3,7 +3,7 @@ namespace Bones.WebUI.Pages.WorkItem;
 /// <summary>
 ///   Page for creating a new work item
 /// </summary>
-public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBase
+public partial class CreateWorkItemPage(BonesApiClient apiClient, ILogger<CreateWorkItemPage> logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load in this dashboard
@@ -77,6 +77,8 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
     /// </summary>
     protected Guid? SelectedWorkItemLayout { get; set; }
 
+    private IOrderedEnumerable<GetLatestItemLayoutVersionFieldsResponse> _currentLayoutVersionFields = Enumerable.Empty<GetLatestItemLayoutVersionFieldsResponse>().OrderBy(x => x.OrderNumber);
+
     /// <summary>
     ///   Did the request to the API result in an error?
     /// </summary>
@@ -127,8 +129,11 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
         if (WorkItemQueueIdProvidedInQueryString && WorkItemQueueId.HasValue)
         {
             GetWorkItemQueueByIdResponse itemQueue = await apiClient.GetWorkItemQueueByIdAsync(WorkItemQueueId.Value);
+            SelectedProject = itemQueue.ProjectId;
+            SelectedInitiative = itemQueue.InitiativeId;
             WorkItemQueueName = itemQueue.QueueName;
             SelectedWorkItemQueue = WorkItemQueueId.Value;
+            await GetWorkItemLayouts();
         }
         else
         {
@@ -185,6 +190,18 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
         })];
     }
 
+    private async Task GetCurrentLayoutVersionFields()
+    {
+        if (!SelectedWorkItemLayout.HasValue)
+        {
+            return;
+        }
+
+        List<GetLatestItemLayoutVersionFieldsResponse> resp = await apiClient.GetLatestItemLayoutVersionFieldsAsync(SelectedWorkItemLayout.Value);
+
+        _currentLayoutVersionFields = resp.OrderBy(x => x.OrderNumber);
+    }
+
     /// <summary>
     ///   Event for when the selected project is changed
     /// </summary>
@@ -237,7 +254,28 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
         if (selectedLayout.HasValue)
         {
             SelectedWorkItemLayout = selectedLayout.Value;
+            await GetCurrentLayoutVersionFields();
+        }
+    }
+
+    private async Task SendCreateRequestAsync()
+    {
+        if (!FormValid)
+        {
+            return;
+        }
+
+        try
+        {
+            ApiError = false;
+
+            // TODO: Do it
             await Task.CompletedTask;
+        }
+        catch (ApiException ex)
+        {
+            logger.LogError(ex, "Error while creating a work item");
+            ApiError = true;
         }
     }
 

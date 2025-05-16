@@ -7,6 +7,11 @@
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
                 <MudTextField T="string" Label="Project Name" Required="true" RequiredError="Project name is required!" @bind-Value="@ProjectName" Immediate="true" />
                 
+                <MudSelect T="Bones.Api.Client.ProjectPreset?" Label="Preset" @bind-value="@projectPreset">
+                    <MudSelectItem T="Bones.Api.Client.ProjectPreset?" Value="null">None</MudSelectItem>
+                    <MudSelectItem T="Bones.Api.Client.ProjectPreset?" Value="Bones.Api.Client.ProjectPreset.Development">Development</MudSelectItem>
+                </MudSelect>
+
                 <div style="align-self: end;">
                     <br />
                     <a onclick="history.back();">

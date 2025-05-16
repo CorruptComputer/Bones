@@ -5102,6 +5102,10 @@ namespace Bones.Api.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("preset")]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public ProjectPreset? Preset { get; set; }
+
         /// <summary>
         /// Optionally the organization that this should be created under, if not specified will be created for the requesting user.
         /// </summary>
@@ -5194,26 +5198,29 @@ namespace Bones.Api.Client
     public enum FieldType
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"text")]
-        Text = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"textField")]
+        TextField = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"textBox")]
+        TextBox = 2,
 
         [System.Runtime.Serialization.EnumMember(Value = @"integer")]
-        Integer = 2,
+        Integer = 4,
 
         [System.Runtime.Serialization.EnumMember(Value = @"decimal")]
-        Decimal = 4,
+        Decimal = 8,
 
         [System.Runtime.Serialization.EnumMember(Value = @"boolean")]
-        Boolean = 8,
+        Boolean = 16,
 
         [System.Runtime.Serialization.EnumMember(Value = @"dateTime")]
-        DateTime = 16,
+        DateTime = 32,
 
         [System.Runtime.Serialization.EnumMember(Value = @"valueList")]
-        ValueList = 32,
+        ValueList = 64,
 
         [System.Runtime.Serialization.EnumMember(Value = @"geoLocation")]
-        GeoLocation = 64,
+        GeoLocation = 128,
 
     }
 
@@ -5433,6 +5440,13 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
         public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// If the field type is a ValueList, this will contain the possible values for this field.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
+        public System.Collections.Generic.List<string> PossibleValues { get; set; }
 
         /// <summary>
         /// If the Type of this field is either an Integer or Decimal, can it be negative?
@@ -5943,6 +5957,22 @@ namespace Bones.Api.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string QueueName { get; set; }
 
+        /// <summary>
+        /// The ID of the project this queue belongs to
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("projectId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ProjectId { get; set; }
+
+        /// <summary>
+        /// The ID of the initiative this queue belongs to
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("initiativeId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid InitiativeId { get; set; }
+
     }
 
     /// <summary>
@@ -6257,6 +6287,16 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonPropertyName("requiredAddressFields")]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public AddressFields? RequiredAddressFields { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    [System.Flags]
+    public enum ProjectPreset
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"development")]
+        Development = 1,
 
     }
 

@@ -1,3 +1,5 @@
+using Bones.Shared.Enums;
+
 namespace Bones.Api.Models.Project;
 
 /// <summary>
@@ -11,6 +13,11 @@ public record CreateProjectRequest
     /// </summary>
     [JsonRequired]
     public required string Name { get; init; }
+
+    /// <summary>
+    ///   The preset to use for this project, if any
+    /// </summary>
+    public ProjectPreset? Preset { get; init; }
 
     /// <summary>
     ///   Optionally the organization that this should be created under, if not specified will be created for the requesting user.

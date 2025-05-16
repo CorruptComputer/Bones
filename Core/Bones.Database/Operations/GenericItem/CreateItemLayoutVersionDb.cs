@@ -27,7 +27,8 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
             RuleFor(x => x.EnabledFor).IsInEnum();
             RuleFor(x => x.FieldVersions).NotEmpty()
                 .Must(x => x.All(f => f.Value != Guid.Empty)).WithMessage("Field version IDs cannot be empty")
-                .Must(x => {
+                .Must(x =>
+                {
                     IEnumerable<IGrouping<Guid, KeyValuePair<uint, Guid>>> g = x.GroupBy(f => f.Value);
                     if (!g.All(f => f.Count() == 1))
                     {
@@ -39,7 +40,8 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
                 .Must(x => x.All(f => f.Key < 0)).WithMessage("Field version order numbers cannot less than 0")
                 .Must(x => x.Any(f => f.Key == 0)).WithMessage("Field version order numbers must begin with 0")
                 .Must(x => x.All(f => f.Key < x.Count)).WithMessage("Field version order numbers must be within range")
-                .Must(x => {
+                .Must(x =>
+                {
                     IEnumerable<IGrouping<uint, KeyValuePair<uint, Guid>>> g = x.GroupBy(f => f.Key);
                     if (!g.All(f => f.Count() == 1))
                     {

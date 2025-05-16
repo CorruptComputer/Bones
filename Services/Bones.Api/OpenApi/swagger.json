@@ -3106,6 +3106,9 @@
             "type": "string",
             "description": "Name of the project to create"
           },
+          "preset": {
+            "$ref": "#/components/schemas/ProjectPreset"
+          },
           "organizationId": {
             "type": "string",
             "description": "Optionally the organization that this should be created under, if not specified will be created for the requesting user.",
@@ -3191,7 +3194,8 @@
       },
       "FieldType": {
         "enum": [
-          "text",
+          "textField",
+          "textBox",
           "integer",
           "decimal",
           "boolean",
@@ -3380,6 +3384,14 @@
           "isRequired": {
             "type": "boolean",
             "description": "Is this field required to have a value?"
+          },
+          "possibleValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "If the field type is a ValueList, this will contain the possible values for this field.",
+            "nullable": true
           },
           "canBeNegative": {
             "type": "boolean",
@@ -3797,6 +3809,8 @@
       },
       "GetWorkItemQueueByIdResponse": {
         "required": [
+          "initiativeId",
+          "projectId",
           "queueName"
         ],
         "type": "object",
@@ -3804,6 +3818,16 @@
           "queueName": {
             "type": "string",
             "description": "The name of the queue"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "The ID of the project this queue belongs to",
+            "format": "uuid"
+          },
+          "initiativeId": {
+            "type": "string",
+            "description": "The ID of the initiative this queue belongs to",
+            "format": "uuid"
           }
         },
         "additionalProperties": false,
@@ -4065,6 +4089,12 @@
         },
         "additionalProperties": false,
         "description": "Response model for item fields"
+      },
+      "ProjectPreset": {
+        "enum": [
+          "development"
+        ],
+        "type": "string"
       },
       "RegisterUserApiRequest": {
         "required": [

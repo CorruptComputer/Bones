@@ -5,14 +5,15 @@
                 <MudText Typo="Typo.h4">Hello there!</MudText>
                 <MudText>This project is something I am working on in my free time, and I cannot guarantee any sort of stability with it.</MudText>
                 <MudText>Also if you're on a mobile device, good luck! I have not started on mobile layouts at all.</MudText>
-                <br />
-                <MudText>If you'd like to check out the source, it is <MudLink Href="https://github.com/CorruptComputer/Bones">available here</MudLink>.</MudText>
             </div>
 
-            @if (PrefilledTestUser)
+            @if (PrefillTestUser)
             {
+                <br />
                 <MudText>This system is setup to have a default account created and filled here for testing purposes, it can also be used as a demo account.</MudText>
             }
+
+            <br />
 
             <BonesForm Model="LoginForm" OnSubmit="DoLoginAsync" SubmitText="Login" ShowGoBack="false">
                 <BonesTextField Label="Email" InputType="InputType.Email" @bind-Value="@LoginForm.Email" />

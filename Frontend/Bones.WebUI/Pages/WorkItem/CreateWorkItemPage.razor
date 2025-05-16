@@ -59,7 +59,7 @@
             
             @if (SelectedWorkItemQueue != null) 
             {
-                <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+                
                     <MudSelect ValueChanged="OnSelectedLayoutChanged"
                                Label="Select Work Item Layout"
                                MultiSelection="false"
@@ -73,10 +73,69 @@
                         }
                     </MudSelect>
 
-                </MudForm>
+                
             }
-            
         </MudPaper>
+        <br />
+        <br />
+        @if(SelectedWorkItemLayout != null && _currentLayoutVersionFields.Any())
+        {
+            <MudPaper Class="pa-4">
+                <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+                    @foreach (GetLatestItemLayoutVersionFieldsResponse field in _currentLayoutVersionFields)
+                    {
+                        @switch (field.Type)
+                        {
+                            case Bones.Api.Client.FieldType.TextField:
+                                <MudTextField T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" />
+                                break;
+                            case Bones.Api.Client.FieldType.TextBox:
+                                <MudTextField T="string" Lines="10" Label="@field.Name" Required="@field.IsRequired" Immediate="true" />
+                                break;
+                            case Bones.Api.Client.FieldType.Integer:
+                                <MudNumericField T="int?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? null : 0)" Required="@field.IsRequired" Immediate="true" />
+                                break;
+                            case Bones.Api.Client.FieldType.Decimal:
+                                <MudNumericField T="decimal?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? null : 0)" Required="@field.IsRequired" Immediate="true" />
+                                break;
+                            case Bones.Api.Client.FieldType.Boolean:
+                                @if (field.IsRequired)
+                                {
+                                    <MudCheckBox T="bool" Label="@field.Name" Required="true" />
+                                }
+                                else
+                                {
+                                    <MudCheckBox T="bool?" TriState="true" Label="@field.Name" />
+                                }
+                                break;
+                            case Bones.Api.Client.FieldType.DateTime:
+                                <MudInputLabel>@field.Name</MudInputLabel>
+                                <MudDatePicker T="DateOnly?" Required="@field.IsRequired" />
+                                <MudTimePicker T="TimeOnly?" Required="@field.IsRequired" />
+                                break;
+                            case Bones.Api.Client.FieldType.ValueList:
+                                <MudSelect T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true">
+                                    @foreach (string value in field.PossibleValues)
+                                    {
+                                        <MudSelectItem Value="@value">@value</MudSelectItem>
+                                    }
+                                </MudSelect>
+                                break;                        
+                            default:
+                                <MudText Typo="Typo.body1">Unsupported field type: @field.Type</MudText>
+                                break;
+                        }
+                    }
+                    <div style="align-self: end;">
+                        <br />
+                        <a onclick="history.back();">
+                            <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+                        </a>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
+                    </div>
+                </MudForm>
+            </MudPaper>
+        }
     </MudItem>
     <MudItem xs="12" sm="5">
         <MudItem Class="pa-2" hidden="@(!ApiError)">

@@ -12,7 +12,7 @@ namespace Bones.WebUI.Components.Auth;
 /// <param name="logger"></param>
 public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticationStateProvider authStateProvider, BonesConfigurationProvider configurationProvider, ILogger<LoginComponent> logger) : ComponentBase
 {
-    private bool PrefilledTestUser { get; set; } = false;
+    private bool PrefillTestUser { get; set; } = false;
 
     private LoginFormModel LoginForm { get; set; } = new();
 
@@ -28,7 +28,7 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
 
             LoginForm.Email = "user@example.com";
             LoginForm.Password = "Example1!";
-            PrefilledTestUser = true;
+            PrefillTestUser = true;
 
             StateHasChanged();
         }

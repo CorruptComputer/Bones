@@ -26,10 +26,10 @@ public class GetWorkItemQueueByIdDb(BonesDbContext dbContext) : IRequestHandler<
     {
         return await dbContext.WorkItemQueues
         .Include(q => q.Initiative)
+        .ThenInclude(i => i.Project)
         .Include(q => q.WorkItems)
         .ThenInclude(wi => wi.Item)
         .ThenInclude(i => i.Versions)
         .FirstOrDefaultAsync(x => x.Id == request.WorkItemQueueId, cancellationToken);
     }
 }
-

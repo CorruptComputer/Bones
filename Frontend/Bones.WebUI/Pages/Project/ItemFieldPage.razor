@@ -8,13 +8,15 @@
                 <MudTextField T="string" Label="Field Name" Required="true" RequiredError="Field name is required!" @bind-value="@FieldName" Immediate="true" />
 
                 <MudSelect T="Api.Client.FieldType" Label="Field Type" Required="true" RequiredError="Field type is required!" @bind-value="@FieldType">
-                    <MudSelectItem Value="Api.Client.FieldType.Text">Text</MudSelectItem>
+                    <MudSelectItem Value="Api.Client.FieldType.TextField">Short Text</MudSelectItem>
+                    <MudSelectItem Value="Api.Client.FieldType.TextBox">Long Text</MudSelectItem>
                     <MudSelectItem Value="Api.Client.FieldType.Integer">Integer</MudSelectItem>
                     <MudSelectItem Value="Api.Client.FieldType.Decimal">Decimal</MudSelectItem>
                     <MudSelectItem Value="Api.Client.FieldType.Boolean">Boolean</MudSelectItem>
                     <MudSelectItem Value="Api.Client.FieldType.DateTime">Date Time</MudSelectItem>
                     <MudSelectItem Value="Api.Client.FieldType.ValueList">Value List</MudSelectItem>
-                    <MudSelectItem Value="Api.Client.FieldType.GeoLocation">Geo Location</MudSelectItem>
+                    <!-- disabled for now, not yet figured out how I want to handle it. Rest should all work -->
+                    <!--MudSelectItem Value="Api.Client.FieldType.GeoLocation">Geo Location</MudSelectItem-->
                 </MudSelect>
 
                 @if (FieldType == Api.Client.FieldType.ValueList)

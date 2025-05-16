@@ -31,7 +31,7 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
     private string[] ValidationErrors { get; set; } = [];
 
     private string FieldName { get; set; } = string.Empty;
-    private FieldType FieldType { get; set; } = Api.Client.FieldType.Text;
+    private FieldType FieldType { get; set; } = Api.Client.FieldType.TextField;
     private bool IsRequired { get; set; } = false;
 
     private bool CanBeNegative { get; set; } = false;

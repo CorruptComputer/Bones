@@ -9,7 +9,8 @@ namespace Bones.WebUI.Layout;
 /// <summary>
 ///   The main layout of the application
 /// </summary>
-public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvider, ILogger<MainLayout> Logger, BonesApiClient ApiClient, NavigationManager NavManager, BonesConfigurationProvider configProvider) : LayoutComponentBase
+public partial class MainLayout(BonesAuthenticationStateProvider authStateProvider, ILogger<MainLayout> logger,
+    BonesApiClient apiClient, NavigationManager navManager, BonesConfigurationProvider configProvider) : LayoutComponentBase
 {
     private MudTheme? _theme = null;
 
@@ -36,7 +37,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
 
     private MudSelectExtended<ProjectDropDownModel> _projectSelect = new();
 
-    private bool _open = false;
+    private bool _openDrawer = false;
 
     private bool _login = true;
 
@@ -68,16 +69,16 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
 
     private async Task LogoutAsync()
     {
-        await ApiClient.LogoutAsync();
-        await AuthStateProvider.ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
+        await apiClient.LogoutAsync();
+        await authStateProvider.ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
 
-        NavManager.NavigateTo("/");
+        navManager.NavigateTo("/");
     }
 
     private async Task UpdateProjectList()
     {
         // Only load the project list if the user is authenticated
-        if ((await AuthStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated != true)
+        if ((await authStateProvider.GetAuthenticationStateAsync()).User.Identity?.IsAuthenticated != true)
         {
             return;
         }
@@ -86,7 +87,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
 
         try
         {
-            List<GetProjectQuickSelectResponse> projects = await ApiClient.GetProjectQuickSelectAsync();
+            List<GetProjectQuickSelectResponse> projects = await apiClient.GetProjectQuickSelectAsync();
 
             Projects = [];
             foreach (GetProjectQuickSelectResponse proj in projects)
@@ -100,7 +101,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
         }
 
         Projects.Add(new()
@@ -112,7 +113,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
 
     private void ToggleDrawer()
     {
-        _open = !_open;
+        _openDrawer = !_openDrawer;
     }
 
     private void ToggleLoginRegister()
@@ -127,11 +128,11 @@ public partial class MainLayout(BonesAuthenticationStateProvider AuthStateProvid
         {
             if (selected.Value == Guid.Empty)
             {
-                NavManager.NavigateTo(FrontEndUrls.Project.CREATE);
+                navManager.NavigateTo(FrontEndUrls.Project.CREATE);
             }
             else
             {
-                NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, selected.Value.ToString()));
+                navManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, selected.Value.ToString()));
             }
         }
     }

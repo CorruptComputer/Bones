@@ -24,6 +24,8 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
 
     private string ProjectName { get; set; } = string.Empty;
 
+    private ProjectPreset? projectPreset = null;
+
     /// <summary>
     ///   Send the request to register to the API, if it errors tell the user what went wrong.
     /// </summary>
@@ -36,6 +38,7 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
             Guid projectId = await ApiClient.CreateProjectAsync(new()
             {
                 Name = ProjectName,
+                Preset = projectPreset,
                 OrganizationId = null
             });
 

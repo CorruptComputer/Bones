@@ -203,7 +203,10 @@ public sealed class ProjectController(ISender sender) : BonesControllerBase(send
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateProjectAsync([FromBody] CreateProjectRequest request)
     {
-        CommandResponse response = await Sender.Send(new CreateProject.Command(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
+        CommandResponse response = request.Preset.HasValue
+            ? await Sender.Send(new CreateProjectWithPreset.Command(request.Name, request.Preset.Value, await GetCurrentBonesUserAsync(), request.OrganizationId))
+            : await Sender.Send(new CreateProject.Command(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
+
         if (!response.Success)
         {
             return BadRequest(ErrorResponse.FromCommandResponse(response));

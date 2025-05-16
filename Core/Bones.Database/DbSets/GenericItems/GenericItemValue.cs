@@ -63,7 +63,7 @@ public class GenericItemValue
     {
         bool success = Field.Type switch
         {
-            FieldType.Text => ValidateAndSetTextValue(valueToSet),
+            FieldType.TextField or FieldType.TextBox => ValidateAndSetTextValue(valueToSet),
             FieldType.Integer => ValidateAndSetIntegerValue(valueToSet),
             FieldType.Decimal => ValidateAndSetDecimalValue(valueToSet),
             FieldType.Boolean => ValidateAndSetBooleanValue(valueToSet),
@@ -95,7 +95,7 @@ public class GenericItemValue
 
         return Field.Type switch
         {
-            FieldType.Text => GetStringValue<T>(),
+            FieldType.TextField or FieldType.TextBox => GetStringValue<T>(),
             FieldType.ValueList => GetStringValue<T>(),
             FieldType.Integer => GetIntegerValue<T>(),
             FieldType.Decimal => GetDecimalValue<T>(),
