@@ -1,4 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.Operations.AccountManagement;
+using Bones.Database.Operations.Audit;
 using Bones.Logic.Features.System;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
@@ -80,10 +82,16 @@ public class RegisterUser(UserManager<BonesUser> userManager, ISender sender) : 
         await userManager.SetEmailAsync(user, request.Email);
 
         IdentityResult result = await userManager.CreateAsync(user, request.Password);
+        BonesUser? createdUser = await sender.Send(new GetUserByEmailDb.Query(request.Email), cancellationToken);
 
-        if (result.Succeeded)
+        if (result.Succeeded && createdUser != null)
         {
             await sender.Send(new QueueConfirmationEmail.Command(user, request.Email), cancellationToken);
+            await sender.Send(new AddAccountAuditDb.Command(
+                createdUser,
+                Database.DbSets.Audit.AccountAudit.Actions.Create,
+                createdUser,
+                "Registered"), cancellationToken);
         }
 
         return result;
