@@ -160,26 +160,29 @@ public class SetupTestProjectDb(ISender sender) : IRequestHandler<SetupTestProje
             return CommandResponse.Fail("Failed to create test layout version.");
         }
 
-        CommandResponse testWorkItem = await sender.Send(new CreateWorkItemDb.Command("Test Work Item", queue.Id.Value, layout.Id.Value), cancellationToken);
-        if (testWorkItem.Id == null)
+        for (int i = 0; i < 100; i++)
         {
-            return CommandResponse.Fail("Failed to create test work item.");
-        }
+            CommandResponse testWorkItem = await sender.Send(new CreateWorkItemDb.Command($"Test Work Item {i+1}", queue.Id.Value, layout.Id.Value), cancellationToken);
+            if (testWorkItem.Id == null)
+            {
+                return CommandResponse.Fail("Failed to create test work item.");
+            }
 
-        CommandResponse testWorkItemVersion = await sender.Send(new CreateWorkItemVersionDb.Command(testWorkItem.Id.Value, layoutVersion.Id.Value, new Dictionary<Guid, object?>
-        {
-            { field1v1.Id.Value, "Test Value" },
-            { field2v1.Id.Value, -123L },
-            { field3v1.Id.Value, 3.14d },
-            { field4v1.Id.Value, "Test Value 1" },
-            { field5v1.Id.Value, "Large Text\n\n\n\n\n\n\n\n\nLarge Text" },
-            { field6v1.Id.Value, true },
-            { field7v1.Id.Value, DateTimeOffset.UtcNow.Date.AddMinutes(1) }
-        }), cancellationToken);
+            CommandResponse testWorkItemVersion = await sender.Send(new CreateWorkItemVersionDb.Command(testWorkItem.Id.Value, layoutVersion.Id.Value, new Dictionary<Guid, object?>
+            {
+                { field1v1.Id.Value, "Test Value" },
+                { field2v1.Id.Value, -123L },
+                { field3v1.Id.Value, 3.14d },
+                { field4v1.Id.Value, "Test Value 1" },
+                { field5v1.Id.Value, "Large Text\n\n\n\n\n\n\n\n\nLarge Text" },
+                { field6v1.Id.Value, true },
+                { field7v1.Id.Value, DateTimeOffset.UtcNow }
+            }), cancellationToken);
 
-        if (testWorkItemVersion.Id == null)
-        {
-            return CommandResponse.Fail("Failed to create test work item version.");
+            if (testWorkItemVersion.Id == null)
+            {
+                return CommandResponse.Fail("Failed to create test work item version.");
+            }
         }
 
         return CommandResponse.Pass(project.Id);

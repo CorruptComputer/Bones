@@ -15,9 +15,12 @@
             <MudTh>Name</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Added to Queue At">@context.AddedToQueueDateTime</MudTd>
+            <MudTd DataLabel="Added to Queue At">@context.AddedToQueueDateTime.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss tt")</MudTd>
             <MudTd DataLabel="Friendly ID">@context.FriendlyId</MudTd>
             <MudTd DataLabel="Name">@context.Name</MudTd>
         </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="@TableConsts.PageSizeOptions" />
+        </PagerContent>
     </MudTable>
 </MudPaper>
