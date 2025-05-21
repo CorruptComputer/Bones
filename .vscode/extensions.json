@@ -3,7 +3,7 @@
         "ms-dotnettools.csharp",
         "ms-dotnettools.vscodeintellicode-csharp",
         "ms-dotnettools.vscode-dotnet-runtime",
-        "ms-ossdata.vscode-postgresql",
+        "ms-ossdata.vscode-pgsql",
         "richardwillis.vscode-entity-framework",
         "github.vscode-github-actions"
     ]

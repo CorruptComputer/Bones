@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.GenericItems;
 
 /// <summary>
-///     Model for the GenericItems.GenericItemValues table
+///   Model for the GenericItems.GenericItemValues table
 /// </summary>
 [Table(TableNames.GenericItem.GenericItemValues, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
 public class GenericItemValue
 {
     /// <summary>
-    ///     Internal ID for the ItemValue
+    ///   Internal ID for the ItemValue
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
@@ -36,7 +36,7 @@ public class GenericItemValue
     public GeoLocation? Location { get; private set; }
 
     /// <summary>
-    ///   The value th
+    ///   The value this field holds
     /// </summary>
     public string? Value { get; private set; }
 
@@ -122,8 +122,8 @@ public class GenericItemValue
     private bool ValidateAndSetIntegerValue<T>(T valueToSet)
         where T : notnull
     {
-        if ((Field.CanBeNegative == true && typeof(T).IsSignedIntegerType())
-            || (Field.CanBeNegative == false && typeof(T).IsUnsignedIntegerType()))
+        if ((Field.CanBeNegative == true && valueToSet.IsSignedIntegerType())
+            || (Field.CanBeNegative == false && valueToSet.IsUnsignedIntegerType()))
         {
             Value = valueToSet.ToString();
             return true;
@@ -135,7 +135,7 @@ public class GenericItemValue
     private bool ValidateAndSetDecimalValue<T>(T valueToSet)
         where T : notnull
     {
-        if (Field.CanBeNegative != null && typeof(T).IsDecimalType())
+        if (Field.CanBeNegative != null && valueToSet.IsDecimalType())
         {
             if (Field.CanBeNegative == false && Convert.ToDouble(valueToSet) < 0)
             {

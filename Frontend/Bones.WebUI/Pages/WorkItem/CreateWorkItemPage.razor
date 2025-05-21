@@ -87,34 +87,34 @@
                         @switch (field.Type)
                         {
                             case Bones.Api.Client.FieldType.TextField:
-                                <MudTextField T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" />
+                                <MudTextField T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.Id]" />
                                 break;
                             case Bones.Api.Client.FieldType.TextBox:
-                                <MudTextField T="string" Lines="10" Label="@field.Name" Required="@field.IsRequired" Immediate="true" />
+                                <MudTextField T="string" Lines="10" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.Id]" />
                                 break;
                             case Bones.Api.Client.FieldType.Integer:
-                                <MudNumericField T="int?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? null : 0)" Required="@field.IsRequired" Immediate="true" />
+                                <MudNumericField T="long?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? long.MinValue : 0)" Required="@field.IsRequired" Immediate="true" @bind-Value="@_integerValues[field.Id]" />
                                 break;
                             case Bones.Api.Client.FieldType.Decimal:
-                                <MudNumericField T="decimal?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? null : 0)" Required="@field.IsRequired" Immediate="true" />
+                                <MudNumericField T="double?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? double.MinValue : 0)" Required="@field.IsRequired" Immediate="true" @bind-Value="@_decimalValues[field.Id]" />
                                 break;
                             case Bones.Api.Client.FieldType.Boolean:
                                 @if (field.IsRequired)
                                 {
-                                    <MudCheckBox T="bool" Label="@field.Name" Required="true" />
+                                    <MudCheckBox T="bool?" Label="@field.Name" Required="true" @bind-Value="@_boolValues[field.Id]" />
                                 }
                                 else
                                 {
-                                    <MudCheckBox T="bool?" TriState="true" Label="@field.Name" />
+                                    <MudCheckBox T="bool?" TriState="true" Label="@field.Name" @bind-Value="@_boolValues[field.Id]" />
                                 }
                                 break;
                             case Bones.Api.Client.FieldType.DateTime:
                                 <MudInputLabel>@field.Name</MudInputLabel>
-                                <MudDatePicker T="DateOnly?" Required="@field.IsRequired" />
-                                <MudTimePicker T="TimeOnly?" Required="@field.IsRequired" />
+                                <MudDatePicker DateFormat="yyyy-MM-dd" Required="@field.IsRequired" @bind-Date="@_dateTimeValues[field.Id]" />
+                                <MudTimePicker AmPm="true" Required="@field.IsRequired" @bind-Time="@_timeSpanValues[field.Id]" />
                                 break;
                             case Bones.Api.Client.FieldType.ValueList:
-                                <MudSelect T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true">
+                                <MudSelect T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.Id]">
                                     @foreach (string value in field.PossibleValues)
                                     {
                                         <MudSelectItem Value="@value">@value</MudSelectItem>

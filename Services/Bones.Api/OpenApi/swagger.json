@@ -2921,6 +2921,96 @@
           }
         }
       }
+    },
+    "/WorkItem/{workItemQueueId}/create-work-item": {
+      "post": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Creates a work item in the specified queue",
+        "operationId": "CreateWorkItemInQueueAsync",
+        "parameters": [
+          {
+            "name": "workItemQueueId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkItemRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3132,6 +3222,34 @@
         },
         "additionalProperties": false,
         "description": "Response for the CreateQueueInInitiativeAsync endpoint"
+      },
+      "CreateWorkItemRequest": {
+        "required": [
+          "fieldValues",
+          "name",
+          "workItemLayoutId"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the work item"
+          },
+          "workItemLayoutId": {
+            "type": "string",
+            "description": "The ID of the work item layout",
+            "format": "uuid"
+          },
+          "fieldValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemValueModel"
+            },
+            "description": "The fields of the work item"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request to create a new work item"
       },
       "DashboardWorkItemModel": {
         "required": [
@@ -3968,6 +4086,49 @@
           "assets"
         ],
         "type": "string"
+      },
+      "ItemValueModel": {
+        "required": [
+          "fieldVersionId"
+        ],
+        "type": "object",
+        "properties": {
+          "fieldVersionId": {
+            "type": "string",
+            "description": "",
+            "format": "uuid"
+          },
+          "strValue": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "intValue": {
+            "type": "integer",
+            "description": "",
+            "format": "int64",
+            "nullable": true
+          },
+          "decimalValue": {
+            "type": "number",
+            "description": "",
+            "format": "double",
+            "nullable": true
+          },
+          "dateTimeValue": {
+            "type": "string",
+            "description": "",
+            "format": "date-time",
+            "nullable": true
+          },
+          "boolValue": {
+            "type": "boolean",
+            "description": "",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for the values of a work item"
       },
       "LoginUserApiRequest": {
         "required": [

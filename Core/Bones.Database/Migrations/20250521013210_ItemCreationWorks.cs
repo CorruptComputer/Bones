@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -6,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bones.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class GenericItemLayoutFieldVersionLink : Migration
+    public partial class ItemCreationWorks : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -176,6 +178,22 @@ namespace Bones.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SessionAttemptAudits",
+                schema: "Audit",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    IpAddress = table.Column<string>(type: "character varying(45)", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Successful = table.Column<bool>(type: "boolean", nullable: false),
+                    AttemptDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionAttemptAudits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SystemSettings",
                 schema: "System",
                 columns: table => new
@@ -296,6 +314,31 @@ namespace Bones.Database.Migrations
                     table.PrimaryKey("PK_BonesUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
                         name: "FK_BonesUserLogins_BonesUser_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "AccountManagement",
+                        principalTable: "BonesUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BonesUserSessions",
+                schema: "AccountManagement",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IpAddress = table.Column<string>(type: "character varying(45)", nullable: false),
+                    Base64LocalStorageKey = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastAccessedDateTime = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    IsInvalidated = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BonesUserSessions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BonesUserSessions_BonesUser_UserId",
                         column: x => x.UserId,
                         principalSchema: "AccountManagement",
                         principalTable: "BonesUser",
@@ -924,6 +967,12 @@ namespace Bones.Database.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BonesUserSessions_UserId",
+                schema: "AccountManagement",
+                table: "BonesUserSessions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GenericItemFieldListEntries_GenericItemFieldVersionId",
                 schema: "GenericItem",
                 table: "GenericItemFieldListEntries",
@@ -1096,6 +1145,10 @@ namespace Bones.Database.Migrations
                 schema: "AccountManagement");
 
             migrationBuilder.DropTable(
+                name: "BonesUserSessions",
+                schema: "AccountManagement");
+
+            migrationBuilder.DropTable(
                 name: "BonesUserTokens",
                 schema: "AccountManagement");
 
@@ -1129,6 +1182,10 @@ namespace Bones.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "LoginAudits",
+                schema: "Audit");
+
+            migrationBuilder.DropTable(
+                name: "SessionAttemptAudits",
                 schema: "Audit");
 
             migrationBuilder.DropTable(

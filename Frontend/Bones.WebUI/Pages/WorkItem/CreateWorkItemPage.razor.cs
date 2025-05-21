@@ -1,9 +1,12 @@
+using System.Text.Json;
+using Bones.Shared.Consts;
+
 namespace Bones.WebUI.Pages.WorkItem;
 
 /// <summary>
 ///   Page for creating a new work item
 /// </summary>
-public partial class CreateWorkItemPage(BonesApiClient apiClient, ILogger<CreateWorkItemPage> logger) : ComponentBase
+public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationManager navManager, ILogger<CreateWorkItemPage> logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load in this dashboard
@@ -99,6 +102,18 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, ILogger<Create
     /// </summary>
     protected string? WorkItemQueueName { get; set; }
 
+
+    private Dictionary<Guid, bool?> _boolValues { get; set; } = [];
+
+    private Dictionary<Guid, DateTime?> _dateTimeValues { get; set; } = [];
+
+    private Dictionary<Guid, TimeSpan?> _timeSpanValues { get; set; } = [];
+
+    private Dictionary<Guid, double?> _decimalValues { get; set; } = [];
+    
+    private Dictionary<Guid, long?> _integerValues { get; set; } = [];
+
+    private Dictionary<Guid, string> _stringValues { get; set; } = [];
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -200,6 +215,38 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, ILogger<Create
         List<GetLatestItemLayoutVersionFieldsResponse> resp = await apiClient.GetLatestItemLayoutVersionFieldsAsync(SelectedWorkItemLayout.Value);
 
         _currentLayoutVersionFields = resp.OrderBy(x => x.OrderNumber);
+
+        _boolValues = [];
+        _dateTimeValues = [];
+        _decimalValues = [];
+        _integerValues = [];
+        _stringValues = [];
+
+        foreach (GetLatestItemLayoutVersionFieldsResponse field in _currentLayoutVersionFields)
+        {
+            switch (field.Type)
+            {
+                case FieldType.TextField or FieldType.TextBox or FieldType.ValueList:
+                    _stringValues[field.Id] = string.Empty;
+                    break;
+                case FieldType.Integer:
+                    _integerValues[field.Id] = null;
+                    break;
+                case FieldType.Decimal:
+                    _decimalValues[field.Id] = null;
+                    break;
+                case FieldType.Boolean:
+                    _boolValues[field.Id] = field.IsRequired ? false : null;
+                    break;
+                case FieldType.DateTime:
+                    _dateTimeValues[field.Id] = null;
+                    _timeSpanValues[field.Id] = null;
+                    break;
+                //FieldType.GeoLocation => null, // TODO: Implement
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 
     /// <summary>
@@ -269,8 +316,86 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, ILogger<Create
         {
             ApiError = false;
 
-            // TODO: Do it
-            await Task.CompletedTask;
+            if (!SelectedWorkItemQueue.HasValue || !SelectedWorkItemLayout.HasValue)
+            {
+                return;
+            }
+
+            List<ItemValueModel> values = [];
+            foreach (KeyValuePair<Guid, bool?> field in _boolValues)
+            {
+                if (field.Value.HasValue)
+                {
+                    values.Add(new()
+                    {
+                        FieldVersionId = field.Key,
+                        BoolValue = field.Value
+                    });
+                }
+            }
+
+            foreach (KeyValuePair<Guid, DateTime?> field in _dateTimeValues)
+            {
+                TimeSpan? timeSpan = _timeSpanValues[field.Key];
+                
+                if (field.Value.HasValue && timeSpan.HasValue)
+                {
+                    values.Add(new()
+                    {
+                        FieldVersionId = field.Key,
+                        DateTimeValue = field.Value.Value.Add(timeSpan.Value)
+                    });
+                }
+            }
+
+            foreach (KeyValuePair<Guid, double?> field in _decimalValues)
+            {
+                if (field.Value.HasValue)
+                {
+                    values.Add(new()
+                    {
+                        FieldVersionId = field.Key,
+                        DecimalValue = field.Value
+                    });
+                }
+            }
+
+            foreach (KeyValuePair<Guid, long?> field in _integerValues)
+            {
+                if (field.Value.HasValue)
+                {
+                    values.Add(new()
+                    {
+                        FieldVersionId = field.Key,
+                        IntValue = field.Value
+                    });
+                }
+            }
+
+            foreach (KeyValuePair<Guid, string> field in _stringValues)
+            {
+                if (!string.IsNullOrWhiteSpace(field.Value))
+                {
+                    values.Add(new()
+                    {
+                        FieldVersionId = field.Key,
+                        StrValue = field.Value
+                    });
+                }
+            }
+
+            CreateWorkItemRequest request = new()
+            {
+                Name = "Test",
+                WorkItemLayoutId = SelectedWorkItemLayout.Value,
+                FieldValues = values
+            };
+
+            logger.LogWarning("Creating work item with request: {@Request}", JsonSerializer.Serialize(request));
+
+            await apiClient.CreateWorkItemInQueueAsync(SelectedWorkItemQueue.Value, request);
+            
+            navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, SelectedWorkItemQueue.Value.ToString()));
         }
         catch (ApiException ex)
         {

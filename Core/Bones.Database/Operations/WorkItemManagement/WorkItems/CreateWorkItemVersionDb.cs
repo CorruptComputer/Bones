@@ -13,7 +13,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
     /// <param name="WorkItemId">Internal ID of the item</param>
     /// <param name="WorkItemLayoutVersionId">Internal ID of the layout version this item is using</param>
     /// <param name="Values">The values to use for this work item version</param>
-    public record Command(Guid WorkItemId, Guid WorkItemLayoutVersionId, Dictionary<string, object> Values) : IRequest<CommandResponse>;
+    public record Command(Guid WorkItemId, Guid WorkItemLayoutVersionId, Dictionary<Guid, object?> Values) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     internal sealed class Validator : AbstractValidator<Command>
@@ -58,29 +58,43 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
         }
 
         List<GenericItemValue> values = [];
-
-        foreach ((string? key, object? value) in request.Values)
+        foreach ((Guid fieldId, object? value) in request.Values)
         {
-            GenericItemFieldVersion? field = layoutVersion.FieldLinks.Find(f => f.FieldVersion.Name == key)?.FieldVersion;
+            GenericItemFieldVersion? field = layoutVersion.FieldLinks.Find(f => f.FieldVersion.Id == fieldId)?.FieldVersion;
             if (field == null)
             {
-                return CommandResponse.Fail($"Invalid field name provided: {key}");
+                return CommandResponse.Fail($"Invalid field name provided: {fieldId}");
             }
 
-            GenericItemValue workGenericItemValue = new() { Field = field };
-            bool valid = workGenericItemValue.TrySetValue(value);
-            if (!valid)
+            GenericItemValue workGenericItemValue = new()
             {
-                return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(field.Type)}' field '{key}': {value}");
-            }
+                Field = field,
 
+            };
+
+            if (value is not null)
+            {
+                bool valid = workGenericItemValue.TrySetValue(value);
+                if (!valid)
+                {
+                    return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(field.Type)}' field '{fieldId}': {value}");
+                }
+            }
+            else if (field.IsRequired)
+            {
+                return CommandResponse.Fail($"Field '{fieldId}' is required, but no value was provided.");
+            }
+            // else if its null and not required we can just skip doing anything else
+            
             values.Add(workGenericItemValue);
         }
+
+        int version = ++workItem.Item.CurrentVersion;
 
         workItem.Item.Versions.Add(new()
         {
             Item = workItem.Item,
-            Version = ++workItem.Item.CurrentVersion,
+            Version = version,
             CreateDateTime = DateTimeOffset.Now,
             GenericItemLayoutVersion = layoutVersion,
             Values = values
@@ -90,6 +104,6 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(updated.Entity.Item.Versions[updated.Entity.Item.CurrentVersion].Id);
+        return CommandResponse.Pass(updated.Entity.Item.Versions.FirstOrDefault(v => v.Version == version)?.Id);
     }
 }

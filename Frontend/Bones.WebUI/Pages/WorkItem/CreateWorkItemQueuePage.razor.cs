@@ -41,12 +41,12 @@ public partial class CreateWorkItemQueuePage(BonesApiClient apiClient, Navigatio
 
             await Task.CompletedTask;
 
-            await apiClient.CreateQueueInInitiativeAsync(InitiativeId, new()
+            Guid queueId = await apiClient.CreateQueueInInitiativeAsync(InitiativeId, new()
             {
                 Name = WorkItemQueueName
             });
 
-            navManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.Initiative.INITIATIVE_ID_PLACEHOLDER, InitiativeId.ToString()));
+            navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, queueId.ToString()));
         }
         catch (ApiException ex)
         {

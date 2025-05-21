@@ -144,7 +144,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
         }
         else
         {
-            Log.Debug("Request Failed [{TypeName}] | TRequest = {RequestBody} | FailReasons = {FailReasons}", typeof(TRequest).FullName, request.ToString(), failReasons?.ToString() ?? "(none)");
+            Log.Debug("Request Failed [{TypeName}] | TRequest = {RequestBody} | FailReasons = {FailReasons}", typeof(TRequest).FullName, request.ToString(), failReasons?.SelectMany(x => x.Value).Aggregate((x, y) => $"{x}, {y}") ?? "(none)");
         }
     }
 }

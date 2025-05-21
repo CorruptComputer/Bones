@@ -7,7 +7,9 @@ public static class ObjectExtensions
 {
     /// <summary>
     ///   Checks if the objects type is any numeric type:
-    ///   byte, ushort, short, uint, int, ulong, long, double, decimal, or float
+    ///   sbyte, short, int, long,
+    ///   byte, ushort, uint, ulong,
+    ///   double, decimal, or float
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
@@ -18,7 +20,8 @@ public static class ObjectExtensions
 
     /// <summary>
     ///   Checks if the objects type is an integer type:
-    ///   byte, ushort, short, uint, int, ulong, or long
+    ///   sbyte, short, int, long,
+    ///   byte, ushort, uint, or ulong
     /// </summary>
     /// <param name="o"></param>
     /// <returns></returns>
@@ -35,14 +38,12 @@ public static class ObjectExtensions
     /// <returns></returns>
     public static bool IsSignedIntegerType(this object o)
     {
-        return Type.GetTypeCode(o.GetType()) switch
+        if (o is sbyte or short or int or long)
         {
-            TypeCode.SByte
-                or TypeCode.Int16
-                or TypeCode.Int32
-                or TypeCode.Int64 => true,
-            _ => false
-        };
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -53,14 +54,12 @@ public static class ObjectExtensions
     /// <returns></returns>
     public static bool IsUnsignedIntegerType(this object o)
     {
-        return Type.GetTypeCode(o.GetType()) switch
+        if (o is byte or ushort or uint or ulong)
         {
-            TypeCode.Byte
-                or TypeCode.UInt16
-                or TypeCode.UInt32
-                or TypeCode.UInt64 => true,
-            _ => false
-        };
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -71,12 +70,11 @@ public static class ObjectExtensions
     /// <returns></returns>
     public static bool IsDecimalType(this object o)
     {
-        return Type.GetTypeCode(o.GetType()) switch
+        if (o is double or decimal or float)
         {
-            TypeCode.Decimal
-                or TypeCode.Double
-                or TypeCode.Single => true,
-            _ => false
-        };
+            return true;
+        }
+
+        return false;
     }
 }

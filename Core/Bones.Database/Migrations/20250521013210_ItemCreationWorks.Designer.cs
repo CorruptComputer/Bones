@@ -13,15 +13,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bones.Database.Migrations
 {
     [DbContext(typeof(BonesDbContext))]
-    [Migration("20250223070019_GenericItemLayoutFieldVersionLink")]
-    partial class GenericItemLayoutFieldVersionLink
+    [Migration("20250521013210_ItemCreationWorks")]
+    partial class ItemCreationWorks
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -229,6 +229,40 @@ namespace Bones.Database.Migrations
                     b.ToTable("BonesUserRoles", "AccountManagement");
                 });
 
+            modelBuilder.Entity("Bones.Database.DbSets.AccountManagement.BonesUserSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Base64LocalStorageKey")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTimeOffset>("CreatedDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<bool>("IsInvalidated")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LastAccessedDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BonesUserSessions", "AccountManagement");
+                });
+
             modelBuilder.Entity("Bones.Database.DbSets.AccountManagement.BonesUserToken", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -336,6 +370,30 @@ namespace Bones.Database.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("LoginAudits", "Audit");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Audit.SessionAttemptAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("AttemptDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("character varying(45)");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Successful")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SessionAttemptAudits", "Audit");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Audit.SystemAudit", b =>
@@ -1097,6 +1155,17 @@ namespace Bones.Database.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.AccountManagement.BonesUserSession", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.AccountManagement.BonesUserToken", b =>
