@@ -1,6 +1,4 @@
-using System.Text.Json;
 using Bones.Shared.Exceptions;
-using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace Bones.Api.Handlers;
@@ -16,14 +14,13 @@ public class ApiExceptionHandler : IExceptionHandler
         if (exception is UnauthenticatedException)
         {
             httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            httpContext.Response.ContentType = "application/json";
-            httpContext.Response.Body = await JsonSerializer.Serialize(new ErrorResponse()
-            {
-                Errors = new()
+            await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
                 {
-                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE] }
-                }
-            }).ToStreamAsync(cancellationToken);
+                    Errors = new()
+                    {
+                        { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE] }
+                    }
+                }, cancellationToken);
 
             return true;
         }
@@ -31,27 +28,25 @@ public class ApiExceptionHandler : IExceptionHandler
         if (exception is ForbiddenException)
         {
             httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-            httpContext.Response.ContentType = "application/json";
-            httpContext.Response.Body = await JsonSerializer.Serialize(new ErrorResponse()
-            {
-                Errors = new()
+            await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
                 {
-                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
-                }
-            }).ToStreamAsync(cancellationToken);
+                    Errors = new()
+                    {
+                        { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
+                    }
+                }, cancellationToken);
 
             return true;
         }
 
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        httpContext.Response.ContentType = "application/json";
-        httpContext.Response.Body = await JsonSerializer.Serialize(new ErrorResponse()
-        {
-            Errors = new()
+        await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
             {
-                { BonesResponseBase.SERVER_ERROR_KEY, [exception.Message] }
-            }
-        }).ToStreamAsync(cancellationToken);
+                Errors = new()
+                {
+                    { BonesResponseBase.SERVER_ERROR_KEY, [exception.Message] }
+                }
+            }, cancellationToken);
 
         return true;
     }

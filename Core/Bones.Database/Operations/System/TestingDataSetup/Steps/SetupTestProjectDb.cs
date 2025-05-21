@@ -5,6 +5,7 @@ using Bones.Database.Operations.GenericItem;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
 using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
+using Bones.Database.Operations.WorkItemManagement.WorkItems;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Database.Operations.System.TestingDataSetup.Steps;
@@ -137,13 +138,13 @@ public class SetupTestProjectDb(ISender sender) : IRequestHandler<SetupTestProje
         }
 
         // Add a layout to the project
-        CommandResponse layout = await sender.Send(new CreateItemLayoutDb.Command(project.Id.Value, "TST1"), cancellationToken);
+        CommandResponse layout = await sender.Send(new CreateItemLayoutDb.Command(project.Id.Value, "TEST"), cancellationToken);
         if (layout.Id == null)
         {
             return CommandResponse.Fail("Failed to create test layout.");
         }
 
-        CommandResponse layoutVersion = await sender.Send(new CreateItemLayoutVersionDb.Command(layout.Id.Value, "Test Layout Version 1", ItemLayoutUses.WorkItems, new Dictionary<uint, Guid>
+        CommandResponse layoutVersion = await sender.Send(new CreateItemLayoutVersionDb.Command(layout.Id.Value, "Test Layout", ItemLayoutUses.WorkItems, new Dictionary<uint, Guid>
         {
             { 0, field1v1.Id.Value },
             { 1, field2v1.Id.Value },
@@ -157,6 +158,28 @@ public class SetupTestProjectDb(ISender sender) : IRequestHandler<SetupTestProje
         if (layoutVersion.Id == null)
         {
             return CommandResponse.Fail("Failed to create test layout version.");
+        }
+
+        CommandResponse testWorkItem = await sender.Send(new CreateWorkItemDb.Command("Test Work Item", queue.Id.Value, layout.Id.Value), cancellationToken);
+        if (testWorkItem.Id == null)
+        {
+            return CommandResponse.Fail("Failed to create test work item.");
+        }
+
+        CommandResponse testWorkItemVersion = await sender.Send(new CreateWorkItemVersionDb.Command(testWorkItem.Id.Value, layoutVersion.Id.Value, new Dictionary<Guid, object?>
+        {
+            { field1v1.Id.Value, "Test Value" },
+            { field2v1.Id.Value, -123L },
+            { field3v1.Id.Value, 3.14d },
+            { field4v1.Id.Value, "Test Value 1" },
+            { field5v1.Id.Value, "Large Text\n\n\n\n\n\n\n\n\nLarge Text" },
+            { field6v1.Id.Value, true },
+            { field7v1.Id.Value, DateTimeOffset.UtcNow.Date.AddMinutes(1) }
+        }), cancellationToken);
+
+        if (testWorkItemVersion.Id == null)
+        {
+            return CommandResponse.Fail("Failed to create test work item version.");
         }
 
         return CommandResponse.Pass(project.Id);
