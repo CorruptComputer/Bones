@@ -4681,8 +4681,8 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "WorkItem/{workItemQueueId}"
-                    urlBuilder_.Append("WorkItem/");
+                    // Operation Path: "WorkItem/WorkItemQueue/{workItemQueueId}"
+                    urlBuilder_.Append("WorkItem/WorkItemQueue/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(workItemQueueId, System.Globalization.CultureInfo.InvariantCulture)));
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -4741,6 +4741,124 @@ namespace Bones.Api.Client
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<GetWorkItemQueueByIdResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets a work item by its ID
+        /// </summary>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<GetWorkItemByIdResponse> GetWorkItemByIdAsync(System.Guid workItemId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (workItemId == null)
+                throw new System.ArgumentNullException("workItemId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "WorkItem/WorkItem/{workItemId}"
+                    urlBuilder_.Append("WorkItem/WorkItem/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(workItemId, System.Globalization.CultureInfo.InvariantCulture)));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetWorkItemByIdResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -6099,6 +6217,101 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
+    /// Response for the GetWorkItemById endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record GetWorkItemByIdResponse
+    {
+        /// <summary>
+        /// ID of the work item
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("workItemId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid WorkItemId { get; set; }
+
+        /// <summary>
+        /// ID of the work item queue this item belongs to
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("workItemQueueId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid WorkItemQueueId { get; set; }
+
+        /// <summary>
+        /// The time this item was added to the queue
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("addedToQueueDateTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset AddedToQueueDateTime { get; set; }
+
+        /// <summary>
+        /// The ID of the generic item this work item is
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("genericItemId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid GenericItemId { get; set; }
+
+        /// <summary>
+        /// The ID of the latest version of the generic item this work item is
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("latestGenericItemVersionId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid LatestGenericItemVersionId { get; set; }
+
+        /// <summary>
+        /// The current version number for this work item
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("currentVersion")]
+        public int CurrentVersion { get; set; }
+
+        /// <summary>
+        /// The name of the work item
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// The friendly ID of the work item
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("friendlyId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string FriendlyId { get; set; }
+
+        /// <summary>
+        /// The time this item was created
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createDateTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset CreateDateTime { get; set; }
+
+        /// <summary>
+        /// The time the latest version of this item was created
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("latestVersionCreateDateTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset LatestVersionCreateDateTime { get; set; }
+
+        /// <summary>
+        /// The values for this work item
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("itemValues")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<WorkItemValueModel> ItemValues { get; set; } = new System.Collections.Generic.List<WorkItemValueModel>();
+
+    }
+
+    /// <summary>
     /// Response for the GetWorkItemQueueByIdAsync endpoint
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6762,6 +6975,41 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("workItemCount")]
         public int WorkItemCount { get; set; }
+
+    }
+
+    /// <summary>
+    /// Model for the values of a work item
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record WorkItemValueModel
+    {
+        /// <summary>
+        /// The order that this field should be displayed in
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("orderNumber")]
+        public int OrderNumber { get; set; }
+
+        /// <summary>
+        /// The name of the field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("valueType")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public FieldType ValueType { get; set; }
+
+        /// <summary>
+        /// The value of the field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public string Value { get; set; }
 
     }
 

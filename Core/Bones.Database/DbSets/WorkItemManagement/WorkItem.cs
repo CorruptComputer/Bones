@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.GenericItems;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,7 +13,7 @@ namespace Bones.Database.DbSets.WorkItemManagement;
 public class WorkItem
 {
     /// <summary>
-    ///     Internal ID for the WorkItem
+    ///   Internal ID for the WorkItem
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
@@ -31,6 +32,13 @@ public class WorkItem
     ///   The generic item for this work item
     /// </summary>
     public required GenericItem Item { get; set; }
+
+    /// <summary>
+    ///   The current version of the generic item this work item is using
+    /// </summary>
+    [IgnoreDataMember]
+    public GenericItemVersion? CurrentVersion => Item.Versions
+        .FirstOrDefault(x => x.Version == Item.CurrentVersion);
 
     /// <summary>
     ///   Disables viewing this item, and when safe to do so it will be removed.

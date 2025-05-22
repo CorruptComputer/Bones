@@ -85,7 +85,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
                 return CommandResponse.Fail($"Field '{fieldId}' is required, but no value was provided.");
             }
             // else if its null and not required we can just skip doing anything else
-            
+
             values.Add(workGenericItemValue);
         }
 

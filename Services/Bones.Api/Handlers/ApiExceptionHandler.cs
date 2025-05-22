@@ -15,12 +15,12 @@ public class ApiExceptionHandler : IExceptionHandler
         {
             httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
-                {
-                    Errors = new()
+            {
+                Errors = new()
                     {
                         { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE] }
                     }
-                }, cancellationToken);
+            }, cancellationToken);
 
             return true;
         }
@@ -29,24 +29,24 @@ public class ApiExceptionHandler : IExceptionHandler
         {
             httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
-                {
-                    Errors = new()
+            {
+                Errors = new()
                     {
                         { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
                     }
-                }, cancellationToken);
+            }, cancellationToken);
 
             return true;
         }
 
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
-            {
-                Errors = new()
+        {
+            Errors = new()
                 {
                     { BonesResponseBase.SERVER_ERROR_KEY, [exception.Message] }
                 }
-            }, cancellationToken);
+        }, cancellationToken);
 
         return true;
     }

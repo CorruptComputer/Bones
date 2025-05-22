@@ -186,6 +186,11 @@ public static class FrontEndUrls
         /// </summary>
         public const string CREATE_WORK_ITEM_IN_QUEUE = $"{_workItem}/create?work-item-queue-id={WORKITEM_QUEUE_ID_PLACEHOLDER}";
 
+        /// <summary>
+        ///   View work item page
+        /// </summary>
+        public const string VIEW_WORK_ITEM = $"{_workItem}/{WORKITEM_ID_PLACEHOLDER}";
+
     }
 
     /// <summary>

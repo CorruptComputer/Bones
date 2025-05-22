@@ -1,0 +1,46 @@
+﻿@attribute [Route(FrontEndUrls.WorkItem.VIEW_WORK_ITEM)]
+
+<MudText Typo="Typo.h4">View Work Item</MudText>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm>
+                @foreach (WorkItemValueModel value in _itemValues)
+                {
+                    @switch (value.ValueType)
+                    {
+                        case Bones.Api.Client.FieldType.TextField:
+                            <MudTextField T="string" Label="@value.Name" Value="@value.Value" ReadOnly />
+                            break;
+                        case Bones.Api.Client.FieldType.TextBox:
+                            <MudTextField T="string" Lines="10" Label="@value.Name" Value="@value.Value" ReadOnly />
+                            break;
+                        case Bones.Api.Client.FieldType.Integer:
+                            <MudNumericField T="long?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToInt64(value.Value))" ReadOnly />
+                            break;
+                        case Bones.Api.Client.FieldType.Decimal:
+                            <MudNumericField T="double?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToDouble(value.Value))" ReadOnly />
+                            break;
+                        case Bones.Api.Client.FieldType.Boolean:
+                            <MudCheckBox T="bool?" TriState="true" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToBoolean(value.Value))" ReadOnly />
+                            break;
+                        case Bones.Api.Client.FieldType.DateTime:
+                            <MudInputLabel>@value.Name</MudInputLabel>
+                            <MudDatePicker DateFormat="yyyy-MM-dd" Date="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().DateTime)" ReadOnly />
+                            <MudTimePicker AmPm="true" Time="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().TimeOfDay)" ReadOnly />
+                            break;
+                        case Bones.Api.Client.FieldType.ValueList:
+                            <MudSelect T="string" Label="@value.Name" Value="@value.Value" ReadOnly >
+                                <MudSelectItem Value="@value.Value">@value.Value</MudSelectItem>
+                            </MudSelect>
+                            break;
+                        default:
+                            <MudText Typo="Typo.body1">Unsupported field type: @value.ValueType</MudText>
+                            break;
+                    }
+                }
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>

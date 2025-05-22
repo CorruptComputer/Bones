@@ -1,0 +1,117 @@
+using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Shared.Backend.Enums;
+
+namespace Bones.Api.Models.WorkItems;
+
+
+/// <summary>
+///   Response for the GetWorkItemById endpoint
+/// </summary>
+[JsonSerializable(typeof(GetWorkItemByIdResponse))]
+public sealed record GetWorkItemByIdResponse
+{
+    /// <summary>
+    ///   ID of the work item
+    /// </summary>
+    public required Guid WorkItemId { get; init; }
+
+    /// <summary>
+    ///   ID of the work item queue this item belongs to
+    /// </summary>
+    public required Guid WorkItemQueueId { get; init; }
+
+    /// <summary>
+    ///   The time this item was added to the queue
+    /// </summary>
+    public required DateTimeOffset AddedToQueueDateTime { get; init; }
+
+    /// <summary>
+    ///   The ID of the generic item this work item is
+    /// </summary>
+    public required Guid GenericItemId { get; init; }
+
+    /// <summary>
+    ///   The ID of the latest version of the generic item this work item is
+    /// </summary>
+    public required Guid LatestGenericItemVersionId { get; init; }
+
+    /// <summary>
+    ///   The current version number for this work item
+    /// </summary>
+    public required int CurrentVersion { get; init; }
+
+    /// <summary>
+    ///   The name of the work item
+    /// </summary>
+    public required string Name { get; init; }
+
+    /// <summary>
+    ///   The friendly ID of the work item
+    /// </summary>
+    public required string FriendlyId { get; init; }
+
+    /// <summary>
+    ///   The time this item was created
+    /// </summary>
+    public required DateTimeOffset CreateDateTime { get; init; }
+
+    /// <summary>
+    ///   The time the latest version of this item was created
+    /// </summary>
+    public required DateTimeOffset LatestVersionCreateDateTime { get; init; }
+
+    /// <summary>
+    ///   The values for this work item
+    /// </summary>
+    public required IEnumerable<WorkItemValueModel> ItemValues { get; init; }
+
+    internal static GetWorkItemByIdResponse FromInternal(WorkItem workItem)
+    {
+        return new()
+        {
+            WorkItemId = workItem.Id,
+            WorkItemQueueId = workItem.WorkItemQueue.Id,
+            AddedToQueueDateTime = workItem.AddedToQueueDateTime,
+            GenericItemId = workItem.Item.Id,
+            LatestGenericItemVersionId = workItem.CurrentVersion?.Id ?? throw new(),
+            CurrentVersion = workItem.Item.CurrentVersion,
+            Name = workItem.Item.Name,
+            FriendlyId = workItem.Item.FriendlyId,
+            CreateDateTime = workItem.Item.CreateDateTime,
+            LatestVersionCreateDateTime = workItem.CurrentVersion?.CreateDateTime ?? throw new(),
+            ItemValues = workItem.CurrentVersion.GenericItemLayoutVersion.FieldLinks.Select(fl => new WorkItemValueModel
+            {
+                OrderNumber = fl.OrderNumber,
+                Name = fl.FieldVersion.Name,
+                ValueType = fl.FieldVersion.Type,
+                Value = workItem.CurrentVersion.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
+            })
+        };
+    }
+
+    /// <summary>
+    ///   Model for the values of a work item
+    /// </summary>
+    public sealed record WorkItemValueModel
+    {
+        /// <summary>
+        ///   The order that this field should be displayed in
+        /// </summary>
+        public required uint OrderNumber { get; init; }
+
+        /// <summary>
+        ///   The name of the field
+        /// </summary>
+        public required string Name { get; init; }
+
+        /// <summary>
+        ///   The type of the field
+        /// </summary>
+        public required FieldType ValueType { get; init; }
+
+        /// <summary>
+        ///   The value of the field
+        /// </summary>
+        public string? Value { get; init; }
+    }
+}

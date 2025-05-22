@@ -162,7 +162,7 @@ public class SetupTestProjectDb(ISender sender) : IRequestHandler<SetupTestProje
 
         for (int i = 0; i < 100; i++)
         {
-            CommandResponse testWorkItem = await sender.Send(new CreateWorkItemDb.Command($"Test Work Item {i+1}", queue.Id.Value, layout.Id.Value), cancellationToken);
+            CommandResponse testWorkItem = await sender.Send(new CreateWorkItemDb.Command($"Test Work Item {i + 1}", queue.Id.Value, layout.Id.Value), cancellationToken);
             if (testWorkItem.Id == null)
             {
                 return CommandResponse.Fail("Failed to create test work item.");

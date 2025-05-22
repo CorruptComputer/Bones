@@ -6,18 +6,19 @@
     <MudButton Href="@FrontEndUrls.WorkItem.CREATE_WORK_ITEM_IN_QUEUE.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, WorkItemQueueId.ToString())">Create Work Item in Queue</MudButton>
 </div>
 
-
 <MudPaper Class="pa-4">
     <MudTable Items="@WorkItems" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@WorkItemsLoading" LoadingProgressColor="Color.Info">
         <HeaderContent>
             <MudTh>Added to Queue At</MudTh>
             <MudTh>Friendly ID</MudTh>
             <MudTh>Name</MudTh>
+            <MudTh>View Work Item</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Added to Queue At">@context.AddedToQueueDateTime.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss tt")</MudTd>
             <MudTd DataLabel="Friendly ID">@context.FriendlyId</MudTd>
             <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="View Work Item"><MudButton Href="@FrontEndUrls.WorkItem.VIEW_WORK_ITEM.Replace(FrontEndUrls.WorkItem.WORKITEM_ID_PLACEHOLDER, context.Id.ToString())">View</MudButton></MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="@TableConsts.PageSizeOptions" />

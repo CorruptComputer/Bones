@@ -40,7 +40,7 @@ public class WorkItemController(ISender sender) : BonesControllerBase(sender)
     /// </summary>
     /// <param name="workItemQueueId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("{workItemQueueId:guid}", Name = "GetWorkItemQueueByIdAsync")]
+    [HttpGet("WorkItemQueue/{workItemQueueId:guid}", Name = "GetWorkItemQueueByIdAsync")]
     [ProducesResponseType<GetWorkItemQueueByIdResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetWorkItemQueueByIdResponse>> GetWorkItemQueueByIdAsync(Guid workItemQueueId)
@@ -53,6 +53,26 @@ public class WorkItemController(ISender sender) : BonesControllerBase(sender)
         }
 
         return GetWorkItemQueueByIdResponse.FromInternal(queue);
+    }
+
+    /// <summary>
+    ///   Gets a work item by its ID
+    /// </summary>
+    /// <param name="workItemId"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpGet("WorkItem/{workItemId:guid}", Name = "GetWorkItemByIdAsync")]
+    [ProducesResponseType<GetWorkItemByIdResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<GetWorkItemByIdResponse>> GetWorkItemByIdAsync(Guid workItemId)
+    {
+        WorkItem? item = await Sender.Send(new GetWorkItemById.Query(workItemId, await GetCurrentBonesUserAsync()));
+
+        if (item is null)
+        {
+            return NotFound();
+        }
+
+        return GetWorkItemByIdResponse.FromInternal(item);
     }
     #endregion
 

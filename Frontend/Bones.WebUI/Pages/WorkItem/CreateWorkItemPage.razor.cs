@@ -110,7 +110,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     private Dictionary<Guid, TimeSpan?> _timeSpanValues { get; set; } = [];
 
     private Dictionary<Guid, double?> _decimalValues { get; set; } = [];
-    
+
     private Dictionary<Guid, long?> _integerValues { get; set; } = [];
 
     private Dictionary<Guid, string> _stringValues { get; set; } = [];
@@ -337,7 +337,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
             foreach (KeyValuePair<Guid, DateTime?> field in _dateTimeValues)
             {
                 TimeSpan? timeSpan = _timeSpanValues[field.Key];
-                
+
                 if (field.Value.HasValue && timeSpan.HasValue)
                 {
                     values.Add(new()
@@ -394,7 +394,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
             logger.LogWarning("Creating work item with request: {@Request}", JsonSerializer.Serialize(request));
 
             await apiClient.CreateWorkItemInQueueAsync(SelectedWorkItemQueue.Value, request);
-            
+
             navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, SelectedWorkItemQueue.Value.ToString()));
         }
         catch (ApiException ex)

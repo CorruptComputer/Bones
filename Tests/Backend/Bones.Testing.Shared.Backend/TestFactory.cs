@@ -6,7 +6,6 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;

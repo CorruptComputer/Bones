@@ -1,3 +1,4 @@
+using System.Globalization;
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.MappingManagement;
 using Bones.Shared.Backend.Enums;
@@ -166,7 +167,7 @@ public class GenericItemValue
     {
         if (valueToSet is DateTimeOffset dto)
         {
-            Value = dto.ToString();
+            Value = dto.ToString(CultureInfo.InvariantCulture);
             return true;
         }
 
@@ -257,7 +258,7 @@ public class GenericItemValue
     {
         if (typeof(T) == typeof(DateTimeOffset))
         {
-            return (T?)Convert.ChangeType(Value, typeof(DateTimeOffset));
+            return (T?)Convert.ChangeType(Value, typeof(DateTimeOffset), CultureInfo.InvariantCulture);
         }
 
         throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a DateTimeOffset instead.");

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Shared.Backend.Enums;
 

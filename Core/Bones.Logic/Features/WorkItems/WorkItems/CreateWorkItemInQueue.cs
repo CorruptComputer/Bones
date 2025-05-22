@@ -1,8 +1,5 @@
-using System;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
-using Bones.Database.Operations.GenericItem;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
 using Bones.Logic.Features.WorkItems.Queue;
@@ -63,7 +60,7 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
         }
 
         CommandResponse item = await sender.Send(new CreateWorkItemDb.Command(request.Name, request.QueueId, request.WorkItemLayoutId), cancellationToken);
-        
+
         if (item.Success && item.Id is not null)
         {
             return await sender.Send(new CreateWorkItemVersionDb.Command(item.Id.Value, request.WorkItemLayoutVersionId, request.Values), cancellationToken);

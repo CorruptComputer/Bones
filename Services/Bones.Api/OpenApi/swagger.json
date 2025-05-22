@@ -2843,7 +2843,7 @@
         }
       }
     },
-    "/WorkItem/{workItemQueueId}": {
+    "/WorkItem/WorkItemQueue/{workItemQueueId}": {
       "get": {
         "tags": [
           "WorkItem"
@@ -2899,6 +2899,85 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetWorkItemQueueByIdResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/WorkItem/{workItemId}": {
+      "get": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Gets a work item by its ID",
+        "operationId": "GetWorkItemByIdAsync",
+        "parameters": [
+          {
+            "name": "workItemId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWorkItemByIdResponse"
                 }
               }
             }
@@ -3925,6 +4004,81 @@
         "additionalProperties": false,
         "description": "Response for the GetSystemAdminMaskUserConfigAsync endpoint"
       },
+      "GetWorkItemByIdResponse": {
+        "required": [
+          "addedToQueueDateTime",
+          "createDateTime",
+          "currentVersion",
+          "friendlyId",
+          "genericItemId",
+          "itemValues",
+          "latestGenericItemVersionId",
+          "latestVersionCreateDateTime",
+          "name",
+          "workItemId",
+          "workItemQueueId"
+        ],
+        "type": "object",
+        "properties": {
+          "workItemId": {
+            "type": "string",
+            "description": "ID of the work item",
+            "format": "uuid"
+          },
+          "workItemQueueId": {
+            "type": "string",
+            "description": "ID of the work item queue this item belongs to",
+            "format": "uuid"
+          },
+          "addedToQueueDateTime": {
+            "type": "string",
+            "description": "The time this item was added to the queue",
+            "format": "date-time"
+          },
+          "genericItemId": {
+            "type": "string",
+            "description": "The ID of the generic item this work item is",
+            "format": "uuid"
+          },
+          "latestGenericItemVersionId": {
+            "type": "string",
+            "description": "The ID of the latest version of the generic item this work item is",
+            "format": "uuid"
+          },
+          "currentVersion": {
+            "type": "integer",
+            "description": "The current version number for this work item",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the work item"
+          },
+          "friendlyId": {
+            "type": "string",
+            "description": "The friendly ID of the work item"
+          },
+          "createDateTime": {
+            "type": "string",
+            "description": "The time this item was created",
+            "format": "date-time"
+          },
+          "latestVersionCreateDateTime": {
+            "type": "string",
+            "description": "The time the latest version of this item was created",
+            "format": "date-time"
+          },
+          "itemValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkItemValueModel"
+            },
+            "description": "The values for this work item"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetWorkItemById endpoint"
+      },
       "GetWorkItemQueueByIdResponse": {
         "required": [
           "initiativeId",
@@ -4469,6 +4623,35 @@
         },
         "additionalProperties": false,
         "description": "Model for the work item queues to be listed in an initiative"
+      },
+      "WorkItemValueModel": {
+        "required": [
+          "name",
+          "orderNumber",
+          "valueType"
+        ],
+        "type": "object",
+        "properties": {
+          "orderNumber": {
+            "type": "integer",
+            "description": "The order that this field should be displayed in",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the field"
+          },
+          "valueType": {
+            "$ref": "#/components/schemas/FieldType"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the field",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for the values of a work item"
       }
     }
   }
