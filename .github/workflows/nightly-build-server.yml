@@ -19,15 +19,14 @@ jobs:
       
       - name: Print Commit Hash
         run: |
-          echo ${{ github.sha }}
           git rev-parse HEAD
           git rev-parse nightly
 
       - id: should_run
         continue-on-error: true
-        name: Check if the latest commit was within the last 24 hours
+        name: Check if the latest nightly commit is the same as the current commit
         if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list --after="24 hours" ${{ github.sha }}) && echo "::set-output name=should_run::false"
+        run: if [[ $(git rev-parse HEAD) == $(git rev-parse nightly) ]]; then echo "::set-output name=should_run::false"; fi
   
   server:
     name: Publish Nightly Server Builds
