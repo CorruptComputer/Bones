@@ -40,7 +40,7 @@ public class BonesUserSession
 
     /// <summary>
     ///   The date and time the session was last accessed
-    ///   TODO: at some point this should be timed out and deleted
+    ///   TODO: at some point this should be timed out and invalidated, maybe 30 days?
     /// </summary>
     public DateTimeOffset? LastAccessedDateTime { get; set; }
 
@@ -48,6 +48,8 @@ public class BonesUserSession
     ///   If the session has been invalidated
     /// </summary>
     public bool IsInvalidated { get; set; } = false;
+
+    // public DateTimeOffset? InvalidatedDateTime { get; set; }
 
     internal static void BuildTable(EntityTypeBuilder<BonesUserSession> builder)
     {

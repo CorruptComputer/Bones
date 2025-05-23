@@ -54,29 +54,39 @@ public sealed class AccountController(ISender sender) : BonesControllerBase(send
     ///   Gets or creates a session token for the user and an encryption key to be used for the session.
     ///   All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.
     ///   
-    ///   This encryption key should not be saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
+    ///   This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
     /// </summary>
     /// <param name="sessionId">The session token to use, if null a new one will be created</param>
     /// <returns></returns>
     [HttpGet("my/session", Name = "GetOrCreateMySessionAsync")]
     [ProducesResponseType<GetOrCreateMySessionResponse>(StatusCodes.Status200OK)]
-    public async ValueTask<ActionResult<GetOrCreateMySessionResponse>> GetOrCreateMySessionAsync([FromQuery] Guid? sessionId = null)
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
+    public async ValueTask<ActionResult<GetOrCreateMySessionResponse>> GetOrCreateMySessionAsync([FromQuery] string? sessionId = null)
     {
         BonesUser user = await GetCurrentBonesUserAsync();
 
-        BonesUserSession? session;
+        BonesUserSession? session = null;
         if (sessionId is null)
         {
             session = await Sender.Send(new CreateMySession.Query(RequestingIpAddress, user));
         }
         else
         {
-            session = await Sender.Send(new GetMySession.Query(sessionId.Value, RequestingIpAddress, user));
+            Guid? parsedSessionId = Guid.TryParse(sessionId, out Guid sessionIdValue) ? sessionIdValue : null;
+            if (parsedSessionId is not null)
+            {
+                session = await Sender.Send(new GetMySession.Query(parsedSessionId.Value, RequestingIpAddress, user));
+            }
+            else
+            {
+                Log.Logger.Warning("GetOrCreateMySessionAsync: SessionId was not a valid Guid: {SessionId}", sessionId);
+                // Just return not found below
+            }
         }
 
         if (session is null)
         {
-            return NotFound();
+            return NotFound(new ErrorResponse(errorMessage: "Session not found or invalidated"));
         }
 
         return GetOrCreateMySessionResponse.FromSession(session);

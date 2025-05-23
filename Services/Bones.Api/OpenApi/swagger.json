@@ -139,7 +139,7 @@
         "tags": [
           "Account"
         ],
-        "summary": "Gets or creates a session token for the user and an encryption key to be used for the session.\nAll data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.\n\nThis encryption key should not be saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.",
+        "summary": "Gets or creates a session token for the user and an encryption key to be used for the session.\nAll data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.\n\nThis encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.",
         "operationId": "GetOrCreateMySessionAsync",
         "parameters": [
           {
@@ -147,8 +147,7 @@
             "in": "query",
             "description": "The session token to use, if null a new one will be created",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -189,6 +188,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetOrCreateMySessionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }

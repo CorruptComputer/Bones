@@ -284,12 +284,12 @@ namespace Bones.Api.Client
         /// Gets or creates a session token for the user and an encryption key to be used for the session.
         /// <br/>All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.
         /// <br/>
-        /// <br/>This encryption key should not be saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
+        /// <br/>This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
         /// </summary>
         /// <param name="sessionId">The session token to use, if null a new one will be created</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<GetOrCreateMySessionResponse> GetOrCreateMySessionAsync(System.Guid? sessionId = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<GetOrCreateMySessionResponse> GetOrCreateMySessionAsync(string sessionId = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -372,6 +372,16 @@ namespace Bones.Api.Client
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Not Found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {

@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Claims;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -30,18 +31,35 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
             // This class is Singleton scoped, so we need to create a new scope for every request to get the ApiClient.
             using IServiceScope scope = serviceProvider.CreateScope();
             BonesApiClient client = scope.ServiceProvider.GetRequiredService<BonesApiClient>();
-            GetOrCreateMySessionResponse session = await client.GetOrCreateMySessionAsync(sessionId.Value, CancellationToken.None);
 
-            if (session == null)
+            try
+            {
+                GetOrCreateMySessionResponse session = await client.GetOrCreateMySessionAsync(sessionId.Value.ToString(), CancellationToken.None);
+
+                base64LocalStorageKey = session.Base64LocalStorageKey;
+                await sessionStorageService.SetItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, base64LocalStorageKey, CancellationToken.None);
+            }
+            // 404 is a definite sign its invalid
+            catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
             {
                 logger.LogWarning("Session not found or invalidated server-side, clearing local storage");
                 await localStorageService.ClearAsync(CancellationToken.None);
+                await sessionStorageService.RemoveItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 
                 return new(new());
             }
+            // anything else could be whatever, who knows. Not the best way to handle this
+            // ideally it would check if there is internet connectivity and retry when it connects
+            // PWAs can be installed for offline use, so I'd like to have that be possible since it was the entire point of encrypting localstorage
+            // but thats a later problem
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error getting session from server, clearing local storage to prevent getting stuck in a broken state");
+                await localStorageService.ClearAsync(CancellationToken.None);
+                await sessionStorageService.RemoveItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 
-            base64LocalStorageKey = session.Base64LocalStorageKey;
-            await sessionStorageService.SetItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, base64LocalStorageKey, CancellationToken.None);
+                return new(new());
+            }
         }
 
         GetMyProfileResponse? currentUser = await GetCurrentUserFromBrowserStorageAsync(base64LocalStorageKey, CancellationToken.None);
