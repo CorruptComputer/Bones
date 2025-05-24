@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- Build info -->
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <IsPackable>false</IsPackable>
+        <IsPublishable>false</IsPublishable>
+        <IsTestProject>true</IsTestProject>
+        
+        <!-- Assembly info -->
+        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
+        <Authors>Nickolas Gupton</Authors>
+        <RepositoryUrl>https://github.com/CorruptComputer/Bones</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+        <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
+        <SourceRevisionId>develop</SourceRevisionId>
+    </PropertyGroup>
+
+    <!-- This seems like it could be useful -->
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+    <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
+    <Target Condition="$(Configuration) == 'Release'" Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
+        <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8"
+              ConsoleToMSBuild="True" IgnoreExitCode="False">
+            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
+        </Exec>
+    </Target>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+        <PackageReference Include="xunit" Version="2.9.3" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Operations/GenericItem/ItemLayouts/" />
+        <Folder Include="Operations\ProjectManagement\Initiatives\" />
+        <Folder Include="Operations\ProjectManagement\Items\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Bones.Testing.UnitTests.Shared\Bones.Testing.UnitTests.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Bones.Database.UnitTests")]
-[assembly: InternalsVisibleTo("Bones.Testing.Shared.Backend")]
+[assembly: InternalsVisibleTo("Bones.Testing.UnitTests.Shared")]
