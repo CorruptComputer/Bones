@@ -487,12 +487,12 @@
       }
     },
     "/Anonymous/web-config": {
-      "post": {
+      "get": {
         "tags": [
           "Anonymous"
         ],
         "summary": "Gets the WebUI's basic configuration",
-        "operationId": "GetWebConfigAsync",
+        "operationId": "GetApiConfigAsync",
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -529,7 +529,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WebUiConfigResponse"
+                  "$ref": "#/components/schemas/ApiConfigResponse"
                 }
               }
             }
@@ -3116,6 +3116,25 @@
         ],
         "type": "string"
       },
+      "ApiConfigResponse": {
+        "required": [
+          "apiVersion",
+          "setupForTesting"
+        ],
+        "type": "object",
+        "properties": {
+          "setupForTesting": {
+            "type": "boolean",
+            "description": "Is the API setup for testing?"
+          },
+          "apiVersion": {
+            "type": "string",
+            "description": "The version for the API"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response to the GetWebConfigAsync endpoint"
+      },
       "CreateInitiativeRequest": {
         "required": [
           "name"
@@ -4587,25 +4606,6 @@
         },
         "additionalProperties": false,
         "description": "Request for the UpdateMyProfileAsync endpoint"
-      },
-      "WebUiConfigResponse": {
-        "required": [
-          "apiVersion",
-          "prefillTestUser"
-        ],
-        "type": "object",
-        "properties": {
-          "prefillTestUser": {
-            "type": "boolean",
-            "description": "Should the test user be prefilled?"
-          },
-          "apiVersion": {
-            "type": "string",
-            "description": "The version for the API"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Response to the GetWebConfigAsync endpoint"
       },
       "WorkItemQueueListModel": {
         "required": [

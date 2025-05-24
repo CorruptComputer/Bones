@@ -868,7 +868,7 @@ namespace Bones.Api.Client
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<WebUiConfigResponse> GetWebConfigAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<ApiConfigResponse> GetApiConfigAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -876,8 +876,7 @@ namespace Bones.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     var urlBuilder_ = new System.Text.StringBuilder();
@@ -940,7 +939,7 @@ namespace Bones.Api.Client
                         else
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<WebUiConfigResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ApiConfigResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -5169,6 +5168,29 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
+    /// Response to the GetWebConfigAsync endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record ApiConfigResponse
+    {
+        /// <summary>
+        /// Is the API setup for testing?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("setupForTesting")]
+        public bool SetupForTesting { get; set; }
+
+        /// <summary>
+        /// The version for the API
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("apiVersion")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string ApiVersion { get; set; }
+
+    }
+
+    /// <summary>
     /// Request to create a new initiative
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6931,29 +6953,6 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonPropertyName("displayName")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DisplayName { get; set; }
-
-    }
-
-    /// <summary>
-    /// Response to the GetWebConfigAsync endpoint
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record WebUiConfigResponse
-    {
-        /// <summary>
-        /// Should the test user be prefilled?
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("prefillTestUser")]
-        public bool PrefillTestUser { get; set; }
-
-        /// <summary>
-        /// The version for the API
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("apiVersion")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string ApiVersion { get; set; }
 
     }
 

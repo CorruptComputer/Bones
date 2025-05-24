@@ -52,7 +52,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
     /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
-        _apiVersion = (await configProvider.GetWebUiConfigAsync(default)).ApiVersion;
+        _apiVersion = (await configProvider.GetApiConfigAsync(default)).ApiVersion;
 
         await UpdateProjectList();
 

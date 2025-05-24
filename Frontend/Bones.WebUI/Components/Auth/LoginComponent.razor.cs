@@ -21,16 +21,20 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        WebUiConfigResponse config = await configurationProvider.GetWebUiConfigAsync(CancellationToken.None);
-        if (firstRender && config.PrefillTestUser)
+        if (firstRender)
         {
-            logger.LogInformation("Prefilling test user");
+            ApiConfigResponse config = await configurationProvider.GetApiConfigAsync(default);
 
-            LoginForm.Email = "user@example.com";
-            LoginForm.Password = "Example1!";
-            PrefillTestUser = true;
+            if (config.SetupForTesting)
+            {
+                logger.LogInformation("Prefilling test user");
 
-            StateHasChanged();
+                LoginForm.Email = "user@example.com";
+                LoginForm.Password = "Example1!";
+                PrefillTestUser = true;
+
+                StateHasChanged();
+            }
         }
     }
 

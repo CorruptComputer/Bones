@@ -3,14 +3,14 @@ namespace Bones.Api.Models.Anonymous;
 /// <summary>
 ///   Response to the GetWebConfigAsync endpoint
 /// </summary>
-[JsonSerializable(typeof(WebUiConfigResponse))]
-public sealed record WebUiConfigResponse
+[JsonSerializable(typeof(ApiConfigResponse))]
+public sealed record ApiConfigResponse
 {
     /// <summary>
-    ///   Should the test user be prefilled?
+    ///   Is the API setup for testing?
     /// </summary>
     [JsonRequired]
-    public required bool PrefillTestUser { get; init; }
+    public required bool SetupForTesting { get; init; }
 
     /// <summary>
     ///   The version for the API

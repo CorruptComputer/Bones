@@ -94,13 +94,13 @@ public sealed class AnonymousController(ISender sender, BonesBackendConfiguratio
     ///   Gets the WebUI's basic configuration
     /// </summary>
     /// <returns></returns>
-    [HttpPost("web-config", Name = "GetWebConfigAsync")]
-    [ProducesResponseType<WebUiConfigResponse>(StatusCodes.Status200OK)]
-    public ActionResult<WebUiConfigResponse> GetWebConfigAsync()
+    [HttpGet("web-config", Name = "GetApiConfigAsync")]
+    [ProducesResponseType<ApiConfigResponse>(StatusCodes.Status200OK)]
+    public ActionResult<ApiConfigResponse> GetApiConfigAsync()
     {
-        return new WebUiConfigResponse()
+        return new ApiConfigResponse()
         {
-            PrefillTestUser = config.SetupForTesting,
+            SetupForTesting = config.SetupForTesting,
             ApiVersion = Assembly.GetEntryAssembly()?
                                  .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                                  // For example: 0.0.1+b9d1873a

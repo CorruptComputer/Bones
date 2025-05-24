@@ -1,31 +1,31 @@
 namespace Bones.WebUI.Infrastructure;
 
 /// <summary>
-///   Handles storing and retrieving the configuration for the web UI.
+///   Handles storing and retrieving the configurations for the web UI.
 /// </summary>
 /// <param name="sessionStorageService"></param>
 /// <param name="apiClient"></param>
 public class BonesConfigurationProvider(SessionStorageService sessionStorageService, BonesApiClient apiClient)
 {
     /// <summary>
-    ///   The sessionStorage key for the web UI configuration
+    ///   The sessionStorage key for the API configuration
     /// </summary>
-    public const string WEB_UI_CONFIG_KEY = "WebUiConfig";
+    public const string API_CONFIG_KEY = "ApiConfig";
 
     /// <summary>
-    ///   Gets the web UI configuration from sessionStorage
+    ///   Gets the API configuration from sessionStorage or the API if its not cached locally.
+    ///   This API configuration is a temporary solution as the current values are only really there for testing purposes.
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async Task<WebUiConfigResponse> GetWebUiConfigAsync(CancellationToken cancellationToken)
+    public async Task<ApiConfigResponse> GetApiConfigAsync(CancellationToken cancellationToken)
     {
-        WebUiConfigResponse? config = await sessionStorageService.GetItemAsync<WebUiConfigResponse>(WEB_UI_CONFIG_KEY, cancellationToken);
+        ApiConfigResponse? config = await sessionStorageService.GetItemAsync<ApiConfigResponse>(API_CONFIG_KEY, cancellationToken);
 
         if (config == null)
         {
-            config = await apiClient.GetWebConfigAsync(cancellationToken);
-
-            await sessionStorageService.SetItemAsync(WEB_UI_CONFIG_KEY, config, cancellationToken);
+            config = await apiClient.GetApiConfigAsync(cancellationToken);
+            await sessionStorageService.SetItemAsync(API_CONFIG_KEY, config, cancellationToken);
         }
 
         return config;

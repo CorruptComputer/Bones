@@ -12,7 +12,8 @@ namespace Bones.WebUI.Infrastructure;
 /// <param name="sessionStorageService"></param>
 /// <param name="logger"></param>
 /// <param name="serviceProvider"></param>
-public class BonesAuthenticationStateProvider(LocalStorageService localStorageService, SessionStorageService sessionStorageService, ILogger<BonesAuthenticationStateProvider> logger, IServiceProvider serviceProvider) : AuthenticationStateProvider
+public class BonesAuthenticationStateProvider(LocalStorageService localStorageService, SessionStorageService sessionStorageService,
+                                              ILogger<BonesAuthenticationStateProvider> logger, IServiceProvider serviceProvider) : AuthenticationStateProvider
 {
     /// <inheritdoc />
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -43,6 +44,15 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
             catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
             {
                 logger.LogWarning("Session not found or invalidated server-side, clearing local storage");
+                await localStorageService.ClearAsync(CancellationToken.None);
+                await sessionStorageService.RemoveItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+
+                return new(new());
+            }
+            // 401 means the token is invalid, which means they'll need to get a new session on login
+            catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.Unauthorized)
+            {
+                logger.LogWarning("Token is invalid, clearing local storage");
                 await localStorageService.ClearAsync(CancellationToken.None);
                 await sessionStorageService.RemoveItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 

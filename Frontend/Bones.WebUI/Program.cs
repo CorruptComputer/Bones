@@ -22,6 +22,17 @@ public static class Program
     public static async Task Main(string[] args)
     {
         WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+        if (builder.HostEnvironment.IsDevelopment())
+        {
+            Console.WriteLine("Debug logging is enabled");
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+        }
+        else
+        {
+            builder.Logging.SetMinimumLevel(LogLevel.Warning);
+        }
+
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
