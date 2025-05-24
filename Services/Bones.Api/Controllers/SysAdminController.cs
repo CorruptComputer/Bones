@@ -1,3 +1,4 @@
+using Bones.Api.Controllers.Base;
 using Bones.Api.Models.SysAdmin;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.System.SystemSettings.Models;
@@ -12,7 +13,7 @@ namespace Bones.Api.Controllers;
 ///   Handles SysAdmin stuffs
 /// </summary>
 [Authorize(Roles = SystemRoles.SYSTEM_ADMINISTRATORS)]
-public class SysAdminController(ISender sender) : BonesControllerBase(sender)
+public class SysAdminController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     #region GET
     /// <summary>

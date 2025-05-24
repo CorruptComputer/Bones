@@ -1,3 +1,4 @@
+using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Account;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.Audit;
@@ -14,7 +15,7 @@ namespace Bones.Api.Controllers;
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
 /// </remarks>
-public sealed class AccountController(ISender sender) : BonesControllerBase(sender)
+public sealed class AccountController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     /// <summary>
     ///   Returns a users own full profile info

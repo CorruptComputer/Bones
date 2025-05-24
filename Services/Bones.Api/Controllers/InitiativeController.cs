@@ -1,3 +1,4 @@
+using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Initiatives;
 using Bones.Api.Models.Project;
 using Bones.Database.DbSets.AccountManagement;
@@ -12,7 +13,7 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to Managing Initiatives
 /// </summary>
 /// <param name="sender">MediatR sender</param>
-public sealed class InitiativeController(ISender sender) : BonesControllerBase(sender)
+public sealed class InitiativeController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     #region GET
     /// <summary>

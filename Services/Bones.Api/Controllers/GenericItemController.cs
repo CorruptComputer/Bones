@@ -1,3 +1,4 @@
+using Bones.Api.Controllers.Base;
 using Bones.Api.Models.GenericItem;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Logic.Features.GenericItem;
@@ -9,7 +10,7 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to Managing Generic Items
 /// </summary>
 /// <param name="sender">MediatR sender</param>
-public sealed class GenericItemController(ISender sender) : BonesControllerBase(sender)
+public sealed class GenericItemController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     /// <summary>
     ///     Gets the latest version of a field

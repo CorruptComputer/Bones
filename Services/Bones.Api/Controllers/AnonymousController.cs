@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Anonymous;
 using Bones.Logic.Features.Accounts;
 using Bones.Logic.Features.System;
@@ -23,14 +24,14 @@ public sealed class AnonymousController(ISender sender, BonesBackendConfiguratio
     /// <returns>200 OK if created, 400 BadRequest otherwise with the reason why its failing</returns>
     [HttpPost("register", Name = "RegisterAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<EmptyResponse>> RegisterAsync([FromBody] RegisterUserApiRequest registration)
     {
         QueryResponse<IdentityResult> result = await Sender.Send(new RegisterUser.Query(registration.Email, registration.Password));
 
         if (!result.Success || !(result.Result?.Succeeded ?? false))
         {
-            return BadRequest(ReadErrorsFromIdentityResult(result.Result ?? IdentityResult.Failed()));
+            return BadRequest(ErrorResponse.FromIdentityResult(result.Result ?? IdentityResult.Failed()));
         }
 
         return EmptyResponse.Value;

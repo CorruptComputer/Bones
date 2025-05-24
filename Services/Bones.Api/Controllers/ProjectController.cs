@@ -5,6 +5,7 @@ using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Api.Models.Project;
 using Bones.Logic.Features.GenericItem;
+using Bones.Api.Controllers.Base;
 
 namespace Bones.Api.Controllers;
 
@@ -12,7 +13,7 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to Managing Projects
 /// </summary>
 /// <param name="sender">MediatR sender</param>
-public sealed class ProjectController(ISender sender) : BonesControllerBase(sender)
+public sealed class ProjectController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     #region GET
     /// <summary>

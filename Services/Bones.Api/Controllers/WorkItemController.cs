@@ -1,3 +1,4 @@
+using Bones.Api.Controllers.Base;
 using Bones.Api.Models.WorkItems;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
@@ -13,7 +14,7 @@ namespace Bones.Api.Controllers;
 ///   Handles work items
 /// </summary>
 /// <param name="sender"></param>
-public class WorkItemController(ISender sender) : BonesControllerBase(sender)
+public class WorkItemController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     #region GET
     /// <summary>

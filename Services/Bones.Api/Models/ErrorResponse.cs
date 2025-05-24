@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace Bones.Api.Models;
 
 /// <summary>
@@ -38,6 +40,30 @@ public sealed record ErrorResponse
     /// <param name="failedQueryResponse"></param>
     /// <returns></returns>
     public static ErrorResponse FromQueryResponse<T>(QueryResponse<T> failedQueryResponse) => new(failedQueryResponse.FailureReasons);
+
+    /// <summary>
+    ///   Gets the errors from an IdentityResult in a format that we can return.
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public static ErrorResponse FromIdentityResult(IdentityResult result)
+    {
+        Dictionary<string, List<string>> errors = [];
+
+        foreach (IdentityError error in result.Errors)
+        {
+            if (errors.ContainsKey(error.Code))
+            {
+                errors[error.Code].Add(error.Description);
+            }
+            else
+            {
+                errors[error.Code] = [error.Description];
+            }
+        }
+
+        return new(errors);
+    }
 
     /// <summary>
     ///   The errors that occurred, with the key being either the input that was invalid and the list of reasons it was invalid, or 'server' with the list of server errors.

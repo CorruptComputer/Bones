@@ -1,3 +1,4 @@
+using System.Net;
 using System.Reflection;
 using Bones.Shared.Consts;
 using Bones.WebUI.Infrastructure;
@@ -89,15 +90,16 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
         {
             List<GetProjectQuickSelectResponse> projects = await apiClient.GetProjectQuickSelectAsync();
 
-            Projects = [];
-            foreach (GetProjectQuickSelectResponse proj in projects)
+            Projects = [.. projects.Select(proj => new ProjectDropDownModel
             {
-                Projects.Add(new()
-                {
-                    ProjectId = proj.ProjectId,
-                    ProjectName = proj.ProjectName
-                });
-            }
+                ProjectId = proj.ProjectId,
+                ProjectName = proj.ProjectName
+            })];
+        }
+        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.Unauthorized)
+        {
+            // Skip doing anything else since we'll get redirected to the login page anyway
+            return;
         }
         catch (Exception ex)
         {
