@@ -1,11 +1,11 @@
-using System.Globalization;
+using System.Net;
 
 namespace Bones.WebUI.Pages.WorkItem;
 
 /// <summary>
 ///   Page for viewing a work item
 /// </summary>
-public partial class ViewWorkItemPage(BonesApiClient apiClient, ILogger<ViewWorkItemPage> logger) : ComponentBase
+public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManager navManager, ILogger<ViewWorkItemPage> logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the work item to load in this dashboard
@@ -53,21 +53,17 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, ILogger<ViewWork
             if (workItemResponse is not null)
             {
                 _itemValues = workItemResponse.ItemValues.OrderBy(x => x.OrderNumber);
-
-                foreach (WorkItemValueModel itemValue in _itemValues)
-                {
-                    if (itemValue.ValueType == FieldType.DateTime)
-                    {
-                        logger.LogWarning(DateTimeOffset.Parse(itemValue.Value, CultureInfo.InvariantCulture).ToLocalTime().ToString(CultureInfo.CurrentCulture));
-                    }
-                }
             }
+        }
+        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+        {
+            logger.LogWarning("Work item with ID {WorkItemId} not found, redirecting to home", WorkItemId);
+            navManager.NavigateTo("/");
         }
         catch (Exception e)
         {
             logger.LogError(e, "Error fetching work item with ID {WorkItemId}", WorkItemId);
             ApiError = true;
         }
-
     }
 }

@@ -8,14 +8,21 @@ namespace Bones.Api.Models;
 public sealed record ErrorResponse
 {
     /// <summary>
-    ///   Creates an error response
+    ///   Creates an error response with an optional message
+    /// </summary>
+    /// <param name="errorMessage"></param>
+    public ErrorResponse(string? errorMessage = null)
+    {
+        ErrorMessage = errorMessage;
+    }
+
+    /// <summary>
+    ///   Creates an error response from a dictionary of errors
     /// </summary>
     /// <param name="errors"></param>
-    /// <param name="errorMessage"></param>
-    public ErrorResponse(Dictionary<string, List<string>>? errors = null, string? errorMessage = null)
+    public ErrorResponse(Dictionary<string, List<string>>? errors)
     {
         Errors = errors;
-        ErrorMessage = errorMessage;
     }
 
     /// <summary>

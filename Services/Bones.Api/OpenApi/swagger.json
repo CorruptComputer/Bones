@@ -2833,18 +2833,12 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2912,18 +2906,12 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2991,18 +2979,12 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3086,13 +3068,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }

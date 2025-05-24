@@ -5,6 +5,7 @@ using Bones.Logic.Features.GenericItem;
 using Bones.Logic.Features.WorkItems.Queue;
 using Bones.Logic.Features.WorkItems.WorkItems;
 using Bones.Shared.Backend.Enums;
+using Bones.Shared.Exceptions;
 
 namespace Bones.Api.Controllers;
 
@@ -22,14 +23,14 @@ public class WorkItemController(ISender sender) : BonesControllerBase(sender)
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("{workItemQueueId:guid}/dashboard", Name = "GetWorkItemQueueDashboardAsync")]
     [ProducesResponseType<GetWorkItemQueueDashboardResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
     public async ValueTask<ActionResult<GetWorkItemQueueDashboardResponse>> GetWorkItemQueueDashboardAsync(Guid workItemQueueId)
     {
         WorkItemQueue? queue = await Sender.Send(new GetWorkItemQueueById.Query(workItemQueueId, await GetCurrentBonesUserAsync()));
 
         if (queue is null)
         {
-            return BadRequest("Queue not found");
+            return NotFound(new ErrorResponse());
         }
 
         return GetWorkItemQueueDashboardResponse.FromInternal(queue);
@@ -42,14 +43,14 @@ public class WorkItemController(ISender sender) : BonesControllerBase(sender)
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("WorkItemQueue/{workItemQueueId:guid}", Name = "GetWorkItemQueueByIdAsync")]
     [ProducesResponseType<GetWorkItemQueueByIdResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
     public async ValueTask<ActionResult<GetWorkItemQueueByIdResponse>> GetWorkItemQueueByIdAsync(Guid workItemQueueId)
     {
         WorkItemQueue? queue = await Sender.Send(new GetWorkItemQueueById.Query(workItemQueueId, await GetCurrentBonesUserAsync()));
 
         if (queue is null)
         {
-            return BadRequest("Queue not found");
+            return BadRequest(new ErrorResponse());
         }
 
         return GetWorkItemQueueByIdResponse.FromInternal(queue);
@@ -62,14 +63,14 @@ public class WorkItemController(ISender sender) : BonesControllerBase(sender)
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("WorkItem/{workItemId:guid}", Name = "GetWorkItemByIdAsync")]
     [ProducesResponseType<GetWorkItemByIdResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
     public async ValueTask<ActionResult<GetWorkItemByIdResponse>> GetWorkItemByIdAsync(Guid workItemId)
     {
         WorkItem? item = await Sender.Send(new GetWorkItemById.Query(workItemId, await GetCurrentBonesUserAsync()));
 
         if (item is null)
         {
-            return NotFound();
+            return NotFound(new ErrorResponse());
         }
 
         return GetWorkItemByIdResponse.FromInternal(item);
@@ -85,13 +86,13 @@ public class WorkItemController(ISender sender) : BonesControllerBase(sender)
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpPost("{workItemQueueId:guid}/create-work-item", Name = "CreateWorkItemInQueueAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateWorkItemInQueueAsync(Guid workItemQueueId, [FromBody] CreateWorkItemRequest request)
     {
         GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(request.WorkItemLayoutId, await GetCurrentBonesUserAsync()));
         if (layout?.CurrentVersion is null)
         {
-            return BadRequest("Layout not found");
+            return BadRequest(new ErrorResponse("Layout not found"));
         }
 
         Dictionary<Guid, object?> fieldValues = [];
@@ -114,16 +115,21 @@ public class WorkItemController(ISender sender) : BonesControllerBase(sender)
 
             if (value is null && fieldVersion.IsRequired)
             {
-                return BadRequest($"Field {fieldVersion.Name} is required");
+                return BadRequest(new ErrorResponse($"Field {fieldVersion.Name} is required"));
             }
 
             fieldValues.Add(fieldVersion.Id, value);
         }
 
-        CommandResponse? result = await Sender.Send(new CreateWorkItemInQueue.Command(request.Name, workItemQueueId, layout.Id, layout.CurrentVersion.Id, fieldValues, await GetCurrentBonesUserAsync()));
-        if (result is null || !result.Id.HasValue)
+        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(request.Name, workItemQueueId, layout.Id, layout.CurrentVersion.Id, fieldValues, await GetCurrentBonesUserAsync()));
+        if (!result.Success)
         {
-            return BadRequest(result?.FailureReasons);
+            return BadRequest(ErrorResponse.FromCommandResponse(result));
+        }
+
+        if (!result.Id.HasValue)
+        {
+            throw new BonesException("No ID returned from command: CreateWorkItemInQueue.Command");
         }
 
         return result.Id.Value;
