@@ -77,16 +77,11 @@ public sealed class AccountController(ISender sender) : BonesControllerBase(send
             {
                 session = await Sender.Send(new GetMySession.Query(parsedSessionId.Value, RequestingIpAddress, user));
             }
-            else
-            {
-                Log.Logger.Warning("GetOrCreateMySessionAsync: SessionId was not a valid Guid: {SessionId}", sessionId);
-                // Just return not found below
-            }
         }
 
         if (session is null)
         {
-            return NotFound(new ErrorResponse(errorMessage: "Session not found or invalidated"));
+            return NotFound(new ErrorResponse("Session not found or invalidated"));
         }
 
         return GetOrCreateMySessionResponse.FromSession(session);
