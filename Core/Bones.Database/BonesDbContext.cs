@@ -9,6 +9,7 @@ using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.System;
 using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Database.Operations.System;
 using Bones.Shared.Exceptions;
 using GeoJSON.Text.Feature;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -101,18 +102,26 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     }
 
     /// <summary>
-    ///     Configure which database to use: PostgreSQL in most cases, in-memory DB for unit tests.
+    ///   Configure which database to use: PostgreSQL in most cases, in-memory DB for unit tests.
     /// </summary>
     /// <param name="optionsBuilder"></param>
     /// <exception cref="BonesException"></exception>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Should only be used for unit testing
+        // Should only be used for unit/integration testing
         if (backendConfig.UseInMemoryDb)
         {
+            Log.Warning("Using in-memory database, this should only be used for unit/integration tests.");
+
+            Guid inMemoryDbId = backendConfig.InMemoryDbId ?? Guid.NewGuid();
+
             // Name needs to be unique, else the tests will clobber each other
-            optionsBuilder.UseInMemoryDatabase($"BonesInMemoryDb-{Guid.NewGuid()}",
-                options => { options.EnableNullChecks(); });
+            optionsBuilder.UseInMemoryDatabase($"BonesInMemoryDb-{inMemoryDbId}",
+                options =>
+                {
+                    options.EnableNullChecks();
+                }
+            );
         }
         else
         {
@@ -121,17 +130,19 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
                 throw new BonesException("BonesBackendConfiguration:DatabaseConnectionString is missing.");
             }
 
-            optionsBuilder.UseNpgsql(backendConfig.DatabaseConnectionString, options =>
-            {
-                options.MigrationsHistoryTable("__EFMigrationsHistory", "System");
-                options.MigrationsAssembly(typeof(BonesDbContext).Assembly.FullName);
-                options.EnableRetryOnFailure();
-            });
+            optionsBuilder.UseNpgsql(backendConfig.DatabaseConnectionString,
+                options =>
+                {
+                    options.MigrationsHistoryTable("__EFMigrationsHistory", "System");
+                    options.MigrationsAssembly(typeof(BonesDbContext).Assembly.FullName);
+                    options.EnableRetryOnFailure();
+                }
+            );
         }
     }
 
     /// <summary>
-    ///     Create models
+    ///   Create models
     /// </summary>
     /// <param name="builder"></param>
     protected override void OnModelCreating(ModelBuilder builder)

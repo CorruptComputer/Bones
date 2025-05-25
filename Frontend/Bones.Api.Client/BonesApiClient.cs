@@ -6,10 +6,20 @@ namespace Bones.Api.Client;
 /// <summary>
 ///   The client for the Bones API.
 /// </summary>
-/// <param name="httpClientFactory"></param>
-public class BonesApiClient(IHttpClientFactory httpClientFactory)
-    : AutoGenBonesApiClient(httpClientFactory.CreateClient(HTTP_CLIENT_NAME))
+public class BonesApiClient : AutoGenBonesApiClient
 {
+    /// <summary>
+    ///   Create an instance with a preconfigured <see cref="HttpClient"/>.
+    /// </summary>
+    /// <param name="httpClient"></param>
+    public BonesApiClient(HttpClient httpClient) : base(httpClient) { }
+
+    /// <summary>
+    ///   Create an instance with a preconfigured <see cref="HttpClient"/> from the <see cref="IHttpClientFactory"/>
+    /// </summary>
+    /// <param name="httpClientFactory"></param>
+    public BonesApiClient(IHttpClientFactory httpClientFactory) : base(httpClientFactory.CreateClient(HTTP_CLIENT_NAME)) { }
+
     /// <summary>
     ///   The name of the client as registered in the IHttpClientFactory
     /// </summary>

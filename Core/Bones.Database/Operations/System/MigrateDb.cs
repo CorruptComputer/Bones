@@ -13,7 +13,10 @@ public sealed class MigrateDb(BonesDbContext dbContext, BonesBackendConfiguratio
     {
         if (config.UseInMemoryDb)
         {
-            Log.Information("Using in-memory database, no migrations needed.");
+            Log.Warning("Using in-memory database, clearing it. This should only be used for unit/integration tests.");
+
+            await dbContext.Database.EnsureDeletedAsync(cancellationToken);
+            await dbContext.Database.EnsureCreatedAsync(cancellationToken);
 
             return CommandResponse.Pass();
         }

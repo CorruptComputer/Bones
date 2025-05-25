@@ -20,19 +20,11 @@ internal static class TestFactory
     {
         IServiceProvider provider = GetTestServiceProvider();
 
-        ClearInMemoryDb(provider.GetRequiredService<BonesDbContext>());
-
         ISender sender = provider.GetRequiredService<ISender>();
 
         sender.Send(new SetupDb.Command()).Wait();
 
         return sender;
-    }
-
-    private static void ClearInMemoryDb(BonesDbContext dbContext)
-    {
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
     }
 
     private static IServiceProvider GetTestServiceProvider()
@@ -52,7 +44,8 @@ internal static class TestFactory
 
         BonesBackendConfiguration config = new()
         {
-            UseInMemoryDb = true
+            UseInMemoryDb = true,
+            InMemoryDbId = Guid.NewGuid()
         };
 
         hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());

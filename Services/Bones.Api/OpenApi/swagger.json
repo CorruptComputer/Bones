@@ -3261,8 +3261,15 @@
       },
       "EmptyResponse": {
         "type": "object",
+        "properties": {
+          "workaround": {
+            "type": "string",
+            "description": "Without something in the body the API client will not generate anything for this type.\nDon't actually have to put anything in it.",
+            "nullable": true
+          }
+        },
         "additionalProperties": false,
-        "description": "The response body is empty, this is a workaround for the limitations of the API client."
+        "description": "This is a workaround for the limitations of the API client."
       },
       "ErrorResponse": {
         "type": "object",

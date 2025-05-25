@@ -8,6 +8,7 @@ using Bones.Shared.Extensions;
 using System.Text.Json;
 using System.Reflection;
 using Bones.Shared.Backend.Extensions;
+using Bones.Database.Operations.System;
 
 namespace Bones.Api;
 
@@ -98,7 +99,14 @@ public static class Program
 
     private static async Task RunBonesApiAsync(this WebApplication app)
     {
-        using IServiceScope scope = app.Services.CreateScope();
+        // When using an in-memory db the API needs to setup the database itself, since the background service is in another process
+        if (config?.UseInMemoryDb ?? false)
+        {
+            using IServiceScope scope = app.Services.CreateScope();
+            ISender sender = scope.ServiceProvider.GetRequiredService<ISender>();
+            await sender.Send(new SetupDb.Command());
+        }
+
         string[] corsAllowedOrigins = config?.CorsAllowedOrigins
             ?? throw new BonesException("BonesBackendConfiguration:CorsAllowedOrigins missing from appsettings.");
 
