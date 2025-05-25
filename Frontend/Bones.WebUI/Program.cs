@@ -70,7 +70,7 @@ public static class Program
             .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
             .AddHttpMessageHandler<ForbiddenDelegatingHandler>();
 
-        builder.Services.AddTransient<BonesApiClient>();
+        builder.Services.AddTransient<BonesApiClient>(provider => new BonesApiClient(provider.GetRequiredService<IHttpClientFactory>()));
 
         await builder.Build().RunAsync();
     }
