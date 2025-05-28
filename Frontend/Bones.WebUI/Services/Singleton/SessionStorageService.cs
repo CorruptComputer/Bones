@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.JSInterop;
 
-namespace Bones.WebUI.Infrastructure;
+namespace Bones.WebUI.Services.Singleton;
 
 /// <summary>
 ///   Handles all the info in sessionStorage (deleted when the browser is closed)
@@ -9,11 +9,6 @@ namespace Bones.WebUI.Infrastructure;
 /// <param name="jsRuntime"></param>
 public class SessionStorageService(IJSRuntime jsRuntime)
 {
-    /// <summary>
-    ///   The sessionStorage key for localStorage encryption key
-    /// </summary>
-    public const string BASE64_LOCALSTORAGE_KEY = "Base64LocalStorageKey";
-
     /// <summary>
     ///   Gets the specified value from sessionStorage
     /// </summary>

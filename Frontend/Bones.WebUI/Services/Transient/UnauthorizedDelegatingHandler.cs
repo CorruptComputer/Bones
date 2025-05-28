@@ -1,4 +1,6 @@
-namespace Bones.WebUI.Infrastructure;
+using Bones.WebUI.Services.Singleton;
+
+namespace Bones.WebUI.Services.Transient;
 
 /// <summary>
 ///   Handles unauthorized responses from the API

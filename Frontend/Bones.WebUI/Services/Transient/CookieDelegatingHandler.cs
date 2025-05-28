@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
-namespace Bones.WebUI.Infrastructure;
+namespace Bones.WebUI.Services.Transient;
 
 /// <summary>
 ///   Sets the cookie on the headers of requests going to the API

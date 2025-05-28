@@ -1,9 +1,10 @@
 using System.Text.Json;
+using Bones.WebUI.Consts;
 using Bones.WebUI.SubtleCrypto;
 using Bones.WebUI.SubtleCrypto.Models;
 using Microsoft.JSInterop;
 
-namespace Bones.WebUI.Infrastructure;
+namespace Bones.WebUI.Services.Singleton;
 
 /// <summary>
 ///   Handles all the info in localStorage (semi-persistent)
@@ -11,16 +12,6 @@ namespace Bones.WebUI.Infrastructure;
 /// <param name="jsRuntime"></param>
 public sealed class LocalStorageService(IJSRuntime jsRuntime)
 {
-    /// <summary>
-    ///   The localStorage key for the current users basic info
-    /// </summary>
-    public const string CURRENT_USER_KEY = "MyBasicInfoResponse";
-
-    /// <summary>
-    ///   The localStorage key for the current users session id
-    /// </summary>
-    public const string SESSION_ID_KEY = "SessionId";
-
     /// <summary>
     ///   Gets the specified value from localStorage
     /// </summary>
@@ -32,7 +23,7 @@ public sealed class LocalStorageService(IJSRuntime jsRuntime)
     public async Task<T?> GetItemAsync<T>(string key, string base64LocalStorageKey, CancellationToken cancellationToken)
     {
         // This is the only one not encrypted, needs to be read to get the encryption key to read the rest
-        if (key == SESSION_ID_KEY)
+        if (key == LocalStorageConsts.SESSION_ID_KEY)
         {
             string? sessionId = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", cancellationToken, key);
             return sessionId == null
@@ -77,7 +68,7 @@ public sealed class LocalStorageService(IJSRuntime jsRuntime)
     public async Task<bool> SetItemAsync<T>(string key, T value, string base64LocalStorageKey, CancellationToken cancellationToken)
     {
         // This is the only one not encrypted, needs to be read to get the encryption key to read the rest
-        if (key == SESSION_ID_KEY)
+        if (key == LocalStorageConsts.SESSION_ID_KEY)
         {
             await jsRuntime.InvokeVoidAsync("localStorage.setItem", cancellationToken, key, JsonSerializer.Serialize(value));
             return true;

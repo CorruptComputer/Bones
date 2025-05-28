@@ -1,7 +1,7 @@
 using System.Net;
 using System.Reflection;
 using Bones.Shared.Consts;
-using Bones.WebUI.Infrastructure;
+using Bones.WebUI.Services.Singleton;
 using MudBlazor;
 using MudExtensions;
 

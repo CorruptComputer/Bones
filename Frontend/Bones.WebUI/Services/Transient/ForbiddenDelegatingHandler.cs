@@ -1,6 +1,6 @@
 using Bones.Shared.Consts;
 
-namespace Bones.WebUI.Infrastructure;
+namespace Bones.WebUI.Services.Transient;
 
 /// <summary>
 ///   Handles forbidden responses from the API

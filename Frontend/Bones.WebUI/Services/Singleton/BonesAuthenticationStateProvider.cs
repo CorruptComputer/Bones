@@ -1,9 +1,10 @@
 using System.Net;
 using System.Security.Claims;
 using Bones.Shared.Consts;
+using Bones.WebUI.Consts;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Bones.WebUI.Infrastructure;
+namespace Bones.WebUI.Services.Singleton;
 
 /// <summary>
 ///   Provides the state of authentication
@@ -15,46 +16,48 @@ namespace Bones.WebUI.Infrastructure;
 public class BonesAuthenticationStateProvider(LocalStorageService localStorageService, SessionStorageService sessionStorageService,
                                               ILogger<BonesAuthenticationStateProvider> logger, IServiceProvider serviceProvider) : AuthenticationStateProvider
 {
+    // This class is Singleton scoped, so we need to create a new scope for every request to get the ApiClient.
+    // Ideally each method should really only need to use this once, but the performance hit for multiple should be negligible
+    private BonesApiClient ApiClient => serviceProvider.CreateScope().ServiceProvider.GetRequiredService<BonesApiClient>();
+
     /// <inheritdoc />
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        string? base64LocalStorageKey = await sessionStorageService.GetItemAsync<string>(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+        string? base64LocalStorageKey = await sessionStorageService.GetItemAsync<string>(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 
         if (base64LocalStorageKey == null)
         {
-            Guid? sessionId = await localStorageService.GetItemAsync<Guid?>(LocalStorageService.SESSION_ID_KEY, string.Empty, CancellationToken.None);
+            Guid? sessionId = await localStorageService.GetItemAsync<Guid?>(LocalStorageConsts.SESSION_ID_KEY, string.Empty, CancellationToken.None);
             if (sessionId == null)
             {
                 logger.LogInformation("No session ID found in local storage");
                 return new(new());
             }
 
-            // This class is Singleton scoped, so we need to create a new scope for every request to get the ApiClient.
-            using IServiceScope scope = serviceProvider.CreateScope();
-            BonesApiClient client = scope.ServiceProvider.GetRequiredService<BonesApiClient>();
-
             try
             {
-                GetOrCreateMySessionResponse session = await client.GetOrCreateMySessionAsync(sessionId.Value.ToString(), CancellationToken.None);
+                GetOrCreateMySessionResponse session = await ApiClient.GetOrCreateMySessionAsync(sessionId.Value.ToString(), CancellationToken.None);
 
                 base64LocalStorageKey = session.Base64LocalStorageKey;
-                await sessionStorageService.SetItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, base64LocalStorageKey, CancellationToken.None);
+                await sessionStorageService.SetItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, base64LocalStorageKey, CancellationToken.None);
             }
-            // 404 is a definite sign its invalid
+            // 404 is a definite sign the session invalid
             catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
             {
                 logger.LogWarning("Session not found or invalidated server-side, clearing local storage");
+                await ApiClient.LogoutAsync(CancellationToken.None);
                 await localStorageService.ClearAsync(CancellationToken.None);
-                await sessionStorageService.RemoveItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+                await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 
                 return new(new());
             }
-            // 401 means the token is invalid, which means they'll need to get a new session on login
+            // 401 means the auth token is invalid, which means the session will be gone too
             catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.Unauthorized)
             {
                 logger.LogWarning("Token is invalid, clearing local storage");
+                await ApiClient.LogoutAsync(CancellationToken.None);
                 await localStorageService.ClearAsync(CancellationToken.None);
-                await sessionStorageService.RemoveItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+                await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 
                 return new(new());
             }
@@ -65,8 +68,9 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error getting session from server, clearing local storage to prevent getting stuck in a broken state");
+                await ApiClient.LogoutAsync(CancellationToken.None);
                 await localStorageService.ClearAsync(CancellationToken.None);
-                await sessionStorageService.RemoveItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+                await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 
                 return new(new());
             }
@@ -110,9 +114,9 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     public async Task SaveCurrentUserInBrowserStorageAsync(GetMyProfileResponse currentUser, Guid SessionId, string base64LocalStorageKey, CancellationToken cancellationToken)
     {
         logger.LogInformation("Saving current user to browser storage");
-        bool currentUserSuccess = await localStorageService.SetItemAsync(LocalStorageService.CURRENT_USER_KEY, currentUser, base64LocalStorageKey, cancellationToken);
-        bool sessionIdSuccess = await localStorageService.SetItemAsync(LocalStorageService.SESSION_ID_KEY, SessionId, base64LocalStorageKey, cancellationToken);
-        await sessionStorageService.SetItemAsync(SessionStorageService.BASE64_LOCALSTORAGE_KEY, base64LocalStorageKey, cancellationToken);
+        bool currentUserSuccess = await localStorageService.SetItemAsync(LocalStorageConsts.CURRENT_USER_KEY, currentUser, base64LocalStorageKey, cancellationToken);
+        bool sessionIdSuccess = await localStorageService.SetItemAsync(LocalStorageConsts.SESSION_ID_KEY, SessionId, base64LocalStorageKey, cancellationToken);
+        await sessionStorageService.SetItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, base64LocalStorageKey, cancellationToken);
 
         if (!currentUserSuccess || !sessionIdSuccess)
         {
@@ -131,8 +135,9 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     public async Task ClearCurrentUserInBrowserStorageAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Clearing current user from browser storage");
-        await localStorageService.RemoveItemAsync(LocalStorageService.CURRENT_USER_KEY, cancellationToken);
-        await localStorageService.RemoveItemAsync(LocalStorageService.SESSION_ID_KEY, cancellationToken);
+        await ApiClient.LogoutAsync(cancellationToken);
+        await localStorageService.RemoveItemAsync(LocalStorageConsts.CURRENT_USER_KEY, cancellationToken);
+        await localStorageService.RemoveItemAsync(LocalStorageConsts.SESSION_ID_KEY, cancellationToken);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
@@ -145,6 +150,6 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     /// <returns></returns>
     public Task<GetMyProfileResponse?> GetCurrentUserFromBrowserStorageAsync(string base64LocalStorageKey, CancellationToken cancellationToken)
     {
-        return localStorageService.GetItemAsync<GetMyProfileResponse>(LocalStorageService.CURRENT_USER_KEY, base64LocalStorageKey, cancellationToken);
+        return localStorageService.GetItemAsync<GetMyProfileResponse>(LocalStorageConsts.CURRENT_USER_KEY, base64LocalStorageKey, cancellationToken);
     }
 }

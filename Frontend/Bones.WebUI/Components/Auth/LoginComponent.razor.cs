@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Bones.WebUI.Infrastructure;
+using Bones.WebUI.Services.Singleton;
 
 namespace Bones.WebUI.Components.Auth;
 

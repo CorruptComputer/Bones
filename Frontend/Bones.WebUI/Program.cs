@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using Bones.Shared.Exceptions;
-using Bones.WebUI.Infrastructure;
+using Bones.WebUI.Services.Singleton;
+using Bones.WebUI.Services.Transient;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -70,7 +71,7 @@ public static class Program
             .AddHttpMessageHandler<UnauthorizedDelegatingHandler>()
             .AddHttpMessageHandler<ForbiddenDelegatingHandler>();
 
-        builder.Services.AddTransient<BonesApiClient>(provider => new BonesApiClient(provider.GetRequiredService<IHttpClientFactory>()));
+        builder.Services.AddTransient(provider => new BonesApiClient(provider.GetRequiredService<IHttpClientFactory>()));
 
         await builder.Build().RunAsync();
     }

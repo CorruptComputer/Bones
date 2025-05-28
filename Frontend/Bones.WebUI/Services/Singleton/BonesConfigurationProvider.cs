@@ -1,4 +1,4 @@
-namespace Bones.WebUI.Infrastructure;
+namespace Bones.WebUI.Services.Singleton;
 
 /// <summary>
 ///   Handles storing and retrieving the configurations for the web UI.
