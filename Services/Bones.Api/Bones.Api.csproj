@@ -21,9 +21,9 @@
         <SourceRevisionId>develop</SourceRevisionId>
     </PropertyGroup>
 
-    <!-- This seems like it could be useful -->
-    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <!-- install the systemd service when installing the deb/rpm -->
+    <PropertyGroup Condition="$(Configuration) == 'Release'">
+        <InstallService>true</InstallService>
     </PropertyGroup>
 
     <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
@@ -55,7 +55,10 @@
         <Folder Include="OpenApi\" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Remove="appsettings.Development.json" Condition="$(Configuration) == 'Release'" />
+    <ItemGroup Condition="$(Configuration) == 'Release'">
+        <Content Remove="appsettings.Development.json" />
+        <Content Include="bones-api.service" CopyToPublishDirectory="PreserveNewest" LinuxFileMode="1755">
+            <LinuxPath>/etc/systemd/system/bones-api.service</LinuxPath>
+        </Content>
     </ItemGroup>
 </Project>

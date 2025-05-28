@@ -1,0 +1,9 @@
+[Unit]
+Description=Bones API
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/Bones.Api
+
+[Install]
+WantedBy=multi-user.target

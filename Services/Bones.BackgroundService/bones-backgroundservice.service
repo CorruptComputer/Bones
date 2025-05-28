@@ -1,0 +1,9 @@
+[Unit]
+Description=Bones Background Service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/Bones.BackgroundService
+
+[Install]
+WantedBy=multi-user.target
