@@ -83,13 +83,13 @@ public class AspireHostService : IAsyncDisposable
         // Name is a bit misleading in this context, used to indicate if default data should be loaded for manual testing.
         // Anything needed in these tests can be created by the tests themselves.
         Environment.SetEnvironmentVariable("BonesBackendConfiguration__SetupForTesting", "false");
+        Environment.SetEnvironmentVariable("ApiOnly", "true");
 
-        Dictionary<string, string?> environmentVariables = new()
+        builder.Configuration.AddEnvironmentVariables();
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>()
         {
-            { "DcpPublisher:RandomizePorts", "false" }
-        };
-
-        builder.Configuration.AddInMemoryCollection(environmentVariables);
+            { "ApiOnly", "true" }
+        });
 
         DistributedApplication app = await builder.BuildAsync(cancellationToken);
         ResourceNotificationService resourceNotificationService = app.Services.GetRequiredService<ResourceNotificationService>();

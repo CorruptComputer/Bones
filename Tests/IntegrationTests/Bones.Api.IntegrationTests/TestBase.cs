@@ -5,13 +5,13 @@ namespace Bones.Api.IntegrationTests;
 /// </summary>
 public abstract class TestBase
 {
-    private ApiService? _apiService { get; set; }
+    private ApiService? ApiService { get; set; }
 
-    internal BonesApiClient? ApiClient => _apiService?.Client;
+    internal BonesApiClient? ApiClient => ApiService?.Client;
 
     internal async Task SetupApiClientAsync(CancellationToken cancellationToken = default)
     {
-        _apiService = await ApiService.CreateAsync(cancellationToken);
+        ApiService = await ApiService.CreateAsync(cancellationToken);
     }
 
     internal async Task LoginAsync(TestCredentials.User user, CancellationToken cancellationToken = default)
