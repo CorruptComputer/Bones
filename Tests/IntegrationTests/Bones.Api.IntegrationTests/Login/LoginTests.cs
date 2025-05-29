@@ -79,7 +79,7 @@ public class LoginTests : TestBase
             await act.ShouldThrowAsync<ApiException<EmptyResponse>>();
         }
     }
-    
+
     /// <summary>
     /// 
     /// </summary>

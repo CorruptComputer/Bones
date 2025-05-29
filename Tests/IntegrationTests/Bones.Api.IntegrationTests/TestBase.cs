@@ -31,7 +31,7 @@ public abstract class TestBase
             throw new InvalidOperationException("ApiClient is not initialized. Call SetupApiClientAsync first.");
         }
     }
-    
+
     internal async Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         if (ApiClient is not null)

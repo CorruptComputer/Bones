@@ -22,7 +22,7 @@ public partial class ChangePasswordPage(BonesApiClient apiClient, NavigationMana
     private string NewPassword { get; set; } = string.Empty;
 
     private string NewPasswordAgain { get; set; } = string.Empty;
-    
+
     private bool InvalidateOtherSessions { get; set; } = false;
 
     private async Task ChangePasswordAsync()

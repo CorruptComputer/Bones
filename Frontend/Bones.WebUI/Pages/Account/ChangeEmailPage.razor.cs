@@ -1,6 +1,4 @@
 using System.Net;
-using Bones.Shared.Consts;
-using Bones.Shared.Extensions;
 
 namespace Bones.WebUI.Pages.Account;
 
@@ -25,17 +23,17 @@ public partial class ChangeEmailPage(BonesApiClient apiClient, NavigationManager
 
         if (string.IsNullOrWhiteSpace(NewEmail))
         {
-            ValidationErrors = [..ValidationErrors, "New email cannot be empty."];
+            ValidationErrors = [.. ValidationErrors, "New email cannot be empty."];
         }
 
         if (string.IsNullOrWhiteSpace(NewEmailAgain))
         {
-            ValidationErrors = [..ValidationErrors, "Please confirm your new email."];
+            ValidationErrors = [.. ValidationErrors, "Please confirm your new email."];
         }
 
         if (NewEmail != NewEmailAgain)
         {
-            ValidationErrors = [..ValidationErrors, "New email and confirmation do not match."];
+            ValidationErrors = [.. ValidationErrors, "New email and confirmation do not match."];
         }
 
         if (FormValid && ValidationErrors.Length > 0)
@@ -55,7 +53,7 @@ public partial class ChangeEmailPage(BonesApiClient apiClient, NavigationManager
         catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.BadRequest)
         {
             // This is a validation error from the API
-            ValidationErrors = [..ex.Result.Errors.Select(e => $"{e.Key}: {string.Join('\n', e.Value)}")];
+            ValidationErrors = [.. ex.Result.Errors.Select(e => $"{e.Key}: {string.Join('\n', e.Value)}")];
             FormValid = false;
 
             return;

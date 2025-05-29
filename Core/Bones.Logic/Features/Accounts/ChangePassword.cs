@@ -54,7 +54,7 @@ public sealed class ChangePassword(UserManager<BonesUser> userManager, ISender s
                     ctx.AddFailure(new ValidationFailure(nameof(Command.NewPassword), "NewPassword must contain at least one special character"));
                 }
             });
-            
+
             RuleFor(x => x.InvalidateOtherSessions).NotNull();
             RuleFor(x => x.CurrentSessionId).NotNull().When(x => x.InvalidateOtherSessions == true);
             RuleFor(x => x.UserToChange).NotNull();

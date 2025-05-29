@@ -1,5 +1,3 @@
-using System;
-
 namespace Bones.Api.IntegrationTests.Account;
 /// <summary>
 ///   Provides tests for the session functionality of the Bones API.
@@ -46,7 +44,7 @@ public class SessionTests : TestBase
             await task.ShouldThrowAsync<ApiException>();
         }
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
