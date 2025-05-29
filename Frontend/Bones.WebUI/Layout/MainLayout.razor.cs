@@ -13,8 +13,28 @@ namespace Bones.WebUI.Layout;
 public partial class MainLayout(BonesAuthenticationStateProvider authStateProvider, ILogger<MainLayout> logger,
     BonesApiClient apiClient, NavigationManager navManager, BonesConfigurationProvider configProvider) : LayoutComponentBase
 {
-    private MudTheme? _theme = null;
+    /// <summary>
+    ///   The ID of the user this request is for
+    /// </summary>
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? UserId { get; set; }
 
+    /// <summary>
+    ///   The code to validate the change/confirm email request
+    /// </summary>
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Code { get; set; }
+
+    /// <summary>
+    ///   If this was a request to change the users email, what is their new email?
+    /// </summary>
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? ChangedEmail { get; set; }
+
+    private MudTheme? _theme = null;
     private MudTheme Theme
     {
         get
@@ -29,6 +49,32 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
         }
     }
 
+    /// <summary>
+    ///   The current state of the email confirmation
+    /// </summary>
+    public enum ConfirmEmailState
+    {
+        /// <summary>
+        ///   ¯\_(ツ)_/¯
+        /// </summary>
+        Unknown,
+
+        /// <summary>
+        ///   Good to go
+        /// </summary>
+        Success,
+
+        /// <summary>
+        ///   Something went wrong
+        /// </summary>
+        Failure
+    }
+
+    /// <summary>
+    ///   The current state of this page
+    /// </summary>
+    public ConfirmEmailState CurrentState { get; set; } = ConfirmEmailState.Unknown;
+
     private readonly string _webUiVersion = Assembly.GetEntryAssembly()
                                                     ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                                                     // For example: 0.0.1+b9d1873a
@@ -41,6 +87,8 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
     private bool _openDrawer = false;
 
     private bool _login = true;
+
+    private bool _confirmEmail = false;
 
     private ICollection<ProjectDropDownModel> Projects { get; set; } = [
         new()
@@ -55,7 +103,24 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
     {
         _apiVersion = (await configProvider.GetApiConfigAsync(default)).ApiVersion;
 
-        await UpdateProjectList();
+        // If these are provided, we are in the email confirmation flow
+        // I don't think this needs to be added to the OnParametersSetMethod, we only need it once
+        if (!string.IsNullOrEmpty(UserId)
+            && Guid.TryParse(UserId, out Guid parsedUserId)
+            && !string.IsNullOrEmpty(Code))
+        {
+            _confirmEmail = true;
+
+            try
+            {
+                await apiClient.ConfirmEmailAsync(parsedUserId, Code, ChangedEmail);
+                CurrentState = ConfirmEmailState.Success;
+            }
+            catch (Exception)
+            {
+                CurrentState = ConfirmEmailState.Failure;
+            }
+        }
 
         await base.OnInitializedAsync();
     }
@@ -116,11 +181,25 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
     private void ToggleDrawer()
     {
         _openDrawer = !_openDrawer;
+        StateHasChanged();
     }
 
     private void ToggleLoginRegister()
     {
         _login = !_login;
+        StateHasChanged();
+    }
+
+    private void ReturnToLogin()
+    {
+        _login = true;
+        _confirmEmail = false;
+        UserId = null;
+        Code = null;
+        ChangedEmail = null;
+        StateHasChanged();
+
+        navManager.NavigateTo("/");
     }
 
     private void OnGoToProjectChanged(IEnumerable<ProjectDropDownModel>? selectedProject)

@@ -50,10 +50,7 @@ public class QueueConfirmationEmail(UserManager<BonesUser> userManager, ISender 
 
         code = code.Base64UrlSafeEncode();
 
-        UriBuilder builder = new(webUiBaseUrl)
-        {
-            Path = FrontEndUrls.Account.CONFIRM_EMAIL
-        };
+        UriBuilder builder = new(webUiBaseUrl);
 
         string userId = await userManager.GetUserIdAsync(request.User);
 

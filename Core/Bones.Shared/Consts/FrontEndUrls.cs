@@ -28,11 +28,6 @@ public static class FrontEndUrls
         public const string CHANGE_PASSWORD = $"{_account}/change-password";
 
         /// <summary>
-        ///   Confirm email page
-        /// </summary>
-        public const string CONFIRM_EMAIL = $"{_account}/confirm-email";
-
-        /// <summary>
         ///   My profile page
         /// </summary>
         public const string MY_PROFILE = $"{_account}/my-profile";

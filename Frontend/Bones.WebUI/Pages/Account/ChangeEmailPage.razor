@@ -1,7 +1,30 @@
 @attribute [Route(FrontEndUrls.Account.CHANGE_EMAIL)]
 
-<MudText Typo="Typo.h4">ChangeEmailPage</MudText>
+<MudText Typo="Typo.h4">Change my Email</MudText>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudText>Warning: This action will log you out.</MudText>
+            <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+                <BonesTextField Label="New Email" Required="true" InputMode="InputMode.email" @bind-value="@NewEmail"/>
+                <BonesTextField Label="New Email (again)" Required="true" InputMode="InputMode.email" @bind-value="@NewEmailAgain"/>
 
-@code {
-    
-}
+                <div style="align-self: end;">
+                    <br />
+                    <a onclick="history.back();">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Go back</MudButton>
+                    </a>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@ChangeEmailAsync">Change email</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudItem Class="pa-2">
+            @foreach (string error in ValidationErrors)
+            {
+                <MudAlert Severity="Severity.Error">@error</MudAlert>
+            }
+        </MudItem>
+    </MudItem>
+</MudGrid>

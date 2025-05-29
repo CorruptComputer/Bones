@@ -32,26 +32,6 @@ public sealed class AccountController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Updates the current users profile
-    /// </summary>
-    /// <param name="request">The request</param>
-    /// <returns>true if successful, what went wrong otherwise</returns>
-    [HttpPut("my/profile", Name = "UpdateMyProfileAsync")]
-    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<bool>> UpdateMyProfileAsync([FromBody] UpdateMyProfileRequest request)
-    {
-        CommandResponse response = await Sender.Send(request.ToInternal(await GetCurrentBonesUserAsync()));
-
-        if (!response.Success)
-        {
-            return BadRequest(ErrorResponse.FromCommandResponse(response));
-        }
-
-        return response.Success;
-    }
-
-    /// <summary>
     ///   Gets or creates a session token for the user and an encryption key to be used for the session.
     ///   All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.
     ///   
@@ -86,5 +66,65 @@ public sealed class AccountController(ISender sender) : AuthenticatedControllerB
         }
 
         return GetOrCreateMySessionResponse.FromSession(session);
+    }
+
+    /// <summary>
+    ///   Updates the current users profile
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <returns>true if successful, what went wrong otherwise</returns>
+    [HttpPut("my/profile", Name = "UpdateMyProfileAsync")]
+    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<bool>> UpdateMyProfileAsync([FromBody] UpdateMyProfileRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(await GetCurrentBonesUserAsync()));
+
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Success;
+    }
+
+    /// <summary>
+    ///   Updates the current users password
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <returns>true if successful, what went wrong otherwise</returns>
+    [HttpPut("my/password", Name = "ChangeMyPasswordAsync")]
+    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<bool>> ChangeMyPasswordAsync([FromBody] ChangeMyPasswordRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(await GetCurrentBonesUserAsync()));
+
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Success;
+    }
+
+    /// <summary>
+    ///   Updates the current users email address
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <returns>true if successful, what went wrong otherwise</returns>
+    [HttpPut("my/email", Name = "ChangeMyEmailAsync")]
+    [ProducesResponseType<bool>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<bool>> ChangeMyEmailAsync([FromBody] ChangeMyEmailRequest request)
+    {
+        CommandResponse response = await Sender.Send(request.ToInternal(await GetCurrentBonesUserAsync()));
+
+        if (!response.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(response));
+        }
+
+        return response.Success;
     }
 }

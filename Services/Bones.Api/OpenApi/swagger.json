@@ -205,6 +205,148 @@
         }
       }
     },
+    "/Account/my/password": {
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates the current users password",
+        "operationId": "ChangeMyPasswordAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMyPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Account/my/email": {
+      "put": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Updates the current users email address",
+        "operationId": "ChangeMyEmailAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMyEmailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Anonymous/register": {
       "post": {
         "tags": [
@@ -3004,6 +3146,50 @@
         },
         "additionalProperties": false,
         "description": "Response to the GetWebConfigAsync endpoint"
+      },
+      "ChangeMyEmailRequest": {
+        "required": [
+          "newEmail"
+        ],
+        "type": "object",
+        "properties": {
+          "newEmail": {
+            "type": "string",
+            "description": "The new email address to set for the user"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request for the ChangeMyEmailAsync endpoint"
+      },
+      "ChangeMyPasswordRequest": {
+        "required": [
+          "currentPassword",
+          "invalidateOtherSessions",
+          "newPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string",
+            "description": "The new password for the user"
+          },
+          "currentPassword": {
+            "type": "string",
+            "description": "The current password for the user"
+          },
+          "invalidateOtherSessions": {
+            "type": "boolean",
+            "description": "Should sessions other than the current one be invalidated?"
+          },
+          "currentSessionId": {
+            "type": "string",
+            "description": "If InvalidateOtherSessions is true, this should be the ID of the current session.",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request for the ChangeMyPasswordAsync endpoint"
       },
       "CreateInitiativeRequest": {
         "required": [

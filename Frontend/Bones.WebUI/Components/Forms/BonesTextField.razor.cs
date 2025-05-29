@@ -14,6 +14,18 @@ public partial class BonesTextField : ComponentBase
     public required string Label { get; set; }
 
     /// <summary>
+    ///   Is this text field required?
+    /// </summary>
+    [Parameter]
+    public bool Required { get; set; } = false;
+
+    /// <summary>
+    ///   The input mode of the text field
+    /// </summary>
+    [Parameter]
+    public InputMode InputMode { get; set; } = InputMode.text;
+
+    /// <summary>
     ///   The type of the text field
     /// </summary>
     [Parameter]

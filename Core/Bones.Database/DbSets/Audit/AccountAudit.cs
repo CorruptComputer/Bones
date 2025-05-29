@@ -56,5 +56,15 @@ public class AccountAudit
         ///   The accounts profile was updated
         /// </summary>
         UpdateProfile = 2,
+
+        /// <summary>
+        ///   The accounts email was updated
+        /// </summary>
+        UpdateEmail = 3,
+
+        /// <summary>
+        ///   The accounts password was updated
+        /// </summary>
+        UpdatePassword = 4,
     }
 }
