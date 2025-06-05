@@ -45,7 +45,7 @@
                     <MudTh>Action By</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="Action Time">@context.DateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture)</MudTd>
+                    <MudTd DataLabel="Action Time">@context.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)</MudTd>
                     <MudTd DataLabel="Queue Action">@context.Action</MudTd>
                     <MudTd DataLabel="Action By">@context.ActionBy</MudTd>
                 </RowTemplate>

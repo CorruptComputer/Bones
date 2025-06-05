@@ -43,4 +43,11 @@
             </MudForm>
         </MudPaper>
     </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.h6">Queue</MudText>
+            <MudTextField T="string" Label="Name" Value="@_queueName" ReadOnly />
+            <MudTextField T="string" Label="Added to queue time" Value="@_addedToQueueDateTime" ReadOnly />
+        </MudPaper>
+    </MudItem>
 </MudGrid>

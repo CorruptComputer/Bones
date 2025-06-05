@@ -4107,7 +4107,8 @@
           "latestVersionCreateDateTime",
           "name",
           "workItemId",
-          "workItemQueueId"
+          "workItemQueueId",
+          "workItemQueueName"
         ],
         "type": "object",
         "properties": {
@@ -4120,6 +4121,10 @@
             "type": "string",
             "description": "ID of the work item queue this item belongs to",
             "format": "uuid"
+          },
+          "workItemQueueName": {
+            "type": "string",
+            "description": "The name of the queue this item is in"
           },
           "addedToQueueDateTime": {
             "type": "string",

@@ -21,6 +21,11 @@ public sealed record GetWorkItemByIdResponse
     public required Guid WorkItemQueueId { get; init; }
 
     /// <summary>
+    ///   The name of the queue this item is in
+    /// </summary>
+    public required string WorkItemQueueName { get; init; }
+
+    /// <summary>
     ///   The time this item was added to the queue
     /// </summary>
     public required DateTimeOffset AddedToQueueDateTime { get; init; }
@@ -70,6 +75,7 @@ public sealed record GetWorkItemByIdResponse
         return new()
         {
             WorkItemId = workItem.Id,
+            WorkItemQueueName = workItem.WorkItemQueue.Name,
             WorkItemQueueId = workItem.WorkItemQueue.Id,
             AddedToQueueDateTime = workItem.AddedToQueueDateTime,
             GenericItemId = workItem.Item.Id,

@@ -6479,6 +6479,14 @@ namespace Bones.Api.Client
         public System.Guid WorkItemQueueId { get; set; }
 
         /// <summary>
+        /// The name of the queue this item is in
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("workItemQueueName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string WorkItemQueueName { get; set; }
+
+        /// <summary>
         /// The time this item was added to the queue
         /// </summary>
 

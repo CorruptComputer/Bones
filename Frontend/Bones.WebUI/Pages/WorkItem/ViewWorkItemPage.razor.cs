@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 
 namespace Bones.WebUI.Pages.WorkItem;
@@ -20,6 +21,10 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
     protected bool ApiError { get; set; } = false;
 
     private IOrderedEnumerable<WorkItemValueModel> _itemValues = Enumerable.Empty<WorkItemValueModel>().OrderBy(x => x.OrderNumber);
+
+    private Guid _queueId = Guid.Empty;
+    private string _queueName = string.Empty;
+    private string _addedToQueueDateTime = string.Empty;
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -53,6 +58,9 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
             if (workItemResponse is not null)
             {
                 _itemValues = workItemResponse.ItemValues.OrderBy(x => x.OrderNumber);
+                _queueId = workItemResponse.WorkItemQueueId;
+                _queueName = workItemResponse.WorkItemQueueName;
+                _addedToQueueDateTime = workItemResponse.AddedToQueueDateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture);
             }
         }
         catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
