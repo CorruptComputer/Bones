@@ -18,7 +18,8 @@ namespace Bones.Api.Controllers;
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs
 /// </remarks>
-public sealed class LoginController(SignInManager<BonesUser> signInManager, ISender sender) : AuthenticatedControllerBase(sender)
+[AllowAnonymous]
+public sealed class LoginController(SignInManager<BonesUser> signInManager, ISender sender) : BonesControllerBase(sender)
 {
     /// <summary>
     ///   Logs in a user, returns the active token as a cookie header if successful
@@ -28,7 +29,6 @@ public sealed class LoginController(SignInManager<BonesUser> signInManager, ISen
     [HttpPost("login", Name = "LoginAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status400BadRequest)]
-    [AllowAnonymous]
     public async ValueTask<ActionResult<EmptyResponse>> LoginAsync([FromBody] LoginUserApiRequest login)
     {
         bool? ipCanAttemptLogin = await Sender.Send(new CheckLoginRateLimit.Query(RequestingIpAddress));
@@ -79,7 +79,6 @@ public sealed class LoginController(SignInManager<BonesUser> signInManager, ISen
     /// <returns></returns>
     [HttpPost("logout", Name = "LogoutAsync")]
     [ProducesResponseType<EmptyResponse>(StatusCodes.Status200OK)]
-    [AllowAnonymous]
     public ActionResult<EmptyResponse> LogoutAsync()
     {
         Response.Cookies.Append(".AspNetCore.Identity.Application", string.Empty, new()
