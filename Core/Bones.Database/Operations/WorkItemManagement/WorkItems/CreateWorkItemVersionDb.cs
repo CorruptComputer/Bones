@@ -11,9 +11,10 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
     ///     DB Command for creating an ItemVersion.
     /// </summary>
     /// <param name="WorkItemId">Internal ID of the item</param>
+    /// <param name="Title">The title to use for this version</param>
     /// <param name="WorkItemLayoutVersionId">Internal ID of the layout version this item is using</param>
     /// <param name="Values">The values to use for this work item version</param>
-    public record Command(Guid WorkItemId, Guid WorkItemLayoutVersionId, Dictionary<Guid, object?> Values) : IRequest<CommandResponse>;
+    public record Command(Guid WorkItemId, string Title, Guid WorkItemLayoutVersionId, Dictionary<Guid, object?> Values) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     internal sealed class Validator : AbstractValidator<Command>
@@ -22,6 +23,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
         public Validator()
         {
             RuleFor(x => x.WorkItemId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(256);
             RuleFor(x => x.WorkItemLayoutVersionId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.Values).NotNull().ChildRules(dict =>
             {
@@ -94,6 +96,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
         workItem.Item.Versions.Add(new()
         {
             Item = workItem.Item,
+            Title = request.Title,
             Version = version,
             CreateDateTime = DateTimeOffset.Now,
             GenericItemLayoutVersion = layoutVersion,

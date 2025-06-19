@@ -8,12 +8,11 @@ namespace Bones.Database.Operations.WorkItemManagement.WorkItems;
 public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler<CreateWorkItemDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating an WorkItem.
+    ///   DB Command for creating an WorkItem.
     /// </summary>
-    /// <param name="Name">Name of the item</param>
     /// <param name="QueueId">Internal ID of the queue this item is in</param>
     /// <param name="ItemLayoutId">Internal ID of the layout this item is using</param>
-    public sealed record Command(string Name, Guid QueueId, Guid ItemLayoutId) : IRequest<CommandResponse>;
+    public sealed record Command(Guid QueueId, Guid ItemLayoutId) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
@@ -21,7 +20,6 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
             RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
         }
@@ -49,7 +47,6 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
             Item = new()
             {
                 FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
-                Name = request.Name,
                 Project = itemLayout.Project,
                 GenericItemLayout = itemLayout
             }

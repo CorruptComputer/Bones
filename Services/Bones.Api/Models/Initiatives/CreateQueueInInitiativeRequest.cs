@@ -14,8 +14,13 @@ public record CreateQueueInInitiativeRequest
     /// </summary>
     public required string Name { get; init; }
 
-    internal CreateWorkItemQueue.Command ToInternal(Guid initiativeId, BonesUser user)
+    /// <summary>
+    ///   The ID of the initiative to create the queue in
+    /// </summary>
+    public required Guid InitiativeId { get; init; }
+
+    internal CreateWorkItemQueue.Command ToInternal(BonesUser user)
     {
-        return new(Name, initiativeId, user);
+        return new(Name, InitiativeId, user);
     }
 }

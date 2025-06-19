@@ -46,11 +46,6 @@ public sealed record GetWorkItemByIdResponse
     public required int CurrentVersion { get; init; }
 
     /// <summary>
-    ///   The name of the work item
-    /// </summary>
-    public required string Name { get; init; }
-
-    /// <summary>
     ///   The friendly ID of the work item
     /// </summary>
     public required string FriendlyId { get; init; }
@@ -81,7 +76,6 @@ public sealed record GetWorkItemByIdResponse
             GenericItemId = workItem.Item.Id,
             LatestGenericItemVersionId = workItem.CurrentVersion?.Id ?? throw new(),
             CurrentVersion = workItem.Item.CurrentVersion,
-            Name = workItem.Item.Name,
             FriendlyId = workItem.Item.FriendlyId,
             CreateDateTime = workItem.Item.CreateDateTime,
             LatestVersionCreateDateTime = workItem.CurrentVersion?.CreateDateTime ?? throw new(),

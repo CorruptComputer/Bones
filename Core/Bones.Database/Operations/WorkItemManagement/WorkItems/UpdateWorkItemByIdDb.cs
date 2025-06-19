@@ -6,12 +6,11 @@ namespace Bones.Database.Operations.WorkItemManagement.WorkItems;
 public sealed class UpdateWorkItemByIdDb(BonesDbContext dbContext) : IRequestHandler<UpdateWorkItemByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for updating an WorkItem.
+    ///   DB Command for updating an WorkItem.
     /// </summary>
     /// <param name="WorkItemId">Internal ID of the item</param>
-    /// <param name="Name">The new name of the item</param>
     /// <param name="QueueId">Internal ID of the queue</param>
-    public record Command(Guid WorkItemId, string Name, Guid QueueId) : IRequest<CommandResponse>;
+    public record Command(Guid WorkItemId, Guid QueueId) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
@@ -20,7 +19,6 @@ public sealed class UpdateWorkItemByIdDb(BonesDbContext dbContext) : IRequestHan
         public Validator()
         {
             RuleFor(x => x.WorkItemId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.Name).NotNull().NotEmpty();
             RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
         }
     }
@@ -40,7 +38,6 @@ public sealed class UpdateWorkItemByIdDb(BonesDbContext dbContext) : IRequestHan
             return CommandResponse.Fail("Invalid QueueId.");
         }
 
-        workItem.Item.Name = request.Name;
         workItem.WorkItemQueue = queue;
         workItem.AddedToQueueDateTime = DateTimeOffset.Now;
 

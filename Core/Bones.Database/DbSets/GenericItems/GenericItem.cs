@@ -28,12 +28,6 @@ public class GenericItem
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The name of this item
-    /// </summary>
-    [MaxLength(512)]
-    public required string Name { get; set; }
-
-    /// <summary>
     ///   The project this item belongs to
     /// </summary>
     public required Project Project { get; set; }

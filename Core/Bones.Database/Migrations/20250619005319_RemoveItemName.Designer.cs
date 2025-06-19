@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Bones.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bones.Database.Migrations
 {
     [DbContext(typeof(BonesDbContext))]
-    partial class BonesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619005319_RemoveItemName")]
+    partial class RemoveItemName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -692,11 +695,6 @@ namespace Bones.Database.Migrations
 
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");

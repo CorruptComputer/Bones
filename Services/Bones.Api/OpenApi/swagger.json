@@ -1034,96 +1034,6 @@
         }
       }
     },
-    "/Initiative/{initiativeId}/create-queue": {
-      "post": {
-        "tags": [
-          "Initiative"
-        ],
-        "summary": "Creates a queue in an initiative",
-        "operationId": "CreateQueueInInitiativeAsync",
-        "parameters": [
-          {
-            "name": "initiativeId",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateQueueInInitiativeRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/Login/login": {
       "post": {
         "tags": [
@@ -2769,153 +2679,7 @@
         }
       }
     },
-    "/WorkItem/{workItemQueueId}/dashboard": {
-      "get": {
-        "tags": [
-          "WorkItem"
-        ],
-        "summary": "Gets the dashboard for a work item queue",
-        "operationId": "GetWorkItemQueueDashboardAsync",
-        "parameters": [
-          {
-            "name": "workItemQueueId",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetWorkItemQueueDashboardResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/WorkItem/WorkItemQueue/{workItemQueueId}": {
-      "get": {
-        "tags": [
-          "WorkItem"
-        ],
-        "summary": "Gets a work item queue by its ID",
-        "operationId": "GetWorkItemQueueByIdAsync",
-        "parameters": [
-          {
-            "name": "workItemQueueId",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetWorkItemQueueByIdResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/WorkItem/WorkItem/{workItemId}": {
+    "/WorkItem/{workItemId}": {
       "get": {
         "tags": [
           "WorkItem"
@@ -2988,13 +2752,96 @@
         }
       }
     },
-    "/WorkItem/{workItemQueueId}/create-work-item": {
+    "/WorkItem/create-in-queue": {
       "post": {
         "tags": [
           "WorkItem"
         ],
         "summary": "Creates a work item in the specified queue",
         "operationId": "CreateWorkItemInQueueAsync",
+        "parameters": [
+          {
+            "name": "workItemQueueId",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkItemRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/{workItemQueueId}/create-work-item": {
+      "post": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Creates a new version of a work item",
+        "operationId": "CreateWorkItemVersionAsync",
         "parameters": [
           {
             "name": "workItemQueueId",
@@ -3065,6 +2912,230 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItemQueue/{workItemQueueId}/dashboard": {
+      "get": {
+        "tags": [
+          "WorkItemQueue"
+        ],
+        "summary": "Gets the dashboard for a work item queue",
+        "operationId": "GetWorkItemQueueDashboardAsync",
+        "parameters": [
+          {
+            "name": "workItemQueueId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWorkItemQueueDashboardResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItemQueue/{workItemQueueId}": {
+      "get": {
+        "tags": [
+          "WorkItemQueue"
+        ],
+        "summary": "Gets a work item queue by its ID",
+        "operationId": "GetWorkItemQueueByIdAsync",
+        "parameters": [
+          {
+            "name": "workItemQueueId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWorkItemQueueByIdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItemQueue/create-in-initiative": {
+      "post": {
+        "tags": [
+          "WorkItemQueue"
+        ],
+        "summary": "Creates a queue in an initiative",
+        "operationId": "CreateQueueInInitiativeAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQueueInInitiativeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -3334,6 +3405,7 @@
       },
       "CreateQueueInInitiativeRequest": {
         "required": [
+          "initiativeId",
           "name"
         ],
         "type": "object",
@@ -3341,6 +3413,11 @@
           "name": {
             "type": "string",
             "description": "The name of the queue"
+          },
+          "initiativeId": {
+            "type": "string",
+            "description": "The ID of the initiative to create the queue in",
+            "format": "uuid"
           }
         },
         "additionalProperties": false,
@@ -3349,19 +3426,19 @@
       "CreateWorkItemRequest": {
         "required": [
           "fieldValues",
-          "name",
+          "title",
           "workItemLayoutId"
         ],
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "The name of the work item"
-          },
           "workItemLayoutId": {
             "type": "string",
-            "description": "The ID of the work item layout",
+            "description": "The ID of the work item layout (not version, automatically uses the current version)",
             "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the work item"
           },
           "fieldValues": {
             "type": "array",
@@ -3379,7 +3456,7 @@
           "addedToQueueDateTime",
           "friendlyId",
           "id",
-          "name"
+          "title"
         ],
         "type": "object",
         "properties": {
@@ -3392,9 +3469,9 @@
             "type": "string",
             "description": "The friendly ID of the work item"
           },
-          "name": {
+          "title": {
             "type": "string",
-            "description": "The name of the work item"
+            "description": "The title of the work item"
           },
           "addedToQueueDateTime": {
             "type": "string",
@@ -4065,7 +4142,6 @@
           "itemValues",
           "latestGenericItemVersionId",
           "latestVersionCreateDateTime",
-          "name",
           "workItemId",
           "workItemQueueId",
           "workItemQueueName"
@@ -4105,10 +4181,6 @@
             "type": "integer",
             "description": "The current version number for this work item",
             "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "description": "The name of the work item"
           },
           "friendlyId": {
             "type": "string",

@@ -102,6 +102,10 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     /// </summary>
     protected string? WorkItemQueueName { get; set; }
 
+    /// <summary>
+    ///   The title of the work item being created
+    /// </summary>
+    private string _workItemTitle { get; set; } = string.Empty;
 
     private Dictionary<Guid, bool?> _boolValues { get; set; } = [];
 
@@ -386,8 +390,8 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
 
             CreateWorkItemRequest request = new()
             {
-                Name = "Test",
                 WorkItemLayoutId = SelectedWorkItemLayout.Value,
+                Title = _workItemTitle,
                 FieldValues = values
             };
 

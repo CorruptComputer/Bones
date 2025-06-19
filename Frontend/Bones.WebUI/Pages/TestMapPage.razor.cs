@@ -14,6 +14,25 @@ public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
 {
     private readonly LatLon _startAt = new(31.887f, -100.360f, 7);
 
+    private readonly Polygon _colorado = new()
+    {
+        Shape = [
+            [new(36.9990f, -109.0452f), new(41.0007f, -109.0500f), new(41.0024f, -102.0516f), new(36.9931f, -102.0421f)]
+        ],
+        Fill = true,
+        FillColor = Color.Blue,
+        Popup = new()
+        {
+            Content = "This is Colorado"
+        }
+    };
+
+    private readonly Circle _roswell = new()
+    {
+        Position = new(33.394181f, -104.522660f),
+        Radius = 10000
+    };
+
     private LatLon _markerAt = new(31.441500f, -100.465396f);
 
     private Map? _map;
@@ -25,14 +44,11 @@ public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
     {
         get
         {
-            if (_map == null)
-            {
-                _map = new(JsRuntime)
+            _map ??= new(JsRuntime)
                 {
                     Center = _startAt,
                     Zoom = 4.8f
                 };
-            }
 
             return _map;
         }
@@ -61,24 +77,9 @@ public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
     {
         Map.OnInitialized += () =>
         {
-            Map.AddLayer(new Polygon
-            {
-                Shape = [
-                    [new(37f, -109.05f), new(41f, -109.03f), new(41f, -102.05f), new(37f, -102.04f)]
-                ],
-                Fill = true,
-                FillColor = Color.Blue,
-                Popup = new()
-                {
-                    Content = "This is Colorado"
-                }
-            });
+            Map.AddLayer(_colorado);
 
-            Map.AddLayer(new Circle
-            {
-                Position = new(33.394181f, -104.522660f),
-                Radius = 10000
-            });
+            Map.AddLayer(_roswell);
 
             Marker marker = new(_markerAt)
             {
@@ -110,12 +111,12 @@ public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
         {
             marker.Popup = new()
             {
-                Content = $"I am now at {_markerAt.Lat:0.00}° lat, {_markerAt.Lon:0.00}° lon"
+                Content = $"I am now at {_markerAt.Lat:0.0000}° lat, {_markerAt.Lon:0.0000}° lon"
             };
         }
         else
         {
-            marker.Popup.Content = $"I am now at {_markerAt.Lat:0.00}° lat, {_markerAt.Lon:0.00}° lon";
+            marker.Popup.Content = $"I am now at {_markerAt.Lat:0.0000}° lat, {_markerAt.Lon:0.0000}° lon";
         }
 
         await LeafletInterops.UpdatePopupContentAsync(JsRuntime, Map.Id, marker);

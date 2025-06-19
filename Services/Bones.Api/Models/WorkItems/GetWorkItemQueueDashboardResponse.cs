@@ -44,15 +44,14 @@ public record GetWorkItemQueueDashboardResponse
         public required string FriendlyId { get; init; }
 
         /// <summary>
-        ///   The name of the work item
+        ///   The title of the work item
         /// </summary>
-        public required string Name { get; init; }
+        public required string Title { get; init; }
 
         /// <summary>
         ///   The date and time the work item was added to the queue
         /// </summary>
         public required DateTimeOffset AddedToQueueDateTime { get; init; }
-
 
         internal static DashboardWorkItemModel FromWorkItem(WorkItem workItem)
         {
@@ -60,7 +59,7 @@ public record GetWorkItemQueueDashboardResponse
             {
                 Id = workItem.Id,
                 FriendlyId = workItem.Item.FriendlyId,
-                Name = workItem.Item.Name,
+                Title = workItem.CurrentVersion?.Title ?? string.Empty,
                 AddedToQueueDateTime = workItem.AddedToQueueDateTime
             };
         }

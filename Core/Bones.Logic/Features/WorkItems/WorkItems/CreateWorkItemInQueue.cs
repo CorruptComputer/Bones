@@ -11,31 +11,25 @@ namespace Bones.Logic.Features.WorkItems.WorkItems;
 public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<CreateWorkItemInQueue.Command, CommandResponse>
 {
     /// <summary>
-    ///     Command for creating a Queue.
+    ///   Command for creating a Work Item in a Queue.
     /// </summary>
-    /// <param name="Name">Name of the queue</param>
     /// <param name="QueueId">Internal ID of the queue</param>
     /// <param name="WorkItemLayoutId"></param>
     /// <param name="WorkItemLayoutVersionId"></param>
+    /// <param name="Title">The title to use for this item</param>
     /// <param name="Values"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Command(string Name, Guid QueueId, Guid WorkItemLayoutId, Guid WorkItemLayoutVersionId, Dictionary<Guid, object?> Values, BonesUser RequestingUser) : IRequest<CommandResponse>;
-
-    // Item
-    // public sealed record Command(string Name, Guid QueueId, Guid ItemLayoutId) : IRequest<CommandResponse>;
-
-    // Version
-    // public record Command(Guid WorkItemId, Guid WorkItemLayoutVersionId, Dictionary<Guid, object?> Values) : IRequest<CommandResponse>;
-
+    public sealed record Command(Guid QueueId, Guid WorkItemLayoutId, Guid WorkItemLayoutVersionId, string Title, Dictionary<Guid, object?> Values, BonesUser RequestingUser) : IRequest<CommandResponse>;
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
     {
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
             RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.WorkItemLayoutId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.WorkItemLayoutVersionId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(256);
             RuleFor(x => x.Values).NotNull().ChildRules(dict =>
             {
                 dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
@@ -59,11 +53,11 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
             return CommandResponse.Forbid();
         }
 
-        CommandResponse item = await sender.Send(new CreateWorkItemDb.Command(request.Name, request.QueueId, request.WorkItemLayoutId), cancellationToken);
+        CommandResponse item = await sender.Send(new CreateWorkItemDb.Command(request.QueueId, request.WorkItemLayoutId), cancellationToken);
 
         if (item.Success && item.Id is not null)
         {
-            return await sender.Send(new CreateWorkItemVersionDb.Command(item.Id.Value, request.WorkItemLayoutVersionId, request.Values), cancellationToken);
+            return await sender.Send(new CreateWorkItemVersionDb.Command(item.Id.Value, request.Title, request.WorkItemLayoutVersionId, request.Values), cancellationToken);
         }
 
         return item;

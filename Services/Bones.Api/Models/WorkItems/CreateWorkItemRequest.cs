@@ -7,19 +7,17 @@ namespace Bones.Api.Models.WorkItems;
 public sealed record CreateWorkItemRequest
 {
     /// <summary>
-    ///   The name of the work item
-    /// </summary>
-    public required string Name { get; init; }
-
-    /// <summary>
-    ///   The ID of the work item layout
+    ///   The ID of the work item layout (not version, automatically uses the current version)
     /// </summary>
     public required Guid WorkItemLayoutId { get; init; }
+
+    /// <summary>
+    ///   The title of the work item
+    /// </summary>
+    public required string Title { get; init; }
 
     /// <summary>
     ///   The fields of the work item
     /// </summary>
     public required List<ItemValueModel> FieldValues { get; init; }
-
-
 }

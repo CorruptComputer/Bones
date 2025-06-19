@@ -76,27 +76,7 @@ public sealed class InitiativeController(ISender sender) : AuthenticatedControll
     #endregion
 
     #region POST
-    /// <summary>
-    ///     Creates a queue in an initiative
-    /// </summary>
-    /// <param name="initiativeId"></param>
-    /// <param name="request"></param>
-    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{initiativeId:guid}/create-queue", Name = "CreateQueueInInitiativeAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
-    [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateQueueInInitiativeAsync(Guid initiativeId, [FromBody] CreateQueueInInitiativeRequest request)
-    {
-        BonesUser currentUser = await GetCurrentBonesUserAsync();
-        CommandResponse resp = await Sender.Send(request.ToInternal(initiativeId, currentUser));
-
-        if (!resp.Success || resp.Id == null)
-        {
-            return BadRequest(resp.FailureReasons);
-        }
-
-        return resp.Id;
-    }
+    
     #endregion
 }
 

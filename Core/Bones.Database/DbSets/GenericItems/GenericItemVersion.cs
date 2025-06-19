@@ -22,6 +22,12 @@ public class GenericItemVersion
     public required GenericItem Item { get; init; }
 
     /// <summary>
+    ///   The title of this version of the item
+    /// </summary>
+    [MaxLength(256)]
+    public required string Title { get; init; }
+
+    /// <summary>
     ///   The version number for this
     /// </summary>
     public required long Version { get; init; }

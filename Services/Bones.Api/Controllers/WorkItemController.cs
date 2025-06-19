@@ -3,7 +3,6 @@ using Bones.Api.Models.WorkItems;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Logic.Features.GenericItem;
-using Bones.Logic.Features.WorkItems.Queue;
 using Bones.Logic.Features.WorkItems.WorkItems;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
@@ -18,51 +17,11 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
 {
     #region GET
     /// <summary>
-    ///   Gets the dashboard for a work item queue
-    /// </summary>
-    /// <param name="workItemQueueId"></param>
-    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("{workItemQueueId:guid}/dashboard", Name = "GetWorkItemQueueDashboardAsync")]
-    [ProducesResponseType<GetWorkItemQueueDashboardResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
-    public async ValueTask<ActionResult<GetWorkItemQueueDashboardResponse>> GetWorkItemQueueDashboardAsync(Guid workItemQueueId)
-    {
-        WorkItemQueue? queue = await Sender.Send(new GetWorkItemQueueById.Query(workItemQueueId, await GetCurrentBonesUserAsync()));
-
-        if (queue is null)
-        {
-            return NotFound(new ErrorResponse());
-        }
-
-        return GetWorkItemQueueDashboardResponse.FromInternal(queue);
-    }
-
-    /// <summary>
-    ///   Gets a work item queue by its ID
-    /// </summary>
-    /// <param name="workItemQueueId"></param>
-    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("WorkItemQueue/{workItemQueueId:guid}", Name = "GetWorkItemQueueByIdAsync")]
-    [ProducesResponseType<GetWorkItemQueueByIdResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
-    public async ValueTask<ActionResult<GetWorkItemQueueByIdResponse>> GetWorkItemQueueByIdAsync(Guid workItemQueueId)
-    {
-        WorkItemQueue? queue = await Sender.Send(new GetWorkItemQueueById.Query(workItemQueueId, await GetCurrentBonesUserAsync()));
-
-        if (queue is null)
-        {
-            return BadRequest(new ErrorResponse());
-        }
-
-        return GetWorkItemQueueByIdResponse.FromInternal(queue);
-    }
-
-    /// <summary>
     ///   Gets a work item by its ID
     /// </summary>
     /// <param name="workItemId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("WorkItem/{workItemId:guid}", Name = "GetWorkItemByIdAsync")]
+    [HttpGet("{workItemId:guid}", Name = "GetWorkItemByIdAsync")]
     [ProducesResponseType<GetWorkItemByIdResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
     public async ValueTask<ActionResult<GetWorkItemByIdResponse>> GetWorkItemByIdAsync(Guid workItemId)
@@ -85,10 +44,10 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
     /// <param name="workItemQueueId"></param>
     /// <param name="request"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{workItemQueueId:guid}/create-work-item", Name = "CreateWorkItemInQueueAsync")]
+    [HttpPost("create-in-queue", Name = "CreateWorkItemInQueueAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateWorkItemInQueueAsync(Guid workItemQueueId, [FromBody] CreateWorkItemRequest request)
+    public async ValueTask<ActionResult<Guid>> CreateWorkItemInQueueAsync([FromQuery] Guid workItemQueueId, [FromBody] CreateWorkItemRequest request)
     {
         GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(request.WorkItemLayoutId, await GetCurrentBonesUserAsync()));
         if (layout?.CurrentVersion is null)
@@ -122,7 +81,64 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
             fieldValues.Add(fieldVersion.Id, value);
         }
 
-        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(request.Name, workItemQueueId, layout.Id, layout.CurrentVersion.Id, fieldValues, await GetCurrentBonesUserAsync()));
+        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(workItemQueueId, layout.Id, layout.CurrentVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
+        if (!result.Success)
+        {
+            return BadRequest(ErrorResponse.FromCommandResponse(result));
+        }
+
+        if (!result.Id.HasValue)
+        {
+            throw new BonesException("No ID returned from command: CreateWorkItemInQueue.Command");
+        }
+
+        return result.Id.Value;
+    }
+
+    /// <summary>
+    ///   Creates a new version of a work item
+    /// </summary>
+    /// <param name="workItemQueueId"></param>
+    /// <param name="request"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("{workItemQueueId:guid}/create-work-item", Name = "CreateWorkItemVersionAsync")]
+    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<Guid>> CreateWorkItemVersionAsync(Guid workItemQueueId, [FromBody] CreateWorkItemRequest request)
+    {
+        GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(request.WorkItemLayoutId, await GetCurrentBonesUserAsync()));
+        if (layout?.CurrentVersion is null)
+        {
+            return BadRequest(new ErrorResponse("Layout not found"));
+        }
+
+        Dictionary<Guid, object?> fieldValues = [];
+
+        foreach (GenericItemLayoutFieldVersionLink fieldVersionLink in layout.CurrentVersion.FieldLinks)
+        {
+            GenericItemFieldVersion fieldVersion = fieldVersionLink.FieldVersion;
+            ItemValueModel? fieldValue = request.FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
+
+            object? value = fieldVersion.Type switch
+            {
+                FieldType.TextField or FieldType.TextBox or FieldType.ValueList => fieldValue?.StrValue,
+                FieldType.Integer => fieldValue?.IntValue,
+                FieldType.Decimal => fieldValue?.DecimalValue,
+                FieldType.Boolean => fieldValue?.BoolValue,
+                FieldType.DateTime => fieldValue?.DateTimeValue,
+                //FieldType.GeoLocation => fieldValue?.StrValue, // TODO: Handle this
+                _ => null
+            };
+
+            if (value is null && fieldVersion.IsRequired)
+            {
+                return BadRequest(new ErrorResponse($"Field {fieldVersion.Name} is required"));
+            }
+
+            fieldValues.Add(fieldVersion.Id, value);
+        }
+
+        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(workItemQueueId, layout.Id, layout.CurrentVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
         if (!result.Success)
         {
             return BadRequest(ErrorResponse.FromCommandResponse(result));

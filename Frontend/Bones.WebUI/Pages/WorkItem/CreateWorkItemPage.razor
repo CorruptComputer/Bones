@@ -82,6 +82,8 @@
         {
             <MudPaper Class="pa-4">
                 <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+                    <MudTextField T="string" Label="Title" Required="true" Immediate="true" @bind-Value="@_workItemTitle" />
+
                     @foreach (GetLatestItemLayoutVersionFieldsResponse field in _currentLayoutVersionFields)
                     {
                         @switch (field.Type)
