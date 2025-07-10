@@ -37,8 +37,8 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.6" />
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="9.0.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="9.0.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.3" />
         <PackageReference Update="Packaging.Targets">
             <Version>0.1.232</Version>
         </PackageReference>
