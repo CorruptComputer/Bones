@@ -6,7 +6,7 @@ using Serilog.Events;
 namespace Bones.Shared.Backend.PipelineBehaviors;
 
 /// <summary>
-///   Base pipeline behavior for MediatR
+///   Base pipeline behavior for Questy
 /// </summary>
 /// <typeparam name="TRequest"></typeparam>
 /// <typeparam name="TResponse"></typeparam>
@@ -39,7 +39,7 @@ public abstract class PipelineBehaviorBase<TRequest, TResponse>(IEnumerable<IVal
     private Stopwatch? _stopwatch;
 
     /// <summary>
-    ///   This is called before MediatR sends the request to its handler, we pass the request along with next()
+    ///   This is called before Questy sends the request to its handler, we pass the request along with next()
     /// </summary>
     /// <param name="request"></param>
     /// <param name="next"></param>

@@ -1,4 +1,4 @@
-global using MediatR;
+global using Questy;
 global using Serilog;
 global using FluentValidation;
 global using System.ComponentModel.DataAnnotations;

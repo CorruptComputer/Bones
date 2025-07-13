@@ -7,8 +7,8 @@ namespace Bones.Api.Models.GenericItem;
 /// <summary>
 ///   API response for the GetLatestItemLayoutVersionAsync endpoint
 /// </summary>
-[JsonSerializable(typeof(GetLatestItemLayoutVersionResponse))]
-public sealed record GetLatestItemLayoutVersionResponse
+[JsonSerializable(typeof(GetItemLayoutVersionResponse))]
+public sealed record GetItemLayoutVersionResponse
 {
     /// <summary>
     ///   Name of the item layout
@@ -30,19 +30,36 @@ public sealed record GetLatestItemLayoutVersionResponse
     public required string FriendlyIdPrefix { get; init; }
 
     /// <summary>
+    ///   The version number for this ItemLayoutVersion
+    /// </summary>
+    public required long Version { get; init; }
+
+    /// <summary>
+    ///   The current latest version of this layout
+    /// </summary>
+    public required long LatestVersion { get; init; }
+
+    /// <summary>
+    ///   Is there a version update available for this layout version?
+    /// </summary>
+    public bool VersionUpdateAvailable => LatestVersion > Version;
+
+    /// <summary>
     ///   The field versions
     /// </summary>
     [JsonRequired]
     public required Dictionary<uint, Guid> FieldVersions { get; init; }
 
-    internal static GetLatestItemLayoutVersionResponse FromInternal(GenericItemLayout layout)
+    internal static GetItemLayoutVersionResponse FromInternal(GenericItemLayoutVersion layoutVersion, string friendlyIdPrefix, long latestVersion)
     {
         return new()
         {
-            Name = layout.CurrentVersion?.Name ?? string.Empty,
-            EnabledFor = layout.CurrentVersion?.EnabledFor ?? ItemLayoutUses.None,
-            FriendlyIdPrefix = layout.FriendlyIdPrefix,
-            FieldVersions = layout.CurrentVersion?.FieldLinks.ToDictionary(fl => fl.OrderNumber, fl => fl.FieldVersion.Id) ?? []
+            Name = layoutVersion.Name,
+            EnabledFor = layoutVersion.EnabledFor,
+            FriendlyIdPrefix = friendlyIdPrefix,
+            Version = layoutVersion.Version,
+            LatestVersion = latestVersion,
+            FieldVersions = layoutVersion.FieldLinks.ToDictionary(fl => fl.OrderNumber, fl => fl.FieldVersion.Id) ?? []
         };
     }
 }

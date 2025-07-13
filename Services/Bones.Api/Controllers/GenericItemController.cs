@@ -9,11 +9,11 @@ namespace Bones.Api.Controllers;
 /// <summary>
 ///   Handles everything related to Managing Generic Items
 /// </summary>
-/// <param name="sender">MediatR sender</param>
+/// <param name="sender">Questy sender</param>
 public sealed class GenericItemController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     /// <summary>
-    ///     Gets the latest version of a field
+    ///   Gets the latest version of a field
     /// </summary>
     /// <param name="fieldId">The ID of the field</param>
     /// <returns>The latest version of the requested field.</returns>
@@ -33,7 +33,7 @@ public sealed class GenericItemController(ISender sender) : AuthenticatedControl
     }
 
     /// <summary>
-    ///     
+    ///   Gets the item layouts for a project, optionally filtered by the uses they are enabled for
     /// </summary>
     /// <param name="projectId">The ID of the project</param>
     /// <param name="enabledFor"></param>
@@ -54,14 +54,16 @@ public sealed class GenericItemController(ISender sender) : AuthenticatedControl
     }
 
     /// <summary>
-    ///     Gets the latest version of a layout
+    ///   Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified
     /// </summary>
     /// <param name="layoutId">The ID of the layout</param>
+    /// <param name="requestedVersion">The version if you want a specific version instead of the latest</param>
     /// <returns>The latest version of the requested layout.</returns>
     [HttpGet("layouts/{layoutId:guid}/latest", Name = "GetLatestItemLayoutVersionAsync")]
-    [ProducesResponseType<GetLatestItemLayoutVersionResponse>(StatusCodes.Status200OK)]
+    [HttpGet("layouts/{layoutId:guid}/{requestedVersion:long}", Name = "GetItemLayoutVersionAsync")]
+    [ProducesResponseType<GetItemLayoutVersionResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<GetLatestItemLayoutVersionResponse>> GetLatestItemLayoutVersionAsync(Guid layoutId)
+    public async ValueTask<ActionResult<GetItemLayoutVersionResponse>> GetItemLayoutVersionAsync(Guid layoutId, long? requestedVersion = null)
     {
         QueryResponse<GenericItemLayout?> layoutResponse = await Sender.Send(new GetItemLayoutById.Query(layoutId, await GetCurrentBonesUserAsync()));
 
@@ -70,11 +72,29 @@ public sealed class GenericItemController(ISender sender) : AuthenticatedControl
             return BadRequest(ErrorResponse.FromQueryResponse(layoutResponse));
         }
 
-        return GetLatestItemLayoutVersionResponse.FromInternal(layoutResponse.Result);
+        GenericItemLayoutVersion? layoutVersion = null;
+        if (requestedVersion.HasValue && requestedVersion.Value > 0)
+        {
+            layoutVersion = layoutResponse.Result.Versions.FirstOrDefault(v => v.Version == requestedVersion.Value);
+            if (layoutVersion is null)
+            {
+                return BadRequest(new ErrorResponse("Requested version not found"));
+            }
+        }
+        else
+        {
+            layoutVersion = layoutResponse.Result.LatestVersion;
+            if (layoutVersion is null)
+            {
+                return BadRequest(new ErrorResponse("No versions found for this layout"));
+            }
+        }
+
+        return GetItemLayoutVersionResponse.FromInternal(layoutVersion, layoutResponse.Result.FriendlyIdPrefix, layoutResponse.Result.LatestVersion?.Version ?? 0);
     }
 
     /// <summary>
-    ///     Gets the latest version of a layout
+    ///   Gets the latest version of a layout
     /// </summary>
     /// <param name="layoutId">The ID of the layout</param>
     /// <returns>The latest version of the requested layout.</returns>

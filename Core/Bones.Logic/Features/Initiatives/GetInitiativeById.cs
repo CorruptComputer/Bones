@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
 
-namespace Bones.Logic.Features.Projects.Initiatives;
+namespace Bones.Logic.Features.Initiatives;
 
 /// <inheritdoc />
 public sealed class GetInitiativeById(ISender sender) : IRequestHandler<GetInitiativeById.Query, QueryResponse<Initiative>>

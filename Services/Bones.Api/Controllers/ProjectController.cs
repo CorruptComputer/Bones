@@ -1,5 +1,5 @@
-using Bones.Logic.Features.Projects.Initiatives;
-using Bones.Logic.Features.Projects.Projects;
+using Bones.Logic.Features.Initiatives;
+using Bones.Logic.Features.Projects;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.GenericItems;
@@ -12,7 +12,7 @@ namespace Bones.Api.Controllers;
 /// <summary>
 ///   Handles everything related to Managing Projects
 /// </summary>
-/// <param name="sender">MediatR sender</param>
+/// <param name="sender">Questy sender</param>
 public sealed class ProjectController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     #region GET

@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
 using Bones.Shared.Consts;
 
-namespace Bones.Logic.Features.Projects.Initiatives;
+namespace Bones.Logic.Features.Initiatives;
 
 /// <inheritdoc />
 public sealed class QueueDeleteInitiativeById(ISender sender) : IRequestHandler<QueueDeleteInitiativeById.Command, CommandResponse>

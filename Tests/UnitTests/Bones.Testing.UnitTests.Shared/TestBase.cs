@@ -1,4 +1,4 @@
-using MediatR;
+using Questy;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.System.SystemSettings;
 using Bones.Shared.Backend.Models;
@@ -12,7 +12,7 @@ namespace Bones.Testing.UnitTests.Shared;
 public class TestBase
 {
     /// <summary>
-    ///   MediatR sender for commands and queries. Unique DB per-test.
+    ///   Questy sender for commands and queries. Unique DB per-test.
     /// </summary>
     protected ISender Sender { get; } = TestFactory.GetTestSender();
 

@@ -84,23 +84,23 @@ public class GetProjectItemFieldsResponse
 
         internal static ProjectItemFieldModel FromInternal(GenericItemField field)
         {
-            if (field.CurrentVersion is null)
+            if (field.LatestVersion is null)
             {
-                throw new InvalidOperationException("Field has no current version");
+                throw new InvalidOperationException("Field has no latest version");
             }
 
             return new()
             {
                 FieldId = field.Id,
-                FieldVersionId = field.CurrentVersion.Id,
-                Version = field.CurrentVersion.Version,
-                Name = field.CurrentVersion.Name,
-                IsRequired = field.CurrentVersion.IsRequired,
-                Type = field.CurrentVersion.Type,
-                CanBeNegative = field.CurrentVersion.CanBeNegative,
-                PossibleValues = field.CurrentVersion.PossibleValues?.ToDictionary(x => x.Value, x => x.MatchingType),
-                GeoLocationType = field.CurrentVersion.GeoLocationType,
-                RequiredAddressFields = field.CurrentVersion.RequiredAddressFields
+                FieldVersionId = field.LatestVersion.Id,
+                Version = field.LatestVersion.Version,
+                Name = field.LatestVersion.Name,
+                IsRequired = field.LatestVersion.IsRequired,
+                Type = field.LatestVersion.Type,
+                CanBeNegative = field.LatestVersion.CanBeNegative,
+                PossibleValues = field.LatestVersion.PossibleValues?.ToDictionary(x => x.Value, x => x.MatchingType),
+                GeoLocationType = field.LatestVersion.GeoLocationType,
+                RequiredAddressFields = field.LatestVersion.RequiredAddressFields
             };
         }
     }

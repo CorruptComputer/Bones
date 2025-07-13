@@ -87,18 +87,18 @@ public record GetProjectSettingsResponse
                 new ItemFieldModel
                 {
                     ItemFieldId = i.Id,
-                    ItemFieldCurrentVersionId = i.CurrentVersion!.Id,
-                    Name = i.CurrentVersion.Name,
-                    IsRequired = i.CurrentVersion.IsRequired,
-                    Type = i.CurrentVersion.Type
+                    ItemFieldLatestVersionId = i.LatestVersion!.Id,
+                    Name = i.LatestVersion.Name,
+                    IsRequired = i.LatestVersion.IsRequired,
+                    Type = i.LatestVersion.Type
                 }),
             ItemLayoutCount = itemLayouts.Count,
             ItemLayouts = itemLayouts.Select(i =>
                 new ItemLayoutModel
                 {
                     ItemLayoutId = i.Id,
-                    Name = i.CurrentVersion!.Name,
-                    EnabledFor = i.CurrentVersion!.EnabledFor.ToString()
+                    Name = i.LatestVersion!.Name,
+                    EnabledFor = i.LatestVersion!.EnabledFor.ToString()
                 })
         };
     }
@@ -119,7 +119,7 @@ public record GetProjectSettingsResponse
         ///     Internal ID for the current version ItemFieldVersion
         /// </summary>
         [JsonRequired]
-        public required Guid ItemFieldCurrentVersionId { get; init; }
+        public required Guid ItemFieldLatestVersionId { get; init; }
 
         /// <summary>
         ///   The name of this ItemField

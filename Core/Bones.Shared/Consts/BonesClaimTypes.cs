@@ -203,6 +203,11 @@ public static class BonesClaimTypes
             public const string CREATE_WORK_ITEM = "CreateWorkItem";
 
             /// <summary>
+            ///   Claim type for if a user can create a new work item version
+            /// </summary>
+            public const string CREATE_WORK_ITEM_VERSION = "CreateWorkItemVersion";
+
+            /// <summary>
             ///   Claim type for if a user can delete a work item
             /// </summary>
             public const string DELETE_WORK_ITEM = "DeleteWorkItem";

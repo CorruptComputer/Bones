@@ -2,11 +2,11 @@ using System.Security.Claims;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
-using Bones.Logic.Features.Projects.Projects;
+using Bones.Logic.Features.Projects;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Logic.Features.Projects.Initiatives;
+namespace Bones.Logic.Features.Initiatives;
 
 /// <inheritdoc />
 public sealed class UserHasInitiativePermission(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager, ISender sender)

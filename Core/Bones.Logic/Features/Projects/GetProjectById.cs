@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Shared.Consts;
 
-namespace Bones.Logic.Features.Projects.Projects;
+namespace Bones.Logic.Features.Projects;
 
 /// <inheritdoc />
 public sealed class GetProjectById(ISender sender) : IRequestHandler<GetProjectById.Query, QueryResponse<Database.DbSets.ProjectManagement.Project>>

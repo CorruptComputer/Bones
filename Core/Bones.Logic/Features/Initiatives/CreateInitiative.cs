@@ -3,11 +3,11 @@ using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.Operations.OrganizationManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
 using Bones.Database.Operations.ProjectManagement.Projects;
-using Bones.Logic.Features.Projects.Projects;
+using Bones.Logic.Features.Projects;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 
-namespace Bones.Logic.Features.Projects.Initiatives;
+namespace Bones.Logic.Features.Initiatives;
 
 /// <inheritdoc />
 public sealed class CreateInitiative(ISender sender) : IRequestHandler<CreateInitiative.Command, CommandResponse>

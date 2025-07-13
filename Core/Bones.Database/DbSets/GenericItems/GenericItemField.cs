@@ -28,10 +28,10 @@ public class GenericItemField
     public required Project Project { get; set; }
 
     /// <summary>
-    ///   The most recent version of this field
+    ///   The latest version of this field
     /// </summary>
     [NotMapped]
-    public GenericItemFieldVersion? CurrentVersion => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
+    public GenericItemFieldVersion? LatestVersion => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
 
     /// <summary>
     ///   The versions for this Item field

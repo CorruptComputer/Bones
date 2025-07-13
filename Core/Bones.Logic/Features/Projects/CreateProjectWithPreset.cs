@@ -1,8 +1,8 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Logic.Features.Projects.ProjectPresets;
+using Bones.Logic.Features.Projects.Presets;
 using Bones.Shared.Enums;
 
-namespace Bones.Logic.Features.Projects.Projects;
+namespace Bones.Logic.Features.Projects;
 
 /// <inheritdoc />
 public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<CreateProjectWithPreset.Command, CommandResponse>
@@ -31,35 +31,27 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        CommandResponse project = await sender.Send(new CreateProject.Command(request.Name, request.RequestingUser, request.OrganizationId), cancellationToken);
-        if (project.Success && project.Id.HasValue)
+        PresetBase? preset = request.Preset switch
         {
-            IProjectPreset? preset = request.Preset switch
-            {
-                ProjectPreset.Development => new DevelopmentPreset(),
-                //ProjectPreset.InformationTechnology => new InformationTechnologyPreset(),
-                //ProjectPreset.HomeManagement => new HomeManagementPreset(),
-                _ => null
-            };
+            ProjectPreset.Development => new DevelopmentPreset(),
+            //ProjectPreset.InformationTechnology => new InformationTechnologyPreset(),
+            //ProjectPreset.HomeManagement => new HomeManagementPreset(),
+            _ => null
+        };
 
-            if (preset != null)
+        if (preset != null)
+        {
+            bool success = await preset.CreatePresetAsync(sender, request.RequestingUser, cancellationToken);
+            if (!success)
             {
-                bool success = await preset.CreatePresetLayoutsAsync(sender, project.Id.Value, request.RequestingUser, cancellationToken);
-                if (!success)
-                {
-                    return CommandResponse.Fail($"Failed to create layouts with preset: {request.Preset}");
-                }
-            }
-            else
-            {
-                return CommandResponse.Fail($"Preset not found or unsupported: {request.Preset}");
+                return CommandResponse.Fail($"Failed to create preset: {preset.GetType().FullName}");
             }
         }
         else
         {
-            return CommandResponse.Fail($"Failed to create project: {project.FailureReasons}");
+            return CommandResponse.Fail($"Preset not found or unsupported: {request.Preset}");
         }
 
-        return CommandResponse.Pass(project.Id);
+        return CommandResponse.Pass();
     }
 }

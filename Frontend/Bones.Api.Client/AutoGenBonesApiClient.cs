@@ -1225,6 +1225,9 @@ namespace Bones.Api.Client
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the item layouts for a project, optionally filtered by the uses they are enabled for
+        /// </summary>
         /// <param name="projectId">The ID of the project</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1349,12 +1352,12 @@ namespace Bones.Api.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Gets the latest version of a layout
+        /// Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified
         /// </summary>
         /// <param name="layoutId">The ID of the layout</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<GetLatestItemLayoutVersionResponse> GetLatestItemLayoutVersionAsync(System.Guid layoutId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<GetItemLayoutVersionResponse> GetLatestItemLayoutVersionAsync(System.Guid layoutId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (layoutId == null)
                 throw new System.ArgumentNullException("layoutId");
@@ -1430,7 +1433,132 @@ namespace Bones.Api.Client
                         else
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<GetLatestItemLayoutVersionResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<GetItemLayoutVersionResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified
+        /// </summary>
+        /// <param name="layoutId">The ID of the layout</param>
+        /// <param name="requestedVersion">The version if you want a specific version instead of the latest</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<GetItemLayoutVersionResponse> GetItemLayoutVersionAsync(System.Guid layoutId, long requestedVersion, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (layoutId == null)
+                throw new System.ArgumentNullException("layoutId");
+
+            if (requestedVersion == null)
+                throw new System.ArgumentNullException("requestedVersion");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "GenericItem/layouts/{layoutId}/{requestedVersion}"
+                    urlBuilder_.Append("GenericItem/layouts/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(layoutId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(requestedVersion, System.Globalization.CultureInfo.InvariantCulture)));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Unauthorized", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Forbidden", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ErrorResponse>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<GetItemLayoutVersionResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -4772,10 +4900,10 @@ namespace Bones.Api.Client
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Guid> CreateWorkItemVersionAsync(System.Guid workItemQueueId, CreateWorkItemRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<System.Guid> CreateWorkItemVersionAsync(System.Guid workItemId, CreateWorkItemRequest body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (workItemQueueId == null)
-                throw new System.ArgumentNullException("workItemQueueId");
+            if (workItemId == null)
+                throw new System.ArgumentNullException("workItemId");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -4792,9 +4920,9 @@ namespace Bones.Api.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "WorkItem/{workItemQueueId}/create-work-item"
+                    // Operation Path: "WorkItem/{workItemId}/create-work-item"
                     urlBuilder_.Append("WorkItem/");
-                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(workItemQueueId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(workItemId, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/create-work-item");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -5939,6 +6067,65 @@ namespace Bones.Api.Client
     }
 
     /// <summary>
+    /// API response for the GetLatestItemLayoutVersionAsync endpoint
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial record GetItemLayoutVersionResponse
+    {
+        /// <summary>
+        /// Name of the item layout
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Name { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("enabledFor")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+        public ItemLayoutUses EnabledFor { get; set; }
+
+        /// <summary>
+        /// The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("friendlyIdPrefix")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(6)]
+        public string FriendlyIdPrefix { get; set; }
+
+        /// <summary>
+        /// The version number for this ItemLayoutVersion
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("version")]
+        public long Version { get; set; }
+
+        /// <summary>
+        /// The current latest version of this layout
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("latestVersion")]
+        public long LatestVersion { get; set; }
+
+        /// <summary>
+        /// Is there a version update available for this layout version?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("versionUpdateAvailable")]
+        public bool VersionUpdateAvailable { get; set; }
+
+        /// <summary>
+        /// The field versions
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldVersions")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.Dictionary<string, System.Guid> FieldVersions { get; set; } = new System.Collections.Generic.Dictionary<string, System.Guid>();
+
+    }
+
+    /// <summary>
     /// API response for the GetLatestItemFieldVersionAsync endpoint
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6054,44 +6241,6 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
         public bool? CanBeNegative { get; set; }
-
-    }
-
-    /// <summary>
-    /// API response for the GetLatestItemLayoutVersionAsync endpoint
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record GetLatestItemLayoutVersionResponse
-    {
-        /// <summary>
-        /// Name of the item layout
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("name")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Name { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("enabledFor")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public ItemLayoutUses EnabledFor { get; set; }
-
-        /// <summary>
-        /// The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("friendlyIdPrefix")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.StringLength(6)]
-        public string FriendlyIdPrefix { get; set; }
-
-        /// <summary>
-        /// The field versions
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("fieldVersions")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.Dictionary<string, System.Guid> FieldVersions { get; set; } = new System.Collections.Generic.Dictionary<string, System.Guid>();
 
     }
 
@@ -6261,16 +6410,16 @@ namespace Bones.Api.Client
         /// ID of the current layout version
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("currentLayoutVersionId")]
+        [System.Text.Json.Serialization.JsonPropertyName("latestLayoutVersionId")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Guid CurrentLayoutVersionId { get; set; }
+        public System.Guid LatestLayoutVersionId { get; set; }
 
         /// <summary>
         /// The current version number of the layout
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("currentVersionNumber")]
-        public long CurrentVersionNumber { get; set; }
+        [System.Text.Json.Serialization.JsonPropertyName("latestVersionNumber")]
+        public long LatestVersionNumber { get; set; }
 
         /// <summary>
         /// Name of the layout
@@ -6767,9 +6916,9 @@ namespace Bones.Api.Client
         /// Internal ID for the current version ItemFieldVersion
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("itemFieldCurrentVersionId")]
+        [System.Text.Json.Serialization.JsonPropertyName("itemFieldLatestVersionId")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.Guid ItemFieldCurrentVersionId { get; set; }
+        public System.Guid ItemFieldLatestVersionId { get; set; }
 
         /// <summary>
         /// The name of this ItemField
@@ -7294,6 +7443,14 @@ namespace Bones.Api.Client
 
         [System.Text.Json.Serialization.JsonPropertyName("orderNumber")]
         public int OrderNumber { get; set; }
+
+        /// <summary>
+        /// The ID of the field version this value is for
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldVersionId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid FieldVersionId { get; set; }
 
         /// <summary>
         /// The name of the field

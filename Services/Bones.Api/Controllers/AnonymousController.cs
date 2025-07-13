@@ -12,7 +12,7 @@ namespace Bones.Api.Controllers;
 /// <summary>
 ///   Handles everything related to User Accounts
 /// </summary>
-/// <param name="sender">MediatR sender</param>
+/// <param name="sender">Questy sender</param>
 /// <param name="config">System config</param>
 [AllowAnonymous]
 public sealed class AnonymousController(ISender sender, BonesBackendConfiguration config) : BonesControllerBase(sender)

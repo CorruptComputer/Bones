@@ -5,7 +5,7 @@ using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Logic.Features.Organizations;
 using Bones.Shared.Consts;
 
-namespace Bones.Logic.Features.Projects.Projects;
+namespace Bones.Logic.Features.Projects;
 
 /// <inheritdoc />
 public sealed class CreateProject(ISender sender) : IRequestHandler<CreateProject.Command, CommandResponse>

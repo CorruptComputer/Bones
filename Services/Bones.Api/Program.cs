@@ -90,6 +90,8 @@ public static class Program
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             options.SupportNonNullableReferenceTypes();
             options.NonNullableReferenceTypesAsRequired();
+            options.UseOneOfForPolymorphism();
+            options.UseAllOfForInheritance();
         });
 
         builder.Services.AddDbContext<BonesDbContext>();

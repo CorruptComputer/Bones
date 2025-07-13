@@ -1,31 +1,31 @@
 using System.Reflection;
 using Autofac;
 using Bones.Shared.Backend.PipelineBehaviors;
-using MediatR.Extensions.Autofac.DependencyInjection;
-using MediatR.Extensions.Autofac.DependencyInjection.Builder;
+using Questy.Autofac;
+using Questy.Autofac.Builder;
 using Module = Autofac.Module;
 
 namespace Bones.BackgroundService;
 
 /// <summary>
-///     Autofac module for the Bones database
+///   Autofac module for the Bones database
 /// </summary>
-/// <param name="additionalMediatRAssemblies">Additional assemblies to scan for MediatR handlers</param>
-public class BonesBackgroundServiceModule(List<Assembly> additionalMediatRAssemblies) : Module
+/// <param name="additionalQuestyAssemblies">Additional assemblies to scan for Questy handlers</param>
+public class BonesBackgroundServiceModule(List<Assembly> additionalQuestyAssemblies) : Module
 {
     /// <inheritdoc />
     protected override void Load(ContainerBuilder builder)
     {
-        additionalMediatRAssemblies.Add(ThisAssembly);
+        additionalQuestyAssemblies.Add(ThisAssembly);
 
-        MediatRConfigurationBuilder mediatrConfig = MediatRConfigurationBuilder
-            .Create([.. additionalMediatRAssemblies])
+        QuestyConfigurationBuilder questyConfig = QuestyConfigurationBuilder
+            .Create([.. additionalQuestyAssemblies])
             .WithAllOpenGenericHandlerTypesRegistered()
             .WithCustomPipelineBehaviors([
                 typeof(CommandBehavior<>),
                 typeof(QueryBehavior<,>)
             ]);
 
-        builder.RegisterMediatR(mediatrConfig.Build());
+        builder.RegisterQuesty(questyConfig.Build());
     }
 }

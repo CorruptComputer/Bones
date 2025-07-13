@@ -83,7 +83,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
             ItemLayout = layout,
             Name = request.Name,
             EnabledFor = request.EnabledFor,
-            Version = (layout.CurrentVersion?.Version ?? 0) + 1,
+            Version = (layout.LatestVersion?.Version ?? 0) + 1,
             CreateDateTime = DateTimeOffset.Now,
             FieldLinks = []
         };

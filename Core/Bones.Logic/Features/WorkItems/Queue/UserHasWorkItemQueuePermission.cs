@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
-using Bones.Logic.Features.Projects.Initiatives;
+using Bones.Logic.Features.Initiatives;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Identity;
 

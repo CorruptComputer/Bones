@@ -1,5 +1,6 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.WorkItems;
+using Bones.Api.Models.WorkItems.Actions;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Logic.Features.GenericItem;
@@ -50,14 +51,14 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
     public async ValueTask<ActionResult<Guid>> CreateWorkItemInQueueAsync([FromQuery] Guid workItemQueueId, [FromBody] CreateWorkItemRequest request)
     {
         GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(request.WorkItemLayoutId, await GetCurrentBonesUserAsync()));
-        if (layout?.CurrentVersion is null)
+        if (layout?.LatestVersion is null)
         {
             return BadRequest(new ErrorResponse("Layout not found"));
         }
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (GenericItemLayoutFieldVersionLink fieldVersionLink in layout.CurrentVersion.FieldLinks)
+        foreach (GenericItemLayoutFieldVersionLink fieldVersionLink in layout.LatestVersion.FieldLinks)
         {
             GenericItemFieldVersion fieldVersion = fieldVersionLink.FieldVersion;
             ItemValueModel? fieldValue = request.FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
@@ -81,7 +82,7 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
             fieldValues.Add(fieldVersion.Id, value);
         }
 
-        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(workItemQueueId, layout.Id, layout.CurrentVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
+        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(workItemQueueId, layout.Id, layout.LatestVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
         if (!result.Success)
         {
             return BadRequest(ErrorResponse.FromCommandResponse(result));
@@ -98,23 +99,23 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
     /// <summary>
     ///   Creates a new version of a work item
     /// </summary>
-    /// <param name="workItemQueueId"></param>
+    /// <param name="workItemId"></param>
     /// <param name="request"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{workItemQueueId:guid}/create-work-item", Name = "CreateWorkItemVersionAsync")]
+    [HttpPost("{workItemId:guid}/create-work-item", Name = "CreateWorkItemVersionAsync")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateWorkItemVersionAsync(Guid workItemQueueId, [FromBody] CreateWorkItemRequest request)
+    public async ValueTask<ActionResult<Guid>> CreateWorkItemVersionAsync(Guid workItemId, [FromBody] CreateWorkItemRequest request)
     {
         GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(request.WorkItemLayoutId, await GetCurrentBonesUserAsync()));
-        if (layout?.CurrentVersion is null)
+        if (layout?.LatestVersion is null)
         {
             return BadRequest(new ErrorResponse("Layout not found"));
         }
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (GenericItemLayoutFieldVersionLink fieldVersionLink in layout.CurrentVersion.FieldLinks)
+        foreach (GenericItemLayoutFieldVersionLink fieldVersionLink in layout.LatestVersion.FieldLinks)
         {
             GenericItemFieldVersion fieldVersion = fieldVersionLink.FieldVersion;
             ItemValueModel? fieldValue = request.FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
@@ -138,7 +139,8 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
             fieldValues.Add(fieldVersion.Id, value);
         }
 
-        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(workItemQueueId, layout.Id, layout.CurrentVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
+
+        CommandResponse result = await Sender.Send(new CreateWorkItemVersion.Command(workItemId, layout.LatestVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
         if (!result.Success)
         {
             return BadRequest(ErrorResponse.FromCommandResponse(result));
@@ -146,7 +148,7 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
 
         if (!result.Id.HasValue)
         {
-            throw new BonesException("No ID returned from command: CreateWorkItemInQueue.Command");
+            throw new BonesException("No ID returned from command: CreateWorkItemVersion.Command");
         }
 
         return result.Id.Value;

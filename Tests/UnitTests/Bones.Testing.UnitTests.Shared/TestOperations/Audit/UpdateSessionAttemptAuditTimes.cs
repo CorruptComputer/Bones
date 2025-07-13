@@ -1,7 +1,7 @@
 using Bones.Database;
 using Bones.Database.DbSets.Audit;
 using Bones.Shared.Backend.Models;
-using MediatR;
+using Questy;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bones.Testing.UnitTests.Shared.TestOperations.Audit;

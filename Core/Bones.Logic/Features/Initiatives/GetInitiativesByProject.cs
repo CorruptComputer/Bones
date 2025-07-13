@@ -1,10 +1,10 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
-using Bones.Logic.Features.Projects.Projects;
+using Bones.Logic.Features.Projects;
 using Bones.Shared.Consts;
 
-namespace Bones.Logic.Features.Projects.Initiatives;
+namespace Bones.Logic.Features.Initiatives;
 
 /// <inheritdoc />
 public sealed class GetInitiativesByProject(ISender sender) : IRequestHandler<GetInitiativesByProject.Query, QueryResponse<List<Initiative>>>

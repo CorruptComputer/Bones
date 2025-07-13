@@ -13,7 +13,7 @@ namespace Bones.Api.Controllers;
 ///   Handles everything related to User Accounts
 /// </summary>
 /// <param name="signInManager">Sign in manager, registered and managed by AspNetCore Identity</param>
-/// <param name="sender">MediatR sender</param>
+/// <param name="sender">Questy sender</param>
 /// <remarks>
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs

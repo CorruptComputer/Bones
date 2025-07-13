@@ -4,7 +4,7 @@ using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.Operations.OrganizationManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
-using Bones.Logic.Features.Projects.Initiatives;
+using Bones.Logic.Features.Initiatives;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 

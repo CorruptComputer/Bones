@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Models;
-using MediatR;
+using Questy;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Testing.UnitTests.Shared.TestOperations.AccountManagement;
@@ -18,14 +18,13 @@ public class CreateBonesUser(UserManager<BonesUser> userManager) : IRequestHandl
     /// <inheritdoc />
     public async Task<QueryResponse<IdentityResult>> Handle(Query request, CancellationToken cancellationToken)
     {
-        var user = new BonesUser
+        BonesUser user = new()
         {
             Email = request.Email,
             UserName = request.Email,
             EmailConfirmed = true
         };
 
-        var result = await userManager.CreateAsync(user, request.Password);
-        return result;
+        return await userManager.CreateAsync(user, request.Password);
     }
 }

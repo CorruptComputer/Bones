@@ -8,7 +8,7 @@ namespace Bones.Api.Controllers.Base;
 /// <summary>
 ///   Base for authenticated controllers.
 /// </summary>
-/// <param name="sender">MediatR sender</param>
+/// <param name="sender">Questy sender</param>
 [Authorize]
 [ProducesResponseType<UnauthorizedResult>(StatusCodes.Status401Unauthorized)] // Returned by the [Authorize] attribute
 [ProducesResponseType<ErrorResponse>(StatusCodes.Status401Unauthorized)] // Returned by UnauthenticatedException

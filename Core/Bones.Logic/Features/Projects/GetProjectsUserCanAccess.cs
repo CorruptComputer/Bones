@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Shared.Backend.Enums;
 
-namespace Bones.Logic.Features.Projects.Projects;
+namespace Bones.Logic.Features.Projects;
 
 /// <inheritdoc />
 public sealed class GetProjectsUserCanAccess(ISender sender) : IRequestHandler<GetProjectsUserCanAccess.Query, QueryResponse<Dictionary<Guid, string>>>

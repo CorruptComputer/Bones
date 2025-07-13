@@ -20,7 +20,15 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
     /// </summary>
     protected bool ApiError { get; set; } = false;
 
+    /// <summary>
+    ///   Item values displayed on the page for this work item, if editing is enabled: the values that are being changed.
+    /// </summary>
     private IOrderedEnumerable<WorkItemValueModel> _itemValues = Enumerable.Empty<WorkItemValueModel>().OrderBy(x => x.OrderNumber);
+
+    /// <summary>
+    ///   Do not update this after its been loaded from the API.
+    /// </summary>
+    private IOrderedEnumerable<WorkItemValueModel> _originalValues = Enumerable.Empty<WorkItemValueModel>().OrderBy(x => x.OrderNumber);
 
     private Guid _queueId = Guid.Empty;
     private string _queueName = string.Empty;
@@ -57,7 +65,7 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
 
             if (workItemResponse is not null)
             {
-                _itemValues = workItemResponse.ItemValues.OrderBy(x => x.OrderNumber);
+                _originalValues = _itemValues = workItemResponse.ItemValues.OrderBy(x => x.OrderNumber);
                 _queueId = workItemResponse.WorkItemQueueId;
                 _queueName = workItemResponse.WorkItemQueueName;
                 _addedToQueueDateTime = workItemResponse.AddedToQueueDateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture);

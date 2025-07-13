@@ -7,7 +7,7 @@ using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Identity;
 
-namespace Bones.Logic.Features.Projects.Projects;
+namespace Bones.Logic.Features.Projects;
 
 /// <inheritdoc />
 public sealed class UserHasProjectPermission(UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager, ISender sender)

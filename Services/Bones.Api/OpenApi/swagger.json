@@ -651,7 +651,7 @@
         "tags": [
           "GenericItem"
         ],
-        "summary": "",
+        "summary": "Gets the item layouts for a project, optionally filtered by the uses they are enabled for",
         "operationId": "GetProjectLayoutsAsync",
         "parameters": [
           {
@@ -735,7 +735,7 @@
         "tags": [
           "GenericItem"
         ],
-        "summary": "Gets the latest version of a layout",
+        "summary": "Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified",
         "operationId": "GetLatestItemLayoutVersionAsync",
         "parameters": [
           {
@@ -785,7 +785,90 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetLatestItemLayoutVersionResponse"
+                  "$ref": "#/components/schemas/GetItemLayoutVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GenericItem/layouts/{layoutId}/{requestedVersion}": {
+      "get": {
+        "tags": [
+          "GenericItem"
+        ],
+        "summary": "Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified",
+        "operationId": "GetItemLayoutVersionAsync",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "requestedVersion",
+            "in": "path",
+            "description": "The version if you want a specific version instead of the latest",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetItemLayoutVersionResponse"
                 }
               }
             }
@@ -2835,7 +2918,7 @@
         }
       }
     },
-    "/WorkItem/{workItemQueueId}/create-work-item": {
+    "/WorkItem/{workItemId}/create-work-item": {
       "post": {
         "tags": [
           "WorkItem"
@@ -2844,7 +2927,7 @@
         "operationId": "CreateWorkItemVersionAsync",
         "parameters": [
           {
-            "name": "workItemQueueId",
+            "name": "workItemId",
             "in": "path",
             "description": "",
             "required": true,
@@ -3618,6 +3701,57 @@
         "additionalProperties": false,
         "description": "Response for the GetInitiativesInProjectAsync endpoint"
       },
+      "GetItemLayoutVersionResponse": {
+        "required": [
+          "enabledFor",
+          "fieldVersions",
+          "friendlyIdPrefix",
+          "latestVersion",
+          "name",
+          "version",
+          "versionUpdateAvailable"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the item layout"
+          },
+          "enabledFor": {
+            "$ref": "#/components/schemas/ItemLayoutUses"
+          },
+          "friendlyIdPrefix": {
+            "maxLength": 6,
+            "type": "string",
+            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters."
+          },
+          "version": {
+            "type": "integer",
+            "description": "The version number for this ItemLayoutVersion",
+            "format": "int64"
+          },
+          "latestVersion": {
+            "type": "integer",
+            "description": "The current latest version of this layout",
+            "format": "int64"
+          },
+          "versionUpdateAvailable": {
+            "type": "boolean",
+            "description": "Is there a version update available for this layout version?",
+            "readOnly": true
+          },
+          "fieldVersions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The field versions"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API response for the GetLatestItemLayoutVersionAsync endpoint"
+      },
       "GetLatestItemFieldVersionResponse": {
         "required": [
           "fieldId",
@@ -3726,39 +3860,6 @@
         },
         "additionalProperties": false,
         "description": "API response for the GetLatestItemLayoutVersionFieldsAsync endpoint"
-      },
-      "GetLatestItemLayoutVersionResponse": {
-        "required": [
-          "enabledFor",
-          "fieldVersions",
-          "friendlyIdPrefix",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the item layout"
-          },
-          "enabledFor": {
-            "$ref": "#/components/schemas/ItemLayoutUses"
-          },
-          "friendlyIdPrefix": {
-            "maxLength": 6,
-            "type": "string",
-            "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters."
-          },
-          "fieldVersions": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "The field versions"
-          }
-        },
-        "additionalProperties": false,
-        "description": "API response for the GetLatestItemLayoutVersionAsync endpoint"
       },
       "GetMyProfileResponse": {
         "required": [
@@ -3888,9 +3989,9 @@
       },
       "GetProjectLayoutsResponse": {
         "required": [
-          "currentLayoutVersionId",
-          "currentVersionNumber",
           "friendlyIdPrefix",
+          "latestLayoutVersionId",
+          "latestVersionNumber",
           "layoutId",
           "layoutName"
         ],
@@ -3901,12 +4002,12 @@
             "description": "ID of the layout",
             "format": "uuid"
           },
-          "currentLayoutVersionId": {
+          "latestLayoutVersionId": {
             "type": "string",
             "description": "ID of the current layout version",
             "format": "uuid"
           },
-          "currentVersionNumber": {
+          "latestVersionNumber": {
             "type": "integer",
             "description": "The current version number of the layout",
             "format": "int64"
@@ -4304,8 +4405,8 @@
       "ItemFieldModel": {
         "required": [
           "isRequired",
-          "itemFieldCurrentVersionId",
           "itemFieldId",
+          "itemFieldLatestVersionId",
           "name",
           "type"
         ],
@@ -4316,7 +4417,7 @@
             "description": "Internal ID for the ItemField",
             "format": "uuid"
           },
-          "itemFieldCurrentVersionId": {
+          "itemFieldLatestVersionId": {
             "type": "string",
             "description": "Internal ID for the current version ItemFieldVersion",
             "format": "uuid"
@@ -4735,6 +4836,7 @@
       },
       "WorkItemValueModel": {
         "required": [
+          "fieldVersionId",
           "name",
           "orderNumber",
           "valueType"
@@ -4745,6 +4847,11 @@
             "type": "integer",
             "description": "The order that this field should be displayed in",
             "format": "int32"
+          },
+          "fieldVersionId": {
+            "type": "string",
+            "description": "The ID of the field version this value is for",
+            "format": "uuid"
           },
           "name": {
             "type": "string",

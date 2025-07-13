@@ -48,7 +48,7 @@ public sealed record GetLatestItemLayoutVersionFieldsResponse
 
     internal static List<GetLatestItemLayoutVersionFieldsResponse> FromInternal(GenericItemLayout layout)
     {
-        return layout.CurrentVersion?.FieldLinks.Select(fl => new GetLatestItemLayoutVersionFieldsResponse
+        return layout.LatestVersion?.FieldLinks.Select(fl => new GetLatestItemLayoutVersionFieldsResponse
         {
             Id = fl.FieldVersion.Id,
             OrderNumber = fl.OrderNumber,

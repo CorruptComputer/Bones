@@ -82,6 +82,7 @@ public sealed record GetWorkItemByIdResponse
             ItemValues = workItem.CurrentVersion.GenericItemLayoutVersion.FieldLinks.Select(fl => new WorkItemValueModel
             {
                 OrderNumber = fl.OrderNumber,
+                FieldVersionId = fl.FieldVersion.Id,
                 Name = fl.FieldVersion.Name,
                 ValueType = fl.FieldVersion.Type,
                 Value = workItem.CurrentVersion.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
@@ -98,6 +99,11 @@ public sealed record GetWorkItemByIdResponse
         ///   The order that this field should be displayed in
         /// </summary>
         public required uint OrderNumber { get; init; }
+
+        /// <summary>
+        ///   The ID of the field version this value is for
+        /// </summary>
+        public required Guid FieldVersionId { get; init; }
 
         /// <summary>
         ///   The name of the field

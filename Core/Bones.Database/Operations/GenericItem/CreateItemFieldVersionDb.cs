@@ -53,7 +53,7 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
         {
             GenericItemField = field,
             // Version numbers are increment only, going back to a previous version just creates a new version with the old values
-            Version = (field.CurrentVersion?.Version ?? 0) + 1,
+            Version = (field.LatestVersion?.Version ?? 0) + 1,
             Name = request.Name,
             IsRequired = request.IsRequired,
             Type = request.Type,

@@ -28,10 +28,10 @@ public class GenericItemLayout
     public required Project Project { get; set; }
 
     /// <summary>
-    ///   The most recent version of this layout
+    ///   The latest version of this layout
     /// </summary>
     [NotMapped]
-    public GenericItemLayoutVersion? CurrentVersion => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
+    public GenericItemLayoutVersion? LatestVersion => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
 
     /// <summary>
     ///   The versions for this Item layout

@@ -10,7 +10,7 @@ namespace Bones.Api.Controllers;
 /// <summary>
 ///   Handles everything related to User Accounts
 /// </summary>
-/// <param name="sender">MediatR sender</param>
+/// <param name="sender">Questy sender</param>
 /// <remarks>
 ///   Created using this as a reference:
 ///   https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core/src/IdentityApiEndpointRouteBuilderExtensions.cs

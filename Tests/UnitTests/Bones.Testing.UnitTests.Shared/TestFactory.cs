@@ -4,7 +4,7 @@ using Bones.Logic;
 using Bones.Database;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Shared.Backend.Extensions;
-using MediatR;
+using Questy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

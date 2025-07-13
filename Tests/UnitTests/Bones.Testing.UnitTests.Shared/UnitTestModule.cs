@@ -1,26 +1,26 @@
 using System.Reflection;
 using Autofac;
 using Bones.Shared.Backend.PipelineBehaviors;
-using MediatR.Extensions.Autofac.DependencyInjection;
-using MediatR.Extensions.Autofac.DependencyInjection.Builder;
+using Questy.Autofac;
+using Questy.Autofac.Builder;
 using Module = Autofac.Module;
 
 namespace Bones.Testing.UnitTests.Shared;
 
-internal sealed class UnitTestModule(List<Assembly> additionalMediatRAssemblies) : Module
+internal sealed class UnitTestModule(List<Assembly> additionalQuestyAssemblies) : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        additionalMediatRAssemblies.Add(ThisAssembly);
+        additionalQuestyAssemblies.Add(ThisAssembly);
 
-        MediatRConfigurationBuilder mediatrConfig = MediatRConfigurationBuilder
-            .Create(additionalMediatRAssemblies.ToArray())
+        QuestyConfigurationBuilder questyConfig = QuestyConfigurationBuilder
+            .Create([.. additionalQuestyAssemblies])
             .WithAllOpenGenericHandlerTypesRegistered()
             .WithCustomPipelineBehaviors([
                 typeof(CommandBehavior<>),
                 typeof(QueryBehavior<,>)
             ]);
 
-        builder.RegisterMediatR(mediatrConfig.Build());
+        builder.RegisterQuesty(questyConfig.Build());
     }
 }

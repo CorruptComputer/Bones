@@ -89,7 +89,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        GetLatestItemLayoutVersionResponse layoutResponse = await apiClient.GetLatestItemLayoutVersionAsync(ItemLayoutId.Value);
+        GetItemLayoutVersionResponse layoutResponse = await apiClient.GetLatestItemLayoutVersionAsync(ItemLayoutId.Value);
         LayoutName = layoutResponse.Name;
         EnabledForWorkItems = layoutResponse.EnabledFor.HasFlag(ItemLayoutUses.WorkItems);
         EnabledForAssets = layoutResponse.EnabledFor.HasFlag(ItemLayoutUses.Assets);

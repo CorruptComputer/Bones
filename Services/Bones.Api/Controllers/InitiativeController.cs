@@ -4,7 +4,7 @@ using Bones.Api.Models.Project;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.WorkItemManagement;
-using Bones.Logic.Features.Projects.Initiatives;
+using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.WorkItems.Queue;
 
 namespace Bones.Api.Controllers;
@@ -12,7 +12,7 @@ namespace Bones.Api.Controllers;
 /// <summary>
 ///   Handles everything related to Managing Initiatives
 /// </summary>
-/// <param name="sender">MediatR sender</param>
+/// <param name="sender">Questy sender</param>
 public sealed class InitiativeController(ISender sender) : AuthenticatedControllerBase(sender)
 {
     #region GET

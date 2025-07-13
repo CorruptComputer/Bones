@@ -15,8 +15,8 @@ updates:
           - "FluentValidation"
           - "FluentValidation.*"
           - "GeoJSON.Text"
-          - "MediatR"
-          - "MediatR.*"
+          - "Questy"
+          - "Questy.*"
           - "Microsoft.*"
           - "Npgsql.EntityFrameworkCore.PostgreSQL"
           - "Npgsql.EntityFrameworkCore.PostgreSQL.Design"
@@ -29,7 +29,6 @@ updates:
           - "Microsoft.AspNetCore.Components.WebAssembly.*"
       frontend:
         patterns:
-          - "Microsoft.NET.Test.Sdk"
           - "Microsoft.AspNetCore.Components.WebAssembly"
           - "Microsoft.AspNetCore.Components.WebAssembly.*"
           - "MudBlazor"

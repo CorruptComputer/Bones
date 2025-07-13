@@ -1,7 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
-using Bones.Logic.Features.Projects.Projects;
+using Bones.Logic.Features.Projects;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
