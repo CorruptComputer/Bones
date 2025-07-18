@@ -6,47 +6,14 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      core:
+      nuget:
         patterns:
-          - "Aspire.Hosting.AppHost"
-          - "Autofac"
-          - "Autofac.*"
-          - "DnsClient"
-          - "FluentValidation"
-          - "FluentValidation.*"
-          - "GeoJSON.Text"
-          - "Questy"
-          - "Questy.*"
-          - "Microsoft.*"
-          - "Npgsql.EntityFrameworkCore.PostgreSQL"
-          - "Npgsql.EntityFrameworkCore.PostgreSQL.Design"
-          - "OpenTelemetry.*"
-          - "Serilog"
-          - "Serilog.*"
-        exclude-patterns:
-          - "Microsoft.NET.Test.Sdk"
-          - "Microsoft.AspNetCore.Components.WebAssembly"
-          - "Microsoft.AspNetCore.Components.WebAssembly.*"
-      frontend:
-        patterns:
-          - "Microsoft.AspNetCore.Components.WebAssembly"
-          - "Microsoft.AspNetCore.Components.WebAssembly.*"
-          - "MudBlazor"
-          - "CodeBeam.MudBlazor.Extensions"
-          - "NSwag.ApiDescription.Client"
-          - "Swashbuckle.*"
-      testing:
-        patterns:
-          - "Shouldly"
-          - "Microsoft.NET.Test.Sdk"
-          - "xunit"
-          - "xunit.*"
-          - "coverlet.collector"
+          - "*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
     groups:
-      Pipeline:
+      actions:
         patterns:
           - "*"
