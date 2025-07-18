@@ -58,9 +58,8 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (GenericItemLayoutFieldVersionLink fieldVersionLink in layout.LatestVersion.FieldLinks)
+        foreach (GenericItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
         {
-            GenericItemFieldVersion fieldVersion = fieldVersionLink.FieldVersion;
             ItemValueModel? fieldValue = request.FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
 
             object? value = fieldVersion.Type switch
@@ -115,9 +114,8 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (GenericItemLayoutFieldVersionLink fieldVersionLink in layout.LatestVersion.FieldLinks)
+        foreach (GenericItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
         {
-            GenericItemFieldVersion fieldVersion = fieldVersionLink.FieldVersion;
             ItemValueModel? fieldValue = request.FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
 
             object? value = fieldVersion.Type switch

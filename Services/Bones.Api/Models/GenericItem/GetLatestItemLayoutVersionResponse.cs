@@ -59,7 +59,7 @@ public sealed record GetItemLayoutVersionResponse
             FriendlyIdPrefix = friendlyIdPrefix,
             Version = layoutVersion.Version,
             LatestVersion = latestVersion,
-            FieldVersions = layoutVersion.FieldLinks.ToDictionary(fl => fl.OrderNumber, fl => fl.FieldVersion.Id) ?? []
+            FieldVersions = layoutVersion.FieldLinks.ToDictionary(fl => fl.OrderNumber, fl => fl.FieldVersion.Id)
         };
     }
 }
