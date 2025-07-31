@@ -17,8 +17,9 @@ public sealed class CreateWorkItemVersion(ISender sender) : IRequestHandler<Crea
     /// <param name="WorkItemLayoutId"></param>
     /// <param name="Title">The title to use for this item</param>
     /// <param name="Values"></param>
+    /// <param name="ActionDateTime"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Command(Guid WorkItemId, Guid WorkItemLayoutId, string Title, Dictionary<Guid, object?> Values, BonesUser RequestingUser) : IRequest<CommandResponse>;
+    public sealed record Command(Guid WorkItemId, Guid WorkItemLayoutId, string Title, Dictionary<Guid, object?> Values, DateTimeOffset ActionDateTime, BonesUser RequestingUser) : IRequest<CommandResponse>;
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
     {
@@ -57,6 +58,6 @@ public sealed class CreateWorkItemVersion(ISender sender) : IRequestHandler<Crea
             return CommandResponse.Fail("Work Item not found");
         }
 
-        return await sender.Send(new CreateWorkItemVersionDb.Command(workItem.Id, request.Title, layout.LatestVersion.Id, request.Values), cancellationToken);
+        return await sender.Send(new CreateWorkItemVersionDb.Command(workItem.Id, request.Title, layout.LatestVersion.Id, request.Values, request.ActionDateTime), cancellationToken);
     }
 }

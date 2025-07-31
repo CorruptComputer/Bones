@@ -1,12 +1,9 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.WorkItems;
 using Bones.Api.Models.WorkItems.Actions;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.WorkItemManagement;
-using Bones.Logic.Features.GenericItem;
 using Bones.Logic.Features.WorkItems.WorkItems;
-using Bones.Shared.Backend.Enums;
-using Bones.Shared.Exceptions;
 
 namespace Bones.Api.Controllers;
 
@@ -40,116 +37,109 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
 
     #region POST
     /// <summary>
-    ///   Creates a work item in the specified queue
+    ///   Assigns a work item
     /// </summary>
-    /// <param name="workItemQueueId"></param>
     /// <param name="request"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("create-in-queue", Name = "CreateWorkItemInQueueAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [HttpPost("action/assign", Name = "AssignWorkItemActionAsync")]
+    [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateWorkItemInQueueAsync([FromQuery] Guid workItemQueueId, [FromBody] CreateWorkItemRequest request)
+    public async ValueTask<ActionResult<WorkItemActionResponse>> AssignWorkItemActionAsync([FromBody] AssignWorkItemAction request)
     {
-        GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(request.WorkItemLayoutId, await GetCurrentBonesUserAsync()));
-        if (layout?.LatestVersion is null)
-        {
-            return BadRequest(new ErrorResponse("Layout not found"));
-        }
-
-        Dictionary<Guid, object?> fieldValues = [];
-
-        foreach (GenericItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
-        {
-            ItemValueModel? fieldValue = request.FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
-
-            object? value = fieldVersion.Type switch
-            {
-                FieldType.TextField or FieldType.TextBox or FieldType.ValueList => fieldValue?.StrValue,
-                FieldType.Integer => fieldValue?.IntValue,
-                FieldType.Decimal => fieldValue?.DecimalValue,
-                FieldType.Boolean => fieldValue?.BoolValue,
-                FieldType.DateTime => fieldValue?.DateTimeValue,
-                //FieldType.GeoLocation => fieldValue?.StrValue, // TODO: Handle this
-                _ => null
-            };
-
-            if (value is null && fieldVersion.IsRequired)
-            {
-                return BadRequest(new ErrorResponse($"Field {fieldVersion.Name} is required"));
-            }
-
-            fieldValues.Add(fieldVersion.Id, value);
-        }
-
-        CommandResponse result = await Sender.Send(new CreateWorkItemInQueue.Command(workItemQueueId, layout.Id, layout.LatestVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
-        if (!result.Success)
-        {
-            return BadRequest(ErrorResponse.FromCommandResponse(result));
-        }
-
-        if (!result.Id.HasValue)
-        {
-            throw new BonesException("No ID returned from command: CreateWorkItemInQueue.Command");
-        }
-
-        return result.Id.Value;
+        return await PerformWorkItemActionAsync(request);
     }
 
     /// <summary>
-    ///   Creates a new version of a work item
+    ///   Creates a new work item
     /// </summary>
-    /// <param name="workItemId"></param>
     /// <param name="request"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{workItemId:guid}/create-work-item", Name = "CreateWorkItemVersionAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [HttpPost("action/create", Name = "CreateWorkItemActionAsync")]
+    [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateWorkItemVersionAsync(Guid workItemId, [FromBody] CreateWorkItemRequest request)
+    public async ValueTask<ActionResult<WorkItemActionResponse>> CreateWorkItemActionAsync([FromBody] CreateWorkItemAction request)
     {
-        GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(request.WorkItemLayoutId, await GetCurrentBonesUserAsync()));
-        if (layout?.LatestVersion is null)
-        {
-            return BadRequest(new ErrorResponse("Layout not found"));
-        }
+        return await PerformWorkItemActionAsync(request);
+    }
 
-        Dictionary<Guid, object?> fieldValues = [];
+    /// <summary>
+    ///   Creates a new work item version
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("action/create-version", Name = "CreateWorkItemVersionActionAsync")]
+    [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<WorkItemActionResponse>> CreateWorkItemVersionActionAsync([FromBody] CreateWorkItemVersionAction request)
+    {
+        return await PerformWorkItemActionAsync(request);
+    }
 
-        foreach (GenericItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
-        {
-            ItemValueModel? fieldValue = request.FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
+    /// <summary>
+    ///  Deletes a work item
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("action/delete", Name = "DeleteWorkItemActionAsync")]
+    [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<WorkItemActionResponse>> DeleteWorkItemActionAsync([FromBody] DeleteWorkItemAction request)
+    {
+        return await PerformWorkItemActionAsync(request);
+    }
 
-            object? value = fieldVersion.Type switch
-            {
-                FieldType.TextField or FieldType.TextBox or FieldType.ValueList => fieldValue?.StrValue,
-                FieldType.Integer => fieldValue?.IntValue,
-                FieldType.Decimal => fieldValue?.DecimalValue,
-                FieldType.Boolean => fieldValue?.BoolValue,
-                FieldType.DateTime => fieldValue?.DateTimeValue,
-                //FieldType.GeoLocation => fieldValue?.StrValue, // TODO: Handle this
-                _ => null
-            };
+    /// <summary>
+    ///  Deletes a work item version
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("action/delete-version", Name = "DeleteWorkItemVersionActionAsync")]
+    [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<WorkItemActionResponse>> DeleteWorkItemVersionActionAsync([FromBody] DeleteWorkItemVersionAction request)
+    {
+        return await PerformWorkItemActionAsync(request);
+    }
 
-            if (value is null && fieldVersion.IsRequired)
-            {
-                return BadRequest(new ErrorResponse($"Field {fieldVersion.Name} is required"));
-            }
+    /// <summary>
+    ///  Moves a work item to a different queue
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("action/move-queue", Name = "MoveWorkItemQueueActionAsync")]
+    [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<WorkItemActionResponse>> MoveWorkItemQueueActionAsync([FromBody] MoveWorkItemQueueAction request)
+    {
+        return await PerformWorkItemActionAsync(request);
+    }
 
-            fieldValues.Add(fieldVersion.Id, value);
-        }
+    /// <summary>
+    ///  Unassigns a work item
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
+    [HttpPost("action/unassign", Name = "UnassignWorkItemActionAsync")]
+    [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<WorkItemActionResponse>> UnassignWorkItemActionAsync([FromBody] UnassignWorkItemAction request)
+    {
+        return await PerformWorkItemActionAsync(request);
+    }
+    #endregion
 
+    // Ideally this would just be the controller, but NSwag's support for polymorphic types is basically non-existent as far as I can tell.
+    private async ValueTask<ActionResult<WorkItemActionResponse>> PerformWorkItemActionAsync(WorkItemActionBase request)
+    {
+        BonesUser user = await GetCurrentBonesUserAsync();
+        IRequest<CommandResponse> internalRequest = await request.ToInternalAsync(user, Sender);
+        CommandResponse result = await Sender.Send(internalRequest);
 
-        CommandResponse result = await Sender.Send(new CreateWorkItemVersion.Command(workItemId, layout.LatestVersion.Id, request.Title, fieldValues, await GetCurrentBonesUserAsync()));
         if (!result.Success)
         {
             return BadRequest(ErrorResponse.FromCommandResponse(result));
         }
 
-        if (!result.Id.HasValue)
-        {
-            throw new BonesException("No ID returned from command: CreateWorkItemVersion.Command");
-        }
-
-        return result.Id.Value;
+        return await request.FromInternalAsync(result, user, Sender);
     }
-    #endregion
 }

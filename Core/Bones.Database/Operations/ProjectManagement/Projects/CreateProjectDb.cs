@@ -51,6 +51,6 @@ public sealed class CreateProjectDb(BonesDbContext dbContext) : IRequestHandler<
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(created.Entity.Id);
+        return CommandResponse.Pass(nameof(Project), created.Entity.Id);
     }
 }

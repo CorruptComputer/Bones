@@ -2,13 +2,8 @@ using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Initiatives;
 using Bones.Api.Models.WorkItems;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
-using Bones.Logic.Features.GenericItem;
 using Bones.Logic.Features.WorkItems.Queue;
-using Bones.Logic.Features.WorkItems.WorkItems;
-using Bones.Shared.Backend.Enums;
-using Bones.Shared.Exceptions;
 
 namespace Bones.Api.Controllers;
 
@@ -74,12 +69,12 @@ public class WorkItemQueueController(ISender sender) : AuthenticatedControllerBa
         BonesUser currentUser = await GetCurrentBonesUserAsync();
         CommandResponse resp = await Sender.Send(request.ToInternal(currentUser));
 
-        if (!resp.Success || resp.Id == null)
+        if (!resp.Success || resp.Ids.Count == 0)
         {
             return BadRequest(resp.FailureReasons);
         }
 
-        return resp.Id;
+        return resp.Ids[nameof(WorkItemQueue)];
     }
     #endregion
 

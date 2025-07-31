@@ -64,6 +64,6 @@ public sealed class AddForgotPasswordEmailToQueueDb(BonesDbContext dbContext) : 
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(created.Entity.Id);
+        return CommandResponse.Pass(nameof(ForgotPasswordEmailQueue), created.Entity.Id);
     }
 }

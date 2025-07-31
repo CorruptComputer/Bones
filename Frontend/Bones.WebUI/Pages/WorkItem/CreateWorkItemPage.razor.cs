@@ -388,16 +388,18 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
                 }
             }
 
-            CreateWorkItemRequest request = new()
+            CreateWorkItemAction request = new()
             {
+                ActionDateTime = DateTime.Now,
                 WorkItemLayoutId = SelectedWorkItemLayout.Value,
+                WorkItemQueueId = SelectedWorkItemQueue.Value,
                 Title = _workItemTitle,
                 FieldValues = values
             };
 
             logger.LogWarning("Creating work item with request: {@Request}", JsonSerializer.Serialize(request));
 
-            await apiClient.CreateWorkItemInQueueAsync(SelectedWorkItemQueue.Value, request);
+            await apiClient.CreateWorkItemActionAsync(request);
 
             navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, SelectedWorkItemQueue.Value.ToString()));
         }

@@ -46,6 +46,6 @@ public class CreateItemLayoutDb(BonesDbContext dbContext) : IRequestHandler<Crea
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(added.Entity.Id);
+        return CommandResponse.Pass(nameof(GenericItemLayout), added.Entity.Id);
     }
 }

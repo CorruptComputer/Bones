@@ -1,17 +1,12 @@
-using System.Security.Claims;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.WorkItemManagement;
-using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
-using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.WorkItems.Queue;
-using Bones.Shared.Consts;
-using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Logic.Features.WorkItems.WorkItems;
 
 /// <inheritdoc />
-public class UserHasWorkItemPermission(ISender sender) 
+public class UserHasWorkItemPermission(ISender sender)
     : IRequestHandler<UserHasWorkItemPermission.Query, QueryResponse<bool>>
 {
     /// <summary>

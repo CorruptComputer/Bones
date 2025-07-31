@@ -3,7 +3,7 @@ namespace Bones.Api.Models.WorkItems;
 /// <summary>
 ///   Model for the values of a work item
 /// </summary>
-public class ItemValueModel
+public sealed record ItemValueModel
 {
     /// <summary>
     ///   

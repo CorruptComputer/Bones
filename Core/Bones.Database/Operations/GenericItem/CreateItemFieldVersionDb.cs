@@ -81,6 +81,6 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(added.Entity.Id);
+        return CommandResponse.Pass(nameof(GenericItemFieldVersion), added.Entity.Id);
     }
 }

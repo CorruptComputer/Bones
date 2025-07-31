@@ -41,6 +41,6 @@ public sealed class CreateItemFieldDb(BonesDbContext dbContext) : IRequestHandle
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(added.Entity.Id);
+        return CommandResponse.Pass(nameof(GenericItemField), added.Entity.Id);
     }
 }

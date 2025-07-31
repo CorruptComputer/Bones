@@ -14,17 +14,29 @@ public sealed record CommandResponse : BonesResponseBase
     /// <summary>
     ///     If an ID was generated for something by the command, it can optionally be returned here.
     /// </summary>
-    public Guid? Id { get; init; }
+    public Dictionary<string, Guid> Ids { get; init; } = [];
 
     /// <summary>
     ///   Creates a successful response, optionally with an ID.
     /// </summary>
+    /// <param name="idFor"></param>
     /// <param name="id"></param>
     /// <returns></returns>
-    public static CommandResponse Pass(Guid? id = null) => new()
+    public static CommandResponse Pass(string? idFor = null, Guid? id = null) => new()
     {
         Success = true,
-        Id = id
+        Ids = id is not null && idFor is not null ? new Dictionary<string, Guid> { { idFor, id.Value } } : []
+    };
+
+    /// <summary>
+    ///   Creates a successful response, with multiple IDs
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    public static CommandResponse Pass(Dictionary<string, Guid> ids) => new()
+    {
+        Success = true,
+        Ids = ids
     };
 
     /// <summary>

@@ -1,4 +1,5 @@
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
@@ -18,8 +19,9 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
     /// <param name="WorkItemLayoutVersionId"></param>
     /// <param name="Title">The title to use for this item</param>
     /// <param name="Values"></param>
+    /// <param name="ActionDateTime"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Command(Guid QueueId, Guid WorkItemLayoutId, Guid WorkItemLayoutVersionId, string Title, Dictionary<Guid, object?> Values, BonesUser RequestingUser) : IRequest<CommandResponse>;
+    public sealed record Command(Guid QueueId, Guid WorkItemLayoutId, Guid WorkItemLayoutVersionId, string Title, Dictionary<Guid, object?> Values, DateTimeOffset ActionDateTime, BonesUser RequestingUser) : IRequest<CommandResponse>;
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
     {
@@ -34,6 +36,8 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
             {
                 dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
             });
+            RuleFor(x => x.ActionDateTime).NotNull().LessThanOrEqualTo(DateTimeOffset.UtcNow)
+                .WithMessage("Action date time cannot be in the future");
             RuleFor(x => x.RequestingUser).NotNull();
         }
     }
@@ -53,13 +57,26 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
             return CommandResponse.Forbid();
         }
 
-        CommandResponse item = await sender.Send(new CreateWorkItemDb.Command(request.QueueId, request.WorkItemLayoutId), cancellationToken);
+        CommandResponse workItem = await sender.Send(new CreateWorkItemDb.Command(request.QueueId, request.WorkItemLayoutId, request.ActionDateTime), cancellationToken);
 
-        if (item.Success && item.Id is not null)
+        if (!workItem.Success)
         {
-            return await sender.Send(new CreateWorkItemVersionDb.Command(item.Id.Value, request.Title, request.WorkItemLayoutVersionId, request.Values), cancellationToken);
+            return workItem;
         }
 
-        return item;
+        CommandResponse itemVersion = await sender.Send(new CreateWorkItemVersionDb.Command(workItem.Ids[nameof(WorkItem)], request.Title, request.WorkItemLayoutVersionId, request.Values, request.ActionDateTime), cancellationToken);
+
+        if (!itemVersion.Success)
+        {
+            return itemVersion;
+        }
+
+        Dictionary<string, Guid> ids = new()
+        {
+            { nameof(WorkItem), workItem.Ids.Values.FirstOrDefault() },
+            { nameof(GenericItemVersion), itemVersion.Ids.Values.FirstOrDefault() }
+        };
+
+        return CommandResponse.Pass(ids);
     }
 }

@@ -40,6 +40,6 @@ public sealed class CreateInitiativeDb(BonesDbContext dbContext) : IRequestHandl
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(created.Entity.Id);
+        return CommandResponse.Pass(nameof(Initiative), created.Entity.Id);
     }
 }

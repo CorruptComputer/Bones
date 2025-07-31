@@ -77,12 +77,12 @@ public class CreateItemLayout(ISender sender) : IRequestHandler<CreateItemLayout
 
         CommandResponse createLayoutResponse = await sender.Send(new CreateItemLayoutDb.Command(request.ProjectId, request.FriendlyIdPrefix), cancellationToken);
 
-        if (!createLayoutResponse.Success || createLayoutResponse.Id == null)
+        if (!createLayoutResponse.Success || createLayoutResponse.Ids.Count == 0)
         {
             return createLayoutResponse;
         }
 
-        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDb.Command(createLayoutResponse.Id.Value, request.Name, request.EnabledFor, request.FieldVersions), cancellationToken);
+        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDb.Command(createLayoutResponse.Ids[nameof(GenericItemLayout)], request.Name, request.EnabledFor, request.FieldVersions), cancellationToken);
 
         if (!createLayoutVersionResponse.Success)
         {

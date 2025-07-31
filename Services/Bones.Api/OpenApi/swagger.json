@@ -2835,30 +2835,19 @@
         }
       }
     },
-    "/WorkItem/create-in-queue": {
+    "/WorkItem/action/assign": {
       "post": {
         "tags": [
           "WorkItem"
         ],
-        "summary": "Creates a work item in the specified queue",
-        "operationId": "CreateWorkItemInQueueAsync",
-        "parameters": [
-          {
-            "name": "workItemQueueId",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
+        "summary": "Assigns a work item",
+        "operationId": "AssignWorkItemActionAsync",
         "requestBody": {
           "description": "",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateWorkItemRequest"
+                "$ref": "#/components/schemas/AssignWorkItemAction"
               }
             }
           }
@@ -2899,8 +2888,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/WorkItemActionResponse"
                 }
               }
             }
@@ -2918,31 +2906,19 @@
         }
       }
     },
-    "/WorkItem/{workItemId}/create-work-item": {
+    "/WorkItem/action/create": {
       "post": {
         "tags": [
           "WorkItem"
         ],
-        "summary": "Creates a new version of a work item",
-        "operationId": "CreateWorkItemVersionAsync",
-        "parameters": [
-          {
-            "name": "workItemId",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
+        "summary": "Creates a new work item",
+        "operationId": "CreateWorkItemActionAsync",
         "requestBody": {
           "description": "",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateWorkItemRequest"
+                "$ref": "#/components/schemas/CreateWorkItemAction"
               }
             }
           }
@@ -2983,8 +2959,362 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/WorkItemActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/action/create-version": {
+      "post": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Creates a new work item version",
+        "operationId": "CreateWorkItemVersionActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkItemVersionAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkItemActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/action/delete": {
+      "post": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Deletes a work item",
+        "operationId": "DeleteWorkItemActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteWorkItemAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkItemActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/action/delete-version": {
+      "post": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Deletes a work item version",
+        "operationId": "DeleteWorkItemVersionActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteWorkItemVersionAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkItemActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/action/move-queue": {
+      "post": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Moves a work item to a different queue",
+        "operationId": "MoveWorkItemQueueActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoveWorkItemQueueAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkItemActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WorkItem/action/unassign": {
+      "post": {
+        "tags": [
+          "WorkItem"
+        ],
+        "summary": "Unassigns a work item",
+        "operationId": "UnassignWorkItemActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnassignWorkItemAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkItemActionResponse"
                 }
               }
             }
@@ -3261,6 +3591,28 @@
         "additionalProperties": false,
         "description": "Response to the GetWebConfigAsync endpoint"
       },
+      "AssignWorkItemAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkItemActionBase"
+          },
+          {
+            "required": [
+              "workItemId"
+            ],
+            "type": "object",
+            "properties": {
+              "workItemId": {
+                "type": "string",
+                "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to assign a work item to a user."
+      },
       "ChangeMyEmailRequest": {
         "required": [
           "newEmail"
@@ -3506,33 +3858,81 @@
         "additionalProperties": false,
         "description": "Response for the CreateQueueInInitiativeAsync endpoint"
       },
-      "CreateWorkItemRequest": {
-        "required": [
-          "fieldValues",
-          "title",
-          "workItemLayoutId"
-        ],
-        "type": "object",
-        "properties": {
-          "workItemLayoutId": {
-            "type": "string",
-            "description": "The ID of the work item layout (not version, automatically uses the current version)",
-            "format": "uuid"
+      "CreateWorkItemAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkItemActionBase"
           },
-          "title": {
-            "type": "string",
-            "description": "The title of the work item"
-          },
-          "fieldValues": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ItemValueModel"
+          {
+            "required": [
+              "fieldValues",
+              "title",
+              "workItemLayoutId",
+              "workItemQueueId"
+            ],
+            "type": "object",
+            "properties": {
+              "workItemLayoutId": {
+                "type": "string",
+                "description": "The ID of the work item layout (not version, automatically uses the current version)",
+                "format": "uuid"
+              },
+              "workItemQueueId": {
+                "type": "string",
+                "description": "The ID of the work item queue to create the work item in",
+                "format": "uuid"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the work item"
+              },
+              "fieldValues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ItemValueModel"
+                },
+                "description": "The fields of the work item"
+              }
             },
-            "description": "The fields of the work item"
+            "additionalProperties": false
           }
-        },
-        "additionalProperties": false,
-        "description": "Request to create a new work item"
+        ],
+        "description": "Action to create a new work item."
+      },
+      "CreateWorkItemVersionAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkItemActionBase"
+          },
+          {
+            "required": [
+              "fieldValues",
+              "title",
+              "workItemId"
+            ],
+            "type": "object",
+            "properties": {
+              "workItemId": {
+                "type": "string",
+                "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the work item"
+              },
+              "fieldValues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ItemValueModel"
+                },
+                "description": "The fields of the work item"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to create a new version of a work item."
       },
       "DashboardWorkItemModel": {
         "required": [
@@ -3564,6 +3964,50 @@
         },
         "additionalProperties": false,
         "description": "Model for a work item in the dashboard"
+      },
+      "DeleteWorkItemAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkItemActionBase"
+          },
+          {
+            "required": [
+              "workItemId"
+            ],
+            "type": "object",
+            "properties": {
+              "workItemId": {
+                "type": "string",
+                "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to delete a work item."
+      },
+      "DeleteWorkItemVersionAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkItemActionBase"
+          },
+          {
+            "required": [
+              "workItemId"
+            ],
+            "type": "object",
+            "properties": {
+              "workItemId": {
+                "type": "string",
+                "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to delete a specific version of a work item."
       },
       "EmptyResponse": {
         "type": "object",
@@ -4542,6 +4986,28 @@
         "additionalProperties": false,
         "description": "Request to login"
       },
+      "MoveWorkItemQueueAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkItemActionBase"
+          },
+          {
+            "required": [
+              "workItemId"
+            ],
+            "type": "object",
+            "properties": {
+              "workItemId": {
+                "type": "string",
+                "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to move a work item to a different queue."
+      },
       "MyAccountAuditModel": {
         "required": [
           "action",
@@ -4794,6 +5260,28 @@
         ],
         "type": "string"
       },
+      "UnassignWorkItemAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WorkItemActionBase"
+          },
+          {
+            "required": [
+              "workItemId"
+            ],
+            "type": "object",
+            "properties": {
+              "workItemId": {
+                "type": "string",
+                "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to unassign a work item from a user."
+      },
       "UpdateMyProfileRequest": {
         "required": [
           "displayName"
@@ -4807,6 +5295,42 @@
         },
         "additionalProperties": false,
         "description": "Request for the UpdateMyProfileAsync endpoint"
+      },
+      "WorkItemActionBase": {
+        "required": [
+          "actionDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "actionDateTime": {
+            "type": "string",
+            "description": "The timestamp of when this action was performed",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "An action that can be performed on a work item"
+      },
+      "WorkItemActionResponse": {
+        "required": [
+          "workItemCurrentVersionId",
+          "workItemId"
+        ],
+        "type": "object",
+        "properties": {
+          "workItemId": {
+            "type": "string",
+            "description": "The unique identifier of the work item action.",
+            "format": "uuid"
+          },
+          "workItemCurrentVersionId": {
+            "type": "string",
+            "description": "The unique identifier of the current version of the work item.",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response model for work item actions."
       },
       "WorkItemQueueListModel": {
         "required": [

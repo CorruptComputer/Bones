@@ -76,7 +76,7 @@ public sealed class InitiativeController(ISender sender) : AuthenticatedControll
     #endregion
 
     #region POST
-    
+
     #endregion
 }
 

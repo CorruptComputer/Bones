@@ -3,6 +3,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.System.SystemSettings;
 using Bones.Shared.Backend.Models;
 using Bones.Database.Operations.ProjectManagement.Projects;
+using Bones.Database.DbSets.ProjectManagement;
 
 namespace Bones.Testing.UnitTests.Shared;
 
@@ -41,12 +42,12 @@ public class TestBase
     {
         CommandResponse response = await Sender.Send(new CreateProjectDb.Command(projectName, await GetBackgroundServiceUserAsync(), null));
 
-        if (!response.Success || !response.Id.HasValue)
+        if (!response.Success || response.Ids.Count == 0)
         {
             throw new InvalidDataException("Project creation failed or an ID wasn't returned");
         }
 
-        return response.Id.Value;
+        return response.Ids[nameof(Project)];
     }
 
     // TODO: Eventually there should be some that setup items and whatnot, but this'll do for now

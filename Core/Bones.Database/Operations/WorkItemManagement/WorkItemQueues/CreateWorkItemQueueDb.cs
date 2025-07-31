@@ -42,6 +42,6 @@ public sealed class CreateWorkItemQueueDb(BonesDbContext dbContext) : IRequestHa
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(created.Entity.Id);
+        return CommandResponse.Pass(nameof(WorkItemQueue), created.Entity.Id);
     }
 }

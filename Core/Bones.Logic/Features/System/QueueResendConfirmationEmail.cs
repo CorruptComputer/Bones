@@ -39,6 +39,6 @@ public class QueueResendConfirmationEmail(UserManager<BonesUser> userManager, IS
 
         await sender.Send(new QueueConfirmationEmail.Command(user, request.Email), cancellationToken);
 
-        return CommandResponse.Pass(user.Id);
+        return CommandResponse.Pass();
     }
 }

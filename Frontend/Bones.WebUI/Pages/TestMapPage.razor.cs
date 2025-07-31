@@ -45,10 +45,10 @@ public partial class TestMapPage(IJSRuntime JsRuntime) : ComponentBase
         get
         {
             _map ??= new(JsRuntime)
-                {
-                    Center = _startAt,
-                    Zoom = 4.8f
-                };
+            {
+                Center = _startAt,
+                Zoom = 4.8f
+            };
 
             return _map;
         }

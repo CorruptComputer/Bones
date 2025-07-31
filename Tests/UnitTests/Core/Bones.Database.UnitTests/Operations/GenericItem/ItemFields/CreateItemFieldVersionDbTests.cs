@@ -1,3 +1,4 @@
+using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Backend.Models;
@@ -23,10 +24,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Required Text",
             true,
             FieldType.TextField,
@@ -55,10 +56,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Optional Text",
             false,
             FieldType.TextField,
@@ -87,10 +88,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Number Field",
             true,
             FieldType.Decimal,
@@ -119,10 +120,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Date Field",
             true,
             FieldType.DateTime,
@@ -151,10 +152,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Invalid Field",
             true,
             FieldType.Decimal,
@@ -180,10 +181,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             new('a', 513), // Name too long
             true,
             FieldType.TextBox,
@@ -208,10 +209,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Invalid Field Type",
             true,
             (FieldType)999, // Invalid field type value
@@ -237,10 +238,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Numeric Field",
             true,
             FieldType.Decimal,
@@ -266,10 +267,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Geo Field",
             true,
             FieldType.GeoLocation,
@@ -295,10 +296,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "GeoLocation Field",
             true,
             FieldType.GeoLocation,
@@ -324,10 +325,10 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Id!.Value,
+            createFieldResponse.Ids[nameof(GenericItemField)],
             "Value List Field",
             true,
             FieldType.ValueList,
@@ -379,13 +380,13 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         // Create multiple versions
         for (int i = 0; i < 5; i++)
         {
             CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-                createFieldResponse.Id!.Value,
+                createFieldResponse.Ids[nameof(GenericItemField)],
                 $"Version {i}",
                 true,
                 FieldType.TextBox,
@@ -415,14 +416,14 @@ public class CreateItemFieldVersionDbTests : TestBase
         CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
         CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
         createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Id.ShouldNotBeNull();
+        createFieldResponse.Ids.ShouldNotBeEmpty();
 
         // Create multiple versions concurrently
         Task<CommandResponse>[] tasks = Enumerable.Range(0, 5)
             .Select(i =>
             {
                 CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-                    createFieldResponse.Id!.Value,
+                    createFieldResponse.Ids[nameof(GenericItemField)],
                     $"Version {i}",
                     true,
                     FieldType.TextField,

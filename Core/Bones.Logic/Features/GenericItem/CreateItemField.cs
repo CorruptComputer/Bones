@@ -1,4 +1,5 @@
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
 using Bones.Logic.Features.Projects;
 using Bones.Shared.Backend.Enums;
@@ -54,14 +55,13 @@ public sealed class CreateItemField(ISender sender) : IRequestHandler<CreateItem
         }
 
         CommandResponse createFieldResponse = await sender.Send(new CreateItemFieldDb.Command(request.ProjectId), cancellationToken);
-
-        if (!createFieldResponse.Success || createFieldResponse.Id == null)
+        if (!createFieldResponse.Success || createFieldResponse.Ids.Count == 0)
         {
             return createFieldResponse;
         }
 
         CommandResponse createFieldVersionResponse = await sender.Send(
-            new CreateItemFieldVersionDb.Command(createFieldResponse.Id.Value, request.Name,
+            new CreateItemFieldVersionDb.Command(createFieldResponse.Ids[nameof(GenericItemField)], request.Name,
             request.IsRequired, request.Type, request.CanBeNegative, request.PossibleValues,
             request.GeoLocationType, request.RequiredAddressFields), cancellationToken);
 

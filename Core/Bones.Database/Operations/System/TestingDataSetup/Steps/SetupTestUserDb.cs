@@ -47,6 +47,6 @@ public class SetupTestUserDb(UserManager<BonesUser> userManager, ISender sender)
             backgroundServiceUser,
             "Generated"), cancellationToken);
 
-        return CommandResponse.Pass(testUser?.Id);
+        return CommandResponse.Pass(nameof(BonesUser), testUser?.Id);
     }
 }

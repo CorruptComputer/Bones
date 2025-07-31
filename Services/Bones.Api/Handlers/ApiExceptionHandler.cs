@@ -17,9 +17,9 @@ public class ApiExceptionHandler : IExceptionHandler
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
             {
                 Errors = new()
-                    {
-                        { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE] }
-                    }
+                {
+                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE] }
+                }
             }, cancellationToken);
 
             return true;
@@ -31,9 +31,23 @@ public class ApiExceptionHandler : IExceptionHandler
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
             {
                 Errors = new()
-                    {
-                        { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
-                    }
+                {
+                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
+                }
+            }, cancellationToken);
+
+            return true;
+        }
+
+        if (exception is BadRequestException badRequestException)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await httpContext.Response.WriteAsJsonAsync(new ErrorResponse($"Bad Request '{badRequestException.RequestModel}'")
+            {
+                Errors = new()
+                {
+                    { badRequestException.BadField, [badRequestException.Message] }
+                },
             }, cancellationToken);
 
             return true;
@@ -43,9 +57,9 @@ public class ApiExceptionHandler : IExceptionHandler
         await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
         {
             Errors = new()
-                {
-                    { BonesResponseBase.SERVER_ERROR_KEY, [exception.Message] }
-                }
+            {
+                { BonesResponseBase.SERVER_ERROR_KEY, [exception.Message] }
+            }
         }, cancellationToken);
 
         return true;

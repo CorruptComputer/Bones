@@ -12,7 +12,8 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
     /// </summary>
     /// <param name="QueueId">Internal ID of the queue this item is in</param>
     /// <param name="ItemLayoutId">Internal ID of the layout this item is using</param>
-    public sealed record Command(Guid QueueId, Guid ItemLayoutId) : IRequest<CommandResponse>;
+    /// <param name="ActionDateTime"></param>
+    public sealed record Command(Guid QueueId, Guid ItemLayoutId, DateTimeOffset ActionDateTime) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
@@ -43,7 +44,7 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
         EntityEntry<WorkItem> created = await dbContext.WorkItems.AddAsync(new()
         {
             WorkItemQueue = queue,
-            AddedToQueueDateTime = DateTimeOffset.Now,
+            AddedToQueueDateTime = request.ActionDateTime,
             Item = new()
             {
                 FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
@@ -56,6 +57,6 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(created.Entity.Id);
+        return CommandResponse.Pass(nameof(WorkItem), created.Entity.Id);
     }
 }

@@ -1,3 +1,4 @@
+using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.System.TestingDataSetup.Steps;
 
 namespace Bones.Database.Operations.System.TestingDataSetup;
@@ -15,13 +16,13 @@ public class SetupTestingDataDb(ISender sender)
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         CommandResponse testUser = await sender.Send(new SetupTestUserDb.Command(), cancellationToken);
-        if (testUser.Id == null)
+        if (testUser.Ids.Count == 0)
         {
             return CommandResponse.Fail("Failed to create test user.");
         }
 
-        CommandResponse project = await sender.Send(new SetupTestProjectDb.Command(testUser.Id.Value), cancellationToken);
-        if (project.Id == null)
+        CommandResponse project = await sender.Send(new SetupTestProjectDb.Command(testUser.Ids[nameof(BonesUser)]), cancellationToken);
+        if (project.Ids.Count == 0)
         {
             return CommandResponse.Fail("Failed to create test project.");
         }

@@ -6,7 +6,7 @@ namespace Bones.Api.Models.WorkItems;
 ///   Response for the GetWorkItemQueueDashboardAsync endpoint
 /// </summary>
 [JsonSerializable(typeof(GetWorkItemQueueDashboardResponse))]
-public record GetWorkItemQueueDashboardResponse
+public sealed record GetWorkItemQueueDashboardResponse
 {
     /// <summary>
     ///   The name of the queue

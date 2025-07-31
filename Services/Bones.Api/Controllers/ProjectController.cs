@@ -54,7 +54,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
 
-        // TODO: Make this customizable 
+        // TODO: Make this customizable
         QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsUserCanAccess.Query(currentUser));
         if (!response.Success)
         {
@@ -172,7 +172,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     
+    ///
     /// </summary>
     /// <param name="projectId">The ID of the project</param>
     /// <returns>The initiatives in the project.</returns>
@@ -213,7 +213,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Id ?? Guid.Empty;
+        return response.Ids[nameof(Project)];
     }
 
     /// <summary>
@@ -233,7 +233,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Id ?? Guid.Empty;
+        return response.Ids[nameof(Initiative)];
     }
 
     /// <summary>
@@ -253,7 +253,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Id ?? Guid.Empty;
+        return response.Ids[nameof(GenericItemField)];
     }
 
     /// <summary>
@@ -274,7 +274,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Id ?? Guid.Empty;
+        return response.Ids[nameof(GenericItemFieldVersion)];
     }
 
     /// <summary>
@@ -294,7 +294,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Id ?? Guid.Empty;
+        return response.Ids[nameof(GenericItemLayout)];
     }
 
     /// <summary>
@@ -315,7 +315,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Id ?? Guid.Empty;
+        return response.Ids[nameof(GenericItemLayoutVersion)];
     }
 
     #endregion

@@ -8,13 +8,14 @@ namespace Bones.Database.Operations.WorkItemManagement.WorkItems;
 public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequestHandler<CreateWorkItemVersionDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating an ItemVersion.
+    ///   DB Command for creating an ItemVersion.
     /// </summary>
     /// <param name="WorkItemId">Internal ID of the item</param>
     /// <param name="Title">The title to use for this version</param>
     /// <param name="WorkItemLayoutVersionId">Internal ID of the layout version this item is using</param>
     /// <param name="Values">The values to use for this work item version</param>
-    public record Command(Guid WorkItemId, string Title, Guid WorkItemLayoutVersionId, Dictionary<Guid, object?> Values) : IRequest<CommandResponse>;
+    /// <param name="ActionDateTime"></param>
+    public record Command(Guid WorkItemId, string Title, Guid WorkItemLayoutVersionId, Dictionary<Guid, object?> Values, DateTimeOffset ActionDateTime) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     internal sealed class Validator : AbstractValidator<Command>
@@ -29,6 +30,8 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
             {
                 dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
             });
+            RuleFor(x => x.ActionDateTime).NotNull().LessThanOrEqualTo(DateTimeOffset.UtcNow)
+                .WithMessage("Action date time cannot be in the future");
         }
     }
 
@@ -98,7 +101,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
             Item = workItem.Item,
             Title = request.Title,
             Version = version,
-            CreateDateTime = DateTimeOffset.Now,
+            CreateDateTime = request.ActionDateTime,
             GenericItemLayoutVersion = layoutVersion,
             Values = values
         });
@@ -107,6 +110,6 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(updated.Entity.Item.Versions.FirstOrDefault(v => v.Version == version)?.Id);
+        return CommandResponse.Pass(nameof(GenericItemVersion), updated.Entity.Item.Versions.FirstOrDefault(v => v.Version == version)?.Id);
     }
 }

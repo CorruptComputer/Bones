@@ -99,6 +99,6 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(added.Entity.Id);
+        return CommandResponse.Pass(nameof(GenericItemLayoutVersion), added.Entity.Id);
     }
 }

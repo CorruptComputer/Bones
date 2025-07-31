@@ -64,6 +64,6 @@ public sealed class AddConfirmationEmailToQueueDb(BonesDbContext dbContext) : IR
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(created.Entity.Id);
+        return CommandResponse.Pass(nameof(ConfirmationEmailQueue), created.Entity.Id);
     }
 }

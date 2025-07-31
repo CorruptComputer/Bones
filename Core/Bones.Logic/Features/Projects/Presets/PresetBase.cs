@@ -1,5 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.ProjectManagement;
 using Bones.Logic.Features.GenericItem;
 using Bones.Shared.Enums;
 
@@ -18,17 +19,17 @@ internal abstract class PresetBase
     internal async Task<bool> CreatePresetAsync(ISender sender, BonesUser requestingUser, CancellationToken cancellationToken)
     {
         CommandResponse projectCreation = await sender.Send(new CreateProject.Command(PresetName, requestingUser), cancellationToken);
-        if (!projectCreation.Success || projectCreation.Id == null)
+        if (!projectCreation.Success || projectCreation.Ids.Count == 0)
         {
             return false;
         }
 
-        if (!await CreatePresetFieldsAsync(sender, projectCreation.Id.Value, requestingUser, cancellationToken))
+        if (!await CreatePresetFieldsAsync(sender, projectCreation.Ids[nameof(Project)], requestingUser, cancellationToken))
         {
             return false;
         }
 
-        if (!await CreatePresetLayoutsAsync(sender, projectCreation.Id.Value, requestingUser, cancellationToken))
+        if (!await CreatePresetLayoutsAsync(sender, projectCreation.Ids[nameof(Project)], requestingUser, cancellationToken))
         {
             return false;
         }
@@ -41,12 +42,12 @@ internal abstract class PresetBase
         foreach ((PresetFields _, PresetFieldInfo fieldInfo) in ItemFields)
         {
             CommandResponse result = await sender.Send(new CreateItemField.Command(projectId, fieldInfo.Name, fieldInfo.IsRequired, fieldInfo.Type, fieldInfo.CanBeNegative, fieldInfo.PossibleValues, fieldInfo.GeoLocationType, fieldInfo.RequiredAddressFields, requestingUser), cancellationToken);
-            if (!result.Success || result.Id == null)
+            if (!result.Success || result.Ids.Count == 0)
             {
                 return false;
             }
 
-            fieldInfo.FieldId = result.Id;
+            fieldInfo.FieldId = result.Ids[nameof(GenericItemField)];
         }
 
         return true;
@@ -82,7 +83,7 @@ internal abstract class PresetBase
             }
 
             CommandResponse result = await sender.Send(new CreateItemLayout.Command(projectId, layoutName, layoutInfo.EnabledFor, layoutInfo.FriendlyIdPrefix, fields, requestingUser), cancellationToken);
-            if (!result.Success || result.Id == null)
+            if (!result.Success || result.Ids.Count == 0)
             {
                 return false;
             }

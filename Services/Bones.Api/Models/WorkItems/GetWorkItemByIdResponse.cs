@@ -3,7 +3,6 @@ using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.WorkItems;
 
-
 /// <summary>
 ///   Response for the GetWorkItemById endpoint
 /// </summary>
