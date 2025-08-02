@@ -1,46 +1,13 @@
-﻿@attribute [Route(FrontEndUrls.WorkItem.VIEW_WORK_ITEM)]
+﻿@using Bones.WebUI.Models
+@using Bones.WebUI.Components.GenericItem
+@attribute [Route(FrontEndUrls.WorkItem.VIEW_WORK_ITEM)]
 
-<MudText Typo="Typo.h4">View Work Item</MudText>
+<MudText Typo="Typo.h4">@_workItemTitle (v@_currentVersion)</MudText>
 
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
-            <MudForm>
-                @foreach (WorkItemValueModel value in _itemValues)
-                {
-                    @switch (value.ValueType)
-                    {
-                        case Bones.Api.Client.FieldType.TextField:
-                            <MudTextField T="string" Label="@value.Name" Value="@value.Value" ReadOnly />
-                            break;
-                        case Bones.Api.Client.FieldType.TextBox:
-                            <MudTextField T="string" Lines="10" Label="@value.Name" Value="@value.Value" ReadOnly />
-                            break;
-                        case Bones.Api.Client.FieldType.Integer:
-                            <MudNumericField T="long?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToInt64(value.Value))" ReadOnly />
-                            break;
-                        case Bones.Api.Client.FieldType.Decimal:
-                            <MudNumericField T="double?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToDouble(value.Value))" ReadOnly />
-                            break;
-                        case Bones.Api.Client.FieldType.Boolean:
-                            <MudCheckBox T="bool?" TriState="true" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToBoolean(value.Value))" ReadOnly />
-                            break;
-                        case Bones.Api.Client.FieldType.DateTime:
-                            <MudInputLabel>@value.Name</MudInputLabel>
-                            <MudDatePicker DateFormat="yyyy-MM-dd" Date="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().DateTime)" ReadOnly />
-                            <MudTimePicker AmPm="true" Time="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().TimeOfDay)" ReadOnly />
-                            break;
-                        case Bones.Api.Client.FieldType.ValueList:
-                            <MudSelect T="string" Label="@value.Name" Value="@value.Value" ReadOnly >
-                                <MudSelectItem Value="@value.Value">@value.Value</MudSelectItem>
-                            </MudSelect>
-                            break;
-                        default:
-                            <MudText Typo="Typo.body1">Unsupported field type: @value.ValueType</MudText>
-                            break;
-                    }
-                }
-            </MudForm>
+            <GenericItemEditor ItemId="@WorkItemId" EditorMode="GenericItemEditor.Mode.ViewEdit" />
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="5">
@@ -48,6 +15,53 @@
             <MudText Typo="Typo.h6">Queue</MudText>
             <MudTextField T="string" Label="Name" Value="@_queueName" ReadOnly />
             <MudTextField T="string" Label="Added to queue time" Value="@_addedToQueueDateTime" ReadOnly />
+            @if (_moveToQueue)
+            {
+                @if (_moveToQueue)
+                {
+
+                    <MudSelect ValueChanged="OnSelectedInitiativeChanged"
+                                    Label="Select Initiative"
+                                    MultiSelection="false"
+                                    FullWidth="true"
+                                    T="Guid?">
+
+                        <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                        @foreach (DropDownModel initiative in _initiatives)
+                        {
+                            <MudSelectItem Value="@initiative.Id">@initiative.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    @if (_selectedInitiative != null)
+                    {
+                        <MudSelect ValueChanged="OnSelectedWorkItemQueueChanged"
+                                    Label="Select Work Item Queue"
+                                    MultiSelection="false"
+                                    FullWidth="true"
+                                    T="Guid?">
+
+                            <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                            @foreach (DropDownModel workItemQueue in _workItemQueues)
+                            {
+                                <MudSelectItem Value="@workItemQueue.Id">@workItemQueue.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        @if (_selectedNewWorkItemQueue != null)
+                        {
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@SendMoveToQueueRequestAsync">Move to Queue</MudButton>
+                        }
+                    }
+                }
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _moveToQueue = false)">Cancel Move to Queue</MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _moveToQueue = true)">Move to Queue</MudButton>
+            }
         </MudPaper>
     </MudItem>
+
 </MudGrid>

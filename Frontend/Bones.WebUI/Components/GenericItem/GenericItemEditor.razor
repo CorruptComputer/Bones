@@ -1,0 +1,112 @@
+﻿@using Bones.WebUI.Models
+
+@if (_editing || EditorMode is Mode.Edit or Mode.Create)
+{
+    <MudForm @bind-IsValid="@_editFormValid" @bind-Errors="@_editFormValidationErrors">
+        @foreach (WorkItemValueModel field in _currentValues)
+        {
+            @switch (field.ValueType)
+            {
+                case Bones.Api.Client.FieldType.TextField:
+                    <MudTextField T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.FieldVersionId]" />
+                    break;
+                case Bones.Api.Client.FieldType.TextBox:
+                    <MudTextField T="string" Lines="10" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.FieldVersionId]" />
+                    break;
+                case Bones.Api.Client.FieldType.Integer:
+                    <MudNumericField T="long?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? long.MinValue : 0)" Required="@field.IsRequired" Immediate="true" @bind-Value="@_integerValues[field.FieldVersionId]" />
+                    break;
+                case Bones.Api.Client.FieldType.Decimal:
+                    <MudNumericField T="double?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? double.MinValue : 0)" Required="@field.IsRequired" Immediate="true" @bind-Value="@_decimalValues[field.FieldVersionId]" />
+                    break;
+                case Bones.Api.Client.FieldType.Boolean:
+                    @if (field.IsRequired)
+                    {
+                        <MudCheckBox T="bool?" Label="@field.Name" Required="true" @bind-Value="@_boolValues[field.FieldVersionId]" />
+                    }
+                    else
+                    {
+                        <MudCheckBox T="bool?" TriState="true" Label="@field.Name" @bind-Value="@_boolValues[field.FieldVersionId]" />
+                    }
+                    break;
+                case Bones.Api.Client.FieldType.DateTime:
+                    <MudInputLabel>@field.Name</MudInputLabel>
+                    <MudDatePicker DateFormat="yyyy-MM-dd" Required="@field.IsRequired" @bind-Date="@_dateTimeValues[field.FieldVersionId]" />
+                    <MudTimePicker AmPm="true" Required="@field.IsRequired" @bind-Time="@_timeSpanValues[field.FieldVersionId]" />
+                    break;
+                case Bones.Api.Client.FieldType.ValueList:
+                    <MudSelect T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.FieldVersionId]">
+                        @foreach (string value in field.PossibleValues)
+                        {
+                            <MudSelectItem Value="@value">@value</MudSelectItem>
+                        }
+                    </MudSelect>
+                    break;
+                default:
+                    <MudText Typo="Typo.body1">Unsupported field type: @field.ValueType</MudText>
+                    break;
+            }
+        }
+        <div style="align-self: end;">
+            <br />
+            @if (EditorMode is Mode.ViewEdit)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _editing = false)">Cancel</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_editFormValid)" Class="ml-auto" OnClick="@SendCreateVersionRequestAsync">Update</MudButton>
+            }
+            else if (EditorMode is Mode.Create)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_editFormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
+            }
+            else if (EditorMode is Mode.Edit)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_editFormValid)" Class="ml-auto" OnClick="@SendCreateVersionRequestAsync">Update</MudButton>
+            }
+
+
+        </div>
+    </MudForm>
+}
+else
+{
+    <MudForm> <!-- Dummy form, used for displaying in read only mode -->
+        @foreach (WorkItemValueModel value in _originalValues)
+        {
+            @switch (value.ValueType)
+            {
+                case Bones.Api.Client.FieldType.TextField:
+                    <MudTextField T="string" Label="@value.Name" Value="@value.Value" ReadOnly />
+                    break;
+                case Bones.Api.Client.FieldType.TextBox:
+                    <MudTextField T="string" Lines="10" Label="@value.Name" Value="@value.Value" ReadOnly />
+                    break;
+                case Bones.Api.Client.FieldType.Integer:
+                    <MudNumericField T="long?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToInt64(value.Value))" ReadOnly />
+                    break;
+                case Bones.Api.Client.FieldType.Decimal:
+                    <MudNumericField T="double?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToDouble(value.Value))" ReadOnly />
+                    break;
+                case Bones.Api.Client.FieldType.Boolean:
+                    <MudCheckBox T="bool?" TriState="true" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToBoolean(value.Value))" ReadOnly />
+                    break;
+                case Bones.Api.Client.FieldType.DateTime:
+                    <MudInputLabel>@value.Name</MudInputLabel>
+                    <MudDatePicker DateFormat="yyyy-MM-dd" Date="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().DateTime)" ReadOnly />
+                    <MudTimePicker AmPm="true" Time="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().TimeOfDay)" ReadOnly />
+                    break;
+                case Bones.Api.Client.FieldType.ValueList:
+                    <MudSelect T="string" Label="@value.Name" Value="@value.Value" ReadOnly >
+                        <MudSelectItem Value="@value.Value">@value.Value</MudSelectItem>
+                    </MudSelect>
+                    break;
+                default:
+                    <MudText Typo="Typo.body1">Unsupported field type: @value.ValueType</MudText>
+                    break;
+            }
+        }
+    </MudForm>
+    @if (EditorMode is Mode.ViewEdit)
+    {
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _editing = true)">Edit</MudButton>
+    }
+}

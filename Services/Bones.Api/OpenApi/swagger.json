@@ -3202,7 +3202,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MoveWorkItemQueueAction"
+                "$ref": "#/components/schemas/MoveWorkItemToQueueAction"
               }
             }
           }
@@ -3908,13 +3908,19 @@
             "required": [
               "fieldValues",
               "title",
-              "workItemId"
+              "workItemId",
+              "workItemLayoutId"
             ],
             "type": "object",
             "properties": {
               "workItemId": {
                 "type": "string",
                 "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              },
+              "workItemLayoutId": {
+                "type": "string",
+                "description": "The ID of the work item layout (not version, automatically uses the current version)",
                 "format": "uuid"
               },
               "title": {
@@ -4687,6 +4693,9 @@
           "itemValues",
           "latestGenericItemVersionId",
           "latestVersionCreateDateTime",
+          "layoutId",
+          "projectId",
+          "title",
           "workItemId",
           "workItemQueueId",
           "workItemQueueName"
@@ -4696,6 +4705,20 @@
           "workItemId": {
             "type": "string",
             "description": "ID of the work item",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the work item"
+          },
+          "layoutId": {
+            "type": "string",
+            "description": "The ID of the layout this work item uses",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "The ID of the project this work item belongs to",
             "format": "uuid"
           },
           "workItemQueueId": {
@@ -4986,20 +5009,26 @@
         "additionalProperties": false,
         "description": "Request to login"
       },
-      "MoveWorkItemQueueAction": {
+      "MoveWorkItemToQueueAction": {
         "allOf": [
           {
             "$ref": "#/components/schemas/WorkItemActionBase"
           },
           {
             "required": [
-              "workItemId"
+              "workItemId",
+              "workItemQueueId"
             ],
             "type": "object",
             "properties": {
               "workItemId": {
                 "type": "string",
                 "description": "The ID of the work item to perform the action on",
+                "format": "uuid"
+              },
+              "workItemQueueId": {
+                "type": "string",
+                "description": "The ID of the work item queue to move the work item to",
                 "format": "uuid"
               }
             },
@@ -5361,6 +5390,7 @@
       "WorkItemValueModel": {
         "required": [
           "fieldVersionId",
+          "isRequired",
           "name",
           "orderNumber",
           "valueType"
@@ -5383,6 +5413,23 @@
           },
           "valueType": {
             "$ref": "#/components/schemas/FieldType"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Is this field required?"
+          },
+          "canBeNegative": {
+            "type": "boolean",
+            "description": "If the field is a number, can it be negative?",
+            "nullable": true
+          },
+          "possibleValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "If this field is a value list, the possible values for the field",
+            "nullable": true
           },
           "value": {
             "type": "string",

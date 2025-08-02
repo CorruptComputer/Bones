@@ -109,7 +109,7 @@ public class WorkItemController(ISender sender) : AuthenticatedControllerBase(se
     [HttpPost("action/move-queue", Name = "MoveWorkItemQueueActionAsync")]
     [ProducesResponseType<WorkItemActionResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<WorkItemActionResponse>> MoveWorkItemQueueActionAsync([FromBody] MoveWorkItemQueueAction request)
+    public async ValueTask<ActionResult<WorkItemActionResponse>> MoveWorkItemQueueActionAsync([FromBody] MoveWorkItemToQueueAction request)
     {
         return await PerformWorkItemActionAsync(request);
     }

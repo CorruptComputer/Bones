@@ -1,5 +1,7 @@
 using System.Globalization;
 using System.Net;
+using Bones.Shared.Consts;
+using Bones.WebUI.Models;
 
 namespace Bones.WebUI.Pages.WorkItem;
 
@@ -20,19 +22,31 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
     /// </summary>
     protected bool ApiError { get; set; } = false;
 
-    /// <summary>
-    ///   Item values displayed on the page for this work item, if editing is enabled: the values that are being changed.
-    /// </summary>
-    private IOrderedEnumerable<WorkItemValueModel> _itemValues = Enumerable.Empty<WorkItemValueModel>().OrderBy(x => x.OrderNumber);
-
-    /// <summary>
-    ///   Do not update this after its been loaded from the API.
-    /// </summary>
-    private IOrderedEnumerable<WorkItemValueModel> _originalValues = Enumerable.Empty<WorkItemValueModel>().OrderBy(x => x.OrderNumber);
-
+    private int _currentVersion = 0;
+    private Guid _projectId = Guid.Empty;
     private Guid _queueId = Guid.Empty;
     private string _queueName = string.Empty;
     private string _addedToQueueDateTime = string.Empty;
+    private bool _moveToQueue = false;
+    private string _workItemTitle { get; set; } = string.Empty;
+
+    private List<DropDownModel> _initiatives { get; set; } = [
+        new()
+        {
+            DisplayStr = "(loading)",
+            Id = null
+        }];
+
+    private Guid? _selectedInitiative { get; set; }
+
+    private List<DropDownModel> _workItemQueues { get; set; } = [
+        new()
+        {
+            DisplayStr = "(loading)",
+            Id = null
+        }];
+
+    private Guid? _selectedNewWorkItemQueue { get; set; }
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -65,10 +79,14 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
 
             if (workItemResponse is not null)
             {
-                _originalValues = _itemValues = workItemResponse.ItemValues.OrderBy(x => x.OrderNumber);
+                _projectId = workItemResponse.ProjectId;
                 _queueId = workItemResponse.WorkItemQueueId;
                 _queueName = workItemResponse.WorkItemQueueName;
                 _addedToQueueDateTime = workItemResponse.AddedToQueueDateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture);
+                _currentVersion = workItemResponse.CurrentVersion;
+                _workItemTitle = workItemResponse.Title;
+
+                await GetInitiatives();
             }
         }
         catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
@@ -79,6 +97,77 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
         catch (Exception e)
         {
             logger.LogError(e, "Error fetching work item with ID {WorkItemId}", WorkItemId);
+            ApiError = true;
+        }
+    }
+
+    private async Task GetInitiatives()
+    {
+        List<GetInitiativesInProjectResponse> resp = await apiClient.GetInitiativesInProjectAsync(_projectId);
+
+        _initiatives = [.. resp.Select(x => new DropDownModel
+        {
+            DisplayStr = x.Name,
+            Id = x.Id
+        })];
+    }
+
+    private async Task OnSelectedInitiativeChanged(Guid? selectedInitiative)
+    {
+        if (selectedInitiative.HasValue)
+        {
+            _selectedInitiative = selectedInitiative.Value;
+            await GetWorkItemQueues(_selectedInitiative.Value);
+        }
+    }
+
+    private async Task GetWorkItemQueues(Guid initiativeId)
+    {
+        List<GetWorkItemQueuesInInitiativeResponse> resp = await apiClient.GetWorkItemQueuesInInitiativeAsync(initiativeId);
+
+        _workItemQueues = [.. resp.Select(x => new DropDownModel
+        {
+            DisplayStr = x.QueueName,
+            Id = x.QueueId
+        }).Where(x => x.Id != _queueId)];
+    }
+
+    private async Task OnSelectedWorkItemQueueChanged(Guid? selectedQueue)
+    {
+        if (selectedQueue.HasValue)
+        {
+            _selectedNewWorkItemQueue = selectedQueue.Value;
+            await Task.CompletedTask;
+        }
+    }
+
+    private async Task SendMoveToQueueRequestAsync()
+    {
+        try
+        {
+            ApiError = false;
+
+            if (!_selectedNewWorkItemQueue.HasValue)
+            {
+                return;
+            }
+
+            MoveWorkItemToQueueAction request = new()
+            {
+                WorkItemId = WorkItemId,
+                WorkItemQueueId = _selectedNewWorkItemQueue.Value,
+                ActionDateTime = DateTime.Now
+            };
+
+            await apiClient.MoveWorkItemQueueActionAsync(request);
+
+            _moveToQueue = false;
+
+            await FetchFromAPI();
+        }
+        catch (ApiException ex)
+        {
+            logger.LogError(ex, "Error while moving work item to queue");
             ApiError = true;
         }
     }

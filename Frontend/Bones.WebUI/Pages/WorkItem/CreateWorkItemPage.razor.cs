@@ -1,12 +1,13 @@
 using System.Text.Json;
 using Bones.Shared.Consts;
+using Bones.WebUI.Models;
 
 namespace Bones.WebUI.Pages.WorkItem;
 
 /// <summary>
 ///   Page for creating a new work item
 /// </summary>
-public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationManager navManager, ILogger<CreateWorkItemPage> logger) : ComponentBase
+public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load in this dashboard
@@ -26,7 +27,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     protected List<DropDownModel> Projects { get; set; } = [
         new()
         {
-            Name = "(loading)",
+            DisplayStr = "(loading)",
             Id = null
         }];
 
@@ -41,7 +42,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     protected List<DropDownModel> Initiatives { get; set; } = [
         new()
         {
-            Name = "(loading)",
+            DisplayStr = "(loading)",
             Id = null
         }];
 
@@ -56,7 +57,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     protected List<DropDownModel> WorkItemQueues { get; set; } = [
         new()
         {
-            Name = "(loading)",
+            DisplayStr = "(loading)",
             Id = null
         }];
 
@@ -71,7 +72,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     protected List<DropDownModel> WorkItemLayouts { get; set; } = [
         new()
         {
-            Name = "(loading)",
+            DisplayStr = "(loading)",
             Id = null
         }];
 
@@ -80,7 +81,6 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     /// </summary>
     protected Guid? SelectedWorkItemLayout { get; set; }
 
-    private IOrderedEnumerable<GetLatestItemLayoutVersionFieldsResponse> _currentLayoutVersionFields = Enumerable.Empty<GetLatestItemLayoutVersionFieldsResponse>().OrderBy(x => x.OrderNumber);
 
     /// <summary>
     ///   Did the request to the API result in an error?
@@ -102,9 +102,6 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
     /// </summary>
     protected string? WorkItemQueueName { get; set; }
 
-    /// <summary>
-    ///   The title of the work item being created
-    /// </summary>
     private string _workItemTitle { get; set; } = string.Empty;
 
     private Dictionary<Guid, bool?> _boolValues { get; set; } = [];
@@ -166,7 +163,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
 
         Projects = [.. resp.Select(x => new DropDownModel
         {
-            Name = x.ProjectName,
+            DisplayStr = x.ProjectName,
             Id = x.ProjectId
         })];
     }
@@ -177,7 +174,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
 
         Initiatives = [.. resp.Select(x => new DropDownModel
         {
-            Name = x.Name,
+            DisplayStr = x.Name,
             Id = x.Id
         })];
     }
@@ -188,7 +185,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
 
         WorkItemQueues = [.. resp.Select(x => new DropDownModel
         {
-            Name = x.QueueName,
+            DisplayStr = x.QueueName,
             Id = x.QueueId
         })];
     }
@@ -204,53 +201,9 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
 
         WorkItemLayouts = [.. resp.Select(x => new DropDownModel
         {
-            Name = $"{x.FriendlyIdPrefix} - {x.LayoutName}",
+            DisplayStr = $"{x.FriendlyIdPrefix} - {x.LayoutName}",
             Id = x.LayoutId
         })];
-    }
-
-    private async Task GetCurrentLayoutVersionFields()
-    {
-        if (!SelectedWorkItemLayout.HasValue)
-        {
-            return;
-        }
-
-        List<GetLatestItemLayoutVersionFieldsResponse> resp = await apiClient.GetLatestItemLayoutVersionFieldsAsync(SelectedWorkItemLayout.Value);
-
-        _currentLayoutVersionFields = resp.OrderBy(x => x.OrderNumber);
-
-        _boolValues = [];
-        _dateTimeValues = [];
-        _decimalValues = [];
-        _integerValues = [];
-        _stringValues = [];
-
-        foreach (GetLatestItemLayoutVersionFieldsResponse field in _currentLayoutVersionFields)
-        {
-            switch (field.Type)
-            {
-                case FieldType.TextField or FieldType.TextBox or FieldType.ValueList:
-                    _stringValues[field.Id] = string.Empty;
-                    break;
-                case FieldType.Integer:
-                    _integerValues[field.Id] = null;
-                    break;
-                case FieldType.Decimal:
-                    _decimalValues[field.Id] = null;
-                    break;
-                case FieldType.Boolean:
-                    _boolValues[field.Id] = field.IsRequired ? false : null;
-                    break;
-                case FieldType.DateTime:
-                    _dateTimeValues[field.Id] = null;
-                    _timeSpanValues[field.Id] = null;
-                    break;
-                //FieldType.GeoLocation => null, // TODO: Implement
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
     }
 
     /// <summary>
@@ -305,133 +258,9 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient, NavigationMana
         if (selectedLayout.HasValue)
         {
             SelectedWorkItemLayout = selectedLayout.Value;
-            await GetCurrentLayoutVersionFields();
+            await Task.CompletedTask; //GetCurrentLayoutVersionFields();
         }
     }
 
-    private async Task SendCreateRequestAsync()
-    {
-        if (!FormValid)
-        {
-            return;
-        }
 
-        try
-        {
-            ApiError = false;
-
-            if (!SelectedWorkItemQueue.HasValue || !SelectedWorkItemLayout.HasValue)
-            {
-                return;
-            }
-
-            List<ItemValueModel> values = [];
-            foreach (KeyValuePair<Guid, bool?> field in _boolValues)
-            {
-                if (field.Value.HasValue)
-                {
-                    values.Add(new()
-                    {
-                        FieldVersionId = field.Key,
-                        BoolValue = field.Value
-                    });
-                }
-            }
-
-            foreach (KeyValuePair<Guid, DateTime?> field in _dateTimeValues)
-            {
-                TimeSpan? timeSpan = _timeSpanValues[field.Key];
-
-                if (field.Value.HasValue && timeSpan.HasValue)
-                {
-                    values.Add(new()
-                    {
-                        FieldVersionId = field.Key,
-                        DateTimeValue = field.Value.Value.Add(timeSpan.Value)
-                    });
-                }
-            }
-
-            foreach (KeyValuePair<Guid, double?> field in _decimalValues)
-            {
-                if (field.Value.HasValue)
-                {
-                    values.Add(new()
-                    {
-                        FieldVersionId = field.Key,
-                        DecimalValue = field.Value
-                    });
-                }
-            }
-
-            foreach (KeyValuePair<Guid, long?> field in _integerValues)
-            {
-                if (field.Value.HasValue)
-                {
-                    values.Add(new()
-                    {
-                        FieldVersionId = field.Key,
-                        IntValue = field.Value
-                    });
-                }
-            }
-
-            foreach (KeyValuePair<Guid, string> field in _stringValues)
-            {
-                if (!string.IsNullOrWhiteSpace(field.Value))
-                {
-                    values.Add(new()
-                    {
-                        FieldVersionId = field.Key,
-                        StrValue = field.Value
-                    });
-                }
-            }
-
-            CreateWorkItemAction request = new()
-            {
-                ActionDateTime = DateTime.Now,
-                WorkItemLayoutId = SelectedWorkItemLayout.Value,
-                WorkItemQueueId = SelectedWorkItemQueue.Value,
-                Title = _workItemTitle,
-                FieldValues = values
-            };
-
-            logger.LogWarning("Creating work item with request: {@Request}", JsonSerializer.Serialize(request));
-
-            await apiClient.CreateWorkItemActionAsync(request);
-
-            navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, SelectedWorkItemQueue.Value.ToString()));
-        }
-        catch (ApiException ex)
-        {
-            logger.LogError(ex, "Error while creating a work item");
-            ApiError = true;
-        }
-    }
-
-    /// <summary>
-    ///   The model for the drop down menus
-    /// </summary>
-    protected sealed record DropDownModel
-    {
-        /// <summary>
-        ///   The name of the option
-        /// </summary>
-        public required string Name { get; init; }
-
-        /// <summary>
-        ///   The ID of the option
-        /// </summary>
-        public required Guid? Id { get; init; }
-
-        /// <summary>
-        ///   The string representation of the option, which is just the name
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
 }

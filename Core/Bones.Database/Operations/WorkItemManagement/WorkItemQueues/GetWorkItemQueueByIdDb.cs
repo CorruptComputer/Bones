@@ -25,11 +25,11 @@ public class GetWorkItemQueueByIdDb(BonesDbContext dbContext) : IRequestHandler<
     public async Task<QueryResponse<WorkItemQueue?>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.WorkItemQueues
-        .Include(q => q.Initiative)
-        .ThenInclude(i => i.Project)
-        .Include(q => q.WorkItems)
-        .ThenInclude(wi => wi.Item)
-        .ThenInclude(i => i.Versions)
-        .FirstOrDefaultAsync(x => x.Id == request.WorkItemQueueId, cancellationToken);
+            .Include(q => q.Initiative)
+                .ThenInclude(i => i.Project)
+            .Include(q => q.WorkItems)
+                .ThenInclude(wi => wi.Item)
+                .ThenInclude(i => i.Versions)
+            .FirstOrDefaultAsync(x => x.Id == request.WorkItemQueueId, cancellationToken);
     }
 }

@@ -12,7 +12,7 @@ namespace Bones.Api.Models.WorkItems;
 [JsonDerivedType(typeof(CreateWorkItemVersionAction), nameof(CreateWorkItemVersionAction))]
 [JsonDerivedType(typeof(DeleteWorkItemAction), nameof(DeleteWorkItemAction))]
 [JsonDerivedType(typeof(DeleteWorkItemVersionAction), nameof(DeleteWorkItemVersionAction))]
-[JsonDerivedType(typeof(MoveWorkItemQueueAction), nameof(MoveWorkItemQueueAction))]
+[JsonDerivedType(typeof(MoveWorkItemToQueueAction), nameof(MoveWorkItemToQueueAction))]
 [JsonDerivedType(typeof(UnassignWorkItemAction), nameof(UnassignWorkItemAction))]
 public abstract record WorkItemActionBase
 {

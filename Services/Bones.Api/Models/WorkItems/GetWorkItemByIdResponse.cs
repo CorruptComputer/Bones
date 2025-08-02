@@ -15,6 +15,21 @@ public sealed record GetWorkItemByIdResponse
     public required Guid WorkItemId { get; init; }
 
     /// <summary>
+    ///   The title of the work item
+    /// </summary>
+    public required string Title { get; init; }
+
+    /// <summary>
+    ///   The ID of the layout this work item uses
+    /// </summary>
+    public required Guid LayoutId { get; init; }
+
+    /// <summary>
+    ///   The ID of the project this work item belongs to
+    /// </summary>
+    public required Guid ProjectId { get; init; }
+
+    /// <summary>
     ///   ID of the work item queue this item belongs to
     /// </summary>
     public required Guid WorkItemQueueId { get; init; }
@@ -69,6 +84,9 @@ public sealed record GetWorkItemByIdResponse
         return new()
         {
             WorkItemId = workItem.Id,
+            ProjectId = workItem.Item.Project.Id,
+            Title = workItem.Item.Versions.First(v => v.Version == workItem.Item.CurrentVersion).Title,
+            LayoutId = workItem.Item.GenericItemLayout.Id,
             WorkItemQueueName = workItem.WorkItemQueue.Name,
             WorkItemQueueId = workItem.WorkItemQueue.Id,
             AddedToQueueDateTime = workItem.AddedToQueueDateTime,
@@ -84,6 +102,9 @@ public sealed record GetWorkItemByIdResponse
                 FieldVersionId = fl.FieldVersion.Id,
                 Name = fl.FieldVersion.Name,
                 ValueType = fl.FieldVersion.Type,
+                IsRequired = fl.FieldVersion.IsRequired,
+                CanBeNegative = fl.FieldVersion.CanBeNegative,
+                PossibleValues = fl.FieldVersion.PossibleValues?.Select(v => v.Value),
                 Value = workItem.CurrentVersion.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
             })
         };
@@ -113,6 +134,21 @@ public sealed record GetWorkItemByIdResponse
         ///   The type of the field
         /// </summary>
         public required FieldType ValueType { get; init; }
+
+        /// <summary>
+        ///   Is this field required?
+        /// </summary>
+        public required bool IsRequired { get; init; }
+
+        /// <summary>
+        ///   If the field is a number, can it be negative?
+        /// </summary>
+        public bool? CanBeNegative { get; init; }
+
+        /// <summary>
+        ///   If this field is a value list, the possible values for the field
+        /// </summary>
+        public IEnumerable<string>? PossibleValues { get; init; }
 
         /// <summary>
         ///   The value of the field

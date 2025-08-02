@@ -5366,7 +5366,7 @@ namespace Bones.Api.Client
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<WorkItemActionResponse> MoveWorkItemQueueActionAsync(MoveWorkItemQueueAction body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<WorkItemActionResponse> MoveWorkItemQueueActionAsync(MoveWorkItemToQueueAction body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -5374,7 +5374,7 @@ namespace Bones.Api.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(MoveWorkItemQueueAction), JsonSerializerSettings);
+                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, typeof(MoveWorkItemToQueueAction), JsonSerializerSettings);
                     var content_ = new System.Net.Http.ByteArrayContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
@@ -6461,6 +6461,14 @@ namespace Bones.Api.Client
         public System.Guid WorkItemId { get; set; }
 
         /// <summary>
+        /// The ID of the work item layout (not version, automatically uses the current version)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("workItemLayoutId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid WorkItemLayoutId { get; set; }
+
+        /// <summary>
         /// The title of the work item
         /// </summary>
 
@@ -7374,6 +7382,30 @@ namespace Bones.Api.Client
         public System.Guid WorkItemId { get; set; }
 
         /// <summary>
+        /// The title of the work item
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("title")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// The ID of the layout this work item uses
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("layoutId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid LayoutId { get; set; }
+
+        /// <summary>
+        /// The ID of the project this work item belongs to
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("projectId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid ProjectId { get; set; }
+
+        /// <summary>
         /// ID of the work item queue this item belongs to
         /// </summary>
 
@@ -7727,7 +7759,7 @@ namespace Bones.Api.Client
     /// Action to move a work item to a different queue.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial record MoveWorkItemQueueAction : WorkItemActionBase
+    public partial record MoveWorkItemToQueueAction : WorkItemActionBase
     {
         /// <summary>
         /// The ID of the work item to perform the action on
@@ -7736,6 +7768,14 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonPropertyName("workItemId")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.Guid WorkItemId { get; set; }
+
+        /// <summary>
+        /// The ID of the work item queue to move the work item to
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("workItemQueueId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid WorkItemQueueId { get; set; }
 
     }
 
@@ -8203,6 +8243,27 @@ namespace Bones.Api.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public FieldType ValueType { get; set; }
+
+        /// <summary>
+        /// Is this field required?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
+        public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// If the field is a number, can it be negative?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
+        public bool? CanBeNegative { get; set; }
+
+        /// <summary>
+        /// If this field is a value list, the possible values for the field
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
+        public System.Collections.Generic.List<string> PossibleValues { get; set; }
 
         /// <summary>
         /// The value of the field
