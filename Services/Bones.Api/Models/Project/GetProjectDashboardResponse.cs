@@ -25,6 +25,12 @@ public record GetProjectDashboardResponse
     public required int InitiativeCount { get; init; }
 
     /// <summary>
+    ///   The types of assets in the project
+    /// </summary>
+    [JsonRequired]
+    public required IEnumerable<AssetTypesListModel> AssetTypes { get; init; }
+
+    /// <summary>
     ///   A list of the initiatives in the project
     /// </summary>
     [JsonRequired]
@@ -53,6 +59,25 @@ public record GetProjectDashboardResponse
         /// </summary>
         [JsonRequired]
         public required int QueueCount { get; init; }
+    }
+
+    /// <summary>
+    ///   Model for the asset types to be listed in a project's dashboard
+    /// </summary>
+    [JsonSerializable(typeof(AssetTypesListModel))]
+    public sealed record AssetTypesListModel
+    {
+        /// <summary>
+        ///   The asset layout's ID
+        /// </summary>
+        [JsonRequired]
+        public required Guid LayoutId { get; init; }
+
+        /// <summary>
+        ///   The name of the asset layout
+        /// </summary>
+        [JsonRequired]
+        public required string LayoutName { get; init; }
     }
 }
 

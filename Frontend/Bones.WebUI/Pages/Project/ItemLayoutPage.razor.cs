@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Shared.Consts;
+using Bones.Shared.Enums;
 using MudBlazor;
 
 namespace Bones.WebUI.Pages.Project;
@@ -43,9 +44,8 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
     private string LayoutName { get; set; } = string.Empty;
 
-    private bool EnabledForWorkItems { get; set; } = true;
+    private ItemLayoutUse LayoutUse { get; set; } = ItemLayoutUse.None;
 
-    private bool EnabledForAssets { get; set; } = true;
     private string FriendlyIdPrefix { get; set; } = string.Empty;
 
     private bool SelectedItemFieldsLoading { get; set; } = true;
@@ -91,8 +91,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
         GetItemLayoutVersionResponse layoutResponse = await apiClient.GetLatestItemLayoutVersionAsync(ItemLayoutId.Value);
         LayoutName = layoutResponse.Name;
-        EnabledForWorkItems = layoutResponse.EnabledFor.HasFlag(ItemLayoutUses.WorkItems);
-        EnabledForAssets = layoutResponse.EnabledFor.HasFlag(ItemLayoutUses.Assets);
+        LayoutUse = layoutResponse.LayoutUse;
         FriendlyIdPrefix = layoutResponse.FriendlyIdPrefix;
         SelectedItemFields = ItemFieldsList.Where(f => layoutResponse.FieldVersions.ContainsValue(f.FieldVersionId))
             .ToDictionary(f => uint.Parse(layoutResponse.FieldVersions.First(v => v.Value == f.FieldVersionId).Key), f => new SelectedItemFieldVersionModel(f.FieldVersionId, f.Name, f.IsRequired, f.Type));
@@ -112,23 +111,12 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         {
             ApiError = false;
 
-            ItemLayoutUses enabledFor = ItemLayoutUses.None;
-            if (EnabledForWorkItems)
-            {
-                enabledFor |= ItemLayoutUses.WorkItems;
-            }
-
-            if (EnabledForAssets)
-            {
-                enabledFor |= ItemLayoutUses.Assets;
-            }
-
             if (ItemLayoutId.HasValue)
             {
                 await apiClient.CreateItemLayoutVersionAsync(ProjectId, ItemLayoutId.Value, new CreateItemLayoutVersionRequest()
                 {
                     Name = LayoutName,
-                    EnabledFor = enabledFor,
+                    LayoutUse = LayoutUse,
                     FieldVersions = SelectedItemFields.ToDictionary(x => x.Key.ToString(), x => x.Value.FieldVersionId)
                 });
             }
@@ -137,7 +125,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
                 await apiClient.CreateItemLayoutAsync(ProjectId, new CreateItemLayoutRequest()
                 {
                     Name = LayoutName,
-                    EnabledFor = enabledFor,
+                    LayoutUse = LayoutUse,
                     FriendlyIdPrefix = FriendlyIdPrefix,
                     FieldVersions = SelectedItemFields.ToDictionary(x => x.Key.ToString(), x => x.Value.FieldVersionId)
                 });
@@ -239,5 +227,5 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
     /// <param name="Name"></param>
     /// <param name="IsRequired"></param>
     /// <param name="Type"></param>
-    public record SelectedItemFieldVersionModel(Guid FieldVersionId, string Name, bool IsRequired, Api.Client.FieldType Type);
+    public record SelectedItemFieldVersionModel(Guid FieldVersionId, string Name, bool IsRequired, Shared.Enums.FieldType Type);
 }

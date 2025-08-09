@@ -32,7 +32,7 @@
                 </div>
             </Authorized>
         </AuthorizeView>
-        
+
         <MudSpacer/>
         <MudButtonGroup Color="Color.Secondary" Variant="Variant.Filled">
             <AuthorizeView>
@@ -41,7 +41,7 @@
                     <MudButton OnClick="@LogoutAsync">Logout</MudButton>
                 </Authorized>
                 <NotAuthorized>
-                    @if(_login) 
+                    @if(_login)
                     {
                         <MudButton OnClick="@ToggleLoginRegister">Register</MudButton>
                     }
@@ -59,6 +59,7 @@
         </MudDrawerHeader>
         <MudNavMenu>
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.HOME">Home</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.Asset.CREATE_ASSET">Create Asset</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.WorkItem.CREATE_WORK_ITEM">Create Work Item</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="/TestMapPage">Test Map Page</MudNavLink>
             <AuthorizeView Roles="@SystemRoles.SYSTEM_ADMINISTRATORS">
@@ -80,7 +81,7 @@
                     @Body
                 </Authorized>
                 <NotAuthorized>
-                    @if(_confirmEmail) 
+                    @if(_confirmEmail)
                     {
                         @switch (CurrentState)
                         {
@@ -101,7 +102,7 @@
                     }
                     else
                     {
-                        @if(_login) 
+                        @if(_login)
                         {
                             <Bones.WebUI.Components.Auth.LoginComponent />
                         }
@@ -109,7 +110,7 @@
                             <Bones.WebUI.Components.Auth.RegisterComponent />
                         }
                     }
-                    
+
                 </NotAuthorized>
             </AuthorizeView>
         </MudContainer>

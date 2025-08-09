@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -19,7 +19,7 @@ public class CreateItemLayoutVersionRequest
     ///   The uses for which this layout is enabled
     /// </summary>
     [JsonRequired]
-    public required ItemLayoutUses EnabledFor { get; init; }
+    public required ItemLayoutUse LayoutUse { get; init; }
 
     /// <summary>
     ///   The field versions to use for this layout version
@@ -29,6 +29,6 @@ public class CreateItemLayoutVersionRequest
 
     internal CreateItemLayoutVersion.Command ToInternal(Guid projectId, BonesUser user)
     {
-        return new(projectId, Name, EnabledFor, FieldVersions, user);
+        return new(projectId, Name, LayoutUse, FieldVersions, user);
     }
 }

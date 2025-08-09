@@ -234,6 +234,11 @@ public static class BonesClaimTypes
             public const string CREATE_ASSET = "CreateAsset";
 
             /// <summary>
+            ///   Claim type for if a user can create an asset version
+            /// </summary>
+            public const string CREATE_ASSET_VERSION = "CreateAssetVersion";
+
+            /// <summary>
             ///   Claim type for if a user can delete an asset
             /// </summary>
             public const string DELETE_ASSET = "DeleteAsset";

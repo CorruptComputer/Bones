@@ -1,4 +1,5 @@
 using Bones.Shared.Consts;
+using Bones.Shared.Enums;
 
 namespace Bones.WebUI.Pages.Project;
 
@@ -31,7 +32,7 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
     private string[] ValidationErrors { get; set; } = [];
 
     private string FieldName { get; set; } = string.Empty;
-    private FieldType FieldType { get; set; } = Api.Client.FieldType.TextField;
+    private FieldType FieldType { get; set; } = FieldType.TextField;
     private bool IsRequired { get; set; } = false;
 
     private bool CanBeNegative { get; set; } = false;
@@ -132,20 +133,20 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
             Type = FieldType,
         };
 
-        if (request.Type is Api.Client.FieldType.ValueList)
+        if (request.Type is FieldType.ValueList)
         {
             // TODO: Implement this
             request.PossibleValues = [];
         }
-        else if (request.Type is Api.Client.FieldType.Integer or Api.Client.FieldType.Decimal)
+        else if (request.Type is FieldType.Integer or FieldType.Decimal)
         {
             request.CanBeNegative = CanBeNegative;
         }
-        else if (request.Type is Api.Client.FieldType.GeoLocation)
+        else if (request.Type is FieldType.GeoLocation)
         {
             request.GeoLocationType = GeoLocationType;
 
-            if (request.GeoLocationType is Api.Client.GeoLocationType.Address)
+            if (request.GeoLocationType is GeoLocationType.Address)
             {
                 request.RequiredAddressFields = AddressFields.None;
 
@@ -198,20 +199,20 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
             Type = FieldType,
         };
 
-        if (request.Type is Api.Client.FieldType.ValueList)
+        if (request.Type is FieldType.ValueList)
         {
             // TODO: Implement this
             request.PossibleValues = [];
         }
-        else if (request.Type is Api.Client.FieldType.Integer or Api.Client.FieldType.Decimal)
+        else if (request.Type is FieldType.Integer or FieldType.Decimal)
         {
             request.CanBeNegative = CanBeNegative;
         }
-        else if (request.Type is Api.Client.FieldType.GeoLocation)
+        else if (request.Type is FieldType.GeoLocation)
         {
             request.GeoLocationType = GeoLocationType;
 
-            if (request.GeoLocationType is Api.Client.GeoLocationType.Address)
+            if (request.GeoLocationType is GeoLocationType.Address)
             {
                 request.RequiredAddressFields = AddressFields.None;
 

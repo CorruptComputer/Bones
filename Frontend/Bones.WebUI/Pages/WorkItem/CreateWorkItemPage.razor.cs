@@ -197,7 +197,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
             return;
         }
 
-        List<GetProjectLayoutsResponse> resp = await apiClient.GetProjectLayoutsAsync(SelectedProject.Value, ItemLayoutUses.WorkItems);
+        List<GetProjectLayoutsResponse> resp = await apiClient.GetProjectLayoutsAsync(SelectedProject.Value, ItemLayoutUse.WorkItems);
 
         WorkItemLayouts = [.. resp.Select(x => new DropDownModel
         {

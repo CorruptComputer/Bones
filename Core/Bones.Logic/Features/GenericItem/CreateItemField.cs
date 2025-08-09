@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
 using Bones.Logic.Features.Projects;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
@@ -69,6 +69,8 @@ public sealed class CreateItemField(ISender sender) : IRequestHandler<CreateItem
         {
             return createFieldVersionResponse;
         }
+
+        createFieldResponse.Ids[nameof(GenericItemFieldVersion)] = createFieldVersionResponse.Ids[nameof(GenericItemFieldVersion)];
 
         return createFieldResponse;
     }

@@ -83,7 +83,7 @@
         @if(SelectedWorkItemLayout != null && SelectedWorkItemQueue != null)
         {
             <MudPaper Class="pa-4">
-                <GenericItemEditor ItemId="@null" EditorMode="GenericItemEditor.Mode.Create" ItemLayoutId="@SelectedWorkItemLayout.Value" WorkItemQueueId="@SelectedWorkItemQueue.Value" />
+                <GenericItemEditor ItemId="@null" ItemType="ItemLayoutUse.WorkItems" EditorMode="GenericItemEditor.Mode.Create" ItemLayoutId="@SelectedWorkItemLayout.Value" WorkItemQueueId="@SelectedWorkItemQueue.Value" />
             </MudPaper>
         }
     </MudItem>

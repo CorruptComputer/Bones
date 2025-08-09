@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -17,34 +17,34 @@ public record CreateItemFieldVersionRequest
     public required string Name { get; init; }
 
     /// <summary>
-    ///   
+    ///
     /// </summary>
     [JsonRequired]
     public required bool IsRequired { get; init; }
 
     /// <summary>
-    ///   
+    ///
     /// </summary>
     [JsonRequired]
     public required FieldType Type { get; init; }
 
     /// <summary>
-    ///   
+    ///
     /// </summary>
     public bool? CanBeNegative { get; init; }
 
     /// <summary>
-    ///   
+    ///
     /// </summary>
     public Dictionary<string, StringValueMatchingType>? PossibleValues { get; init; }
 
     /// <summary>
-    ///   
+    ///
     /// </summary>
     public GeoLocationType? GeoLocationType { get; init; }
 
     /// <summary>
-    ///   
+    ///
     /// </summary>
     public AddressFields? RequiredAddressFields { get; init; }
 

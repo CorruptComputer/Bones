@@ -189,6 +189,49 @@ public static class FrontEndUrls
     }
 
     /// <summary>
+    ///   Asset pages
+    /// </summary>
+    public static class Asset
+    {
+        /// <summary>
+        ///   Placeholder for the asset ID in URLs
+        /// </summary>
+        public const string ASSET_ID_PLACEHOLDER = "{AssetId:guid}";
+
+        /// <summary>
+        ///   Placeholder for the asset layout ID in URLs
+        /// </summary>
+        public const string ASSET_LAYOUT_ID_PLACEHOLDER = "{AssetLayoutId:guid}";
+
+        private const string _asset = "/Asset";
+
+        private const string _assetWithId = $"{_asset}/{ASSET_ID_PLACEHOLDER}";
+
+        private const string _assetLayoutWithId = $"{_asset}/Layout/{ASSET_LAYOUT_ID_PLACEHOLDER}";
+
+        /// <summary>
+        ///   Asset layout dashboard page
+        /// </summary>
+        public const string ASSET_LAYOUT_DASHBOARD = $"{_assetLayoutWithId}/dashboard";
+
+        /// <summary>
+        ///   Create asset page
+        /// </summary>
+        public const string CREATE_ASSET = $"{_asset}/create";
+
+        /// <summary>
+        ///   Create asset with layout page
+        /// </summary>
+        public const string CREATE_ASSET_WITH_LAYOUT = $"{_asset}/create?layout-id={ASSET_LAYOUT_ID_PLACEHOLDER}";
+
+        /// <summary>
+        ///   View asset page
+        /// </summary>
+        public const string VIEW_ASSET = _assetWithId;
+
+    }
+
+    /// <summary>
     ///   System Admin pages
     /// </summary>
     public static class SystemAdmin

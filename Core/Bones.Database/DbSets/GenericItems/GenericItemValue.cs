@@ -1,7 +1,7 @@
 using System.Globalization;
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.MappingManagement;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

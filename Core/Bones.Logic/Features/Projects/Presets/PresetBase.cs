@@ -1,7 +1,14 @@
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.GenericItem;
+using Bones.Logic.Features.Initiatives;
+using Bones.Logic.Features.Projects.Presets.Models;
+using Bones.Logic.Features.WorkItems.Queue;
+using Bones.Logic.Features.WorkItems.WorkItems;
 using Bones.Shared.Enums;
 
 namespace Bones.Logic.Features.Projects.Presets;
@@ -10,26 +17,39 @@ internal abstract class PresetBase
 {
     internal abstract ProjectPreset Preset { get; }
 
-    internal abstract string PresetName { get; }
+    internal abstract string ProjectName { get; }
 
     internal abstract Dictionary<PresetFields, PresetFieldInfo> ItemFields { get; }
 
     internal abstract Dictionary<string, PresetLayoutInfo> ItemLayouts { get; }
 
-    internal async Task<bool> CreatePresetAsync(ISender sender, BonesUser requestingUser, CancellationToken cancellationToken)
+    internal abstract Dictionary<string, PresetInitiativeInfo> ItemInitiatives { get; }
+
+    internal abstract List<PresetWorkItemInfo> GetWorkItems();
+
+    internal abstract List<PresetAssetInfo> GetAssets();
+
+    internal async Task<bool> CreatePresetAsync(ISender sender, bool createWorkItemsAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
     {
-        CommandResponse projectCreation = await sender.Send(new CreateProject.Command(PresetName, requestingUser), cancellationToken);
+        CommandResponse projectCreation = await sender.Send(new CreateProject.Command(ProjectName, requestingUser), cancellationToken);
         if (!projectCreation.Success || projectCreation.Ids.Count == 0)
         {
             return false;
         }
 
-        if (!await CreatePresetFieldsAsync(sender, projectCreation.Ids[nameof(Project)], requestingUser, cancellationToken))
+        Guid projectId = projectCreation.Ids[nameof(Project)];
+
+        if (!await CreatePresetFieldsAsync(sender, projectId, requestingUser, cancellationToken))
         {
             return false;
         }
 
-        if (!await CreatePresetLayoutsAsync(sender, projectCreation.Ids[nameof(Project)], requestingUser, cancellationToken))
+        if (!await CreatePresetLayoutsAsync(sender, projectId, requestingUser, cancellationToken))
+        {
+            return false;
+        }
+
+        if (!await CreatePresetInitiativesAsync(sender, projectId, createWorkItemsAndAssets, requestingUser, cancellationToken))
         {
             return false;
         }
@@ -39,7 +59,7 @@ internal abstract class PresetBase
 
     private async Task<bool> CreatePresetFieldsAsync(ISender sender, Guid projectId, BonesUser requestingUser, CancellationToken cancellationToken)
     {
-        foreach ((PresetFields _, PresetFieldInfo fieldInfo) in ItemFields)
+        foreach ((PresetFields field, PresetFieldInfo fieldInfo) in ItemFields)
         {
             CommandResponse result = await sender.Send(new CreateItemField.Command(projectId, fieldInfo.Name, fieldInfo.IsRequired, fieldInfo.Type, fieldInfo.CanBeNegative, fieldInfo.PossibleValues, fieldInfo.GeoLocationType, fieldInfo.RequiredAddressFields, requestingUser), cancellationToken);
             if (!result.Success || result.Ids.Count == 0)
@@ -47,7 +67,11 @@ internal abstract class PresetBase
                 return false;
             }
 
-            fieldInfo.FieldId = result.Ids[nameof(GenericItemField)];
+            ItemFields[field] = fieldInfo with
+            {
+                FieldId = result.Ids[nameof(GenericItemField)],
+                FieldVersionId = result.Ids[nameof(GenericItemFieldVersion)],
+            };
         }
 
         return true;
@@ -66,13 +90,7 @@ internal abstract class PresetBase
                     // Another check to get the null reference warning out of here
                     if (fieldInfo.Created)
                     {
-                        GenericItemField? field = await sender.Send(new GetItemFieldById.Query(fieldInfo.FieldId.Value, requestingUser), cancellationToken);
-                        if (field?.LatestVersion is null)
-                        {
-                            return false;
-                        }
-
-                        fields.Add(fieldOrder, field.LatestVersion.Id);
+                        fields.Add(fieldOrder, fieldInfo.FieldVersionId.Value);
                     }
                     else
                     {
@@ -82,15 +100,91 @@ internal abstract class PresetBase
                 }
             }
 
-            CommandResponse result = await sender.Send(new CreateItemLayout.Command(projectId, layoutName, layoutInfo.EnabledFor, layoutInfo.FriendlyIdPrefix, fields, requestingUser), cancellationToken);
+            CommandResponse result = await sender.Send(new CreateItemLayout.Command(projectId, layoutName, layoutInfo.LayoutUse, layoutInfo.FriendlyIdPrefix, fields, requestingUser), cancellationToken);
             if (!result.Success || result.Ids.Count == 0)
             {
                 return false;
             }
+
+            ItemLayouts[layoutName] = layoutInfo with
+            {
+                LayoutId = result.Ids[nameof(GenericItemLayout)],
+                LayoutVersionId = result.Ids[nameof(GenericItemLayoutVersion)],
+            };
         }
 
         return true;
     }
 
+    private async Task<bool> CreatePresetInitiativesAsync(ISender sender, Guid projectId, bool createWorkItemsAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
+    {
+        foreach ((string initiativeName, PresetInitiativeInfo initiativeInfo) in ItemInitiatives)
+        {
+            CommandResponse result = await sender.Send(new CreateInitiative.Command(initiativeName, projectId, requestingUser), cancellationToken);
+            if (!result.Success || result.Ids.Count == 0)
+            {
+                return false;
+            }
 
+            initiativeInfo.InitiativeId = result.Ids[nameof(Initiative)];
+
+            foreach (KeyValuePair<string, PresetWorkItemQueueInfo> workItemQueue in initiativeInfo.WorkItemQueues)
+            {
+                CommandResponse queueResult = await sender.Send(new CreateWorkItemQueue.Command(workItemQueue.Key, initiativeInfo.InitiativeId.Value, requestingUser), cancellationToken);
+                if (!queueResult.Success || queueResult.Ids.Count == 0)
+                {
+                    return false;
+                }
+
+                PresetWorkItemQueueInfo queue = workItemQueue.Value;
+                queue.WorkItemQueueId = queueResult.Ids[nameof(WorkItemQueue)];
+
+                if (createWorkItemsAndAssets)
+                {
+                    foreach (PresetAssetInfo asset in GetAssets())
+                    {
+                        CommandResponse assetCreation = await sender.Send(new CreateAsset.Command(
+                            asset.Layout.LayoutId!.Value,
+                            asset.Layout.LayoutVersionId!.Value,
+                            asset.Title,
+                            asset.Fields.ToDictionary(kvp => kvp.Key.FieldVersionId!.Value, kvp => kvp.Value),
+                            DateTimeOffset.UtcNow,
+                            requestingUser
+                        ), cancellationToken);
+
+                        if (!assetCreation.Success || assetCreation.Ids.Count == 0)
+                        {
+                            return false;
+                        }
+
+                        asset.AssetId = assetCreation.Ids[nameof(Asset)];
+                        asset.AssetVersionId = assetCreation.Ids[nameof(GenericItemVersion)];
+                    }
+
+                    foreach (PresetWorkItemInfo workItem in GetWorkItems())
+                    {
+                        CommandResponse workItemCreation = await sender.Send(new CreateWorkItemInQueue.Command(
+                            queue.WorkItemQueueId.Value,
+                            workItem.Layout.LayoutId!.Value,
+                            workItem.Layout.LayoutVersionId!.Value,
+                            workItem.Title,
+                            workItem.Fields.ToDictionary(kvp => kvp.Key.FieldVersionId!.Value, kvp => kvp.Value),
+                            DateTimeOffset.UtcNow,
+                            requestingUser
+                        ), cancellationToken);
+
+                        if (!workItemCreation.Success || workItemCreation.Ids.Count == 0)
+                        {
+                            return false;
+                        }
+
+                        workItem.WorkItemId = workItemCreation.Ids[nameof(WorkItem)];
+                        workItem.WorkItemVersionId = workItemCreation.Ids[nameof(GenericItemVersion)];
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
 }

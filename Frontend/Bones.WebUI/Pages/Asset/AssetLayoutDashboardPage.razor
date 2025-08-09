@@ -1,0 +1,27 @@
+﻿@attribute [Route(FrontEndUrls.Asset.ASSET_LAYOUT_DASHBOARD)]
+
+<div style="display: flex;">
+    <MudText Typo="Typo.h4">@LayoutName</MudText>
+    <MudSpacer/>
+    <MudButton Href="@FrontEndUrls.Asset.CREATE_ASSET_WITH_LAYOUT.Replace(FrontEndUrls.Asset.ASSET_LAYOUT_ID_PLACEHOLDER, AssetLayoutId.ToString())">Create Asset in Layout</MudButton>
+</div>
+
+<MudPaper Class="pa-4">
+    <MudTable Items="@BonesAssets" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@AssetsLoading" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>Friendly ID</MudTh>
+            <MudTh>Title</MudTh>
+            <MudTh>Added to Queue At</MudTh>
+            <MudTh>View Asset</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Friendly ID">@context.FriendlyId</MudTd>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Added to Queue At">@context.LatestVersionCreateDateTime.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss tt")</MudTd>
+            <MudTd DataLabel="View Asset"><MudButton Href="@FrontEndUrls.Asset.VIEW_ASSET.Replace(FrontEndUrls.Asset.ASSET_ID_PLACEHOLDER, context.Id.ToString())">View</MudButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="@TableConsts.PageSizeOptions" />
+        </PagerContent>
+    </MudTable>
+</MudPaper>

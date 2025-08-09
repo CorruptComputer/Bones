@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.GenericItem;
@@ -12,9 +12,9 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
     /// </summary>
     /// <param name="ItemLayoutId"></param>
     /// <param name="Name"></param>
-    /// <param name="EnabledFor"></param>
+    /// <param name="LayoutUse"></param>
     /// <param name="FieldVersions"></param>
-    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, Dictionary<uint, Guid> FieldVersions) : IRequest<CommandResponse>;
+    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUse LayoutUse, Dictionary<uint, Guid> FieldVersions) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>
@@ -24,7 +24,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
         {
             RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.Name).NotEmpty().MaximumLength(512);
-            RuleFor(x => x.EnabledFor).IsInEnum();
+            RuleFor(x => x.LayoutUse).IsInEnum();
             RuleFor(x => x.FieldVersions).NotEmpty()
                 .Must(x => x.All(f => f.Value != Guid.Empty)).WithMessage("Field version IDs cannot be empty")
                 .Must(x =>
@@ -82,7 +82,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
         {
             ItemLayout = layout,
             Name = request.Name,
-            EnabledFor = request.EnabledFor,
+            LayoutUse = request.LayoutUse,
             Version = (layout.LatestVersion?.Version ?? 0) + 1,
             CreateDateTime = DateTimeOffset.Now,
             FieldLinks = []

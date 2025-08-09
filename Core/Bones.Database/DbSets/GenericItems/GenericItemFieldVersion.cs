@@ -1,5 +1,5 @@
 using Bones.Database.DbConsts;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.GenericItem;
 
@@ -17,10 +17,16 @@ public sealed record GetItemLayoutVersionResponse
     public required string Name { get; init; }
 
     /// <summary>
+    ///   The ID of the project this layout belongs to
+    /// </summary>
+    [JsonRequired]
+    public required Guid ProjectId { get; init; }
+
+    /// <summary>
     ///   The uses for which this layout is enabled
     /// </summary>
     [JsonRequired]
-    public required ItemLayoutUses EnabledFor { get; init; }
+    public required ItemLayoutUse LayoutUse { get; init; }
 
     /// <summary>
     ///   The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.
@@ -50,12 +56,13 @@ public sealed record GetItemLayoutVersionResponse
     [JsonRequired]
     public required Dictionary<uint, Guid> FieldVersions { get; init; }
 
-    internal static GetItemLayoutVersionResponse FromInternal(GenericItemLayoutVersion layoutVersion, string friendlyIdPrefix, long latestVersion)
+    internal static GetItemLayoutVersionResponse FromInternal(GenericItemLayoutVersion layoutVersion, Guid ProjectId, string friendlyIdPrefix, long latestVersion)
     {
         return new()
         {
             Name = layoutVersion.Name,
-            EnabledFor = layoutVersion.EnabledFor,
+            ProjectId = ProjectId,
+            LayoutUse = layoutVersion.LayoutUse,
             FriendlyIdPrefix = friendlyIdPrefix,
             Version = layoutVersion.Version,
             LatestVersion = latestVersion,

@@ -1,5 +1,5 @@
+using Bones.Api.Models.GenericItem;
 using Bones.Database.DbSets.WorkItemManagement;
-using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.WorkItems;
 
@@ -77,7 +77,7 @@ public sealed record GetWorkItemByIdResponse
     /// <summary>
     ///   The values for this work item
     /// </summary>
-    public required IEnumerable<WorkItemValueModel> ItemValues { get; init; }
+    public required IEnumerable<ItemValueDisplayModel> ItemValues { get; init; }
 
     internal static GetWorkItemByIdResponse FromInternal(WorkItem workItem)
     {
@@ -96,7 +96,7 @@ public sealed record GetWorkItemByIdResponse
             FriendlyId = workItem.Item.FriendlyId,
             CreateDateTime = workItem.Item.CreateDateTime,
             LatestVersionCreateDateTime = workItem.CurrentVersion?.CreateDateTime ?? throw new(),
-            ItemValues = workItem.CurrentVersion.GenericItemLayoutVersion.FieldLinks.Select(fl => new WorkItemValueModel
+            ItemValues = workItem.CurrentVersion.GenericItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
             {
                 OrderNumber = fl.OrderNumber,
                 FieldVersionId = fl.FieldVersion.Id,
@@ -108,51 +108,5 @@ public sealed record GetWorkItemByIdResponse
                 Value = workItem.CurrentVersion.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
             })
         };
-    }
-
-    /// <summary>
-    ///   Model for the values of a work item
-    /// </summary>
-    public sealed record WorkItemValueModel
-    {
-        /// <summary>
-        ///   The order that this field should be displayed in
-        /// </summary>
-        public required uint OrderNumber { get; init; }
-
-        /// <summary>
-        ///   The ID of the field version this value is for
-        /// </summary>
-        public required Guid FieldVersionId { get; init; }
-
-        /// <summary>
-        ///   The name of the field
-        /// </summary>
-        public required string Name { get; init; }
-
-        /// <summary>
-        ///   The type of the field
-        /// </summary>
-        public required FieldType ValueType { get; init; }
-
-        /// <summary>
-        ///   Is this field required?
-        /// </summary>
-        public required bool IsRequired { get; init; }
-
-        /// <summary>
-        ///   If the field is a number, can it be negative?
-        /// </summary>
-        public bool? CanBeNegative { get; init; }
-
-        /// <summary>
-        ///   If this field is a value list, the possible values for the field
-        /// </summary>
-        public IEnumerable<string>? PossibleValues { get; init; }
-
-        /// <summary>
-        ///   The value of the field
-        /// </summary>
-        public string? Value { get; init; }
     }
 }

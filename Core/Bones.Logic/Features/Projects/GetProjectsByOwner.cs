@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.ProjectManagement.Projects;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Logic.Features.Projects;
 
@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Projects;
 public sealed class GetProjectsByOwner(ISender sender) : IRequestHandler<GetProjectsByOwner.Query, QueryResponse<Dictionary<Guid, string>>>
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="OwnerType"></param>
     /// <param name="OwnerId"></param>

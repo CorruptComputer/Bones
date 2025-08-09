@@ -3,23 +3,23 @@
 @if (_editing || EditorMode is Mode.Edit or Mode.Create)
 {
     <MudForm @bind-IsValid="@_editFormValid" @bind-Errors="@_editFormValidationErrors">
-        @foreach (WorkItemValueModel field in _currentValues)
+        @foreach (ItemValueDisplayModel field in _currentValues)
         {
             @switch (field.ValueType)
             {
-                case Bones.Api.Client.FieldType.TextField:
+                case Shared.Enums.FieldType.TextField:
                     <MudTextField T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.FieldVersionId]" />
                     break;
-                case Bones.Api.Client.FieldType.TextBox:
+                case Shared.Enums.FieldType.TextBox:
                     <MudTextField T="string" Lines="10" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.FieldVersionId]" />
                     break;
-                case Bones.Api.Client.FieldType.Integer:
+                case Shared.Enums.FieldType.Integer:
                     <MudNumericField T="long?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? long.MinValue : 0)" Required="@field.IsRequired" Immediate="true" @bind-Value="@_integerValues[field.FieldVersionId]" />
                     break;
-                case Bones.Api.Client.FieldType.Decimal:
+                case Shared.Enums.FieldType.Decimal:
                     <MudNumericField T="double?" Label="@field.Name" Min="@(field.CanBeNegative ?? true ? double.MinValue : 0)" Required="@field.IsRequired" Immediate="true" @bind-Value="@_decimalValues[field.FieldVersionId]" />
                     break;
-                case Bones.Api.Client.FieldType.Boolean:
+                case Shared.Enums.FieldType.Boolean:
                     @if (field.IsRequired)
                     {
                         <MudCheckBox T="bool?" Label="@field.Name" Required="true" @bind-Value="@_boolValues[field.FieldVersionId]" />
@@ -29,12 +29,12 @@
                         <MudCheckBox T="bool?" TriState="true" Label="@field.Name" @bind-Value="@_boolValues[field.FieldVersionId]" />
                     }
                     break;
-                case Bones.Api.Client.FieldType.DateTime:
+                case Shared.Enums.FieldType.DateTime:
                     <MudInputLabel>@field.Name</MudInputLabel>
                     <MudDatePicker DateFormat="yyyy-MM-dd" Required="@field.IsRequired" @bind-Date="@_dateTimeValues[field.FieldVersionId]" />
                     <MudTimePicker AmPm="true" Required="@field.IsRequired" @bind-Time="@_timeSpanValues[field.FieldVersionId]" />
                     break;
-                case Bones.Api.Client.FieldType.ValueList:
+                case Shared.Enums.FieldType.ValueList:
                     <MudSelect T="string" Label="@field.Name" Required="@field.IsRequired" Immediate="true" @bind-Value="@_stringValues[field.FieldVersionId]">
                         @foreach (string value in field.PossibleValues)
                         {
@@ -70,31 +70,31 @@
 else
 {
     <MudForm> <!-- Dummy form, used for displaying in read only mode -->
-        @foreach (WorkItemValueModel value in _originalValues)
+        @foreach (ItemValueDisplayModel value in _originalValues)
         {
             @switch (value.ValueType)
             {
-                case Bones.Api.Client.FieldType.TextField:
+                case Shared.Enums.FieldType.TextField:
                     <MudTextField T="string" Label="@value.Name" Value="@value.Value" ReadOnly />
                     break;
-                case Bones.Api.Client.FieldType.TextBox:
+                case Shared.Enums.FieldType.TextBox:
                     <MudTextField T="string" Lines="10" Label="@value.Name" Value="@value.Value" ReadOnly />
                     break;
-                case Bones.Api.Client.FieldType.Integer:
+                case Shared.Enums.FieldType.Integer:
                     <MudNumericField T="long?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToInt64(value.Value))" ReadOnly />
                     break;
-                case Bones.Api.Client.FieldType.Decimal:
+                case Shared.Enums.FieldType.Decimal:
                     <MudNumericField T="double?" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToDouble(value.Value))" ReadOnly />
                     break;
-                case Bones.Api.Client.FieldType.Boolean:
+                case Shared.Enums.FieldType.Boolean:
                     <MudCheckBox T="bool?" TriState="true" Label="@value.Name" Value="@(value.Value is null ? null : Convert.ToBoolean(value.Value))" ReadOnly />
                     break;
-                case Bones.Api.Client.FieldType.DateTime:
+                case Shared.Enums.FieldType.DateTime:
                     <MudInputLabel>@value.Name</MudInputLabel>
                     <MudDatePicker DateFormat="yyyy-MM-dd" Date="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().DateTime)" ReadOnly />
                     <MudTimePicker AmPm="true" Time="@(value.Value is null ? null : DateTimeOffset.Parse(value.Value, CultureInfo.InvariantCulture).ToLocalTime().TimeOfDay)" ReadOnly />
                     break;
-                case Bones.Api.Client.FieldType.ValueList:
+                case Shared.Enums.FieldType.ValueList:
                     <MudSelect T="string" Label="@value.Name" Value="@value.Value" ReadOnly >
                         <MudSelectItem Value="@value.Value">@value.Value</MudSelectItem>
                     </MudSelect>

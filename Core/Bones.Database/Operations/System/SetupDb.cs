@@ -15,7 +15,7 @@ namespace Bones.Database.Operations.System;
 
 /// <inheritdoc />
 public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleManager<BonesRole> roleManager,
-                     IHostEnvironment environment, BonesBackendConfiguration config)
+                     IHostEnvironment environment)
     : IRequestHandler<SetupDb.Command, CommandResponse>
 {
     /// <summary>
@@ -32,12 +32,6 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
         await CreateAdminUserIfNoneExistAsync(backgroundServiceUser, cancellationToken);
         await SetupWebUiBaseUrl(backgroundServiceUser, cancellationToken);
         await SetupStmpConfig(backgroundServiceUser, cancellationToken);
-
-        if (config.SetupForTesting)
-        {
-            Log.Information("Setting up testing data...");
-            await sender.Send(new SetupTestingDataDb.Command(), cancellationToken);
-        }
 
         return CommandResponse.Pass();
     }

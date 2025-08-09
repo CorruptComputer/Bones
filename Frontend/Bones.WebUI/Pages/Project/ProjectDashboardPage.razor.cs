@@ -22,14 +22,19 @@ public partial class ProjectDashboardPage(BonesApiClient ApiClient) : ComponentB
     public int? InitiativeCount { get; set; }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public bool InitiativeListLoading { get; set; } = true;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public List<InitiativeListModel> InitiativeList { get; set; } = [];
+
+    /// <summary>
+    ///
+    /// </summary>
+    public List<AssetTypesListModel> AssetTypes { get; set; } = [];
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -57,6 +62,7 @@ public partial class ProjectDashboardPage(BonesApiClient ApiClient) : ComponentB
         GetProjectDashboardResponse dashboardResponse = await ApiClient.GetProjectDashboardAsync(ProjectId);
         ProjectName = dashboardResponse.ProjectName;
 
+        AssetTypes = dashboardResponse.AssetTypes;
         InitiativeCount = dashboardResponse.InitiativeCount;
         InitiativeList = dashboardResponse.Initiatives;
         InitiativeListLoading = false;

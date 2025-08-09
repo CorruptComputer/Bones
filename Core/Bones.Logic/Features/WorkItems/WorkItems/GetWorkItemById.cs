@@ -1,6 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
+using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.WorkItems.WorkItems;
 
@@ -28,6 +29,12 @@ public sealed class GetWorkItemById(ISender sender) : IRequestHandler<GetWorkIte
     /// <inheritdoc />
     public async Task<QueryResponse<WorkItem?>> Handle(Query request, CancellationToken cancellationToken)
     {
+        bool? permission = await sender.Send(new UserHasWorkItemPermission.Query(request.WorkItemId, request.RequestingUser, BonesClaimTypes.Role.WorkItem.VIEW_WORK_ITEM), cancellationToken);
+        if (permission != true)
+        {
+            return QueryResponse<WorkItem?>.Forbid();
+        }
+
         return await sender.Send(new GetWorkItemByIdDb.Query(request.WorkItemId), cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-using Bones.Shared.Backend.Enums;
+using Bones.Logic.Features.Projects.Presets.Models;
 using Bones.Shared.Enums;
 
 namespace Bones.Logic.Features.Projects.Presets;
@@ -7,9 +7,9 @@ internal class DevelopmentPreset : PresetBase
 {
     internal override ProjectPreset Preset => ProjectPreset.Development;
 
-    internal override string PresetName => "Development";
+    internal override string ProjectName => "Development";
 
-    internal override Dictionary<PresetFields, PresetFieldInfo> ItemFields => new()
+    internal override Dictionary<PresetFields, PresetFieldInfo> ItemFields { get; } = new()
     {
         {
             PresetFields.Title,
@@ -66,13 +66,13 @@ internal class DevelopmentPreset : PresetBase
     };
 
 
-    internal override Dictionary<string, PresetLayoutInfo> ItemLayouts => new()
+    internal override Dictionary<string, PresetLayoutInfo> ItemLayouts { get; } = new()
     {
         {
             "Bug",
             new PresetLayoutInfo
             {
-                EnabledFor = ItemLayoutUses.WorkItems,
+                LayoutUse = ItemLayoutUse.WorkItems,
                 FriendlyIdPrefix = "BUG",
                 Fields = new()
                 {
@@ -88,7 +88,7 @@ internal class DevelopmentPreset : PresetBase
             "Feature",
             new PresetLayoutInfo
             {
-                EnabledFor = ItemLayoutUses.WorkItems,
+                LayoutUse = ItemLayoutUse.WorkItems,
                 FriendlyIdPrefix = "FEAT",
                 Fields = new()
                 {
@@ -99,4 +99,36 @@ internal class DevelopmentPreset : PresetBase
             }
         }
     };
+
+    internal override Dictionary<string, PresetInitiativeInfo> ItemInitiatives { get; } = new()
+    {
+        {
+            "v1.0",
+            new PresetInitiativeInfo
+            {
+                WorkItemQueues = new()
+                {
+                    { "Backlog", new() },
+                    { "In Progress", new() },
+                    { "Done", new() }
+                }
+            }
+        },
+        {
+            "v2.0",
+            new PresetInitiativeInfo
+            {
+                WorkItemQueues = new()
+                {
+                    { "Backlog", new() },
+                    { "In Progress", new() },
+                    { "Done", new() }
+                }
+            }
+        }
+    };
+
+    internal override List<PresetAssetInfo> GetAssets() => [];
+
+    internal override List<PresetWorkItemInfo> GetWorkItems() => [];
 }

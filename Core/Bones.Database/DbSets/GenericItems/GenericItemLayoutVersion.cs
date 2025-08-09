@@ -1,5 +1,5 @@
 using Bones.Database.DbConsts;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;
@@ -24,9 +24,9 @@ public class GenericItemLayoutVersion
     public required string Name { get; set; }
 
     /// <summary>
-    ///   The uses this layout is applicable to
+    ///   The usage this layout is applicable for
     /// </summary>
-    public required ItemLayoutUses EnabledFor { get; set; }
+    public required ItemLayoutUse LayoutUse { get; set; }
 
     /// <summary>
     ///   The date and time this layout version was created

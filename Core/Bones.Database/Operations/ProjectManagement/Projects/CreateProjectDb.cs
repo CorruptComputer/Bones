@@ -1,7 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Projects;

@@ -6,6 +6,7 @@ using Bones.Database.DbSets.GenericItems;
 using Bones.Api.Models.Project;
 using Bones.Logic.Features.GenericItem;
 using Bones.Api.Controllers.Base;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Controllers;
 
@@ -87,6 +88,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
         BonesUser currentUser = await GetCurrentBonesUserAsync();
         QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectById.Query(projectId, currentUser));
         QueryResponse<List<Initiative>> initiativesResponse = await Sender.Send(new GetInitiativesByProject.Query(projectId, currentUser));
+        QueryResponse<List<GenericItemLayout>> layoutsResponse = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, currentUser));
 
         if (!projectResponse.Success || projectResponse.Result is null)
         {
@@ -98,13 +100,24 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(initiativesResponse.FailureReasons);
         }
 
+        if (!layoutsResponse.Success || layoutsResponse.Result is null)
+        {
+            return BadRequest(layoutsResponse.FailureReasons);
+        }
+
         GetProjectDashboardResponse resp = new()
         {
             ProjectId = projectResponse.Result.Id,
             ProjectName = projectResponse.Result.Name,
             InitiativeCount = initiativesResponse.Result.Count,
+            AssetTypes = layoutsResponse.Result.Where(layout => layout.LatestVersion!.LayoutUse == ItemLayoutUse.Assets).Select(layout =>
+                new GetProjectDashboardResponse.AssetTypesListModel
+                {
+                    LayoutId = layout.Id,
+                    LayoutName = layout.LatestVersion!.Name,
+                }),
             Initiatives = initiativesResponse.Result.Select(i =>
-                new GetProjectDashboardResponse.InitiativeListModel()
+                new GetProjectDashboardResponse.InitiativeListModel
                 {
                     InitiativeId = i.Id,
                     InitiativeName = i.Name,

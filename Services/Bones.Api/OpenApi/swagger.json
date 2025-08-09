@@ -573,6 +573,436 @@
         }
       }
     },
+    "/Asset/Layout/{GenericItemLayoutId}/dashboard": {
+      "get": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Gets the dashboard for an asset layout, which includes the layout and all assets that use it.",
+        "operationId": "GetAssetLayoutDashboardAsync",
+        "parameters": [
+          {
+            "name": "GenericItemLayoutId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAssetLayoutDashboardResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Asset/{AssetId}": {
+      "get": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Gets an asset by its ID",
+        "operationId": "GetAssetByIdAsync",
+        "parameters": [
+          {
+            "name": "AssetId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAssetByIdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Asset/action/create": {
+      "post": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Creates a new asset",
+        "operationId": "CreateAssetActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Asset/action/create-version": {
+      "post": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Creates a new asset version",
+        "operationId": "CreateAssetVersionActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetVersionAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Asset/action/delete": {
+      "post": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Deletes an asset",
+        "operationId": "DeleteAssetActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteAssetAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Asset/action/delete-version": {
+      "post": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Deletes an asset version",
+        "operationId": "DeleteAssetVersionActionAsync",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteAssetVersionAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetActionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/GenericItem/fields/{fieldId}/latest": {
       "get": {
         "tags": [
@@ -665,11 +1095,11 @@
             }
           },
           {
-            "name": "enabledFor",
+            "name": "layoutUse",
             "in": "query",
             "description": "",
             "schema": {
-              "$ref": "#/components/schemas/ItemLayoutUses"
+              "$ref": "#/components/schemas/ItemLayoutUse"
             }
           }
         ],
@@ -3591,6 +4021,62 @@
         "additionalProperties": false,
         "description": "Response to the GetWebConfigAsync endpoint"
       },
+      "AssetActionBase": {
+        "required": [
+          "actionDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "actionDateTime": {
+            "type": "string",
+            "description": "The timestamp of when this action was performed",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "An action that can be performed on an asset"
+      },
+      "AssetActionResponse": {
+        "required": [
+          "assetCurrentVersionId",
+          "assetId"
+        ],
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "description": "The unique identifier of the asset action.",
+            "format": "uuid"
+          },
+          "assetCurrentVersionId": {
+            "type": "string",
+            "description": "The unique identifier of the current version of the asset.",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response model for asset actions."
+      },
+      "AssetTypesListModel": {
+        "required": [
+          "layoutId",
+          "layoutName"
+        ],
+        "type": "object",
+        "properties": {
+          "layoutId": {
+            "type": "string",
+            "description": "The asset layout's ID",
+            "format": "uuid"
+          },
+          "layoutName": {
+            "type": "string",
+            "description": "The name of the asset layout"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for the asset types to be listed in a project's dashboard"
+      },
       "AssignWorkItemAction": {
         "allOf": [
           {
@@ -3656,6 +4142,82 @@
         },
         "additionalProperties": false,
         "description": "Request for the ChangeMyPasswordAsync endpoint"
+      },
+      "CreateAssetAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AssetActionBase"
+          },
+          {
+            "required": [
+              "assetLayoutId",
+              "fieldValues",
+              "title"
+            ],
+            "type": "object",
+            "properties": {
+              "assetLayoutId": {
+                "type": "string",
+                "description": "The ID of the asset layout (not version, automatically uses the current version)",
+                "format": "uuid"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the asset"
+              },
+              "fieldValues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ItemValueModel"
+                },
+                "description": "The fields of the asset"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to create a new asset."
+      },
+      "CreateAssetVersionAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AssetActionBase"
+          },
+          {
+            "required": [
+              "assetId",
+              "assetLayoutId",
+              "fieldValues",
+              "title"
+            ],
+            "type": "object",
+            "properties": {
+              "assetId": {
+                "type": "string",
+                "description": "The ID of the asset to perform the action on",
+                "format": "uuid"
+              },
+              "assetLayoutId": {
+                "type": "string",
+                "description": "The ID of the asset layout (not version, automatically uses the current version)",
+                "format": "uuid"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the asset"
+              },
+              "fieldValues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ItemValueModel"
+                },
+                "description": "The fields of the asset"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to create a new version of an asset."
       },
       "CreateInitiativeRequest": {
         "required": [
@@ -3757,9 +4319,9 @@
       },
       "CreateItemLayoutRequest": {
         "required": [
-          "enabledFor",
           "fieldVersions",
           "friendlyIdPrefix",
+          "layoutUse",
           "name"
         ],
         "type": "object",
@@ -3768,8 +4330,8 @@
             "type": "string",
             "description": "Name of the item layout to create"
           },
-          "enabledFor": {
-            "$ref": "#/components/schemas/ItemLayoutUses"
+          "layoutUse": {
+            "$ref": "#/components/schemas/ItemLayoutUse"
           },
           "friendlyIdPrefix": {
             "maxLength": 6,
@@ -3790,8 +4352,8 @@
       },
       "CreateItemLayoutVersionRequest": {
         "required": [
-          "enabledFor",
           "fieldVersions",
+          "layoutUse",
           "name"
         ],
         "type": "object",
@@ -3800,8 +4362,8 @@
             "type": "string",
             "description": "Name of the item layout to create"
           },
-          "enabledFor": {
-            "$ref": "#/components/schemas/ItemLayoutUses"
+          "layoutUse": {
+            "$ref": "#/components/schemas/ItemLayoutUse"
           },
           "fieldVersions": {
             "type": "object",
@@ -3940,6 +4502,37 @@
         ],
         "description": "Action to create a new version of a work item."
       },
+      "DashboardAssetModel": {
+        "required": [
+          "friendlyId",
+          "id",
+          "latestVersionCreateDateTime",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the work item",
+            "format": "uuid"
+          },
+          "friendlyId": {
+            "type": "string",
+            "description": "The friendly ID of the work item"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the work item"
+          },
+          "latestVersionCreateDateTime": {
+            "type": "string",
+            "description": "The date and time the latest version of the asset was created",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for a work item in the dashboard"
+      },
       "DashboardWorkItemModel": {
         "required": [
           "addedToQueueDateTime",
@@ -3970,6 +4563,50 @@
         },
         "additionalProperties": false,
         "description": "Model for a work item in the dashboard"
+      },
+      "DeleteAssetAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AssetActionBase"
+          },
+          {
+            "required": [
+              "assetId"
+            ],
+            "type": "object",
+            "properties": {
+              "assetId": {
+                "type": "string",
+                "description": "The ID of the asset to perform the action on",
+                "format": "uuid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to delete an asset."
+      },
+      "DeleteAssetVersionAction": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AssetActionBase"
+          },
+          {
+            "required": [
+              "assetId"
+            ],
+            "type": "object",
+            "properties": {
+              "assetId": {
+                "type": "string",
+                "description": "The ID of the asset to perform the action on",
+                "format": "uuid"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "description": "Action to delete a specific version of an asset."
       },
       "DeleteWorkItemAction": {
         "allOf": [
@@ -4072,6 +4709,103 @@
         ],
         "type": "string"
       },
+      "GetAssetByIdResponse": {
+        "required": [
+          "assetId",
+          "createDateTime",
+          "currentVersion",
+          "friendlyId",
+          "genericItemId",
+          "itemValues",
+          "latestGenericItemVersionId",
+          "latestVersionCreateDateTime",
+          "layoutId",
+          "projectId",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "description": "ID of the asset",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the asset"
+          },
+          "layoutId": {
+            "type": "string",
+            "description": "The ID of the layout this asset uses",
+            "format": "uuid"
+          },
+          "projectId": {
+            "type": "string",
+            "description": "The ID of the project this asset belongs to",
+            "format": "uuid"
+          },
+          "genericItemId": {
+            "type": "string",
+            "description": "The ID of the generic item this asset is",
+            "format": "uuid"
+          },
+          "latestGenericItemVersionId": {
+            "type": "string",
+            "description": "The ID of the latest version of the generic item this asset is",
+            "format": "uuid"
+          },
+          "currentVersion": {
+            "type": "integer",
+            "description": "The current version number for this asset",
+            "format": "int32"
+          },
+          "friendlyId": {
+            "type": "string",
+            "description": "The friendly ID of the asset"
+          },
+          "createDateTime": {
+            "type": "string",
+            "description": "The time this asset was created",
+            "format": "date-time"
+          },
+          "latestVersionCreateDateTime": {
+            "type": "string",
+            "description": "The time the latest version of this asset was created",
+            "format": "date-time"
+          },
+          "itemValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemValueDisplayModel"
+            },
+            "description": "The values for this asset"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetAssetById endpoint"
+      },
+      "GetAssetLayoutDashboardResponse": {
+        "required": [
+          "assets",
+          "layoutName"
+        ],
+        "type": "object",
+        "properties": {
+          "layoutName": {
+            "type": "string",
+            "description": "The name of the layout"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DashboardAssetModel"
+            },
+            "description": "The assets in this layout, ordered by date added from oldest to newest"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetAssetLayoutDashboardAsync endpoint"
+      },
       "GetBackgroundServiceUserConfigResponse": {
         "required": [
           "displayName",
@@ -4153,11 +4887,12 @@
       },
       "GetItemLayoutVersionResponse": {
         "required": [
-          "enabledFor",
           "fieldVersions",
           "friendlyIdPrefix",
           "latestVersion",
+          "layoutUse",
           "name",
+          "projectId",
           "version",
           "versionUpdateAvailable"
         ],
@@ -4167,8 +4902,13 @@
             "type": "string",
             "description": "Name of the item layout"
           },
-          "enabledFor": {
-            "$ref": "#/components/schemas/ItemLayoutUses"
+          "projectId": {
+            "type": "string",
+            "description": "The ID of the project this layout belongs to",
+            "format": "uuid"
+          },
+          "layoutUse": {
+            "$ref": "#/components/schemas/ItemLayoutUse"
           },
           "friendlyIdPrefix": {
             "maxLength": 6,
@@ -4388,6 +5128,7 @@
       },
       "GetProjectDashboardResponse": {
         "required": [
+          "assetTypes",
           "initiativeCount",
           "initiatives",
           "projectId",
@@ -4408,6 +5149,13 @@
             "type": "integer",
             "description": "The number of initiatives in the project",
             "format": "int32"
+          },
+          "assetTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetTypesListModel"
+            },
+            "description": "The types of assets in the project"
           },
           "initiatives": {
             "type": "array",
@@ -4767,7 +5515,7 @@
           "itemValues": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WorkItemValueModel"
+              "$ref": "#/components/schemas/ItemValueDisplayModel"
             },
             "description": "The values for this work item"
           }
@@ -4906,8 +5654,8 @@
       },
       "ItemLayoutModel": {
         "required": [
-          "enabledFor",
           "itemLayoutId",
+          "layoutUse",
           "name"
         ],
         "type": "object",
@@ -4921,21 +5669,74 @@
             "type": "string",
             "description": "The name for this Item layout"
           },
-          "enabledFor": {
+          "layoutUse": {
             "type": "string",
-            "description": "The uses this layout is applicable to"
+            "description": "The use this layout is applicable to"
           }
         },
         "additionalProperties": false,
         "description": "Model for an item layout in a projects settings"
       },
-      "ItemLayoutUses": {
+      "ItemLayoutUse": {
         "enum": [
           "none",
           "workItems",
           "assets"
         ],
         "type": "string"
+      },
+      "ItemValueDisplayModel": {
+        "required": [
+          "fieldVersionId",
+          "isRequired",
+          "name",
+          "orderNumber",
+          "valueType"
+        ],
+        "type": "object",
+        "properties": {
+          "orderNumber": {
+            "type": "integer",
+            "description": "The order that this field should be displayed in",
+            "format": "int32"
+          },
+          "fieldVersionId": {
+            "type": "string",
+            "description": "The ID of the field version this value is for",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the field"
+          },
+          "valueType": {
+            "$ref": "#/components/schemas/FieldType"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Is this field required?"
+          },
+          "canBeNegative": {
+            "type": "boolean",
+            "description": "If the field is a number, can it be negative?",
+            "nullable": true
+          },
+          "possibleValues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "If this field is a value list, the possible values for the field",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the field",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for the values of an item"
       },
       "ItemValueModel": {
         "required": [
@@ -4978,7 +5779,7 @@
           }
         },
         "additionalProperties": false,
-        "description": "Model for the values of a work item"
+        "description": "Model for the values of an item"
       },
       "LoginUserApiRequest": {
         "required": [
@@ -5131,7 +5932,8 @@
       },
       "ProjectPreset": {
         "enum": [
-          "development"
+          "development",
+          "test"
         ],
         "type": "string"
       },
@@ -5386,59 +6188,6 @@
         },
         "additionalProperties": false,
         "description": "Model for the work item queues to be listed in an initiative"
-      },
-      "WorkItemValueModel": {
-        "required": [
-          "fieldVersionId",
-          "isRequired",
-          "name",
-          "orderNumber",
-          "valueType"
-        ],
-        "type": "object",
-        "properties": {
-          "orderNumber": {
-            "type": "integer",
-            "description": "The order that this field should be displayed in",
-            "format": "int32"
-          },
-          "fieldVersionId": {
-            "type": "string",
-            "description": "The ID of the field version this value is for",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string",
-            "description": "The name of the field"
-          },
-          "valueType": {
-            "$ref": "#/components/schemas/FieldType"
-          },
-          "isRequired": {
-            "type": "boolean",
-            "description": "Is this field required?"
-          },
-          "canBeNegative": {
-            "type": "boolean",
-            "description": "If the field is a number, can it be negative?",
-            "nullable": true
-          },
-          "possibleValues": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "If this field is a value list, the possible values for the field",
-            "nullable": true
-          },
-          "value": {
-            "type": "string",
-            "description": "The value of the field",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Model for the values of a work item"
       }
     }
   }

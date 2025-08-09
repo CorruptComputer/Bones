@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.Operations.ProjectManagement.Projects;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Logic.Features.Projects;
 
@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Projects;
 public sealed class GetProjectsUserCanAccess(ISender sender) : IRequestHandler<GetProjectsUserCanAccess.Query, QueryResponse<Dictionary<Guid, string>>>
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="RequestingUser"></param>
     public sealed record Query(BonesUser RequestingUser) : IRequest<QueryResponse<Dictionary<Guid, string>>>;

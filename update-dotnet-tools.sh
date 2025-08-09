@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+dotnet tool update --global --all
 dotnet workload update
 
 cd Core/Bones.Database

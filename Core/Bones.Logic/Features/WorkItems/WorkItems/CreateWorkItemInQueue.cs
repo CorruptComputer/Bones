@@ -73,8 +73,8 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
 
         Dictionary<string, Guid> ids = new()
         {
-            { nameof(WorkItem), workItem.Ids.Values.FirstOrDefault() },
-            { nameof(GenericItemVersion), itemVersion.Ids.Values.FirstOrDefault() }
+            { nameof(WorkItem), workItem.Ids[nameof(WorkItem)] },
+            { nameof(GenericItemVersion), itemVersion.Ids[nameof(GenericItemVersion)] }
         };
 
         return CommandResponse.Pass(ids);

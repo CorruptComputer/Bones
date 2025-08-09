@@ -1,4 +1,5 @@
 using Bones.Shared.Consts;
+using Bones.Shared.Enums;
 
 namespace Bones.WebUI.Pages.Project;
 
@@ -39,12 +40,12 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     public int? ItemFieldsCount { get; set; }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public bool ItemFieldsListLoading { get; set; } = true;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public List<ItemFieldModel> ItemFieldsList { get; set; } = [];
 
@@ -54,12 +55,12 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     public int? ItemLayoutsCount { get; set; }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public bool ItemLayoutsListLoading { get; set; } = true;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public List<ItemLayoutModel> ItemLayoutsList { get; set; } = [];
 

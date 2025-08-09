@@ -1,6 +1,6 @@
 using System.Data;
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.GenericItem;

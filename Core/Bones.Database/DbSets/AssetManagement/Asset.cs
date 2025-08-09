@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.DbSets.ProjectManagement;
@@ -19,12 +20,6 @@ public class Asset
     public Guid Id { get; set; }
 
     /// <summary>
-    ///   The name of this asset
-    /// </summary>
-    [MaxLength(512)]
-    public required string Name { get; set; }
-
-    /// <summary>
     ///   The project this Asset belongs to
     /// </summary>
     public required Project Project { get; set; }
@@ -33,6 +28,13 @@ public class Asset
     ///   The generic item for this asset
     /// </summary>
     public required GenericItem Item { get; set; }
+
+    /// <summary>
+    ///   The current version of the generic item this work item is using
+    /// </summary>
+    [IgnoreDataMember]
+    public GenericItemVersion? CurrentVersion => Item.Versions
+        .FirstOrDefault(x => x.Version == Item.CurrentVersion);
 
     /// <summary>
     ///   Disables access to this Asset and schedules deletes for everything within,

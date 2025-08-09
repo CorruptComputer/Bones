@@ -1,7 +1,7 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.ProjectManagement;

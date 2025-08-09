@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -98,7 +98,7 @@ public record GetProjectSettingsResponse
                 {
                     ItemLayoutId = i.Id,
                     Name = i.LatestVersion!.Name,
-                    EnabledFor = i.LatestVersion!.EnabledFor.ToString()
+                    LayoutUse = i.LatestVersion!.LayoutUse.ToString()
                 })
         };
     }
@@ -159,9 +159,9 @@ public record GetProjectSettingsResponse
         public required string Name { get; init; }
 
         /// <summary>
-        ///   The uses this layout is applicable to
+        ///   The use this layout is applicable to
         /// </summary>
         [JsonRequired]
-        public required string EnabledFor { get; init; }
+        public required string LayoutUse { get; init; }
     }
 }

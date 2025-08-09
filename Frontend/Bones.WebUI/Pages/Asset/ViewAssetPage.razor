@@ -1,0 +1,13 @@
+﻿@using Bones.WebUI.Models
+@using Bones.WebUI.Components.GenericItem
+@attribute [Route(FrontEndUrls.Asset.VIEW_ASSET)]
+
+<MudText Typo="Typo.h4">@_assetTitle (v@_currentVersion)</MudText>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <GenericItemEditor ItemId="@AssetId" ItemType="ItemLayoutUse.Assets" EditorMode="GenericItemEditor.Mode.ViewEdit" />
+        </MudPaper>
+    </MudItem>
+</MudGrid>

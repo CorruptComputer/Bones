@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.Project;
 

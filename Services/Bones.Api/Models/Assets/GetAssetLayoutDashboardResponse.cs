@@ -1,0 +1,68 @@
+using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.GenericItems;
+
+namespace Bones.Api.Models.Assets;
+
+/// <summary>
+///   Response for the GetAssetLayoutDashboardAsync endpoint
+/// </summary>
+[JsonSerializable(typeof(GetAssetLayoutDashboardResponse))]
+public sealed record GetAssetLayoutDashboardResponse
+{
+    /// <summary>
+    ///   The name of the layout
+    /// </summary>
+    public required string LayoutName { get; init; }
+
+    /// <summary>
+    ///   The assets in this layout, ordered by date added from oldest to newest
+    /// </summary>
+    public required IEnumerable<DashboardAssetModel> Assets { get; init; }
+
+
+    internal static GetAssetLayoutDashboardResponse FromInternal(GenericItemLayout layout, IEnumerable<Asset> assets)
+    {
+        return new()
+        {
+            LayoutName = layout.LatestVersion?.Name ?? string.Empty,
+            Assets = assets.Select(DashboardAssetModel.FromAsset)
+        };
+    }
+
+    /// <summary>
+    ///   Model for a work item in the dashboard
+    /// </summary>
+    public record DashboardAssetModel
+    {
+        /// <summary>
+        ///   The ID of the work item
+        /// </summary>
+        public required Guid Id { get; init; }
+
+        /// <summary>
+        ///   The friendly ID of the work item
+        /// </summary>
+        public required string FriendlyId { get; init; }
+
+        /// <summary>
+        ///   The title of the work item
+        /// </summary>
+        public required string Title { get; init; }
+
+        /// <summary>
+        ///   The date and time the latest version of the asset was created
+        /// </summary>
+        public required DateTimeOffset LatestVersionCreateDateTime { get; init; }
+
+        internal static DashboardAssetModel FromAsset(Asset asset)
+        {
+            return new()
+            {
+                Id = asset.Id,
+                FriendlyId = asset.Item.FriendlyId,
+                Title = asset.CurrentVersion?.Title ?? string.Empty,
+                LatestVersionCreateDateTime = asset.CurrentVersion?.CreateDateTime ?? DateTimeOffset.MinValue
+            };
+        }
+    }
+}

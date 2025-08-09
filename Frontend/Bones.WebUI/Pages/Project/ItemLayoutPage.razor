@@ -4,13 +4,13 @@
 
 <MudForm @ref="@Form" @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
     <MudTextField T="string" Label="Layout Name" Required="true" RequiredError="Layout name is required!" @bind-value="@LayoutName"/>
-    <MudText>Enabled For</MudText>
-    <div style="display: flex;">
-        <MudCheckBox T="bool" Label="WorkItems" @bind-value="@EnabledForWorkItems"/>
-        <MudCheckBox T="bool" Label="Assets" @bind-value="@EnabledForAssets"/>
-    </div>
 
-    @if (ItemLayoutId.HasValue) 
+    <MudSelect T="Shared.Enums.ItemLayoutUse" Label="Item Layout Use" Required="true" RequiredError="Item Layout Use is required!" @bind-value="@LayoutUse">
+        <MudSelectItem Value="Shared.Enums.ItemLayoutUse.Assets">Asset</MudSelectItem>
+        <MudSelectItem Value="Shared.Enums.ItemLayoutUse.WorkItems">Work Item</MudSelectItem>
+    </MudSelect>
+
+    @if (ItemLayoutId.HasValue)
     {
         <MudTextField T="string" Label="ID Prefix (cannot be changed)" MaxLength="6" Disabled @bind-value="@FriendlyIdPrefix"/>
     }
@@ -77,7 +77,7 @@
             <MudNumericField Label="Field Count" Required ReadOnly @bind-Value="@SelectedItemFieldsCount" />
         </div>
     </div>
-    
+
     <div style="align-self: end;">
         <br />
         <a onclick="history.back();">

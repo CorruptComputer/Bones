@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Database.Operations.ProjectManagement.Projects;
 

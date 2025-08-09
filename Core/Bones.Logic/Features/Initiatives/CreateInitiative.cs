@@ -4,7 +4,7 @@ using Bones.Database.Operations.OrganizationManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
 using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Logic.Features.Projects;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Initiatives;

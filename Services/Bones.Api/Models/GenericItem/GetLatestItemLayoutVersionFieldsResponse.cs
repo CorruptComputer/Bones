@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.GenericItem;
 

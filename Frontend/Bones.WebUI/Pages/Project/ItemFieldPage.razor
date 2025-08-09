@@ -7,37 +7,37 @@
             <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
                 <MudTextField T="string" Label="Field Name" Required="true" RequiredError="Field name is required!" @bind-value="@FieldName" Immediate="true" />
 
-                <MudSelect T="Api.Client.FieldType" Label="Field Type" Required="true" RequiredError="Field type is required!" @bind-value="@FieldType">
-                    <MudSelectItem Value="Api.Client.FieldType.TextField">Short Text</MudSelectItem>
-                    <MudSelectItem Value="Api.Client.FieldType.TextBox">Long Text</MudSelectItem>
-                    <MudSelectItem Value="Api.Client.FieldType.Integer">Integer</MudSelectItem>
-                    <MudSelectItem Value="Api.Client.FieldType.Decimal">Decimal</MudSelectItem>
-                    <MudSelectItem Value="Api.Client.FieldType.Boolean">Boolean</MudSelectItem>
-                    <MudSelectItem Value="Api.Client.FieldType.DateTime">Date Time</MudSelectItem>
-                    <MudSelectItem Value="Api.Client.FieldType.ValueList">Value List</MudSelectItem>
+                <MudSelect T="Shared.Enums.FieldType" Label="Field Type" Required="true" RequiredError="Field type is required!" @bind-value="@FieldType">
+                    <MudSelectItem Value="Shared.Enums.FieldType.TextField">Short Text</MudSelectItem>
+                    <MudSelectItem Value="Shared.Enums.FieldType.TextBox">Long Text</MudSelectItem>
+                    <MudSelectItem Value="Shared.Enums.FieldType.Integer">Integer</MudSelectItem>
+                    <MudSelectItem Value="Shared.Enums.FieldType.Decimal">Decimal</MudSelectItem>
+                    <MudSelectItem Value="Shared.Enums.FieldType.Boolean">Boolean</MudSelectItem>
+                    <MudSelectItem Value="Shared.Enums.FieldType.DateTime">Date Time</MudSelectItem>
+                    <MudSelectItem Value="Shared.Enums.FieldType.ValueList">Value List</MudSelectItem>
                     <!-- disabled for now, not yet figured out how I want to handle it. Rest should all work -->
-                    <!--MudSelectItem Value="Api.Client.FieldType.GeoLocation">Geo Location</MudSelectItem-->
+                    <!--MudSelectItem Value="Shared.Enums.FieldType.GeoLocation">Geo Location</MudSelectItem-->
                 </MudSelect>
 
-                @if (FieldType == Api.Client.FieldType.ValueList)
+                @if (FieldType == Shared.Enums.FieldType.ValueList)
                 {
                     <!-- TODO: Add boxes for them to add values to this -->
                 }
-                else if (FieldType == Api.Client.FieldType.GeoLocation)
+                else if (FieldType == Shared.Enums.FieldType.GeoLocation)
                 {
-                    <MudSelect T="Api.Client.GeoLocationType" Label="Geo Location Type" Required="true" RequiredError="Geo Location type is required!" @bind-value="@GeoLocationType">
-                        <MudSelectItem Value="Api.Client.GeoLocationType.OsmObject">OsmObject</MudSelectItem>
-                        <MudSelectItem Value="Api.Client.GeoLocationType.LatLon">LatLon</MudSelectItem>
-                        <MudSelectItem Value="Api.Client.GeoLocationType.Address">Address</MudSelectItem>
-                        <MudSelectItem Value="Api.Client.GeoLocationType.Geometry">Geometry</MudSelectItem>
+                    <MudSelect T="GeoLocationType" Label="Geo Location Type" Required="true" RequiredError="Geo Location type is required!" @bind-value="@GeoLocationType">
+                        <MudSelectItem Value="GeoLocationType.OsmObject">OsmObject</MudSelectItem>
+                        <MudSelectItem Value="GeoLocationType.LatLon">LatLon</MudSelectItem>
+                        <MudSelectItem Value="GeoLocationType.Address">Address</MudSelectItem>
+                        <MudSelectItem Value="GeoLocationType.Geometry">Geometry</MudSelectItem>
                     </MudSelect>
                 }
-                else if (FieldType == Api.Client.FieldType.Decimal || FieldType == Api.Client.FieldType.Integer)
+                else if (FieldType == Shared.Enums.FieldType.Decimal || FieldType == Shared.Enums.FieldType.Integer)
                 {
                     <MudCheckBox Label="Can be negative?" @bind-value="@CanBeNegative"/>
                 }
 
-                @if (GeoLocationType == Api.Client.GeoLocationType.Address)
+                @if (GeoLocationType == GeoLocationType.Address)
                 {
                     <MudCheckBox Label="Street number required?" @bind-value="@StreetNumberRequired"/>
                     <MudCheckBox Label="Street name required?" @bind-value="@StreetNameRequired"/>
@@ -47,7 +47,7 @@
                     <MudCheckBox Label="County required?" @bind-value="@CountyRequired"/>
                     <MudCheckBox Label="Country required?" @bind-value="@CountryRequired"/>
                 }
-                
+
                 <MudCheckBox Label="Is Required?" @bind-value="@IsRequired"/>
 
                 <div style="align-self: end;">
@@ -64,7 +64,7 @@
         <MudItem Class="pa-2" hidden="@(!ApiError)">
             <MudAlert Severity="Severity.Error">There was an error with the creation, please try again.</MudAlert>
         </MudItem>
-    
+
         @foreach (string error in ValidationErrors)
         {
             <MudItem Class="pa-2">

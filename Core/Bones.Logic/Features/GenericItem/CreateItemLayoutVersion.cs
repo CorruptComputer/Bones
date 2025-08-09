@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
 using Bones.Logic.Features.Projects;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
@@ -15,10 +15,10 @@ public class CreateItemLayoutVersion(ISender sender) : IRequestHandler<CreateIte
     /// </summary>
     /// <param name="ItemLayoutId"></param>
     /// <param name="Name"></param>
-    /// <param name="EnabledFor"></param>
+    /// <param name="LayoutUse"></param>
     /// <param name="FieldVersions"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUses EnabledFor, Dictionary<uint, Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
+    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUse LayoutUse, Dictionary<uint, Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>
@@ -28,7 +28,7 @@ public class CreateItemLayoutVersion(ISender sender) : IRequestHandler<CreateIte
         {
             RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.EnabledFor).NotNull().NotEqual(ItemLayoutUses.None);
+            RuleFor(x => x.LayoutUse).NotNull().NotEqual(ItemLayoutUse.None);
             RuleFor(x => x.FieldVersions).NotNull().NotEmpty();
             RuleFor(x => x.RequestingUser).NotNull();
         }
@@ -74,7 +74,7 @@ public class CreateItemLayoutVersion(ISender sender) : IRequestHandler<CreateIte
             }
         }
 
-        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDb.Command(layout.Id, request.Name, request.EnabledFor, request.FieldVersions), cancellationToken);
+        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDb.Command(layout.Id, request.Name, request.LayoutUse, request.FieldVersions), cancellationToken);
 
         if (!createLayoutVersionResponse.Success)
         {

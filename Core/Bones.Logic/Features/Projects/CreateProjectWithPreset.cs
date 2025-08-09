@@ -14,7 +14,8 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
     /// <param name="Preset">The preset to use</param>
     /// <param name="RequestingUser">The user requesting this project be created</param>
     /// <param name="OrganizationId">Optionally, the organization this project should belong to.</param>
-    public record Command(string Name, ProjectPreset Preset, BonesUser RequestingUser, Guid? OrganizationId = null) : IRequest<CommandResponse>;
+    /// <param name="CreateWorkItems">Optionally, whether to create work items for the project.</param>
+    public record Command(string Name, ProjectPreset Preset, BonesUser RequestingUser, Guid? OrganizationId = null, bool CreateWorkItems = false) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
@@ -34,6 +35,7 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
         PresetBase? preset = request.Preset switch
         {
             ProjectPreset.Development => new DevelopmentPreset(),
+            ProjectPreset.Test => new TestPreset(),
             //ProjectPreset.InformationTechnology => new InformationTechnologyPreset(),
             //ProjectPreset.HomeManagement => new HomeManagementPreset(),
             _ => null
@@ -41,7 +43,7 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
 
         if (preset != null)
         {
-            bool success = await preset.CreatePresetAsync(sender, request.RequestingUser, cancellationToken);
+            bool success = await preset.CreatePresetAsync(sender, request.CreateWorkItems, request.RequestingUser, cancellationToken);
             if (!success)
             {
                 return CommandResponse.Fail($"Failed to create preset: {preset.GetType().FullName}");

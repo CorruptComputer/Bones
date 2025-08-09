@@ -9,7 +9,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        
+
         <!-- Assembly info -->
         <VersionPrefix>0.0.1</VersionPrefix>
         <VersionSuffix>$(SourceRevisionId)</VersionSuffix>

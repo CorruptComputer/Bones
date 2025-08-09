@@ -9,6 +9,13 @@ public enum ProjectPreset
     ///   Preset for a development project
     /// </summary>
     Development,
+
+    /// <summary>
+    ///   Preset for a test project
+    /// </summary>
+    Test,
+
+
     //InformationTechnology,
     //HomeManagement
 }

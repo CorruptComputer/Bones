@@ -1,5 +1,3 @@
-using Bones.Shared.Consts;
-
 namespace Bones.WebUI.Pages.Project;
 
 /// <summary>

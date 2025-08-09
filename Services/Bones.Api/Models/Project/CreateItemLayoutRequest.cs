@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -17,10 +17,10 @@ public class CreateItemLayoutRequest
     public required string Name { get; init; }
 
     /// <summary>
-    ///   The uses for which this layout is enabled
+    ///   The use for which this layout is intended
     /// </summary>
     [JsonRequired]
-    public required ItemLayoutUses EnabledFor { get; init; }
+    public required ItemLayoutUse LayoutUse { get; init; }
 
     /// <summary>
     ///   The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.
@@ -37,6 +37,6 @@ public class CreateItemLayoutRequest
 
     internal CreateItemLayout.Command ToInternal(Guid projectId, BonesUser user)
     {
-        return new(projectId, Name, EnabledFor, FriendlyIdPrefix, FieldVersions, user);
+        return new(projectId, Name, LayoutUse, FriendlyIdPrefix, FieldVersions, user);
     }
 }

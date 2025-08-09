@@ -1,8 +1,8 @@
 using System.Globalization;
 using System.Net;
 using Bones.Shared.Consts;
+using Bones.Shared.Enums;
 using Bones.Shared.Exceptions;
-using Bones.WebUI.Models;
 
 namespace Bones.WebUI.Components.GenericItem;
 
@@ -16,6 +16,12 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
     /// </summary>
     [Parameter]
     public required Guid? ItemId { get; set; }
+
+    /// <summary>
+    ///   The type of item this editor is for
+    /// </summary>
+    [Parameter]
+    public required ItemLayoutUse ItemType { get; set; }
 
     /// <summary>
     ///   The mode this editor should operate in
@@ -44,17 +50,17 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
     /// <summary>
     ///   Item values displayed on the page for this work item, if editing is enabled: the values that are being changed.
     /// </summary>
-    private IOrderedEnumerable<WorkItemValueModel> _currentValues = Enumerable.Empty<WorkItemValueModel>().OrderBy(x => x.OrderNumber);
+    private IOrderedEnumerable<ItemValueDisplayModel> _currentValues = Enumerable.Empty<ItemValueDisplayModel>().OrderBy(x => x.OrderNumber);
 
     /// <summary>
     ///   Do not update this after its been loaded from the API.
     /// </summary>
-    private IOrderedEnumerable<WorkItemValueModel> _originalValues = Enumerable.Empty<WorkItemValueModel>().OrderBy(x => x.OrderNumber);
+    private IOrderedEnumerable<ItemValueDisplayModel> _originalValues = Enumerable.Empty<ItemValueDisplayModel>().OrderBy(x => x.OrderNumber);
 
     private Guid _layoutId = Guid.Empty;
     private bool _editing = false;
 
-    private string _workItemTitle { get; set; } = string.Empty;
+    private string _title { get; set; } = string.Empty;
     private Dictionary<Guid, bool?> _boolValues { get; set; } = [];
     private Dictionary<Guid, DateTime?> _dateTimeValues { get; set; } = [];
     private Dictionary<Guid, TimeSpan?> _timeSpanValues { get; set; } = [];
@@ -68,7 +74,15 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
     /// <returns></returns>
     protected override async Task OnInitializedAsync()
     {
-        await FetchWorkItemFromAPI();
+        if (ItemType is ItemLayoutUse.WorkItems)
+        {
+            await FetchWorkItemFromAPI();
+        }
+        else if (ItemType is ItemLayoutUse.Assets)
+        {
+            await FetchAssetFromAPI();
+        }
+
 
         if (EditorMode == Mode.Create)
         {
@@ -90,7 +104,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
         try
         {
             List<GetLatestItemLayoutVersionFieldsResponse>? layoutFields = await apiClient.GetLatestItemLayoutVersionFieldsAsync(ItemLayoutId.Value);
-            _currentValues = layoutFields.Select(lf => new WorkItemValueModel
+            _currentValues = layoutFields.Select(lf => new ItemValueDisplayModel
             {
                 OrderNumber = lf.OrderNumber,
                 FieldVersionId = lf.Id,
@@ -101,7 +115,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                 PossibleValues = lf.PossibleValues,
             }).OrderBy(x => x.OrderNumber);
 
-            foreach (WorkItemValueModel field in _currentValues)
+            foreach (ItemValueDisplayModel field in _currentValues)
             {
                 switch (field.ValueType)
                 {
@@ -156,34 +170,10 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
             if (workItemResponse is not null)
             {
                 _originalValues = _currentValues = workItemResponse.ItemValues.OrderBy(x => x.OrderNumber);
-                _workItemTitle = workItemResponse.Title;
+                _title = workItemResponse.Title;
                 _layoutId = workItemResponse.LayoutId;
 
-                foreach (WorkItemValueModel field in _originalValues)
-                {
-                    switch (field.ValueType)
-                    {
-                        case FieldType.TextField or FieldType.TextBox or FieldType.ValueList:
-                            _stringValues[field.FieldVersionId] = field.Value ?? string.Empty;
-                            break;
-                        case FieldType.Integer:
-                            _integerValues[field.FieldVersionId] = field.Value is null ? null : Convert.ToInt64(field.Value);
-                            break;
-                        case FieldType.Decimal:
-                            _decimalValues[field.FieldVersionId] = field.Value is null ? null : Convert.ToDouble(field.Value);
-                            break;
-                        case FieldType.Boolean:
-                            _boolValues[field.FieldVersionId] = field.Value is null ? null : Convert.ToBoolean(field.Value);
-                            break;
-                        case FieldType.DateTime:
-                            _dateTimeValues[field.FieldVersionId] = field.Value is null ? null : DateTimeOffset.Parse(field.Value, CultureInfo.InvariantCulture).ToLocalTime().DateTime;
-                            _timeSpanValues[field.FieldVersionId] = field.Value is null ? null : DateTimeOffset.Parse(field.Value, CultureInfo.InvariantCulture).ToLocalTime().TimeOfDay;
-                            break;
-                        //FieldType.GeoLocation => null, // TODO: Implement
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
+                InitializeFieldStores();
             }
         }
         catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
@@ -198,6 +188,69 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
         }
     }
 
+    private async Task FetchAssetFromAPI()
+    {
+        _apiError = false;
+
+        if (ItemId is null || ItemId == Guid.Empty)
+        {
+            return;
+        }
+
+        try
+        {
+            GetAssetByIdResponse? assetResponse = await apiClient.GetAssetByIdAsync(ItemId.Value);
+
+            if (assetResponse is not null)
+            {
+                _originalValues = _currentValues = assetResponse.ItemValues.OrderBy(x => x.OrderNumber);
+                _title = assetResponse.Title;
+                _layoutId = assetResponse.LayoutId;
+
+                InitializeFieldStores();
+            }
+        }
+        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+        {
+            logger.LogWarning("Work item with ID {WorkItemId} not found, redirecting to home", ItemId);
+            navManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error fetching work item with ID {WorkItemId}", ItemId);
+            _apiError = true;
+        }
+    }
+
+    private void InitializeFieldStores()
+    {
+        foreach (ItemValueDisplayModel field in _originalValues)
+        {
+            switch (field.ValueType)
+            {
+                case FieldType.TextField or FieldType.TextBox or FieldType.ValueList:
+                    _stringValues[field.FieldVersionId] = field.Value ?? string.Empty;
+                    break;
+                case FieldType.Integer:
+                    _integerValues[field.FieldVersionId] = field.Value is null ? null : Convert.ToInt64(field.Value);
+                    break;
+                case FieldType.Decimal:
+                    _decimalValues[field.FieldVersionId] = field.Value is null ? null : Convert.ToDouble(field.Value);
+                    break;
+                case FieldType.Boolean:
+                    _boolValues[field.FieldVersionId] = field.Value is null ? null : Convert.ToBoolean(field.Value);
+                    break;
+                case FieldType.DateTime:
+                    _dateTimeValues[field.FieldVersionId] = field.Value is null ? null : DateTimeOffset.Parse(field.Value, CultureInfo.InvariantCulture).ToLocalTime().DateTime;
+                    _timeSpanValues[field.FieldVersionId] = field.Value is null ? null : DateTimeOffset.Parse(field.Value, CultureInfo.InvariantCulture).ToLocalTime().TimeOfDay;
+                    break;
+                //FieldType.GeoLocation => null, // TODO: Implement
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+
     private async Task SendCreateRequestAsync()
     {
         if (!_editFormValid)
@@ -209,7 +262,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
         {
             _apiError = false;
 
-            if (!WorkItemQueueId.HasValue || !ItemLayoutId.HasValue)
+            if (!ItemLayoutId.HasValue)
             {
                 return;
             }
@@ -277,18 +330,35 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                 }
             }
 
-            CreateWorkItemAction request = new()
+            if (ItemType == ItemLayoutUse.WorkItems && WorkItemQueueId.HasValue)
             {
-                ActionDateTime = DateTime.Now,
-                WorkItemLayoutId = ItemLayoutId.Value,
-                WorkItemQueueId = WorkItemQueueId.Value,
-                Title = _workItemTitle,
-                FieldValues = values
-            };
+                CreateWorkItemAction request = new()
+                {
+                    ActionDateTime = DateTime.Now,
+                    WorkItemLayoutId = ItemLayoutId.Value,
+                    WorkItemQueueId = WorkItemQueueId.Value,
+                    Title = _title,
+                    FieldValues = values
+                };
 
-            await apiClient.CreateWorkItemActionAsync(request);
+                await apiClient.CreateWorkItemActionAsync(request);
 
-            navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, WorkItemQueueId.Value.ToString()));
+                navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, WorkItemQueueId.Value.ToString()));
+            }
+            else if (ItemType == ItemLayoutUse.Assets)
+            {
+                CreateAssetAction request = new()
+                {
+                    ActionDateTime = DateTime.Now,
+                    AssetLayoutId = ItemLayoutId.Value,
+                    Title = _title,
+                    FieldValues = values
+                };
+
+                AssetActionResponse resp = await apiClient.CreateAssetActionAsync(request);
+
+                navManager.NavigateTo(FrontEndUrls.Asset.VIEW_ASSET.Replace(FrontEndUrls.Asset.ASSET_ID_PLACEHOLDER, resp.AssetId.ToString()));
+            }
         }
         catch (ApiException ex)
         {
@@ -371,18 +441,36 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                 }
             }
 
-            CreateWorkItemVersionAction request = new()
+            if (ItemType == ItemLayoutUse.WorkItems)
             {
-                WorkItemId = ItemId ?? throw new BonesException("Work item ID cannot be null"),
-                WorkItemLayoutId = _layoutId,
-                ActionDateTime = DateTime.Now,
-                Title = _workItemTitle,
-                FieldValues = values
-            };
+                CreateWorkItemVersionAction request = new()
+                {
+                    WorkItemId = ItemId ?? throw new BonesException("Work item ID cannot be null"),
+                    WorkItemLayoutId = _layoutId,
+                    ActionDateTime = DateTime.Now,
+                    Title = _title,
+                    FieldValues = values
+                };
 
-            await apiClient.CreateWorkItemVersionActionAsync(request);
+                await apiClient.CreateWorkItemVersionActionAsync(request);
+            }
+            else if (ItemType == ItemLayoutUse.Assets)
+            {
+                CreateAssetVersionAction request = new()
+                {
+                    AssetId = ItemId ?? throw new BonesException("Asset ID cannot be null"),
+                    AssetLayoutId = _layoutId,
+                    ActionDateTime = DateTime.Now,
+                    Title = _title,
+                    FieldValues = values
+                };
+
+                await apiClient.CreateAssetVersionActionAsync(request);
+            }
 
             _editing = false;
+
+            navManager.Refresh();
         }
         catch (ApiException ex)
         {

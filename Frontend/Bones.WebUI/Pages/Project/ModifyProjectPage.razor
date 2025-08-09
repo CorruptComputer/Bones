@@ -53,12 +53,12 @@
             <MudTable Items="@ItemLayoutsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemLayoutsListLoading" LoadingProgressColor="Color.Info">
                 <HeaderContent>
                     <MudTh>Layout Name</MudTh>
-                    <MudTh>Enabled For</MudTh>
+                    <MudTh>Layout Use</MudTh>
                     <MudTh>Edit Layout</MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Layout Name">@context.Name</MudTd>
-                    <MudTd DataLabel="Enabled For">@context.EnabledFor</MudTd>
+                    <MudTd DataLabel="Layout Use">@context.LayoutUse</MudTd>
                     <MudTd DataLabel="Edit Layout"><MudButton Href="@GetEditItemLayoutUrl(ProjectId, context.ItemLayoutId)">Edit</MudButton></MudTd>
                 </RowTemplate>
             </MudTable>

@@ -9,7 +9,7 @@
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <PublishTrimmed>false</PublishTrimmed>
-        
+
         <!-- Assembly info -->
         <VersionPrefix>0.0.1</VersionPrefix>
         <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
@@ -46,13 +46,12 @@
         <PackageReference Include="MudBlazor" Version="8.10.0" />
         <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="8.2.4" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Core\Bones.Shared\Bones.Shared.csproj" />
         <ProjectReference Include="..\Bones.Api.Client\Bones.Api.Client.csproj" />
         <ProjectReference Include="..\Bones.WebUI.Leaflet\Bones.WebUI.Leaflet.csproj" />
         <ProjectReference Include="..\Bones.WebUI.SubtleCrypto\Bones.WebUI.SubtleCrypto.csproj" />

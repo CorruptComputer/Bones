@@ -7,23 +7,24 @@
 </div>
 
 <MudPaper Class="pa-4">
-    <!-- 
-        Thinking some quick project overview type stuff:
-          - # of open work items
-          - # of work items closed in the last X days (possibly configurable?)
-          - # of assets being tracked
-          - # of documentation items
-    -->
-    <MudText>Bleep bloop I'm some information</MudText>
-    
+    <MudText>Bleep bloop I'm some information about '@ProjectName'</MudText>
+
+    <MudText Typo="Typo.h5">Asset Dashboards</MudText>
+    <MudStack Row="true">
+        @foreach (AssetTypesListModel assetType in AssetTypes)
+        {
+            <MudButton ButtonType="ButtonType.Button" Variant="Variant.Outlined" Href="@FrontEndUrls.Asset.ASSET_LAYOUT_DASHBOARD.Replace(FrontEndUrls.Asset.ASSET_LAYOUT_ID_PLACEHOLDER, assetType.LayoutId.ToString())">@assetType.LayoutName</MudButton>
+        }
+    </MudStack>
 </MudPaper>
+
+<br />
 
 <div style="display: flex;">
     <MudText Typo="Typo.h4">Initiatives</MudText>
     <MudSpacer/>
     <MudButton Href="@FrontEndUrls.Project.CREATE_INITIATIVE.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString())">Create Initiative</MudButton>
 </div>
-
 
 <MudPaper Class="pa-4">
     <MudText>Number of initiatives: @InitiativeCount</MudText>

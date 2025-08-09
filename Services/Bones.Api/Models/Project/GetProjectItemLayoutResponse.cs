@@ -1,4 +1,4 @@
-using Bones.Shared.Backend.Enums;
+using Bones.Shared.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -21,10 +21,10 @@ public record GetProjectItemLayoutResponse
     public required string Name { get; init; }
 
     /// <summary>
-    ///   The uses this layout is applicable to
+    ///   The use this layout is applicable to
     /// </summary>
     [JsonRequired]
-    public required List<ItemLayoutUses> EnabledFor { get; init; }
+    public required ItemLayoutUse LayoutUse { get; init; }
 
     /// <summary>
     ///   The current version of this layout
