@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Bones.Database.DbConsts;
 
 namespace Bones.Database.DbSets.System;
@@ -7,16 +8,17 @@ namespace Bones.Database.DbSets.System;
 /// </summary>
 [Table(TableNames.System.SystemSettings, Schema = SchemaNames.System)]
 [PrimaryKey(nameof(Setting))]
+[Index(nameof(Setting), IsUnique = true)]
 public class SystemSetting
 {
     /// <summary>
-    ///     Internal ID for the Queue item
+    ///     ID of the setting
     /// </summary>
     public required SettingType Setting { get; init; }
 
     /// <summary>
     ///   The value for the setting.
-    ///   
+    ///
     ///   Basic data types such as ints, bools, etc, should simply be .ToString()'d
     ///   More complex types should be serialized to JSON
     /// </summary>

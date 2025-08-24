@@ -10,7 +10,6 @@ using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.System;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Shared.Exceptions;
-using GeoJSON.Text.Feature;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -95,8 +94,6 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.Properties<DateTimeOffset>().HaveConversion<DateTimeOffsetUtcConverter>();
-        configurationBuilder.Properties<Feature>().HaveConversion<GeoJsonFeatureToStringConverter>();
-        configurationBuilder.Properties<FeatureCollection>().HaveConversion<GeoJsonFeatureCollectionToStringConverter>();
         configurationBuilder.Properties<IPAddress>().HaveConversion<IPAddressToStringConverter>();
     }
 
@@ -135,6 +132,7 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
                     options.MigrationsHistoryTable("__EFMigrationsHistory", "System");
                     options.MigrationsAssembly(typeof(BonesDbContext).Assembly.FullName);
                     options.EnableRetryOnFailure();
+                    options.UseNetTopologySuite();
                 }
             );
         }

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Sdk Name="Aspire.AppHost.Sdk" Version="9.3.1" />
+    <Sdk Name="Aspire.AppHost.Sdk" Version="9.4.1" />
 
     <PropertyGroup>
         <!-- Build info -->
@@ -12,7 +12,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        
+
         <!-- Assembly info -->
         <VersionPrefix>0.0.1</VersionPrefix>
         <VersionSuffix>$(SourceRevisionId)</VersionSuffix>

@@ -1,7 +1,7 @@
 using Bones.Database.DbConsts;
 using Bones.Shared.Enums;
-using GeoJSON.Text.Feature;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NetTopologySuite.Geometries;
 
 namespace Bones.Database.DbSets.MappingManagement;
 
@@ -43,7 +43,7 @@ public class OsmObject
     /// <summary>
     ///   The geometry of this object, null if it has never been pulled
     /// </summary>
-    public Feature? OsmGeometry { get; set; }
+    public Geometry? OsmGeometry { get; set; }
 
     /// <summary>
     ///   Signals that this object has been deleted on OSM, this will disable updates to the geometry for this and freeze it at the last known version.

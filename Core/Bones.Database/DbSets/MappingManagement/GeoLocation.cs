@@ -1,7 +1,7 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.ProjectManagement;
-using GeoJSON.Text.Feature;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NetTopologySuite.Geometries;
 
 namespace Bones.Database.DbSets.MappingManagement;
 
@@ -36,7 +36,7 @@ public sealed class GeoLocation
     /// <summary>
     ///   The geometry of this object
     /// </summary>
-    public FeatureCollection? Geometry { get; set; }
+    public Geometry? Geometry { get; set; }
 
     #region OsmObject
     /// <summary>

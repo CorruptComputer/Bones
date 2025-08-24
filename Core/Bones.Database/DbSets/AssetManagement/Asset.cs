@@ -33,8 +33,8 @@ public class Asset
     ///   The current version of the generic item this work item is using
     /// </summary>
     [IgnoreDataMember]
-    public GenericItemVersion? CurrentVersion => Item.Versions
-        .FirstOrDefault(x => x.Version == Item.CurrentVersion);
+    public GenericItemVersion? CurrentVersion
+        => Item.Versions.FirstOrDefault(x => x.Version == Item.CurrentVersion);
 
     /// <summary>
     ///   Disables access to this Asset and schedules deletes for everything within,

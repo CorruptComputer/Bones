@@ -24,6 +24,10 @@ public class GetUserByEmailDb(BonesDbContext dbContext) : IRequestHandler<GetUse
     /// <inheritdoc />
     public async Task<QueryResponse<BonesUser?>> Handle(Query request, CancellationToken cancellationToken)
     {
-        return await dbContext.Users.FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+        // Warning suppressed as making this change causes the DB query to fail,
+        // EF can't handle str1.Equals(str2, StringComparison.InvariantCultureIgnoreCase)
+#pragma warning disable CA1862 // Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
+        return await dbContext.Users.FirstOrDefaultAsync(x => x.NormalizedEmail == request.Email.ToUpperInvariant(), cancellationToken);
+#pragma warning restore CA1862 // Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
     }
 }

@@ -9,6 +9,7 @@ namespace Bones.Database.DbSets.GenericItems;
 /// </summary>
 [Table(TableNames.GenericItem.GenericItems, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
+[Index(nameof(FriendlyId))]
 public class GenericItem
 {
     /// <summary>

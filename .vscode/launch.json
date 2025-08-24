@@ -5,7 +5,7 @@
             "name": "Debug Full Stack",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/Services/Bones.AppHost/Bones.AppHost.csproj",
+            "projectPath": "${workspaceFolder}/Services/Bones.AppHost/Bones.AppHost.csproj"
         }
     ]
 }

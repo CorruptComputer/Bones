@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using NetTopologySuite.Geometries;
 
 namespace Bones.Database.Migrations;
 
 [DbContext(typeof(BonesDbContext))]
-partial class BonesDbContextModelSnapshot : ModelSnapshot
+[Migration("20250824015800_AddIndexes")]
+partial class AddIndexes
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
         modelBuilder
             .HasAnnotation("ProductVersion", "9.0.8")
@@ -1490,3 +1493,4 @@ partial class BonesDbContextModelSnapshot : ModelSnapshot
             });
     }
 }
+

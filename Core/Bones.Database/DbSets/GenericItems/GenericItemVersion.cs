@@ -8,6 +8,7 @@ namespace Bones.Database.DbSets.GenericItems;
 /// </summary>
 [Table(TableNames.GenericItem.GenericItemVersions, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
+[Index(nameof(Version))]
 public class GenericItemVersion
 {
     /// <summary>

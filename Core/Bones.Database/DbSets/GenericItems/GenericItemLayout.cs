@@ -9,6 +9,7 @@ namespace Bones.Database.DbSets.GenericItems;
 /// </summary>
 [Table(TableNames.GenericItem.GenericItemLayouts, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
+[Index(nameof(FriendlyIdPrefix))]
 public class GenericItemLayout
 {
     /// <summary>
@@ -41,7 +42,7 @@ public class GenericItemLayout
     /// <summary>
     ///   The prefix at the start of a Friendly ID for items using this layout,
     ///   e.g. "BUG" for bugs or "FEAT" for feature additions. Up to 6 letters.
-    ///   
+    ///
     ///   Cannot be changed after creation.
     /// </summary>
     [MaxLength(6)]
