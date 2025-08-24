@@ -185,7 +185,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///
+    ///   Gets the initiatives in a project
     /// </summary>
     /// <param name="projectId">The ID of the project</param>
     /// <returns>The initiatives in the project.</returns>

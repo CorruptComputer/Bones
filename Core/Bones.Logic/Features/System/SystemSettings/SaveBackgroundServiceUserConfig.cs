@@ -11,7 +11,7 @@ namespace Bones.Logic.Features.System.SystemSettings;
 public class SaveBackgroundServiceUserConfig(UserManager<BonesUser> userManager, ISender sender) : IRequestHandler<SaveBackgroundServiceUserConfig.Command, CommandResponse>
 {
     /// <summary>
-    ///   
+    ///   Command to save the background service user configuration
     /// </summary>
     /// <param name="Email">Their email address</param>
     /// <param name="DisplayName"></param>

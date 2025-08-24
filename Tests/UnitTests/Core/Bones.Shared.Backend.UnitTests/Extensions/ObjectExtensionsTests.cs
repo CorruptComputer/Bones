@@ -4,12 +4,12 @@ using Bones.Testing.UnitTests.Shared;
 namespace Bones.Shared.Backend.UnitTests.Extensions;
 
 /// <summary>
-/// 
+///   Unit tests for ObjectExtensions
 /// </summary>
 public class ObjectExtensionsTests : TestBase
 {
     /// <summary>
-    /// 
+    ///   Signed integer types should be correctly identified
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -27,7 +27,7 @@ public class ObjectExtensionsTests : TestBase
     }
 
     /// <summary>
-    /// 
+    ///   Unsigned integer types should be correctly identified
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -45,7 +45,7 @@ public class ObjectExtensionsTests : TestBase
     }
 
     /// <summary>
-    /// 
+    ///   Decimal types should be correctly identified
     /// </summary>
     /// <returns></returns>
     [Fact]

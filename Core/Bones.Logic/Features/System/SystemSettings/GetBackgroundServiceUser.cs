@@ -7,7 +7,7 @@ namespace Bones.Logic.Features.System.SystemSettings;
 public class GetBackgroundServiceUser(ISender sender) : IRequestHandler<GetBackgroundServiceUser.Query, QueryResponse<BonesUser?>>
 {
     /// <summary>
-    ///   
+    ///   Query to get the background service user
     /// </summary>
     public sealed record Query : IRequest<QueryResponse<BonesUser?>>;
 

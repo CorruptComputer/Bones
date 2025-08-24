@@ -74,7 +74,7 @@ public sealed class LoginController(SignInManager<BonesUser> signInManager, ISen
     }
 
     /// <summary>
-    /// 
+    ///   Logs out the current user by deleting the authentication cookie
     /// </summary>
     /// <returns></returns>
     [HttpPost("logout", Name = "LogoutAsync")]

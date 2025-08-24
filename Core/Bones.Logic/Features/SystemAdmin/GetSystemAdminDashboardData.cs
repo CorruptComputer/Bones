@@ -6,12 +6,12 @@ namespace Bones.Logic.Features.SystemAdmin;
 public class GetSystemAdminDashboardData(ISender sender) : IRequestHandler<GetSystemAdminDashboardData.Query, QueryResponse<GetSystemAdminDashboardData.Response>>
 {
     /// <summary>
-    ///   
+    ///   Query to get system admin dashboard data
     /// </summary>
     public sealed record Query : IRequest<QueryResponse<Response>>;
 
     /// <summary>
-    /// 
+    ///   Response containing counts of various entities
     /// </summary>
     /// <param name="UserCount"></param>
     /// <param name="OrganizationCount"></param>

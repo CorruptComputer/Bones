@@ -7,7 +7,7 @@ namespace Bones.Logic.Features.System.SystemSettings;
 public class GetSmtpConfig(ISender sender) : IRequestHandler<GetSmtpConfig.Query, QueryResponse<SmtpConfig?>>
 {
     /// <summary>
-    ///   
+    ///   Query to get the SMTP configuration, or null if SMTP is disabled
     /// </summary>
     public sealed record Query : IRequest<QueryResponse<SmtpConfig?>>;
 

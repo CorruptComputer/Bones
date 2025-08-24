@@ -1,7 +1,7 @@
 namespace Bones.Api.Models.SysAdmin;
 
 /// <summary>
-///   
+///   API response for the GetSystemAdminDashboardAsync endpoint
 /// </summary>
 [JsonSerializable(typeof(GetSystemAdminDashboardResponse))]
 public record GetSystemAdminDashboardResponse

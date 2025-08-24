@@ -40,12 +40,12 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     public int? ItemFieldsCount { get; set; }
 
     /// <summary>
-    ///
+    ///   Is the item fields list still loading?
     /// </summary>
     public bool ItemFieldsListLoading { get; set; } = true;
 
     /// <summary>
-    ///
+    ///   The list of item fields on the project, received from the API
     /// </summary>
     public List<ItemFieldModel> ItemFieldsList { get; set; } = [];
 
@@ -55,12 +55,12 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
     public int? ItemLayoutsCount { get; set; }
 
     /// <summary>
-    ///
+    ///   Is the item layouts list still loading?
     /// </summary>
     public bool ItemLayoutsListLoading { get; set; } = true;
 
     /// <summary>
-    ///
+    ///   The list of item layouts on the project, received from the API
     /// </summary>
     public List<ItemLayoutModel> ItemLayoutsList { get; set; } = [];
 

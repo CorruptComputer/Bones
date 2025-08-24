@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Projects;
 public sealed class GetProjectById(ISender sender) : IRequestHandler<GetProjectById.Query, QueryResponse<Database.DbSets.ProjectManagement.Project>>
 {
     /// <summary>
-    /// 
+    ///   Query to get a project by its ID
     /// </summary>
     /// <param name="ProjectId"></param>
     /// <param name="RequestingUser"></param>

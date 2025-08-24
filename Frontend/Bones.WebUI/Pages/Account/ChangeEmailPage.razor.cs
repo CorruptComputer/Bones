@@ -3,7 +3,7 @@ using System.Net;
 namespace Bones.WebUI.Pages.Account;
 
 /// <summary>
-///   
+///   Page for changing the user's email address.
 /// </summary>
 /// <param name="apiClient"></param>
 /// <param name="navManager"></param>

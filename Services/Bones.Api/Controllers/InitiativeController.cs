@@ -55,7 +55,7 @@ public sealed class InitiativeController(ISender sender) : AuthenticatedControll
     }
 
     /// <summary>
-    ///     
+    ///   Gets the work item queues in an initiative
     /// </summary>
     /// <param name="initiativeId">The ID of the initiative</param>
     /// <returns>The work item queues in the initiative.</returns>

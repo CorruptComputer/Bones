@@ -1476,7 +1476,7 @@
         "tags": [
           "Initiative"
         ],
-        "summary": "",
+        "summary": "Gets the work item queues in an initiative",
         "operationId": "GetWorkItemQueuesInInitiativeAsync",
         "parameters": [
           {
@@ -1603,7 +1603,7 @@
         "tags": [
           "Login"
         ],
-        "summary": "",
+        "summary": "Logs out the current user by deleting the authentication cookie",
         "operationId": "LogoutAsync",
         "responses": {
           "500": {
@@ -2028,7 +2028,7 @@
         "tags": [
           "Project"
         ],
-        "summary": "",
+        "summary": "Gets the initiatives in a project",
         "operationId": "GetInitiativesInProjectAsync",
         "parameters": [
           {
@@ -4289,14 +4289,14 @@
           },
           "isRequired": {
             "type": "boolean",
-            "description": ""
+            "description": "Is the field required?"
           },
           "type": {
             "$ref": "#/components/schemas/FieldType"
           },
           "canBeNegative": {
             "type": "boolean",
-            "description": "",
+            "description": "If the field is numeric, can it be negative?",
             "nullable": true
           },
           "possibleValues": {
@@ -4304,7 +4304,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/StringValueMatchingType"
             },
-            "description": "",
+            "description": "If the field is a ValueList, the possible values",
             "nullable": true
           },
           "geoLocationType": {
@@ -4974,14 +4974,14 @@
           },
           "isRequired": {
             "type": "boolean",
-            "description": ""
+            "description": "Is the field required?"
           },
           "type": {
             "$ref": "#/components/schemas/FieldType"
           },
           "canBeNegative": {
             "type": "boolean",
-            "description": "",
+            "description": "If the field is numeric, can it be negative?",
             "nullable": true
           },
           "possibleValues": {
@@ -4989,7 +4989,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/StringValueMatchingType"
             },
-            "description": "",
+            "description": "If the field is a ValueList, the possible values",
             "nullable": true
           },
           "geoLocationType": {
@@ -5405,7 +5405,7 @@
           }
         },
         "additionalProperties": false,
-        "description": ""
+        "description": "API response for the GetSystemAdminDashboardAsync endpoint"
       },
       "GetSystemAdminMaskUserConfigResponse": {
         "required": [
@@ -5746,35 +5746,35 @@
         "properties": {
           "fieldVersionId": {
             "type": "string",
-            "description": "",
+            "description": "ID of the item field",
             "format": "uuid"
           },
           "strValue": {
             "type": "string",
-            "description": "",
+            "description": "Value of the item field, depending on the type one of these will be filled",
             "nullable": true
           },
           "intValue": {
             "type": "integer",
-            "description": "",
+            "description": "Value of the item field, depending on the type one of these will be filled",
             "format": "int64",
             "nullable": true
           },
           "decimalValue": {
             "type": "number",
-            "description": "",
+            "description": "Value of the item field, depending on the type one of these will be filled",
             "format": "double",
             "nullable": true
           },
           "dateTimeValue": {
             "type": "string",
-            "description": "",
+            "description": "Value of the item field, depending on the type one of these will be filled",
             "format": "date-time",
             "nullable": true
           },
           "boolValue": {
             "type": "boolean",
-            "description": "",
+            "description": "Value of the item field, depending on the type one of these will be filled",
             "nullable": true
           }
         },
@@ -5902,14 +5902,14 @@
           },
           "isRequired": {
             "type": "boolean",
-            "description": ""
+            "description": "Is the field required?"
           },
           "type": {
             "$ref": "#/components/schemas/FieldType"
           },
           "canBeNegative": {
             "type": "boolean",
-            "description": "",
+            "description": "If the field is numeric, can it be negative?",
             "nullable": true
           },
           "possibleValues": {
@@ -5917,7 +5917,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/StringValueMatchingType"
             },
-            "description": "",
+            "description": "If the field is a ValueList, the possible values",
             "nullable": true
           },
           "geoLocationType": {

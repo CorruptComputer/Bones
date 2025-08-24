@@ -34,34 +34,34 @@ public sealed record GetLatestItemFieldVersionResponse
     public required string Name { get; init; }
 
     /// <summary>
-    ///
+    ///   Is the field required?
     /// </summary>
     [JsonRequired]
     public required bool IsRequired { get; init; }
 
     /// <summary>
-    ///
+    ///   Type of the item field
     /// </summary>
     [JsonRequired]
     public required FieldType Type { get; init; }
 
     /// <summary>
-    ///
+    ///   If the field is numeric, can it be negative?
     /// </summary>
     public bool? CanBeNegative { get; init; }
 
     /// <summary>
-    ///
+    ///   If the field is a ValueList, the possible values
     /// </summary>
     public Dictionary<string, StringValueMatchingType>? PossibleValues { get; init; }
 
     /// <summary>
-    ///
+    ///   If the field is a GeoLocation, the type of geo location
     /// </summary>
     public GeoLocationType? GeoLocationType { get; init; }
 
     /// <summary>
-    ///
+    ///   If the field is a GeoLocation of type Address, the required address fields
     /// </summary>
     public AddressFields? RequiredAddressFields { get; init; }
 

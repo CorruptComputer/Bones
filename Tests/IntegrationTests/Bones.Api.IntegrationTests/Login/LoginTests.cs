@@ -6,7 +6,7 @@ namespace Bones.Api.IntegrationTests.Login;
 public class LoginTests : TestBase
 {
     /// <summary>
-    /// 
+    ///   Default admin should be able to login
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -29,7 +29,7 @@ public class LoginTests : TestBase
     }
 
     /// <summary>
-    /// 
+    ///   Invalid user should not be able to login
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -52,7 +52,7 @@ public class LoginTests : TestBase
     }
 
     /// <summary>
-    /// 
+    ///   Unconfirmed user should not be able to login
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -81,7 +81,7 @@ public class LoginTests : TestBase
     }
 
     /// <summary>
-    /// 
+    ///   Repeated calls to logout should not error
     /// </summary>
     /// <returns></returns>
     [Fact]

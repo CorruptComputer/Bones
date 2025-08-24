@@ -6,7 +6,7 @@ namespace Bones.Logic.Features.System.SystemSettings;
 public class GetSmtpEnabled(ISender sender) : IRequestHandler<GetSmtpEnabled.Query, QueryResponse<bool>>
 {
     /// <summary>
-    ///   
+    ///   Query to get whether SMTP is enabled
     /// </summary>
     public sealed record Query : IRequest<QueryResponse<bool>>;
 

@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Projects;
 public sealed class GetProjectsByOwner(ISender sender) : IRequestHandler<GetProjectsByOwner.Query, QueryResponse<Dictionary<Guid, string>>>
 {
     /// <summary>
-    ///
+    ///   Query to get all projects for a given owner (user or organization)
     /// </summary>
     /// <param name="OwnerType"></param>
     /// <param name="OwnerId"></param>

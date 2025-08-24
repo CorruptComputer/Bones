@@ -2546,6 +2546,9 @@ namespace Bones.Api.Client
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the work item queues in an initiative
+        /// </summary>
         /// <param name="initiativeId">The ID of the initiative</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -2762,6 +2765,9 @@ namespace Bones.Api.Client
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Logs out the current user by deleting the authentication cookie
+        /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EmptyResponse> LogoutAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
@@ -3451,6 +3457,9 @@ namespace Bones.Api.Client
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the initiatives in a project
+        /// </summary>
         /// <param name="projectId">The ID of the project</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -7086,6 +7095,9 @@ namespace Bones.Api.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Is the field required?
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
         public bool IsRequired { get; set; }
 
@@ -7094,9 +7106,15 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public FieldType Type { get; set; }
 
+        /// <summary>
+        /// If the field is numeric, can it be negative?
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
         public bool? CanBeNegative { get; set; }
 
+        /// <summary>
+        /// If the field is a ValueList, the possible values
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
         public System.Collections.Generic.Dictionary<string, StringValueMatchingType> PossibleValues { get; set; }
 
@@ -7764,6 +7782,9 @@ namespace Bones.Api.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Is the field required?
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
         public bool IsRequired { get; set; }
 
@@ -7772,9 +7793,15 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public FieldType Type { get; set; }
 
+        /// <summary>
+        /// If the field is numeric, can it be negative?
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
         public bool? CanBeNegative { get; set; }
 
+        /// <summary>
+        /// If the field is a ValueList, the possible values
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
         public System.Collections.Generic.Dictionary<string, StringValueMatchingType> PossibleValues { get; set; }
 
@@ -8201,6 +8228,9 @@ namespace Bones.Api.Client
 
     }
 
+    /// <summary>
+    /// API response for the GetSystemAdminDashboardAsync endpoint
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.5.0.0 (NJsonSchema v11.4.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial record GetSystemAdminDashboardResponse
     {
@@ -8607,22 +8637,40 @@ namespace Bones.Api.Client
     public partial record ItemValueModel
     {
 
+        /// <summary>
+        /// ID of the item field
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("fieldVersionId")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.Guid FieldVersionId { get; set; }
 
+        /// <summary>
+        /// Value of the item field, depending on the type one of these will be filled
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("strValue")]
         public string StrValue { get; set; }
 
+        /// <summary>
+        /// Value of the item field, depending on the type one of these will be filled
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("intValue")]
         public long? IntValue { get; set; }
 
+        /// <summary>
+        /// Value of the item field, depending on the type one of these will be filled
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("decimalValue")]
         public double? DecimalValue { get; set; }
 
+        /// <summary>
+        /// Value of the item field, depending on the type one of these will be filled
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("dateTimeValue")]
         public System.DateTimeOffset? DateTimeValue { get; set; }
 
+        /// <summary>
+        /// Value of the item field, depending on the type one of these will be filled
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("boolValue")]
         public bool? BoolValue { get; set; }
 
@@ -8750,6 +8798,9 @@ namespace Bones.Api.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Is the field required?
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("isRequired")]
         public bool IsRequired { get; set; }
 
@@ -8758,9 +8809,15 @@ namespace Bones.Api.Client
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public FieldType Type { get; set; }
 
+        /// <summary>
+        /// If the field is numeric, can it be negative?
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("canBeNegative")]
         public bool? CanBeNegative { get; set; }
 
+        /// <summary>
+        /// If the field is a ValueList, the possible values
+        /// </summary>
         [System.Text.Json.Serialization.JsonPropertyName("possibleValues")]
         public System.Collections.Generic.Dictionary<string, StringValueMatchingType> PossibleValues { get; set; }
 

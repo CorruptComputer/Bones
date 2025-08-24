@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Audits;
 public class GetMyAccountAudits(ISender sender) : IRequestHandler<GetMyAccountAudits.Query, QueryResponse<List<AccountAudit>>>
 {
     /// <summary>
-    ///     
+    ///   Query to get all audits for the current user's account
     /// </summary>
     /// <param name="RequestingUser"></param>
     public record Query(BonesUser RequestingUser) : IRequest<QueryResponse<List<AccountAudit>>>;

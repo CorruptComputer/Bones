@@ -7,7 +7,7 @@ namespace Bones.Logic.Features.System.SystemSettings;
 public class SaveWebUiBaseUrl(ISender sender) : IRequestHandler<SaveWebUiBaseUrl.Command, CommandResponse>
 {
     /// <summary>
-    ///   
+    ///   Command to save the base URL for the web UI
     /// </summary>
     /// <param name="Url"></param>
     /// <param name="Reason"></param>

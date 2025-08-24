@@ -6,7 +6,7 @@ using Bones.WebUI.Services.Singleton;
 namespace Bones.WebUI.Pages.Account;
 
 /// <summary>
-///   
+///   Page for changing the user's password.
 /// </summary>
 /// <param name="apiClient"></param>
 /// <param name="navManager"></param>

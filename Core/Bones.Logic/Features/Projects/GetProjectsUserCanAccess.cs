@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Projects;
 public sealed class GetProjectsUserCanAccess(ISender sender) : IRequestHandler<GetProjectsUserCanAccess.Query, QueryResponse<Dictionary<Guid, string>>>
 {
     /// <summary>
-    ///
+    ///   Query to get all projects a user can access
     /// </summary>
     /// <param name="RequestingUser"></param>
     public sealed record Query(BonesUser RequestingUser) : IRequest<QueryResponse<Dictionary<Guid, string>>>;

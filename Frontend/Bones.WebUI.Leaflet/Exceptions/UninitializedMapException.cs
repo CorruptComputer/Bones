@@ -9,7 +9,7 @@ namespace Bones.WebUI.Leaflet.Exceptions;
 public class UninitializedMapException : BonesException
 {
     /// <summary>
-    ///   
+    ///   ctor for UninitializedMapException
     /// </summary>
     /// <param name="message"></param>
     /// <param name="offendingMethod"></param>

@@ -7,7 +7,7 @@ namespace Bones.Logic.Features.System.SystemSettings;
 public class GetSystemAdminMaskUser(ISender sender) : IRequestHandler<GetSystemAdminMaskUser.Query, QueryResponse<BonesUser?>>
 {
     /// <summary>
-    ///   
+    ///   Query to get the system admin mask user
     /// </summary>
     public sealed record Query : IRequest<QueryResponse<BonesUser?>>;
 

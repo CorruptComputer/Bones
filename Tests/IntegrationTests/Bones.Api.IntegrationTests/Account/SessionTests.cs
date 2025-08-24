@@ -5,7 +5,7 @@ namespace Bones.Api.IntegrationTests.Account;
 public class SessionTests : TestBase
 {
     /// <summary>
-    /// 
+    ///   Default admin should be able to start a session
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -28,7 +28,7 @@ public class SessionTests : TestBase
     }
 
     /// <summary>
-    /// 
+    ///   Unauthenticated users should not be able to start a session
     /// </summary>
     /// <returns></returns>
     [Fact]
@@ -46,7 +46,7 @@ public class SessionTests : TestBase
     }
 
     /// <summary>
-    /// 
+    ///   Providing an invalid session ID should return 404
     /// </summary>
     /// <returns></returns>
     [Fact]

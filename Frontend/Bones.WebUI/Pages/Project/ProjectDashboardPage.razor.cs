@@ -22,17 +22,17 @@ public partial class ProjectDashboardPage(BonesApiClient ApiClient) : ComponentB
     public int? InitiativeCount { get; set; }
 
     /// <summary>
-    ///
+    ///   Is the initiative list still loading?
     /// </summary>
     public bool InitiativeListLoading { get; set; } = true;
 
     /// <summary>
-    ///
+    ///   The list of initiatives on the project, received from the API
     /// </summary>
     public List<InitiativeListModel> InitiativeList { get; set; } = [];
 
     /// <summary>
-    ///
+    ///   The list of asset types on the project, received from the API
     /// </summary>
     public List<AssetTypesListModel> AssetTypes { get; set; } = [];
 

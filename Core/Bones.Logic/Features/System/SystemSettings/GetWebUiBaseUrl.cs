@@ -6,7 +6,7 @@ namespace Bones.Logic.Features.System.SystemSettings;
 public class GetWebUiBaseUrl(ISender sender) : IRequestHandler<GetWebUiBaseUrl.Query, QueryResponse<string>>
 {
     /// <summary>
-    ///   
+    ///   Query to get the base URL for the web UI
     /// </summary>
     public sealed record Query : IRequest<QueryResponse<string>>;
 
