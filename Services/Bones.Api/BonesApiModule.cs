@@ -19,7 +19,7 @@ public class BonesApiModule(List<Assembly> additionalQuestyAssemblies) : Module
         additionalQuestyAssemblies.Add(ThisAssembly);
 
         QuestyConfigurationBuilder questyConfig = QuestyConfigurationBuilder
-            .Create(additionalQuestyAssemblies.ToArray())
+            .Create([.. additionalQuestyAssemblies])
             .WithAllOpenGenericHandlerTypesRegistered()
             .WithCustomPipelineBehaviors([
                 typeof(CommandBehavior<>),

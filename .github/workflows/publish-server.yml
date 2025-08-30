@@ -13,6 +13,8 @@ jobs:
   server:
     name: Publish Server
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       BonesBackendConfiguration__UseInMemoryDb: true
       ASPNETCORE_ENVIRONMENT: "Development"
@@ -49,4 +51,3 @@ jobs:
         with:
           name: 'Server RPM build.zip'
           path: ./publish/*.linux-x64.rpm
-          

@@ -54,7 +54,7 @@ public class AddConfirmationEmailToQueueDbTests : TestBase
     }
 
     /// <summary>
-    ///   Checks that the handler stops this.
+    ///   Checks that the handler allows this.
     /// </summary>
     [Fact]
     public async Task ValidRequest_ShouldPass()

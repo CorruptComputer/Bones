@@ -12,7 +12,6 @@ namespace Bones.Database.UnitTests.Operations.AccountManagement;
 /// </summary>
 public class GetBonesUserSessionDbTests : TestBase
 {
-    private readonly GetBonesUserSessionDb.Validator _validator = new();
     private readonly IPAddress _testIp = IPAddress.Parse("127.0.0.1");
 
     /// <summary>
@@ -22,10 +21,11 @@ public class GetBonesUserSessionDbTests : TestBase
     [Fact]
     public async Task Validator_ShouldStopInvalidInputs()
     {
-        GetBonesUserSessionDb.Query emptyIdQuery = new(Guid.Empty, IPAddress.IPv6Loopback);
-        TestValidationResult<GetBonesUserSessionDb.Query> emptyIdResult = await _validator.TestValidateAsync(emptyIdQuery);
+        QueryResponse<BonesUserSession?> result = await Sender.Send(new GetBonesUserSessionDb.Query(Guid.Empty, IPAddress.IPv6Loopback));
 
-        emptyIdResult.ShouldHaveValidationErrorFor(nameof(GetBonesUserSessionDb.Query.SessionId));
+        result.Success.ShouldBeFalse();
+        result.FailureReasons.ShouldContainKey("SessionId");
+        result.FailureReasons["SessionId"].ShouldNotBeNull();
     }
 
     /// <summary>

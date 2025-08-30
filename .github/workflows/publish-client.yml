@@ -13,6 +13,8 @@ jobs:
   client:
     name: Publish Client
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       BonesBackendConfiguration__UseInMemoryDb: true
       ASPNETCORE_ENVIRONMENT: "Development"

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Bones.Database.Operations.System;
 using Bones.Shared.Backend.Models;
+using FluentValidation;
 
 namespace Bones.Testing.UnitTests.Shared;
 
@@ -49,6 +50,7 @@ internal static class TestFactory
         };
 
         hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
         hostBuilder.ConfigureServices((context, services) =>
         {
             services.AddSerilog((serviceProvider, loggerConfig) =>
@@ -56,10 +58,11 @@ internal static class TestFactory
                     .ReadFrom.Services(serviceProvider)
             );
 
+            services.AddValidatorsFromAssemblyContaining(typeof(BonesBackendModule), includeInternalTypes: true);
+            services.AddValidatorsFromAssemblyContaining(typeof(BonesDatabaseModule), includeInternalTypes: true);
+
             hostBuilder.ConfigureContainer<ContainerBuilder>((containerCtx, containerBuilder) =>
             {
-                containerBuilder.RegisterModule(new BonesBackendModule(services));
-                containerBuilder.RegisterModule(new BonesDatabaseModule(services));
                 containerBuilder.RegisterModule(new UnitTestModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
             });
 

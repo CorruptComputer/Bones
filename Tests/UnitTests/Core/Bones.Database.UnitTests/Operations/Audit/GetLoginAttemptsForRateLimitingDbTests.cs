@@ -9,7 +9,6 @@ namespace Bones.Database.UnitTests.Operations.Audit;
 /// </summary>
 public class GetLoginAttemptsForRateLimitingDbTests : TestBase
 {
-    private readonly GetLoginAttemptsForRateLimitingDb.Validator _validator = new();
     private readonly IPAddress _testIp = IPAddress.Parse("127.0.0.1");
 
     /// <summary>
@@ -18,9 +17,11 @@ public class GetLoginAttemptsForRateLimitingDbTests : TestBase
     [Fact]
     public async Task Validator_ShouldStopInvalidInputs()
     {
-        GetLoginAttemptsForRateLimitingDb.Query nullIpQuery = new(null!, DateTimeOffset.UtcNow);
-        TestValidationResult<GetLoginAttemptsForRateLimitingDb.Query> nullIpResult = await _validator.TestValidateAsync(nullIpQuery);
-        nullIpResult.ShouldHaveValidationErrorFor(x => x.RequestingIp);
+        QueryResponse<int> result = await Sender.Send(new GetLoginAttemptsForRateLimitingDb.Query(null!, DateTimeOffset.UtcNow));
+
+        result.Success.ShouldBeFalse();
+        result.FailureReasons.ShouldContainKey("RequestingIp");
+        result.FailureReasons["RequestingIp"].ShouldNotBeNull();
     }
 
     /// <summary>
@@ -31,9 +32,6 @@ public class GetLoginAttemptsForRateLimitingDbTests : TestBase
     {
         DateTimeOffset cutoffTime = DateTimeOffset.UtcNow.AddMinutes(-10);
         GetLoginAttemptsForRateLimitingDb.Query query = new(_testIp, cutoffTime);
-
-        TestValidationResult<GetLoginAttemptsForRateLimitingDb.Query> validationResult = await _validator.TestValidateAsync(query);
-        validationResult.ShouldNotHaveAnyValidationErrors();
 
         QueryResponse<int> response = await Sender.Send(query);
         response.Success.ShouldBeTrue();

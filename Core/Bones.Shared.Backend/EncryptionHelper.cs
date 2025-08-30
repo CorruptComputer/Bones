@@ -9,7 +9,7 @@ namespace Bones.Shared.Backend;
 public static class EncryptionHelper
 {
     /// <summary>
-    ///   Generates a new AES-256 encryption key 
+    ///   Generates a new AES-256 encryption key
     /// </summary>
     /// <returns></returns>
     public static string GenerateAESKey()
@@ -21,7 +21,7 @@ public static class EncryptionHelper
             rng.GetBytes(key);
         }
 
-        return Convert.ToBase64String(key);
+        return Convert.ToBase64String(key); // Return as Base64 string for easier storage/transmission, should be 44 characters long
     }
 
     /// <summary>

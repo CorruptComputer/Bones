@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace Bones.Shared.Backend.Models;
@@ -22,10 +23,12 @@ public sealed record CommandResponse : BonesResponseBase
     /// <param name="idFor"></param>
     /// <param name="id"></param>
     /// <returns></returns>
-    public static CommandResponse Pass(string? idFor = null, Guid? id = null) => new()
+    public static CommandResponse Pass([NotNullIfNotNull(nameof(id))] string? idFor = null, Guid? id = null) => new()
     {
         Success = true,
-        Ids = id is not null && idFor is not null ? new Dictionary<string, Guid> { { idFor, id.Value } } : []
+        Ids = id is not null && idFor is not null
+            ? new Dictionary<string, Guid> { { idFor, id.Value } }
+            : []
     };
 
     /// <summary>
