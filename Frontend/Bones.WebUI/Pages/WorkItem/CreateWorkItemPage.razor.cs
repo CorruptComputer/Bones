@@ -213,7 +213,7 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
             return;
         }
 
-        List<GetProjectLayoutsResponse>? resp = await apiClient.Project[SelectedProject.Value].Layouts.GetAsync(req => req.QueryParameters.LayoutUseAsItemLayoutUse = ItemLayoutUse.WorkItems);
+        List<GetProjectLayoutsResponse>? resp = await apiClient.Project[SelectedProject.Value].Layouts.GetAsync(req => req.QueryParameters.LayoutUse = ItemLayoutUse.WorkItems);
         if (resp is null)
         {
             return;

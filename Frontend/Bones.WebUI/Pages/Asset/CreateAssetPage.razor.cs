@@ -129,7 +129,7 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
 
     private async Task GetAssetLayouts(Guid selectedProject)
     {
-        List<GetProjectLayoutsResponse>? resp = await apiClient.Project[selectedProject].Layouts.GetAsync(req => req.QueryParameters.LayoutUseAsItemLayoutUse = ItemLayoutUse.Assets);
+        List<GetProjectLayoutsResponse>? resp = await apiClient.Project[selectedProject].Layouts.GetAsync(req => req.QueryParameters.LayoutUse = ItemLayoutUse.Assets);
 
         if (resp is null)
         {

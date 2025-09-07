@@ -45,7 +45,7 @@ namespace Bones.Api.Client.AutoGen.Project.Projects.ByOwner
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 401 status code</exception>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 403 status code</exception>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 500 status code</exception>
-        public async Task<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerGetResponse?> GetAsByOwnerGetResponseAsync(global::Bones.Api.Client.AutoGen.Models.GetProjectsByOwnerRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
+        public async Task<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerGetResponse?> GetAsync(global::Bones.Api.Client.AutoGen.Models.GetProjectsByOwnerRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
             _ = body ?? throw new ArgumentNullException(nameof(body));
             var requestInfo = ToGetRequestInformation(body, requestConfiguration);
@@ -57,31 +57,6 @@ namespace Bones.Api.Client.AutoGen.Project.Projects.ByOwner
                 { "500", global::Bones.Api.Client.AutoGen.Models.ErrorResponse.CreateFromDiscriminatorValue },
             };
             return await RequestAdapter.SendAsync<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerGetResponse>(requestInfo, global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerGetResponse.CreateFromDiscriminatorValue, errorMapping, cancellationToken).ConfigureAwait(false);
-        }
-        /// <summary>
-        /// Gets the projects for the current user, or specified organization
-        /// </summary>
-        /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerResponse"/></returns>
-        /// <param name="body">Request to get the projects for a given User/Organization</param>
-        /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
-        /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
-        /// <exception cref="global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwner400Error">When receiving a 400 status code</exception>
-        /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 401 status code</exception>
-        /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 403 status code</exception>
-        /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 500 status code</exception>
-        [Obsolete("This method is obsolete. Use GetAsByOwnerGetResponseAsync instead.")]
-        public async Task<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerResponse?> GetAsync(global::Bones.Api.Client.AutoGen.Models.GetProjectsByOwnerRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
-        {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
-            var requestInfo = ToGetRequestInformation(body, requestConfiguration);
-            var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
-            {
-                { "400", global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwner400Error.CreateFromDiscriminatorValue },
-                { "401", global::Bones.Api.Client.AutoGen.Models.ErrorResponse.CreateFromDiscriminatorValue },
-                { "403", global::Bones.Api.Client.AutoGen.Models.ErrorResponse.CreateFromDiscriminatorValue },
-                { "500", global::Bones.Api.Client.AutoGen.Models.ErrorResponse.CreateFromDiscriminatorValue },
-            };
-            return await RequestAdapter.SendAsync<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerResponse>(requestInfo, global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerResponse.CreateFromDiscriminatorValue, errorMapping, cancellationToken).ConfigureAwait(false);
         }
         /// <summary>
         /// Gets the projects for the current user, or specified organization
@@ -106,14 +81,6 @@ namespace Bones.Api.Client.AutoGen.Project.Projects.ByOwner
         public global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerRequestBuilder WithUrl(string rawUrl)
         {
             return new global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerRequestBuilder(rawUrl, RequestAdapter);
-        }
-        /// <summary>
-        /// Configuration for the request such as headers, query parameters, and middleware options.
-        /// </summary>
-        [Obsolete("This class is deprecated. Please use the generic RequestConfiguration class generated by the generator.")]
-        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
-        public partial class ByOwnerRequestBuilderGetRequestConfiguration : RequestConfiguration<DefaultQueryParameters>
-        {
         }
     }
 }

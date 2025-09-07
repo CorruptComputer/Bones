@@ -40,7 +40,7 @@
 
     <Target Name="GenerateApiClient" BeforeTargets="BeforeBuild" Condition="$(Configuration) == 'Debug'">
         <Message Text="Generating API Client" Importance="High" />
-        <Exec Command="./requesty-bin/requesty generate --openapi ../../../Bones/Services/Bones.Api/OpenApi/swagger.json --output ./AutoGen --class-name AutoGenBonesApiClient --namespace-name Bones.Api.Client.AutoGen" />
+        <Exec Command="./requesty-bin/requesty generate --openapi ../../../Bones/Services/Bones.Api/OpenApi/swagger.json --output ./AutoGen --class-name AutoGenBonesApiClient --namespace-name Bones.Api.Client.AutoGen --clean-output" />
     </Target>
 
     <ItemGroup>
