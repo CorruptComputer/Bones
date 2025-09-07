@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.GenericItems;
 
 /// <summary>
-///     Model for the GenericItems.GenericItemFields table
+///   Model for the GenericItems.GenericItemFields table
 /// </summary>
 [Table(TableNames.GenericItem.GenericItemFields, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
 public class GenericItemField
 {
     /// <summary>
-    ///     Internal ID for the ItemField
+    ///   Internal ID for the ItemField
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

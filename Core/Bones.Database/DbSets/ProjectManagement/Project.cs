@@ -1,20 +1,20 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.ProjectManagement;
 
 /// <summary>
-///     Model for the ProjectManagement.Projects table
+///   Model for the ProjectManagement.Projects table
 /// </summary>
 [Table(TableNames.ProjectManagement.Projects, Schema = SchemaNames.ProjectManagement)]
 [PrimaryKey(nameof(Id))]
 public class Project
 {
     /// <summary>
-    ///     Internal ID for the Tag
+    ///   Internal ID for the Tag
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

@@ -5,7 +5,7 @@ using Bones.Database.Operations.OrganizationManagement;
 using Bones.Database.Operations.ProjectManagement.Initiatives;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Logic.Features.Initiatives;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.WorkItems.Queue;
@@ -14,7 +14,7 @@ namespace Bones.Logic.Features.WorkItems.Queue;
 public sealed class CreateWorkItemQueue(ISender sender) : IRequestHandler<CreateWorkItemQueue.Command, CommandResponse>
 {
     /// <summary>
-    ///     Command for creating a Queue.
+    ///   Command for creating a Queue.
     /// </summary>
     /// <param name="Name">Name of the queue</param>
     /// <param name="InitiativeId">Internal ID of the initiative</param>

@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -36,7 +36,7 @@ public record CreateItemFieldRequest
     /// <summary>
     ///   If the Type of this field is a ValueList, the possible values this can have
     /// </summary>
-    public Dictionary<string, StringValueMatchingType>? PossibleValues { get; init; }
+    public List<KeyValuePair<string, StringValueMatchingType>>? PossibleValues { get; init; }
 
     /// <summary>
     ///   If the Type of this field is a GeoLocation, the type of GeoLocation this is
@@ -50,6 +50,6 @@ public record CreateItemFieldRequest
 
     internal CreateItemField.Command ToInternal(Guid projectId, BonesUser user)
     {
-        return new(projectId, Name, IsRequired, Type, CanBeNegative, PossibleValues, GeoLocationType, RequiredAddressFields, user);
+        return new(projectId, Name, IsRequired, Type, CanBeNegative, PossibleValues?.ToDictionary(), GeoLocationType, RequiredAddressFields, user);
     }
 }

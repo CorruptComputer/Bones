@@ -1,6 +1,6 @@
 using System.Data;
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.GenericItem;
@@ -9,7 +9,7 @@ namespace Bones.Database.Operations.GenericItem;
 public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IRequestHandler<CreateItemFieldVersionDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a new item field version
+    ///   DB Command for creating a new item field version
     /// </summary>
     /// <param name="ItemFieldId">Internal ID of the item field</param>
     /// <param name="Name"></param>

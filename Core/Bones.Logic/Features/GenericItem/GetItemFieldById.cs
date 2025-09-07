@@ -10,7 +10,7 @@ namespace Bones.Logic.Features.GenericItem;
 public sealed class GetItemFieldById(ISender sender) : IRequestHandler<GetItemFieldById.Query, QueryResponse<GenericItemField?>>
 {
     /// <summary>
-    ///     Query for getting an item field by its internal ID
+    ///   Query for getting an item field by its internal ID
     /// </summary>
     /// <param name="ItemFieldId">Internal ID of the item field</param>
     /// <param name="RequestingUser">The user requesting this</param>

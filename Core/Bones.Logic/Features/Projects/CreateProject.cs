@@ -11,7 +11,7 @@ namespace Bones.Logic.Features.Projects;
 public sealed class CreateProject(ISender sender) : IRequestHandler<CreateProject.Command, CommandResponse>
 {
     /// <summary>
-    ///     Command for creating a Project.
+    ///   Command for creating a Project.
     /// </summary>
     /// <param name="Name">Name of the project</param>
     /// <param name="RequestingUser">The user requesting this project be created</param>

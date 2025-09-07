@@ -7,7 +7,7 @@ namespace Bones.Database.Operations.GenericItem;
 public sealed class GetItemFieldByIdDb(BonesDbContext dbContext) : IRequestHandler<GetItemFieldByIdDb.Query, QueryResponse<GenericItemField?>>
 {
     /// <summary>
-    ///     DB Query for getting an item field by its ID
+    ///   DB Query for getting an item field by its ID
     /// </summary>
     /// <param name="ItemFieldId">Internal ID of the item field</param>
     public record Query(Guid ItemFieldId) : IRequest<QueryResponse<GenericItemField?>>;

@@ -13,14 +13,14 @@ using Bones.Database.Operations.System;
 namespace Bones.Api;
 
 /// <summary>
-///     Should be self-explanatory as to what this is.
+///   Should be self-explanatory as to what this is.
 /// </summary>
 public static class Program
 {
     private static BonesBackendConfiguration? config = null;
 
     /// <summary>
-    ///     The main character of the project.
+    ///   The main character of the project.
     /// </summary>
     /// <param name="args">Arg, I'm a pirate.</param>
     public static async Task Main(string[] args)

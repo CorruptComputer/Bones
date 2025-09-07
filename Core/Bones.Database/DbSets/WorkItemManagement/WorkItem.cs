@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.WorkItemManagement;
 
 /// <summary>
-///     Model for the WorkItemManagement.WorkItems table
+///   Model for the WorkItemManagement.WorkItems table
 /// </summary>
 [Table(TableNames.WorkItemManagement.WorkItems, Schema = SchemaNames.WorkItemManagement)]
 [PrimaryKey(nameof(Id))]

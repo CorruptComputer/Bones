@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.GenericItem;
@@ -14,7 +14,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
     /// <param name="Name"></param>
     /// <param name="LayoutUse"></param>
     /// <param name="FieldVersions"></param>
-    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUse LayoutUse, Dictionary<uint, Guid> FieldVersions) : IRequest<CommandResponse>;
+    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUse LayoutUse, Dictionary<int, Guid> FieldVersions) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>
@@ -29,7 +29,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
                 .Must(x => x.All(f => f.Value != Guid.Empty)).WithMessage("Field version IDs cannot be empty")
                 .Must(x =>
                 {
-                    IEnumerable<IGrouping<Guid, KeyValuePair<uint, Guid>>> g = x.GroupBy(f => f.Value);
+                    IEnumerable<IGrouping<Guid, KeyValuePair<int, Guid>>> g = x.GroupBy(f => f.Value);
                     if (!g.All(f => f.Count() == 1))
                     {
                         return false;
@@ -42,7 +42,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
                 .Must(x => x.All(f => f.Key < x.Count)).WithMessage("Field version order numbers must be within range")
                 .Must(x =>
                 {
-                    IEnumerable<IGrouping<uint, KeyValuePair<uint, Guid>>> g = x.GroupBy(f => f.Key);
+                    IEnumerable<IGrouping<int, KeyValuePair<int, Guid>>> g = x.GroupBy(f => f.Key);
                     if (!g.All(f => f.Count() == 1))
                     {
                         return false;

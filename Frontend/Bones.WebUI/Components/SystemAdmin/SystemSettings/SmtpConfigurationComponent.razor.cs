@@ -32,7 +32,13 @@ public partial class SmtpConfigurationComponent(BonesApiClient apiClient) : Comp
 
         try
         {
-            GetSmtpConfigResponse smtpConfig = await apiClient.GetSmtpConfigAsync();
+            GetSmtpConfigResponse? smtpConfig = await apiClient.SysAdmin.Settings.SmtpConfig.GetAsync();
+
+            if (smtpConfig is null)
+            {
+                ApiError = true;
+                return;
+            }
 
             Model = new()
             {
@@ -58,17 +64,17 @@ public partial class SmtpConfigurationComponent(BonesApiClient apiClient) : Comp
 
         try
         {
-            await apiClient.SaveSmtpConfigAsync(new()
+            await apiClient.SysAdmin.Settings.SmtpConfig.PostAsync(new()
             {
                 IsEnabled = Model.IsEnabled,
-                Server = Model.Server,
+                Server = Model.Server ?? string.Empty,
                 Port = ushort.Parse(Model.Port ?? "25"),
                 UseSsl = Model.UseSsl,
-                Username = Model.Username,
-                Password = Model.Password,
-                FromAddress = Model.FromAddress,
-                FromName = Model.FromName,
-                ChangeReason = Model.ChangeReason
+                Username = Model.Username ?? string.Empty,
+                Password = Model.Password ?? string.Empty,
+                FromAddress = Model.FromAddress ?? string.Empty,
+                FromName = Model.FromName ?? string.Empty,
+                ChangeReason = Model.ChangeReason ?? string.Empty
             });
         }
         catch

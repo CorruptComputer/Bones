@@ -10,7 +10,7 @@ namespace Bones.Logic.Features.GenericItem;
 public sealed class GetItemLayoutById(ISender sender) : IRequestHandler<GetItemLayoutById.Query, QueryResponse<GenericItemLayout?>>
 {
     /// <summary>
-    ///     Query for getting an item layout by its internal ID
+    ///   Query for getting an item layout by its internal ID
     /// </summary>
     /// <param name="ItemLayoutId">Internal ID of the item layout</param>
     /// <param name="RequestingUser">The user requesting this</param>

@@ -7,7 +7,7 @@ namespace Bones.Database.Operations.Audit;
 public class AddAccountAuditDb(BonesDbContext dbContext) : IRequestHandler<AddAccountAuditDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a new account audit entry
+    ///   DB Command for creating a new account audit entry
     /// </summary>
     /// <param name="Account">The account which was acted upon</param>
     /// <param name="ActionTaken"></param>

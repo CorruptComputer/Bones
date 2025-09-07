@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.ProjectManagement.Projects;
 public sealed class UpdateProjectByIdDb(BonesDbContext dbContext) : IRequestHandler<UpdateProjectByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for updating a Project.
+    ///   DB Command for updating a Project.
     /// </summary>
     /// <param name="ProjectId">Internal ID of the project</param>
     /// <param name="Name">The new name of the project</param>

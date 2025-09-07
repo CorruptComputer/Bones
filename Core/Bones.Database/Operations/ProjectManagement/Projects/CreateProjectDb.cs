@@ -1,7 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.ProjectManagement.Projects;
@@ -10,7 +10,7 @@ namespace Bones.Database.Operations.ProjectManagement.Projects;
 public sealed class CreateProjectDb(BonesDbContext dbContext) : IRequestHandler<CreateProjectDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a Project.
+    ///   DB Command for creating a Project.
     /// </summary>
     /// <param name="Name">Name of the project</param>
     /// <param name="RequestingUser">The user requesting this projects creation</param>

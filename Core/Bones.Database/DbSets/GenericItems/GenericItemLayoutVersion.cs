@@ -1,18 +1,18 @@
 using Bones.Database.DbConsts;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;
 
 /// <summary>
-///     Model for the GenericItems.GenericItemLayoutVersions table
+///   Model for the GenericItems.GenericItemLayoutVersions table
 /// </summary>
 [Table(TableNames.GenericItem.GenericItemLayoutVersions, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
 public class GenericItemLayoutVersion
 {
     /// <summary>
-    ///     Internal ID for the ItemLayoutVersion
+    ///   Internal ID for the ItemLayoutVersion
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; init; }

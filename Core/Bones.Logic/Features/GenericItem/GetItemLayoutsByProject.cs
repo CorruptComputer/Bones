@@ -10,7 +10,7 @@ namespace Bones.Logic.Features.GenericItem;
 public sealed class GetItemLayoutsByProject(ISender sender) : IRequestHandler<GetItemLayoutsByProject.Query, QueryResponse<List<GenericItemLayout>>>
 {
     /// <summary>
-    ///     Query for getting the item layouts in a project
+    ///   Query for getting the item layouts in a project
     /// </summary>
     /// <param name="ProjectId">Internal ID of the project</param>
     /// <param name="RequestingUser">The user requesting this</param>

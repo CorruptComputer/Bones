@@ -6,14 +6,14 @@ using NetTopologySuite.Geometries;
 namespace Bones.Database.DbSets.MappingManagement;
 
 /// <summary>
-///     Model for the MappingManagement.GeoLocations table
+///   Model for the MappingManagement.GeoLocations table
 /// </summary>
 [Table(TableNames.MappingManagement.GeoLocations, Schema = SchemaNames.MappingManagement)]
 [PrimaryKey(nameof(Id))]
 public sealed class GeoLocation
 {
     /// <summary>
-    ///     Internal ID for the GeoLocation
+    ///   Internal ID for the GeoLocation
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

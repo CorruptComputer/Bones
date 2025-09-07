@@ -7,7 +7,7 @@ namespace Bones.Database.Operations.ProjectManagement.Initiatives;
 public sealed class CreateInitiativeDb(BonesDbContext dbContext) : IRequestHandler<CreateInitiativeDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating an Initiative.
+    ///   DB Command for creating an Initiative.
     /// </summary>
     /// <param name="Name">Name of the initiative</param>
     /// <param name="ProjectId">Internal ID of the project</param>

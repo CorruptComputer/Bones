@@ -17,7 +17,7 @@ public class QueueForgotPasswordEmailTests : TestBase
     private readonly QueueForgotPasswordEmail.Validator _validator = new();
 
     /// <summary>
-    ///     Makes sure this works
+    ///   Makes sure this works
     /// </summary>
     [Fact]
     public async Task QueueForgotPasswordEmail_ShouldPassForValidUserEmail()
@@ -44,7 +44,7 @@ public class QueueForgotPasswordEmailTests : TestBase
     }
 
     /// <summary>
-    ///     Makes sure we aren't returning any sort of error if no users exist with that email
+    ///   Makes sure we aren't returning any sort of error if no users exist with that email
     /// </summary>
     [Fact]
     public async Task QueueForgotPasswordEmail_ShouldPassForUnknownUserEmail()
@@ -57,7 +57,7 @@ public class QueueForgotPasswordEmailTests : TestBase
     }
 
     /// <summary>
-    ///     Make sure the validator is validating the requests
+    ///   Make sure the validator is validating the requests
     /// </summary>
     [Theory]
     [InlineData(null)]

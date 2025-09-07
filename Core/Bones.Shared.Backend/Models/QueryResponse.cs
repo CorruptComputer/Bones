@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Bones.Shared.Backend.Models;
 
 /// <summary>
-///     Result from a query.
+///   Result from a query.
 /// </summary>
 /// <typeparam name="TResult"></typeparam>
 [Serializable]
@@ -15,7 +15,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     private QueryResponse() { }
 
     /// <summary>
-    ///     If the query was successful, this should have some data in it.
+    ///   If the query was successful, this should have some data in it.
     /// </summary>
     public TResult? Result { get; init; }
 
@@ -70,7 +70,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     };
 
     /// <summary>
-    ///     Translates a QueryResponse&lt;TResult&gt; into a TResult?
+    ///   Translates a QueryResponse&lt;TResult&gt; into a TResult?
     /// </summary>
     /// <param name="response">The QueryResponse&lt;TResult&gt;</param>
     /// <returns>The newly translated TResult?</returns>
@@ -85,7 +85,7 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     }
 
     /// <summary>
-    ///     Translates a TResult? into a QueryResponse&lt;TResult&gt;
+    ///   Translates a TResult? into a QueryResponse&lt;TResult&gt;
     /// </summary>
     /// <param name="result">The TResult? you want to translate</param>
     /// <returns>The newly translated QueryResponse&lt;TResult&gt;</returns>

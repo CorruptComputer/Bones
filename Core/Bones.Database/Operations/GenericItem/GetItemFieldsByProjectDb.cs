@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.GenericItem;
 public sealed class GetItemFieldsByProjectDb(BonesDbContext dbContext) : IRequestHandler<GetItemFieldsByProjectDb.Query, QueryResponse<List<GenericItemField>>>
 {
     /// <summary>
-    ///     DB Query for getting the item fields in a project
+    ///   DB Query for getting the item fields in a project
     /// </summary>
     /// <param name="ProjectId">Internal ID of the project</param>
     public record Query(Guid ProjectId) : IRequest<QueryResponse<List<GenericItemField>>>;

@@ -20,11 +20,11 @@ public abstract class TestBase
         {
             (string email, string password) = TestCredentials.Credentials[user];
 
-            await ApiClient.LoginAsync(new()
+            await ApiClient.Login.Login.PostAsync(new()
             {
                 Email = email,
                 Password = password
-            }, cancellationToken);
+            }, cancellationToken: cancellationToken);
         }
         else
         {
@@ -36,7 +36,7 @@ public abstract class TestBase
     {
         if (ApiClient is not null)
         {
-            await ApiClient.LogoutAsync(cancellationToken);
+            await ApiClient.Login.Logout.PostAsync(cancellationToken: cancellationToken);
         }
         else
         {

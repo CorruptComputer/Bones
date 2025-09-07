@@ -3,14 +3,14 @@ using Bones.Database.DbConsts;
 namespace Bones.Database.DbSets.System;
 
 /// <summary>
-///     Model for the System.TaskErrors table
+///   Model for the System.TaskErrors table
 /// </summary>
 [Table(TableNames.System.TaskErrors, Schema = SchemaNames.System)]
 [PrimaryKey(nameof(Id))]
 public class TaskError
 {
     /// <summary>
-    ///     Internal ID for the Task Error
+    ///   Internal ID for the Task Error
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

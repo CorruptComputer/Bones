@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Audits;
 public class AddAccountAudit(ISender sender) : IRequestHandler<AddAccountAudit.Command, CommandResponse>
 {
     /// <summary>
-    ///     Command for creating a new account audit entry
+    ///   Command for creating a new account audit entry
     /// </summary>
     /// <param name="Account">The account which was acted upon</param>
     /// <param name="ActionTaken"></param>

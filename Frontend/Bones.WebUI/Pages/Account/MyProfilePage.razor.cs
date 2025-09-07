@@ -1,12 +1,14 @@
 using System.Globalization;
-using Bones.Shared.Consts;
 
 namespace Bones.WebUI.Pages.Account;
 
 /// <summary>
 ///   The user can view and update their profile here
 /// </summary>
-public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager NavManager) : ComponentBase
+/// <param name="apiClient"></param>
+/// <param name="navManager"></param>
+/// <param name="logger"></param>
+public partial class MyProfilePage(BonesApiClient apiClient, NavigationManager navManager, ILogger<MyProfilePage> logger) : ComponentBase
 {
     private bool ProfileUpdateSuccess { get; set; } = false;
 
@@ -59,7 +61,13 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
     {
         AccountAuditsLoading = true;
 
-        GetMyProfileResponse response = await ApiClient.GetMyProfileAsync();
+        GetMyProfileResponse? response = await apiClient.Account.My.Profile.GetAsync();
+
+        if (response is null)
+        {
+            logger.LogError("Failed to get user profile from API");
+            return;
+        }
 
         CreateDateTime = response.CreateDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture);
         PasswordLastSet = response.PasswordLastSetDateTime.LocalDateTime.ToString(CultureInfo.CurrentCulture);
@@ -80,7 +88,7 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
             return;
         }
 
-        await ApiClient.UpdateMyProfileAsync(new UpdateMyProfileRequest
+        await apiClient.Account.My.Profile.PutAsync(new UpdateMyProfileRequest
         {
             DisplayName = DisplayName
         });
@@ -93,7 +101,7 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
     /// </summary>
     public void GoToChangeEmail()
     {
-        NavManager.NavigateTo(FrontEndUrls.Account.CHANGE_EMAIL);
+        navManager.NavigateTo(FrontEndUrls.Account.CHANGE_EMAIL);
     }
 
     /// <summary>
@@ -101,6 +109,6 @@ public partial class MyProfilePage(BonesApiClient ApiClient, NavigationManager N
     /// </summary>
     public void GoToChangePassword()
     {
-        NavManager.NavigateTo(FrontEndUrls.Account.CHANGE_PASSWORD);
+        navManager.NavigateTo(FrontEndUrls.Account.CHANGE_PASSWORD);
     }
 }

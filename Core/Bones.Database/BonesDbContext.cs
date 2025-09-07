@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bones.Database;
 
 /// <summary>
-///     Database context for the application.
+///   Database context for the application.
 /// </summary>
 /// <param name="backendConfig">Backend configuration</param>
 public class BonesDbContext(BonesBackendConfiguration backendConfig)

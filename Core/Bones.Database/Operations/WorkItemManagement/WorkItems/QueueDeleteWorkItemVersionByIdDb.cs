@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.WorkItemManagement.WorkItems;
 public sealed class QueueDeleteWorkItemVersionByIdDb(BonesDbContext dbContext) : IRequestHandler<QueueDeleteWorkItemVersionByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for deleting an ItemVersion.
+    ///   DB Command for deleting an ItemVersion.
     /// </summary>
     /// <param name="WorkItemVersionId">Internal ID of the item version</param>
     public record Command(Guid WorkItemVersionId) : IRequest<CommandResponse>;

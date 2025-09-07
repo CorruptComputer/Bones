@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net;
 using Bones.Shared.Consts;
 using Bones.WebUI.Models;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Pages.WorkItem;
 
@@ -75,7 +76,7 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
         ApiError = false;
         try
         {
-            GetWorkItemByIdResponse? workItemResponse = await apiClient.GetWorkItemByIdAsync(WorkItemId);
+            GetWorkItemByIdResponse? workItemResponse = await apiClient.WorkItem[WorkItemId].GetAsync();
 
             if (workItemResponse is not null)
             {
@@ -89,7 +90,7 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
                 await GetInitiatives();
             }
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
             logger.LogWarning("Work item with ID {WorkItemId} not found, redirecting to home", WorkItemId);
             navManager.NavigateTo("/");
@@ -103,7 +104,12 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
 
     private async Task GetInitiatives()
     {
-        List<GetInitiativesInProjectResponse> resp = await apiClient.GetInitiativesInProjectAsync(_projectId);
+        List<GetInitiativesInProjectResponse>? resp = await apiClient.Project[_projectId].Initiatives.GetAsync();
+
+        if (resp is null)
+        {
+            return;
+        }
 
         _initiatives = [.. resp.Select(x => new DropDownModel
         {
@@ -123,7 +129,12 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
 
     private async Task GetWorkItemQueues(Guid initiativeId)
     {
-        List<GetWorkItemQueuesInInitiativeResponse> resp = await apiClient.GetWorkItemQueuesInInitiativeAsync(initiativeId);
+        List<GetWorkItemQueuesInInitiativeResponse>? resp = await apiClient.Initiative[initiativeId].WorkItemQueues.GetAsync();
+
+        if (resp is null)
+        {
+            return;
+        }
 
         _workItemQueues = [.. resp.Select(x => new DropDownModel
         {
@@ -159,7 +170,7 @@ public partial class ViewWorkItemPage(BonesApiClient apiClient, NavigationManage
                 ActionDateTime = DateTime.Now
             };
 
-            await apiClient.MoveWorkItemQueueActionAsync(request);
+            await apiClient.WorkItem.Action.MoveQueue.PostAsync(request);
 
             _moveToQueue = false;
 

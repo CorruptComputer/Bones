@@ -8,7 +8,7 @@ using Bones.Database.DbSets.ProjectManagement;
 namespace Bones.Testing.UnitTests.Shared;
 
 /// <summary>
-///     Base for Unit Test classes.
+///   Base for Unit Test classes.
 /// </summary>
 public class TestBase
 {

@@ -8,7 +8,7 @@ namespace Bones.Database.Operations.AssetManagement;
 public sealed class QueueDeleteAssetByIdDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<QueueDeleteAssetByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for deleting an Asset.
+    ///   DB Command for deleting an Asset.
     /// </summary>
     /// <param name="AssetId">Internal ID of the item</param>
     public record Command(Guid AssetId) : IRequest<CommandResponse>;

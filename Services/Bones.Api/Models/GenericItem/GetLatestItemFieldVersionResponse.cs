@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.GenericItem;
 
@@ -53,7 +53,7 @@ public sealed record GetLatestItemFieldVersionResponse
     /// <summary>
     ///   If the field is a ValueList, the possible values
     /// </summary>
-    public Dictionary<string, StringValueMatchingType>? PossibleValues { get; init; }
+    public IEnumerable<KeyValuePair<string, StringValueMatchingType>>? PossibleValues { get; init; }
 
     /// <summary>
     ///   If the field is a GeoLocation, the type of geo location
@@ -81,7 +81,7 @@ public sealed record GetLatestItemFieldVersionResponse
             IsRequired = field.LatestVersion.IsRequired,
             Type = field.LatestVersion.Type,
             CanBeNegative = field.LatestVersion.CanBeNegative,
-            PossibleValues = field.LatestVersion.PossibleValues?.ToDictionary(x => x.Value, x => x.MatchingType),
+            PossibleValues = field.LatestVersion.PossibleValues?.Select(x => new KeyValuePair<string, StringValueMatchingType>(x.Value, x.MatchingType)),
             GeoLocationType = field.LatestVersion.GeoLocationType,
             RequiredAddressFields = field.LatestVersion.RequiredAddressFields
         };

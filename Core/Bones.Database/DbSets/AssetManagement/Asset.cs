@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.AssetManagement;
 
 /// <summary>
-///     Model for the AssetManagement.Assets table
+///   Model for the AssetManagement.Assets table
 /// </summary>
 [Table(TableNames.AssetManagement.Assets, Schema = SchemaNames.AssetManagement)]
 [PrimaryKey(nameof(Id))]
 public class Asset
 {
     /// <summary>
-    ///     Internal ID for the Tag
+    ///   Internal ID for the Tag
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

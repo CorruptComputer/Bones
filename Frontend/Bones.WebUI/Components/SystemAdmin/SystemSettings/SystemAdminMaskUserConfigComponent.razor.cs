@@ -32,7 +32,12 @@ public partial class SystemAdminMaskUserConfigComponent(BonesApiClient apiClient
 
         try
         {
-            GetSystemAdminMaskUserConfigResponse maskUserConfig = await apiClient.GetSystemAdminMaskUserConfigAsync();
+            GetSystemAdminMaskUserConfigResponse? maskUserConfig = await apiClient.SysAdmin.Settings.SystemAdminMaskUserConfig.GetAsync();
+            if (maskUserConfig is null)
+            {
+                ApiError = true;
+                return;
+            }
 
             Model = new()
             {
@@ -53,12 +58,12 @@ public partial class SystemAdminMaskUserConfigComponent(BonesApiClient apiClient
 
         try
         {
-            await apiClient.SaveSystemAdminMaskUserConfigAsync(new()
+            await apiClient.SysAdmin.Settings.SystemAdminMaskUserConfig.PostAsync(new()
             {
                 IsEnabled = Model.IsEnabled,
-                Email = Model.Email,
-                DisplayName = Model.DisplayName,
-                ChangeReason = Model.ChangeReason
+                Email = Model.Email ?? string.Empty,
+                DisplayName = Model.DisplayName ?? string.Empty,
+                ChangeReason = Model.ChangeReason ?? string.Empty
             });
         }
         catch

@@ -24,7 +24,7 @@ public sealed record ErrorResponse
     /// <param name="errors"></param>
     public ErrorResponse(Dictionary<string, List<string>>? errors)
     {
-        Errors = errors;
+        Errors = errors?.ToList();
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public sealed record ErrorResponse
     /// <summary>
     ///   The errors that occurred, with the key being either the input that was invalid and the list of reasons it was invalid, or 'server' with the list of server errors.
     /// </summary>
-    public Dictionary<string, List<string>>? Errors { get; init; }
+    public List<KeyValuePair<string, List<string>>>? Errors { get; init; }
 
     /// <summary>
     ///   The error message, if any.

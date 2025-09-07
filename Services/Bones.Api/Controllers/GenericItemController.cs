@@ -2,7 +2,7 @@ using Bones.Api.Controllers.Base;
 using Bones.Api.Models.GenericItem;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Controllers;
 
@@ -32,26 +32,7 @@ public sealed class GenericItemController(ISender sender) : AuthenticatedControl
         return GetLatestItemFieldVersionResponse.FromInternal(fieldResponse.Result);
     }
 
-    /// <summary>
-    ///   Gets the item layouts for a project, optionally filtered by the uses they are enabled for
-    /// </summary>
-    /// <param name="projectId">The ID of the project</param>
-    /// <param name="layoutUse"></param>
-    /// <returns>The latest version of the requested layout.</returns>
-    [HttpGet("{projectId:guid}/layouts", Name = "GetProjectLayoutsAsync")]
-    [ProducesResponseType<List<GetProjectLayoutsResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<List<GetProjectLayoutsResponse>>> GetProjectLayoutsAsync(Guid projectId, [FromQuery] ItemLayoutUse? layoutUse = null)
-    {
-        QueryResponse<List<GenericItemLayout>> layouts = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, await GetCurrentBonesUserAsync()));
 
-        if (!layouts.Success || layouts.Result is null)
-        {
-            return BadRequest(ErrorResponse.FromQueryResponse(layouts));
-        }
-
-        return GetProjectLayoutsResponse.FromInternalList(layouts.Result, layoutUse);
-    }
 
     /// <summary>
     ///   Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified

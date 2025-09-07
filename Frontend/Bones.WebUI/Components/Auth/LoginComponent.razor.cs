@@ -46,22 +46,29 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
         {
             // We won't get anything useful back in the response, instead the browser will be told to save the login as a cookie with the headers
             // if this fails it'll throw an exception
-            await apiClient.LoginAsync(new()
+            await apiClient.Login.Login.PostAsync(new()
             {
                 Email = LoginForm.Email,
                 Password = LoginForm.Password
             });
 
             // Now refresh the Authentication State:
-            GetMyProfileResponse? me = await apiClient.GetMyProfileAsync();
-            if (me == null)
+            GetMyProfileResponse? me = await apiClient.Account.My.Profile.GetAsync();
+            if (me is null)
             {
                 logger.LogError("Error getting my profile after logging in");
                 ErrorLoggingIn = true;
                 return;
             }
 
-            GetOrCreateMySessionResponse session = await apiClient.GetOrCreateMySessionAsync(null, CancellationToken.None);
+            GetOrCreateMySessionResponse? session = await apiClient.Account.My.Session.GetAsync();
+
+            if (session is null)
+            {
+                logger.LogError("Error getting my session after logging in");
+                ErrorLoggingIn = true;
+                return;
+            }
 
             await authStateProvider.SaveCurrentUserInBrowserStorageAsync(me, session.SessionId, session.Base64LocalStorageKey, CancellationToken.None);
         }

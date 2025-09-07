@@ -2,6 +2,7 @@ using System.Net;
 using Bones.Shared.Consts;
 using Bones.WebUI.Consts;
 using Bones.WebUI.Services.Singleton;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Pages.Account;
 
@@ -38,7 +39,7 @@ public partial class ChangePasswordPage(BonesApiClient apiClient, NavigationMana
         {
             Guid currentSessionId = await localStorageService.GetItemAsync<Guid>(LocalStorageConsts.SESSION_ID_KEY, string.Empty, CancellationToken.None);
 
-            await apiClient.ChangeMyPasswordAsync(new()
+            await apiClient.Account.My.Password.PutAsync(new()
             {
                 CurrentPassword = CurrentPassword,
                 NewPassword = NewPassword,
@@ -46,10 +47,13 @@ public partial class ChangePasswordPage(BonesApiClient apiClient, NavigationMana
                 CurrentSessionId = InvalidateOtherSessions ? currentSessionId : null
             });
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.BadRequest)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.BadRequest)
         {
-            // This is a validation error from the API
-            ValidationErrors = [.. ex.Result.Errors.Select(e => $"{e.Key}: {string.Join('\n', e.Value)}")];
+            ValidationErrors = [];
+            foreach (string key in ex.Data.Keys)
+            {
+                ValidationErrors = [.. ValidationErrors, $"{key}: {string.Join('\n', ex.Data[key])}"];
+            }
             FormValid = false;
 
             return;

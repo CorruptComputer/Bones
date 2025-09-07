@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.ProjectManagement;
 
 /// <summary>
-///     Model for the ProjectManagement.Initiatives table
+///   Model for the ProjectManagement.Initiatives table
 /// </summary>
 [Table(TableNames.ProjectManagement.Initiatives, Schema = SchemaNames.ProjectManagement)]
 [PrimaryKey(nameof(Id))]
 public class Initiative
 {
     /// <summary>
-    ///     Internal ID for the Tag
+    ///   Internal ID for the Tag
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
@@ -29,7 +29,7 @@ public class Initiative
     public required string Name { get; set; }
 
     /// <summary>
-    ///   The child queues for this initiative 
+    ///   The child queues for this initiative
     /// </summary>
     public List<WorkItemQueue> Queues { get; set; } = [];
 

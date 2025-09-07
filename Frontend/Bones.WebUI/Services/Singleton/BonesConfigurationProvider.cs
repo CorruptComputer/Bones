@@ -24,7 +24,12 @@ public class BonesConfigurationProvider(SessionStorageService sessionStorageServ
 
         if (config == null)
         {
-            config = await apiClient.GetApiConfigAsync(cancellationToken);
+            config = await apiClient.Anonymous.WebConfig.GetAsync(cancellationToken: cancellationToken);
+            if (config == null)
+            {
+                throw new InvalidOperationException("Failed to retrieve web configuration from the API.");
+            }
+
             await sessionStorageService.SetItemAsync(API_CONFIG_KEY, config, cancellationToken);
         }
 

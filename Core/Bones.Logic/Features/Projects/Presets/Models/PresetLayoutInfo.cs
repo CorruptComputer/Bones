@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects.Presets.Models;
 
@@ -9,7 +9,7 @@ internal record PresetLayoutInfo
 
     internal required string FriendlyIdPrefix { get; init; }
 
-    internal required Dictionary<uint, PresetFields> Fields { get; init; }
+    internal required Dictionary<int, PresetFields> Fields { get; init; }
 
     [MemberNotNullWhen(true, nameof(LayoutId))]
     [MemberNotNullWhen(true, nameof(LayoutVersionId))]

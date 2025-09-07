@@ -9,7 +9,7 @@ using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.Projects.Presets.Models;
 using Bones.Logic.Features.WorkItems.Queue;
 using Bones.Logic.Features.WorkItems.WorkItems;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects.Presets;
 
@@ -81,9 +81,9 @@ internal abstract class PresetBase
     {
         foreach ((string layoutName, PresetLayoutInfo layoutInfo) in ItemLayouts)
         {
-            Dictionary<uint, Guid> fields = [];
+            Dictionary<int, Guid> fields = [];
 
-            foreach ((uint fieldOrder, PresetFields presetField) in layoutInfo.Fields)
+            foreach ((int fieldOrder, PresetFields presetField) in layoutInfo.Fields)
             {
                 if (ItemFields.TryGetValue(presetField, out PresetFieldInfo? fieldInfo))
                 {

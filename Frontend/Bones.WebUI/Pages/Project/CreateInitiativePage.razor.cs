@@ -1,4 +1,5 @@
 using Bones.Shared.Consts;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Pages.Project;
 
@@ -39,10 +40,16 @@ public partial class CreateInitiativePage(BonesApiClient ApiClient, NavigationMa
         {
             ApiError = false;
 
-            Guid initiativeId = await ApiClient.CreateInitiativeAsync(ProjectId, new()
+            Guid? initiativeId = await ApiClient.Project[ProjectId].Initiative.Create.PostAsync(new()
             {
                 Name = InitiativeName
             });
+
+            if (initiativeId == null)
+            {
+                ApiError = true;
+                return;
+            }
 
             NavManager.NavigateTo(FrontEndUrls.Project.Initiative.INITIATIVE_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, ProjectId.ToString()).Replace("{InitiativeId:guid}", initiativeId.ToString()));
         }

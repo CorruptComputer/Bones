@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.GenericItem;
 
@@ -54,7 +54,7 @@ public sealed record GetItemLayoutVersionResponse
     ///   The field versions
     /// </summary>
     [JsonRequired]
-    public required Dictionary<uint, Guid> FieldVersions { get; init; }
+    public required IEnumerable<KeyValuePair<int, Guid>> FieldVersions { get; init; }
 
     internal static GetItemLayoutVersionResponse FromInternal(GenericItemLayoutVersion layoutVersion, Guid ProjectId, string friendlyIdPrefix, long latestVersion)
     {
@@ -66,7 +66,7 @@ public sealed record GetItemLayoutVersionResponse
             FriendlyIdPrefix = friendlyIdPrefix,
             Version = layoutVersion.Version,
             LatestVersion = latestVersion,
-            FieldVersions = layoutVersion.FieldLinks.ToDictionary(fl => fl.OrderNumber, fl => fl.FieldVersion.Id)
+            FieldVersions = layoutVersion.FieldLinks.Select(fl => new KeyValuePair<int, Guid>(fl.OrderNumber, fl.FieldVersion.Id))
         };
     }
 }

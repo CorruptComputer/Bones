@@ -1,21 +1,21 @@
 using Bones.Database.DbConsts;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTopologySuite.Geometries;
 
 namespace Bones.Database.DbSets.MappingManagement;
 
 /// <summary>
-///     Model for the MappingManagement.OsmObjects table<br /><br />
-///     OSM objects should be completely agnostic to projects, any project can reference and reuse this same object.
-///     The OSM object should be converted to GeoJSON before being stored here.
+///   Model for the MappingManagement.OsmObjects table<br /><br />
+///   OSM objects should be completely agnostic to projects, any project can reference and reuse this same object.
+///   The OSM object should be converted to GeoJSON before being stored here.
 /// </summary>
 [Table(TableNames.MappingManagement.OsmObjects, Schema = SchemaNames.MappingManagement)]
 [PrimaryKey(nameof(Id))]
 public class OsmObject
 {
     /// <summary>
-    ///     Internal ID for the OsmObject
+    ///   Internal ID for the OsmObject
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

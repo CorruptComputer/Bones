@@ -49,7 +49,13 @@ public partial class WorkItemQueueDashboardPage(BonesApiClient apiClient) : Comp
     private async Task FetchFromAPI()
     {
         WorkItemsLoading = true;
-        GetWorkItemQueueDashboardResponse dashboardResponse = await apiClient.GetWorkItemQueueDashboardAsync(WorkItemQueueId);
+        GetWorkItemQueueDashboardResponse? dashboardResponse = await apiClient.WorkItemQueue[WorkItemQueueId].Dashboard.GetAsync();
+
+        if (dashboardResponse is null)
+        {
+            return;
+        }
+
         QueueName = dashboardResponse.QueueName;
         WorkItems = dashboardResponse.WorkItems.OrderBy(x => x.AddedToQueueDateTime);
         WorkItemsLoading = false;

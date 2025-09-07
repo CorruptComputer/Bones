@@ -4,7 +4,7 @@ using Bones.Database.DbConsts;
 namespace Bones.Database.DbSets.System;
 
 /// <summary>
-///     Model for the System.SystemSettings table
+///   Model for the System.SystemSettings table
 /// </summary>
 [Table(TableNames.System.SystemSettings, Schema = SchemaNames.System)]
 [PrimaryKey(nameof(Setting))]
@@ -12,7 +12,7 @@ namespace Bones.Database.DbSets.System;
 public class SystemSetting
 {
     /// <summary>
-    ///     ID of the setting
+    ///   ID of the setting
     /// </summary>
     public required SettingType Setting { get; init; }
 

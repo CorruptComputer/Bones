@@ -1,4 +1,4 @@
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.GenericItem;
 
@@ -10,7 +10,7 @@ public sealed record ItemValueDisplayModel
     /// <summary>
     ///   The order that this field should be displayed in
     /// </summary>
-    public required uint OrderNumber { get; init; }
+    public required int OrderNumber { get; init; }
 
     /// <summary>
     ///   The ID of the field version this value is for

@@ -7,7 +7,7 @@ namespace Bones.Database.Operations.ProjectManagement.Projects;
 public sealed class QueueDeleteProjectByIdDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<QueueDeleteProjectByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for deleting a Project.
+    ///   DB Command for deleting a Project.
     /// </summary>
     /// <param name="ProjectId">Internal ID of the project</param>
     public sealed record Command(Guid ProjectId) : IRequest<CommandResponse>;

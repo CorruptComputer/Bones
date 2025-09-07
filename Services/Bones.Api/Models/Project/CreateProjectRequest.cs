@@ -1,4 +1,4 @@
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
 

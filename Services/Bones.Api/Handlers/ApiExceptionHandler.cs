@@ -16,10 +16,10 @@ public class ApiExceptionHandler : IExceptionHandler
             httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
             {
-                Errors = new()
-                {
-                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE] }
-                }
+                Errors =
+                [
+                    new(BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.UNAUTHENTICATED_ERROR_VALUE])
+                ]
             }, cancellationToken);
 
             return true;
@@ -30,10 +30,10 @@ public class ApiExceptionHandler : IExceptionHandler
             httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
             {
-                Errors = new()
-                {
-                    { BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE] }
-                }
+                Errors =
+                [
+                    new(BonesResponseBase.REQUEST_ERROR_KEY, [BonesResponseBase.FORBIDDEN_ERROR_VALUE])
+                ]
             }, cancellationToken);
 
             return true;
@@ -44,10 +44,10 @@ public class ApiExceptionHandler : IExceptionHandler
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             await httpContext.Response.WriteAsJsonAsync(new ErrorResponse($"Bad Request '{badRequestException.RequestModel}'")
             {
-                Errors = new()
-                {
-                    { badRequestException.BadField, [badRequestException.Message] }
-                },
+                Errors =
+                [
+                    new(badRequestException.BadField, [badRequestException.Message])
+                ]
             }, cancellationToken);
 
             return true;
@@ -56,10 +56,10 @@ public class ApiExceptionHandler : IExceptionHandler
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await httpContext.Response.WriteAsJsonAsync(new ErrorResponse()
         {
-            Errors = new()
-            {
-                { BonesResponseBase.SERVER_ERROR_KEY, [exception.Message] }
-            }
+            Errors =
+            [
+                new(BonesResponseBase.SERVER_ERROR_KEY, [exception.Message])
+            ]
         }, cancellationToken);
 
         return true;

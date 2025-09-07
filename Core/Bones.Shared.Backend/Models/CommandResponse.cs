@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Bones.Shared.Backend.Models;
 
 /// <summary>
-///     Basic response of any command.
+///   Basic response of any command.
 /// </summary>
 [Serializable]
 [JsonSerializable(typeof(CommandResponse))]
@@ -13,7 +13,7 @@ public sealed record CommandResponse : BonesResponseBase
     private CommandResponse() { }
 
     /// <summary>
-    ///     If an ID was generated for something by the command, it can optionally be returned here.
+    ///   If an ID was generated for something by the command, it can optionally be returned here.
     /// </summary>
     public Dictionary<string, Guid> Ids { get; init; } = [];
 

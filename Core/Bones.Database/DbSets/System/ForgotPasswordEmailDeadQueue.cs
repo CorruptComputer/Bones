@@ -3,14 +3,14 @@ using Bones.Database.DbConsts;
 namespace Bones.Database.DbSets.System;
 
 /// <summary>
-///     Model for the System.ForgotPasswordEmailDeadQueue table
+///   Model for the System.ForgotPasswordEmailDeadQueue table
 /// </summary>
 [Table(TableNames.System.ForgotPasswordEmailDeadQueue, Schema = SchemaNames.System)]
 [PrimaryKey(nameof(Id))]
 public class ForgotPasswordEmailDeadQueue
 {
     /// <summary>
-    ///     Internal ID for the Queue item
+    ///   Internal ID for the Queue item
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

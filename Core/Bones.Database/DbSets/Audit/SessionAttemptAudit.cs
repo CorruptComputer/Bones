@@ -4,7 +4,7 @@ using Bones.Database.DbConsts;
 namespace Bones.Database.DbSets.Audit;
 
 /// <summary>
-///     Model for the Audit.SessionAttemptAudits table.
+///   Model for the Audit.SessionAttemptAudits table.
 /// </summary>
 [Table(TableNames.Audit.SessionAttemptAudits, Schema = SchemaNames.Audit)]
 [PrimaryKey(nameof(Id))]

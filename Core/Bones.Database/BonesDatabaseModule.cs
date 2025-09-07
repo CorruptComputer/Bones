@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bones.Database;
 
 /// <summary>
-///     Autofac module for the Bones database
+///   Autofac module for the Bones database
 /// </summary>
 public class BonesDatabaseModule(IServiceCollection services) : Module
 {

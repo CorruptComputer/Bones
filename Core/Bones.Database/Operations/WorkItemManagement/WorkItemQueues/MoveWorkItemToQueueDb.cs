@@ -8,7 +8,7 @@ namespace Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 public sealed class MoveWorkItemToQueueDb(BonesDbContext dbContext) : IRequestHandler<MoveWorkItemToQueueDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a Queue.
+    ///   DB Command for creating a Queue.
     /// </summary>
     /// <param name="WorkItemId"></param>
     /// <param name="WorkItemQueueId"></param>

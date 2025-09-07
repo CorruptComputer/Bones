@@ -33,10 +33,12 @@ public class RegisterUser(UserManager<BonesUser> userManager, ISender sender) : 
                 }
             });
 
-            RuleFor(request => request.Password).NotNull().MinimumLength(8).Custom((password, ctx) =>
+            RuleFor(request => request.Password).NotEmpty().MinimumLength(8).Custom((password, ctx) =>
             {
                 if (string.IsNullOrWhiteSpace(password))
                 {
+                    // Already handled by NotEmpty above, so the failure is not needed here.
+                    // char.IsUpper below will throw if its null though.
                     return;
                 }
 

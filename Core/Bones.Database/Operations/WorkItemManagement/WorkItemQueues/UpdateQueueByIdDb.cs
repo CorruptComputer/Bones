@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 public sealed class UpdateQueueByIdDb(BonesDbContext dbContext) : IRequestHandler<UpdateQueueByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for updating a Queue.
+    ///   DB Command for updating a Queue.
     /// </summary>
     /// <param name="QueueId">Internal ID of the queue</param>
     /// <param name="NewName">The new name of the queue</param>

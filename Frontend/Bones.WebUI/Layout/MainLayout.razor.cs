@@ -4,6 +4,7 @@ using Bones.Shared.Consts;
 using Bones.WebUI.Services.Singleton;
 using MudBlazor;
 using MudExtensions;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Layout;
 
@@ -113,7 +114,13 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
 
             try
             {
-                await apiClient.ConfirmEmailAsync(parsedUserId, Code, ChangedEmail);
+                await apiClient.Anonymous.ConfirmEmail.GetAsync(req =>
+                {
+                    req.QueryParameters.UserId = parsedUserId;
+                    req.QueryParameters.Code = Code;
+                    req.QueryParameters.ChangedEmail = ChangedEmail;
+                });
+
                 CurrentState = ConfirmEmailState.Success;
             }
             catch (Exception)
@@ -135,7 +142,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
 
     private async Task LogoutAsync()
     {
-        await apiClient.LogoutAsync();
+        await apiClient.Login.Logout.PostAsync();
         await authStateProvider.ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
 
         navManager.NavigateTo("/");
@@ -153,7 +160,12 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
 
         try
         {
-            List<GetProjectQuickSelectResponse> projects = await apiClient.GetProjectQuickSelectAsync();
+            List<GetProjectQuickSelectResponse>? projects = await apiClient.Project.Projects.QuickSelect.GetAsync();
+
+            if (projects is null)
+            {
+                throw new InvalidOperationException("Received null project list from API");
+            }
 
             Projects = [.. projects.Select(proj => new ProjectDropDownModel
             {
@@ -161,7 +173,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
                 ProjectName = proj.ProjectName
             })];
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.Unauthorized)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.Unauthorized)
         {
             // Skip doing anything else since we'll get redirected to the login page anyway
             return;

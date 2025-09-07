@@ -3,7 +3,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
 
 namespace Bones.Api.Models.Assets.Actions;

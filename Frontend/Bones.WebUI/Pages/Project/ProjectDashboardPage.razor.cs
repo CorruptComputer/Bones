@@ -59,7 +59,12 @@ public partial class ProjectDashboardPage(BonesApiClient ApiClient) : ComponentB
 
     private async Task FetchFromAPI()
     {
-        GetProjectDashboardResponse dashboardResponse = await ApiClient.GetProjectDashboardAsync(ProjectId);
+        GetProjectDashboardResponse? dashboardResponse = await ApiClient.Project[ProjectId].Dashboard.GetAsync();
+        if (dashboardResponse is null)
+        {
+            return;
+        }
+
         ProjectName = dashboardResponse.ProjectName;
 
         AssetTypes = dashboardResponse.AssetTypes;

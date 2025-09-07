@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Bones.Shared.Enums;
 using Bones.WebUI.Models;
 
 namespace Bones.WebUI.Pages.Asset;
@@ -101,7 +100,8 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
     {
         if (AssetLayoutIdProvidedInQueryString)
         {
-            GetItemLayoutVersionResponse layout = await apiClient.GetLatestItemLayoutVersionAsync(AssetLayoutId.Value);
+            GetItemLayoutVersionResponse layout = await apiClient.GenericItem.Layouts[AssetLayoutId.Value].Latest.GetAsync()
+                ?? throw new InvalidOperationException("Failed to get layout from API");
             SelectedProject = layout.ProjectId;
         }
         else
@@ -112,7 +112,13 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
 
     private async Task GetProjects()
     {
-        List<GetProjectQuickSelectResponse> resp = await apiClient.GetProjectQuickSelectAsync();
+        List<GetProjectQuickSelectResponse>? resp = await apiClient.Project.Projects.QuickSelect.GetAsync();
+
+        if (resp is null)
+        {
+            ApiError = true;
+            return;
+        }
 
         Projects = [.. resp.Select(x => new DropDownModel
         {
@@ -123,7 +129,13 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
 
     private async Task GetAssetLayouts(Guid selectedProject)
     {
-        List<GetProjectLayoutsResponse> resp = await apiClient.GetProjectLayoutsAsync(selectedProject, ItemLayoutUse.Assets);
+        List<GetProjectLayoutsResponse>? resp = await apiClient.Project[selectedProject].Layouts.GetAsync(req => req.QueryParameters.LayoutUseAsItemLayoutUse = ItemLayoutUse.Assets);
+
+        if (resp is null)
+        {
+            ApiError = true;
+            return;
+        }
 
         AssetLayouts = [.. resp.Select(x => new DropDownModel
         {

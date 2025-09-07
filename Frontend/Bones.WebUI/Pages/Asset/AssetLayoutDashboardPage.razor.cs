@@ -4,7 +4,8 @@ namespace Bones.WebUI.Pages.Asset;
 ///   Page for viewing an asset layouts dashboard
 /// </summary>
 /// <param name="apiClient"></param>
-public partial class AssetLayoutDashboardPage(BonesApiClient apiClient) : ComponentBase
+/// <param name="logger"></param>
+public partial class AssetLayoutDashboardPage(BonesApiClient apiClient, ILogger<AssetLayoutDashboardPage> logger) : ComponentBase
 {
     /// <summary>
     ///   The ID of the Asset Layout to load in this dashboard
@@ -49,7 +50,13 @@ public partial class AssetLayoutDashboardPage(BonesApiClient apiClient) : Compon
     private async Task FetchFromAPI()
     {
         AssetsLoading = true;
-        GetAssetLayoutDashboardResponse dashboardResponse = await apiClient.GetAssetLayoutDashboardAsync(AssetLayoutId);
+        GetAssetLayoutDashboardResponse? dashboardResponse = await apiClient.Asset.Layout[AssetLayoutId].Dashboard.GetAsync();
+        if (dashboardResponse is null)
+        {
+            logger.LogError("Failed to get asset layout dashboard for layout ID {AssetLayoutId}", AssetLayoutId);
+            return;
+        }
+
         LayoutName = dashboardResponse.LayoutName;
         BonesAssets = dashboardResponse.Assets.OrderBy(x => x.LatestVersionCreateDateTime);
         AssetsLoading = false;

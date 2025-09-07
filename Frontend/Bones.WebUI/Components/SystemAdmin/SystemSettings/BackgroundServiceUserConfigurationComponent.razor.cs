@@ -34,7 +34,12 @@ public partial class BackgroundServiceUserConfigurationComponent(BonesApiClient 
 
         try
         {
-            GetBackgroundServiceUserConfigResponse backgroundServiceUserConfig = await apiClient.GetBackgroundServiceUserConfigAsync();
+            GetBackgroundServiceUserConfigResponse? backgroundServiceUserConfig = await apiClient.SysAdmin.Settings.BackgroundServiceUserConfig.GetAsync();
+            if (backgroundServiceUserConfig is null)
+            {
+                ApiError = true;
+                return;
+            }
 
             Model.Email = backgroundServiceUserConfig.Email;
             Model.DisplayName = backgroundServiceUserConfig.DisplayName;
@@ -50,7 +55,7 @@ public partial class BackgroundServiceUserConfigurationComponent(BonesApiClient 
         ApiError = false;
         try
         {
-            await apiClient.SaveBackgroundServiceUserConfigAsync(new()
+            await apiClient.SysAdmin.Settings.BackgroundServiceUserConfig.PostAsync(new()
             {
                 Email = Model.Email,
                 DisplayName = Model.DisplayName,

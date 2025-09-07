@@ -7,7 +7,7 @@ namespace Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 public sealed class QueueDeleteQueueByIdDb(BonesDbContext dbContext, ISender sender) : IRequestHandler<QueueDeleteQueueByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for deleting a Queue.
+    ///   DB Command for deleting a Queue.
     /// </summary>
     /// <param name="QueueId">Internal ID of the queue</param>
     public sealed record Command(Guid QueueId) : IRequest<CommandResponse>;

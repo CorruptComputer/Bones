@@ -1076,90 +1076,6 @@
         }
       }
     },
-    "/GenericItem/{projectId}/layouts": {
-      "get": {
-        "tags": [
-          "GenericItem"
-        ],
-        "summary": "Gets the item layouts for a project, optionally filtered by the uses they are enabled for",
-        "operationId": "GetProjectLayoutsAsync",
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "path",
-            "description": "The ID of the project",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "layoutUse",
-            "in": "query",
-            "description": "",
-            "schema": {
-              "$ref": "#/components/schemas/ItemLayoutUse"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetProjectLayoutsResponse"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/GenericItem/layouts/{layoutId}/latest": {
       "get": {
         "tags": [
@@ -2006,6 +1922,90 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetProjectItemFieldsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Project/{projectId}/layouts": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "summary": "Gets the item layouts for a project, optionally filtered by the uses they are enabled for",
+        "operationId": "GetProjectLayoutsAsync",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "description": "The ID of the project",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "layoutUse",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "$ref": "#/components/schemas/ItemLayoutUse"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetProjectLayoutsResponse"
+                  }
                 }
               }
             }
@@ -4258,9 +4258,9 @@
             "nullable": true
           },
           "possibleValues": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/StringValueMatchingType"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringStringValueMatchingTypeKeyValuePair"
             },
             "description": "If the Type of this field is a ValueList, the possible values this can have",
             "nullable": true
@@ -4300,9 +4300,9 @@
             "nullable": true
           },
           "possibleValues": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/StringValueMatchingType"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringStringValueMatchingTypeKeyValuePair"
             },
             "description": "If the field is a ValueList, the possible values",
             "nullable": true
@@ -4339,10 +4339,9 @@
             "description": "The prefix at the start of a Friendly ID for items using this layout, up to 6 letters."
           },
           "fieldVersions": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "format": "uuid"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int32GuidKeyValuePair"
             },
             "description": "The field versions to use for the initial layout version"
           }
@@ -4366,10 +4365,9 @@
             "$ref": "#/components/schemas/ItemLayoutUse"
           },
           "fieldVersions": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "format": "uuid"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int32GuidKeyValuePair"
             },
             "description": "The field versions to use for this layout version"
           }
@@ -4668,12 +4666,9 @@
         "type": "object",
         "properties": {
           "errors": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringStringListKeyValuePair"
             },
             "description": "The errors that occurred, with the key being either the input that was invalid and the list of reasons it was invalid, or 'server' with the list of server errors.",
             "nullable": true
@@ -4931,10 +4926,9 @@
             "readOnly": true
           },
           "fieldVersions": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "format": "uuid"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int32GuidKeyValuePair"
             },
             "description": "The field versions"
           }
@@ -4985,9 +4979,9 @@
             "nullable": true
           },
           "possibleValues": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/StringValueMatchingType"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringStringValueMatchingTypeKeyValuePair"
             },
             "description": "If the field is a ValueList, the possible values",
             "nullable": true
@@ -5617,6 +5611,24 @@
         "additionalProperties": false,
         "description": "Model for the initiatives to be listed in a project's dashboard"
       },
+      "Int32GuidKeyValuePair": {
+        "required": [
+          "key",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "value": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
       "ItemFieldModel": {
         "required": [
           "isRequired",
@@ -5913,9 +5925,9 @@
             "nullable": true
           },
           "possibleValues": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/StringValueMatchingType"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringStringValueMatchingTypeKeyValuePair"
             },
             "description": "If the field is a ValueList, the possible values",
             "nullable": true
@@ -6082,6 +6094,39 @@
         },
         "additionalProperties": false,
         "description": "Request for the SaveWebUiBaseUrlAsync endpoint"
+      },
+      "StringStringListKeyValuePair": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringStringValueMatchingTypeKeyValuePair": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "$ref": "#/components/schemas/StringValueMatchingType"
+          }
+        },
+        "additionalProperties": false
       },
       "StringValueMatchingType": {
         "enum": [

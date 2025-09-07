@@ -49,7 +49,12 @@ public partial class SysAdminDashboardPage(BonesApiClient ApiClient) : Component
 
     private async Task FetchFromAPI()
     {
-        GetSystemAdminDashboardResponse dashboardResponse = await ApiClient.GetSystemAdminDashboardAsync();
+        GetSystemAdminDashboardResponse? dashboardResponse = await ApiClient.SysAdmin.Dashboard.GetAsync();
+
+        if (dashboardResponse is null)
+        {
+            return;
+        }
 
         UserCount = dashboardResponse.UserCount;
         OrganizationCount = dashboardResponse.OrganizationCount;

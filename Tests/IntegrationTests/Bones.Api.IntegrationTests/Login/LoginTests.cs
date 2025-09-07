@@ -1,3 +1,5 @@
+using ReQuesty.Runtime.Abstractions;
+
 namespace Bones.Api.IntegrationTests.Login;
 
 /// <summary>
@@ -18,7 +20,7 @@ public class LoginTests : TestBase
         {
             (string email, string password) = TestCredentials.Credentials[TestCredentials.User.DefaultAdmin];
 
-            Task<EmptyResponse> act = ApiClient.LoginAsync(new()
+            Task<EmptyResponse?> act = ApiClient.Login.Login.PostAsync(new()
             {
                 Email = email,
                 Password = password
@@ -41,13 +43,13 @@ public class LoginTests : TestBase
         {
             (string email, string password) = TestCredentials.Credentials[TestCredentials.User.Invalid];
 
-            Task<EmptyResponse> act = ApiClient.LoginAsync(new()
+            Task<EmptyResponse?> act = ApiClient.Login.Login.PostAsync(new()
             {
                 Email = email,
                 Password = password
             });
 
-            await act.ShouldThrowAsync<ApiException<EmptyResponse>>();
+            await act.ShouldThrowAsync<ApiException>();
         }
     }
 
@@ -64,19 +66,19 @@ public class LoginTests : TestBase
         {
             (string email, string password) = TestCredentials.Credentials[TestCredentials.User.Unconfirmed];
 
-            await ApiClient.RegisterAsync(new()
+            await ApiClient.Anonymous.Register.PostAsync(new()
             {
                 Email = email,
                 Password = password
             });
 
-            Task<EmptyResponse> act = ApiClient.LoginAsync(new()
+            Task<EmptyResponse?> act = ApiClient.Login.Login.PostAsync(new()
             {
                 Email = email,
                 Password = password
             });
 
-            await act.ShouldThrowAsync<ApiException<EmptyResponse>>();
+            await act.ShouldThrowAsync<ApiException>();
         }
     }
 
@@ -92,13 +94,13 @@ public class LoginTests : TestBase
 
         if (ApiClient is not null)
         {
-            Task<EmptyResponse> act = ApiClient.LogoutAsync();
+            Task<EmptyResponse?> act = ApiClient.Login.Logout.PostAsync();
             await act.ShouldNotThrowAsync();
 
-            Task<EmptyResponse> act2 = ApiClient.LogoutAsync();
+            Task<EmptyResponse?> act2 = ApiClient.Login.Logout.PostAsync();
             await act2.ShouldNotThrowAsync();
 
-            Task<EmptyResponse> act3 = ApiClient.LogoutAsync();
+            Task<EmptyResponse?> act3 = ApiClient.Login.Logout.PostAsync();
             await act3.ShouldNotThrowAsync();
         }
     }

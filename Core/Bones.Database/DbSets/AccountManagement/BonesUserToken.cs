@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.AccountManagement;
 
 /// <summary>
-///     Model for the AccountManagement.BonesUserTokens table.
+///   Model for the AccountManagement.BonesUserTokens table.
 /// </summary>
 [Table(TableNames.AccountManagement.BonesUserTokens, Schema = SchemaNames.AccountManagement)]
 public class BonesUserToken : IdentityUserToken<Guid>

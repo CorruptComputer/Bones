@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.GenericItem;
 public sealed class GetItemFieldVersionByIdDb(BonesDbContext dbContext) : IRequestHandler<GetItemFieldVersionByIdDb.Query, QueryResponse<GenericItemFieldVersion?>>
 {
     /// <summary>
-    ///     DB Query for getting an item field by its ID
+    ///   DB Query for getting an item field by its ID
     /// </summary>
     /// <param name="ItemFieldVersionId">Internal ID of the item field</param>
     public record Query(Guid ItemFieldVersionId) : IRequest<QueryResponse<GenericItemFieldVersion?>>;

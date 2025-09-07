@@ -1,19 +1,19 @@
 using Bones.Database.DbConsts;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.GenericItems;
 
 /// <summary>
-///     Model for the GenericItems.GenericItemFieldListEntries table
+///   Model for the GenericItems.GenericItemFieldListEntries table
 /// </summary>
 [Table(TableNames.GenericItem.GenericItemFieldListEntries, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
 public class GenericItemFieldListEntry
 {
     /// <summary>
-    ///     Internal ID for the ItemValueListEntry
+    ///   Internal ID for the ItemValueListEntry
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

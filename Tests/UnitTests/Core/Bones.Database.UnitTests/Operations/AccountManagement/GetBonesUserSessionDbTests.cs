@@ -21,11 +21,11 @@ public class GetBonesUserSessionDbTests : TestBase
     [Fact]
     public async Task Validator_ShouldStopInvalidInputs()
     {
-        QueryResponse<BonesUserSession?> result = await Sender.Send(new GetBonesUserSessionDb.Query(Guid.Empty, IPAddress.IPv6Loopback));
+        GetBonesUserSessionDb.Validator validator = new();
+        GetBonesUserSessionDb.Query query = new(Guid.Empty, IPAddress.IPv6Loopback);
 
-        result.Success.ShouldBeFalse();
-        result.FailureReasons.ShouldContainKey("SessionId");
-        result.FailureReasons["SessionId"].ShouldNotBeNull();
+        TestValidationResult<GetBonesUserSessionDb.Query> validationResult = await validator.TestValidateAsync(query);
+        validationResult.ShouldHaveValidationErrorFor(x => x.SessionId);
     }
 
     /// <summary>

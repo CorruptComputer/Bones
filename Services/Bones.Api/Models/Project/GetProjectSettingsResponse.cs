@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -110,13 +110,13 @@ public record GetProjectSettingsResponse
     public record ItemFieldModel
     {
         /// <summary>
-        ///     Internal ID for the ItemField
+        ///   Internal ID for the ItemField
         /// </summary>
         [JsonRequired]
         public required Guid ItemFieldId { get; init; }
 
         /// <summary>
-        ///     Internal ID for the current version ItemFieldVersion
+        ///   Internal ID for the current version ItemFieldVersion
         /// </summary>
         [JsonRequired]
         public required Guid ItemFieldLatestVersionId { get; init; }
@@ -147,7 +147,7 @@ public record GetProjectSettingsResponse
     public record ItemLayoutModel
     {
         /// <summary>
-        ///     Internal ID for the ItemLayout
+        ///   Internal ID for the ItemLayout
         /// </summary>
         [JsonRequired]
         public required Guid ItemLayoutId { get; init; }

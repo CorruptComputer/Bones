@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.AccountManagement;
 
 /// <summary>
-///     Model for the AccountManagement.BonesUsers table.
+///   Model for the AccountManagement.BonesUsers table.
 /// </summary>
 [Table(TableNames.AccountManagement.BonesUsers, Schema = SchemaNames.AccountManagement)]
 public class BonesUser : IdentityUser<Guid>
@@ -18,12 +18,12 @@ public class BonesUser : IdentityUser<Guid>
     public string? DisplayName { get; set; }
 
     /// <summary>
-    ///     When the account was created.
+    ///   When the account was created.
     /// </summary>
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///     When was it confirmed, if at all?
+    ///   When was it confirmed, if at all?
     /// </summary>
     public DateTimeOffset? EmailConfirmedDateTime { get; set; }
 

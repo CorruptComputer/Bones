@@ -7,7 +7,7 @@ namespace Bones.Logic.Features.Audits;
 public class AddLoginAudit(ISender sender) : IRequestHandler<AddLoginAudit.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a new login audit entry
+    ///   DB Command for creating a new login audit entry
     /// </summary>
     /// <param name="Email"></param>
     /// <param name="Successful"></param>

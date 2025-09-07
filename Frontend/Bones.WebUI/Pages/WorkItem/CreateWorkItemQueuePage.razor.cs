@@ -1,10 +1,11 @@
 using Bones.Shared.Consts;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Pages.WorkItem;
 
 /// <summary>
 ///   Page to create a work item queue in an initiative
-/// </summary>                                           
+/// </summary>
 public partial class CreateWorkItemQueuePage(BonesApiClient apiClient, NavigationManager navManager, ILogger<CreateWorkItemQueuePage> logger) : ComponentBase
 {
     /// <summary>
@@ -41,11 +42,17 @@ public partial class CreateWorkItemQueuePage(BonesApiClient apiClient, Navigatio
 
             await Task.CompletedTask;
 
-            Guid queueId = await apiClient.CreateQueueInInitiativeAsync(new()
+            Guid? queueId = await apiClient.WorkItemQueue.CreateInInitiative.PostAsync(new()
             {
                 Name = WorkItemQueueName,
                 InitiativeId = InitiativeId
             });
+
+            if (queueId is null)
+            {
+                ApiError = true;
+                return;
+            }
 
             navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, queueId.ToString()));
         }

@@ -1,4 +1,5 @@
 using System.Net;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Pages.Asset;
 
@@ -49,7 +50,7 @@ public partial class ViewAssetPage(BonesApiClient apiClient, NavigationManager n
         ApiError = false;
         try
         {
-            GetAssetByIdResponse? assetResponse = await apiClient.GetAssetByIdAsync(AssetId);
+            GetAssetByIdResponse? assetResponse = await apiClient.Asset[AssetId].GetAsync();
 
             if (assetResponse is not null)
             {
@@ -58,7 +59,7 @@ public partial class ViewAssetPage(BonesApiClient apiClient, NavigationManager n
                 _assetTitle = assetResponse.Title;
             }
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
             logger.LogWarning("Asset with ID {AssetId} not found, redirecting to home", AssetId);
             navManager.NavigateTo("/");

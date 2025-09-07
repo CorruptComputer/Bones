@@ -1,3 +1,5 @@
+using ReQuesty.Runtime.Abstractions;
+
 namespace Bones.WebUI.Pages.Project;
 
 /// <summary>
@@ -33,12 +35,18 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
         {
             ApiError = false;
 
-            Guid projectId = await ApiClient.CreateProjectAsync(new()
+            Guid? projectId = await ApiClient.Project.Create.PostAsync(new()
             {
                 Name = ProjectName,
                 Preset = projectPreset,
                 OrganizationId = null
             });
+
+            if (projectId is null)
+            {
+                ApiError = true;
+                return;
+            }
 
             NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString()));
         }

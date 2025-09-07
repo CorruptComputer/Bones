@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.GenericItems;
 
 /// <summary>
-///     Model for the GenericItems.GenericItems table
+///   Model for the GenericItems.GenericItems table
 /// </summary>
 [Table(TableNames.GenericItem.GenericItems, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
@@ -13,7 +13,7 @@ namespace Bones.Database.DbSets.GenericItems;
 public class GenericItem
 {
     /// <summary>
-    ///     Internal ID for the Item
+    ///   Internal ID for the Item
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; init; }

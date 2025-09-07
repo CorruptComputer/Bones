@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.AssetManagement;
 public sealed class QueueDeleteAssetVersionByIdDb(BonesDbContext dbContext) : IRequestHandler<QueueDeleteAssetVersionByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for deleting an ItemVersion.
+    ///   DB Command for deleting an ItemVersion.
     /// </summary>
     /// <param name="AssetVersionId">Internal ID of the item version</param>
     public record Command(Guid AssetVersionId) : IRequest<CommandResponse>;

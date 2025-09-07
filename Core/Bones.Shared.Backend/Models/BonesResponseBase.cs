@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Bones.Shared.Backend.Models;
 
 /// <summary>
-///     Basic response of any request.
+///   Basic response of any request.
 /// </summary>
 [Serializable]
 [JsonSerializable(typeof(BonesResponseBase))]
@@ -16,7 +16,7 @@ public record BonesResponseBase
     protected BonesResponseBase() { }
 
     /// <summary>
-    ///     Was the command successful?
+    ///   Was the command successful?
     /// </summary>
     [MemberNotNullWhen(returnValue: false, nameof(FailureReasons))]
     public required bool Success { get; init; }
@@ -27,7 +27,7 @@ public record BonesResponseBase
     public bool Forbidden { get; init; } = false;
 
     /// <summary>
-    ///     If the command failed, why?
+    ///   If the command failed, why?
     /// </summary>
     public Dictionary<string, List<string>>? FailureReasons { get; init; }
 

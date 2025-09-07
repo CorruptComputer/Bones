@@ -17,7 +17,7 @@ public class RegisterUserTests : TestBase
     private readonly RegisterUser.Validator _validator = new();
 
     /// <summary>
-    ///     Checks that the validator and handler both validate the email address.
+    ///   Checks that the validator and handler both validate the email address.
     /// </summary>
     /// <param name="email">The email address to test.</param>
     [Theory]
@@ -44,7 +44,7 @@ public class RegisterUserTests : TestBase
     }
 
     /// <summary>
-    ///     Checks that the validator and handler both validate the password.
+    ///   Checks that the validator and handler both validate the password.
     /// </summary>
     /// <param name="password">The password to test.</param>
     [Theory]
@@ -68,7 +68,7 @@ public class RegisterUserTests : TestBase
     }
 
     /// <summary>
-    ///     Checks that the validator and handler both pass this.
+    ///   Checks that the validator and handler both pass this.
     /// </summary>
     [Fact]
     public async Task ValidEmailAndPassword_ShouldSucceed()
@@ -84,7 +84,7 @@ public class RegisterUserTests : TestBase
     }
 
     /// <summary>
-    ///     Checks that the handler actually queues a confirmation email for the new account
+    ///   Checks that the handler actually queues a confirmation email for the new account
     /// </summary>
     [Fact]
     public async Task RegisteringUser_ShouldQueueConfirmationEmail()
@@ -107,7 +107,7 @@ public class RegisterUserTests : TestBase
     }
 
     /// <summary>
-    ///     Checks that the validator passes this and the handler fails it.
+    ///   Checks that the validator passes this and the handler fails it.
     /// </summary>
     [Fact]
     public async Task DuplicateEmail_ShouldFail()

@@ -1,4 +1,4 @@
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -9,7 +9,7 @@ namespace Bones.Api.Models.Project;
 public record GetProjectItemLayoutResponse
 {
     /// <summary>
-    ///     Internal ID for the ItemLayout
+    ///   Internal ID for the ItemLayout
     /// </summary>
     [JsonRequired]
     public required Guid ItemLayoutId { get; init; }
@@ -39,7 +39,7 @@ public record GetProjectItemLayoutResponse
     public record ItemLayoutVersionModel
     {
         /// <summary>
-        ///     Internal ID for the ItemLayoutVersion
+        ///   Internal ID for the ItemLayoutVersion
         /// </summary>
         [JsonRequired]
         public required Guid ItemLayoutVersionId { get; init; }
@@ -77,7 +77,7 @@ public record GetProjectItemLayoutResponse
     public record ItemFieldModel
     {
         /// <summary>
-        ///     Internal ID for the ItemField
+        ///   Internal ID for the ItemField
         /// </summary>
         [JsonRequired]
         public required Guid ItemFieldId { get; init; }

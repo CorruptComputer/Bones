@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
 using Bones.Logic.Features.Projects;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
@@ -11,7 +11,7 @@ namespace Bones.Logic.Features.GenericItem;
 public sealed class CreateItemField(ISender sender) : IRequestHandler<CreateItemField.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a new item field
+    ///   DB Command for creating a new item field
     /// </summary>
     /// <param name="ProjectId">Internal ID of the project</param>
     /// <param name="Name"></param>

@@ -144,7 +144,11 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
     {
         if (WorkItemQueueIdProvidedInQueryString && WorkItemQueueId.HasValue)
         {
-            GetWorkItemQueueByIdResponse itemQueue = await apiClient.GetWorkItemQueueByIdAsync(WorkItemQueueId.Value);
+            GetWorkItemQueueByIdResponse? itemQueue = await apiClient.WorkItemQueue[WorkItemQueueId.Value].GetAsync();
+            if (itemQueue is null)
+            {
+                return;
+            }
             SelectedProject = itemQueue.ProjectId;
             SelectedInitiative = itemQueue.InitiativeId;
             WorkItemQueueName = itemQueue.QueueName;
@@ -159,7 +163,11 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
 
     private async Task GetProjects()
     {
-        List<GetProjectQuickSelectResponse> resp = await apiClient.GetProjectQuickSelectAsync();
+        List<GetProjectQuickSelectResponse>? resp = await apiClient.Project.Projects.QuickSelect.GetAsync();
+        if (resp is null)
+        {
+            return;
+        }
 
         Projects = [.. resp.Select(x => new DropDownModel
         {
@@ -170,7 +178,11 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
 
     private async Task GetInitiatives(Guid projectId)
     {
-        List<GetInitiativesInProjectResponse> resp = await apiClient.GetInitiativesInProjectAsync(projectId);
+        List<GetInitiativesInProjectResponse>? resp = await apiClient.Project[projectId].Initiatives.GetAsync();
+        if (resp is null)
+        {
+            return;
+        }
 
         Initiatives = [.. resp.Select(x => new DropDownModel
         {
@@ -181,7 +193,11 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
 
     private async Task GetWorkItemQueues(Guid initiativeId)
     {
-        List<GetWorkItemQueuesInInitiativeResponse> resp = await apiClient.GetWorkItemQueuesInInitiativeAsync(initiativeId);
+        List<GetWorkItemQueuesInInitiativeResponse>? resp = await apiClient.Initiative[initiativeId].WorkItemQueues.GetAsync();
+        if (resp is null)
+        {
+            return;
+        }
 
         WorkItemQueues = [.. resp.Select(x => new DropDownModel
         {
@@ -197,7 +213,11 @@ public partial class CreateWorkItemPage(BonesApiClient apiClient) : ComponentBas
             return;
         }
 
-        List<GetProjectLayoutsResponse> resp = await apiClient.GetProjectLayoutsAsync(SelectedProject.Value, ItemLayoutUse.WorkItems);
+        List<GetProjectLayoutsResponse>? resp = await apiClient.Project[SelectedProject.Value].Layouts.GetAsync(req => req.QueryParameters.LayoutUseAsItemLayoutUse = ItemLayoutUse.WorkItems);
+        if (resp is null)
+        {
+            return;
+        }
 
         WorkItemLayouts = [.. resp.Select(x => new DropDownModel
         {

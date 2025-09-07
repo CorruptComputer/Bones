@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.GenericItem;
 public sealed class GetItemLayoutByIdDb(BonesDbContext dbContext) : IRequestHandler<GetItemLayoutByIdDb.Query, QueryResponse<GenericItemLayout?>>
 {
     /// <summary>
-    ///     DB Query for getting an item layout by its ID
+    ///   DB Query for getting an item layout by its ID
     /// </summary>
     /// <param name="ItemLayoutId">Internal ID of the item layout</param>
     public record Query(Guid ItemLayoutId) : IRequest<QueryResponse<GenericItemLayout?>>;

@@ -11,7 +11,7 @@
       <IsPackable>false</IsPackable>
       <IsPublishable>false</IsPublishable>
       <IsTestProject>true</IsTestProject>
-      
+
       <!-- Assembly info -->
       <VersionPrefix>0.0.1</VersionPrefix>
       <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
@@ -50,7 +50,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Bones.Testing.IntegrationTests.Shared\Bones.Testing.IntegrationTests.Shared.csproj" />
-      <ProjectReference Include="..\..\..\Frontend\Bones.Api.Client\Bones.Api.Client.csproj" /> <!-- Might make sense to move this to Core -->
+      <ProjectReference Include="..\..\..\Core\Bones.Api.Client\Bones.Api.Client.csproj" /> <!-- Might make sense to move this to Core -->
     </ItemGroup>
 
     <ItemGroup>

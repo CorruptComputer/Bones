@@ -1,4 +1,7 @@
+using ReQuesty.Runtime.Abstractions;
+
 namespace Bones.Api.IntegrationTests.Account;
+
 /// <summary>
 ///   Provides tests for the session functionality of the Bones API.
 /// </summary>
@@ -17,7 +20,7 @@ public class SessionTests : TestBase
         GetOrCreateMySessionResponse? session = null;
         if (ApiClient is not null)
         {
-            Task<GetOrCreateMySessionResponse> task = ApiClient.GetOrCreateMySessionAsync();
+            Task<GetOrCreateMySessionResponse?> task = ApiClient.Account.My.Session.GetAsync();
             await task.ShouldNotThrowAsync();
             session = await task;
         }
@@ -39,7 +42,7 @@ public class SessionTests : TestBase
 
         if (ApiClient is not null)
         {
-            Task<GetOrCreateMySessionResponse> task = ApiClient.GetOrCreateMySessionAsync();
+            Task<GetOrCreateMySessionResponse?> task = ApiClient.Account.My.Session.GetAsync();
 
             await task.ShouldThrowAsync<ApiException>();
         }
@@ -57,9 +60,9 @@ public class SessionTests : TestBase
 
         if (ApiClient is not null)
         {
-            Task<GetOrCreateMySessionResponse> task = ApiClient.GetOrCreateMySessionAsync(Guid.NewGuid().ToString());
+            Task<GetOrCreateMySessionResponse?> task = ApiClient.Account.My.Session.GetAsync(req => req.QueryParameters.SessionId = Guid.NewGuid().ToString());
 
-            await task.ShouldThrowAsync<ApiException<ErrorResponse>>();
+            await task.ShouldThrowAsync<ApiException>();
         }
     }
 }

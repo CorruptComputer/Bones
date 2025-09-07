@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bones.Logic;
 
 /// <summary>
-///     Autofac module for the Bones database
+///   Autofac module for the Bones logic layer
 /// </summary>
 public class BonesBackendModule(IServiceCollection services) : Module
 {

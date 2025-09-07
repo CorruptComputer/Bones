@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.Projects.Presets;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects;
 
@@ -8,7 +8,7 @@ namespace Bones.Logic.Features.Projects;
 public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<CreateProjectWithPreset.Command, CommandResponse>
 {
     /// <summary>
-    ///     Command for creating a Project with a preset.
+    ///   Command for creating a Project with a preset.
     /// </summary>
     /// <param name="Name">Name of the project</param>
     /// <param name="Preset">The preset to use</param>

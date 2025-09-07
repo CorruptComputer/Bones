@@ -17,11 +17,11 @@ public class GetLoginAttemptsForRateLimitingDbTests : TestBase
     [Fact]
     public async Task Validator_ShouldStopInvalidInputs()
     {
-        QueryResponse<int> result = await Sender.Send(new GetLoginAttemptsForRateLimitingDb.Query(null!, DateTimeOffset.UtcNow));
+        GetLoginAttemptsForRateLimitingDb.Validator validator = new();
+        GetLoginAttemptsForRateLimitingDb.Query query = new(null!, DateTimeOffset.UtcNow);
 
-        result.Success.ShouldBeFalse();
-        result.FailureReasons.ShouldContainKey("RequestingIp");
-        result.FailureReasons["RequestingIp"].ShouldNotBeNull();
+        TestValidationResult<GetLoginAttemptsForRateLimitingDb.Query> validationResult = await validator.TestValidateAsync(query);
+        validationResult.ShouldHaveValidationErrorFor(x => x.RequestingIp);
     }
 
     /// <summary>

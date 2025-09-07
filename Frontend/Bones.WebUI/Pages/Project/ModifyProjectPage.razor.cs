@@ -1,12 +1,10 @@
-using Bones.Shared.Consts;
-using Bones.Shared.Enums;
-
 namespace Bones.WebUI.Pages.Project;
 
 /// <summary>
 ///   Modify a project page
 /// </summary>
-public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
+/// <param name="apiClient"></param>
+public partial class ModifyProjectPage(BonesApiClient apiClient) : ComponentBase
 {
     /// <summary>
     ///   The ID of the project to load
@@ -87,7 +85,13 @@ public partial class ModifyProjectPage(BonesApiClient ApiClient) : ComponentBase
 
     private async Task FetchFromAPI()
     {
-        GetProjectSettingsResponse settingsResponse = await ApiClient.GetProjectSettingsAsync(ProjectId);
+        GetProjectSettingsResponse? settingsResponse = await apiClient.Project[ProjectId].Settings.GetAsync();
+        if (settingsResponse == null)
+        {
+            //ApiError = true;
+            return;
+        }
+
         ProjectName = settingsResponse.ProjectName;
         OwnerType = settingsResponse.OwnerType;
         OwnerId = settingsResponse.OwnerId;

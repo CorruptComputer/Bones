@@ -1,5 +1,4 @@
-using Bones.Shared.Consts;
-using Bones.Shared.Enums;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Pages.Project;
 
@@ -69,14 +68,19 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
 
     private async Task FetchFromAPI()
     {
-        if (ItemFieldId == null)
+        if (ItemFieldId is null)
         {
             return;
         }
 
-        GetLatestItemFieldVersionResponse latestVersion = await ApiClient.GetLatestItemFieldVersionAsync(ItemFieldId.Value);
+        GetLatestItemFieldVersionResponse? latestVersion = await ApiClient.GenericItem.Fields[ItemFieldId.Value].Latest.GetAsync();
+        if (latestVersion is null)
+        {
+            ApiError = true;
+            return;
+        }
         FieldName = latestVersion.Name;
-        FieldType = latestVersion.Type;
+        FieldType = latestVersion.Type ?? FieldType.TextField;
         IsRequired = latestVersion.IsRequired;
 
         CanBeNegative = latestVersion.CanBeNegative ?? false;
@@ -105,12 +109,12 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
             if (ItemFieldId == null)
             {
                 CreateItemFieldRequest request = GetNewFieldRequest();
-                await ApiClient.CreateItemFieldAsync(ProjectId, request);
+                await ApiClient.Project[ProjectId].Fields.Create.PostAsync(request);
             }
             else
             {
                 CreateItemFieldVersionRequest request = GetNewVersionRequest();
-                await ApiClient.CreateItemFieldVersionAsync(ProjectId, ItemFieldId.Value, request);
+                await ApiClient.Project[ProjectId].Fields[ItemFieldId.Value].PostAsync(request);
             }
 
 

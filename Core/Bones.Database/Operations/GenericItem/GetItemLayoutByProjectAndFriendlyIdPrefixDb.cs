@@ -7,7 +7,7 @@ public sealed class GetItemLayoutByProjectAndFriendlyIdPrefixDb(BonesDbContext d
     : IRequestHandler<GetItemLayoutByProjectAndFriendlyIdPrefixDb.Query, QueryResponse<GenericItemLayout?>>
 {
     /// <summary>
-    ///     DB Query for getting an item layout by its ID
+    ///   DB Query for getting an item layout by its ID
     /// </summary>
     /// <param name="ProjectId">Internal ID of the item layout</param>
     /// <param name="FriendlyIdPrefix"></param>

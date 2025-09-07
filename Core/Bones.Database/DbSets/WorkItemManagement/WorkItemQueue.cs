@@ -4,14 +4,14 @@ using Bones.Database.DbSets.ProjectManagement;
 namespace Bones.Database.DbSets.WorkItemManagement;
 
 /// <summary>
-///     Model for the WorkItemManagement.WorkItemQueues table
+///   Model for the WorkItemManagement.WorkItemQueues table
 /// </summary>
 [Table(TableNames.WorkItemManagement.WorkItemQueues, Schema = SchemaNames.WorkItemManagement)]
 [PrimaryKey(nameof(Id))]
 public class WorkItemQueue
 {
     /// <summary>
-    ///     Internal ID for the Slot
+    ///   Internal ID for the Slot
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

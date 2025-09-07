@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.AccountManagement;
 
 /// <summary>
-///     Model for the AccountManagement.BonesRoleClaims table.
+///   Model for the AccountManagement.BonesRoleClaims table.
 /// </summary>
 [Table(TableNames.AccountManagement.BonesRoleClaims, Schema = SchemaNames.AccountManagement)]
 public class BonesRoleClaim : IdentityRoleClaim<Guid>

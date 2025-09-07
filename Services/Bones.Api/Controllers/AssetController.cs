@@ -6,7 +6,7 @@ using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Controllers;
 

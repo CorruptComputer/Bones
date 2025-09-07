@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Bones.Shared.Consts;
 using Bones.WebUI.Consts;
 using Microsoft.AspNetCore.Components.Authorization;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Services.Singleton;
 
@@ -36,28 +37,28 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
 
             try
             {
-                GetOrCreateMySessionResponse session = await ApiClient.GetOrCreateMySessionAsync(sessionId.Value.ToString(), CancellationToken.None);
+                GetOrCreateMySessionResponse? session = await ApiClient.Account.My.Session.GetAsync(req => req.QueryParameters.SessionId = sessionId.Value.ToString());
+                if (session is null)
+                {
+                    throw new InvalidOperationException("Received null session from API");
+                }
 
                 base64LocalStorageKey = session.Base64LocalStorageKey;
                 await sessionStorageService.SetItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, base64LocalStorageKey, CancellationToken.None);
             }
             // 404 is a definite sign the session invalid
-            catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+            catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
             {
                 logger.LogWarning("Session not found or invalidated server-side, clearing local storage");
-                await ApiClient.LogoutAsync(CancellationToken.None);
-                await localStorageService.ClearAsync(CancellationToken.None);
-                await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+                await ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
 
                 return new(new());
             }
             // 401 means the auth token is invalid, which means the session will be gone too
-            catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.Unauthorized)
+            catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.Unauthorized)
             {
                 logger.LogWarning("Token is invalid, clearing local storage");
-                await ApiClient.LogoutAsync(CancellationToken.None);
-                await localStorageService.ClearAsync(CancellationToken.None);
-                await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+                await ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
 
                 return new(new());
             }
@@ -68,9 +69,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error getting session from server, clearing local storage to prevent getting stuck in a broken state");
-                await ApiClient.LogoutAsync(CancellationToken.None);
-                await localStorageService.ClearAsync(CancellationToken.None);
-                await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+                await ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
 
                 return new(new());
             }
@@ -90,7 +89,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
             new(BonesClaimTypes.User.DISPLAY_NAME, currentUser.DisplayName)
         ];
 
-        // SysAdmin stuff is dynamically hidden from the UI, organizational roles are handled server side 
+        // SysAdmin stuff is dynamically hidden from the UI, organizational roles are handled server side
         if (currentUser.IsSysAdmin)
         {
             logger.LogInformation("User is a system administrator");
@@ -135,9 +134,10 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
     public async Task ClearCurrentUserInBrowserStorageAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Clearing current user from browser storage");
-        await ApiClient.LogoutAsync(cancellationToken);
+        await ApiClient.Login.Logout.PostAsync(cancellationToken: cancellationToken);
         await localStorageService.RemoveItemAsync(LocalStorageConsts.CURRENT_USER_KEY, cancellationToken);
         await localStorageService.RemoveItemAsync(LocalStorageConsts.SESSION_ID_KEY, cancellationToken);
+        await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }

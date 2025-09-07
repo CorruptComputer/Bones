@@ -54,7 +54,13 @@ public partial class InitiativeDashboardPage(BonesApiClient ApiClient) : Compone
 
     private async Task FetchFromAPI()
     {
-        GetInitiativeDashboardResponse dashboardResponse = await ApiClient.GetInitiativeDashboardAsync(InitiativeId);
+        GetInitiativeDashboardResponse? dashboardResponse = await ApiClient.Initiative[InitiativeId].Dashboard.GetAsync();
+
+        if (dashboardResponse is null)
+        {
+            return;
+        }
+
         InitiativeName = dashboardResponse.InitiativeName;
         QueueCount = dashboardResponse.WorkItemQueueCount;
         QueueList = dashboardResponse.WorkItemQueues;

@@ -5,14 +5,14 @@ using Bones.Database.DbSets.ProjectManagement;
 namespace Bones.Database.DbSets.OrganizationManagement;
 
 /// <summary>
-///     Model for the OrganizationManagement.BonesOrganizations table
+///   Model for the OrganizationManagement.BonesOrganizations table
 /// </summary>
 [Table(TableNames.OrganizationManagement.BonesOrganizations, Schema = SchemaNames.OrganizationManagement)]
 [PrimaryKey(nameof(Id))]
 public class BonesOrganization
 {
     /// <summary>
-    ///     Internal ID for the BonesOrganization
+    ///   Internal ID for the BonesOrganization
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

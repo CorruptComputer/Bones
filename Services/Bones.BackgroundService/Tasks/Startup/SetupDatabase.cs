@@ -4,6 +4,7 @@ using Bones.Database.Operations.AccountManagement;
 using Bones.Database.Operations.System;
 using Bones.Database.Operations.System.TestingDataSetup;
 using Bones.Logic.Features.Projects;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Backend.Models;
 
 namespace Bones.BackgroundService.Tasks.Startup;
@@ -30,7 +31,7 @@ internal class SetupDatabase(ISender sender, BonesBackendConfiguration config) :
                 return;
             }
 
-            CommandResponse testProjectCreated = await Sender.Send(new CreateProjectWithPreset.Command("Test Project", Shared.Enums.ProjectPreset.Test, testUser, CreateWorkItems: true), cancellationToken);
+            CommandResponse testProjectCreated = await Sender.Send(new CreateProjectWithPreset.Command("Test Project", ProjectPreset.Test, testUser, CreateWorkItems: true), cancellationToken);
 
             if (!testProjectCreated.Success)
             {

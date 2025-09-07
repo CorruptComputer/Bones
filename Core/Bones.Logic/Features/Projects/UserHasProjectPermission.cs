@@ -3,7 +3,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.Operations.ProjectManagement.Projects;
 using Bones.Logic.Features.Organizations;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Identity;
 

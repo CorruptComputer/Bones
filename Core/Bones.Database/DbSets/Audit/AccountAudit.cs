@@ -4,14 +4,14 @@ using Bones.Database.DbSets.AccountManagement;
 namespace Bones.Database.DbSets.Audit;
 
 /// <summary>
-///     Model for the Audit.AccountAudits table
+///   Model for the Audit.AccountAudits table
 /// </summary>
 [Table(TableNames.Audit.AccountAudits, Schema = SchemaNames.Audit)]
 [PrimaryKey(nameof(Id))]
 public class AccountAudit
 {
     /// <summary>
-    ///     Internal ID for the audit
+    ///   Internal ID for the audit
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; init; }

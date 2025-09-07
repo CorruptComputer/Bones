@@ -4,7 +4,7 @@ using Bones.Shared;
 namespace Bones.WebUI.Components.Auth;
 
 /// <summary>
-///   The page for registering user accounts 
+///   The page for registering user accounts
 /// </summary>
 public partial class RegisterComponent(BonesApiClient ApiClient) : ComponentBase
 {
@@ -20,7 +20,7 @@ public partial class RegisterComponent(BonesApiClient ApiClient) : ComponentBase
         {
             RegistrationApiError = false;
 
-            await ApiClient.RegisterAsync(new()
+            await ApiClient.Anonymous.Register.PostAsync(new()
             {
                 Email = RegisterForm.Email,
                 Password = RegisterForm.Password

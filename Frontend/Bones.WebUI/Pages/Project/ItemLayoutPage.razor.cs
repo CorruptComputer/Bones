@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using Bones.Shared.Consts;
-using Bones.Shared.Enums;
 using MudBlazor;
+using ReQuesty.Runtime.Abstractions;
+using FieldType = Bones.Api.Client.AutoGen.Models.FieldType;
 
 namespace Bones.WebUI.Pages.Project;
 
@@ -50,7 +50,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
     private bool SelectedItemFieldsLoading { get; set; } = true;
 
-    private Dictionary<uint, SelectedItemFieldVersionModel> SelectedItemFields { get; set; } = [];
+    private Dictionary<int, SelectedItemFieldVersionModel> SelectedItemFields { get; set; } = [];
 
     // This is a hack so we can bind this to the UI to show a validation error for
     [Range(1, int.MaxValue, ErrorMessage = "At least one field must be selected")]
@@ -79,22 +79,37 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
     private async Task FetchFromAPI()
     {
-        GetProjectItemFieldsResponse settingsResponse = await apiClient.GetProjectItemFieldsAsync(ProjectId);
+        GetProjectItemFieldsResponse? settingsResponse = await apiClient.Project[ProjectId].Fields.GetAsync();
+
+        if (settingsResponse is null)
+        {
+            ApiError = true;
+            return;
+        }
+
         ItemFieldsList = settingsResponse.ItemFields;
         ItemFieldsListLoading = false;
 
-        if (ItemLayoutId == null || ItemLayoutId == Guid.Empty)
+        // Its a new layout, so no need to fetch existing data
+        if (ItemLayoutId is null || ItemLayoutId == Guid.Empty)
         {
             SelectedItemFieldsLoading = false;
             return;
         }
 
-        GetItemLayoutVersionResponse layoutResponse = await apiClient.GetLatestItemLayoutVersionAsync(ItemLayoutId.Value);
+        GetItemLayoutVersionResponse? layoutResponse = await apiClient.GenericItem.Layouts[ItemLayoutId.Value].Latest.GetAsync();
+
+        if (layoutResponse is null)
+        {
+            ApiError = true;
+            return;
+        }
+
         LayoutName = layoutResponse.Name;
-        LayoutUse = layoutResponse.LayoutUse;
+        LayoutUse = layoutResponse.LayoutUse!.Value; // Let it throw if its null, as this would mean the server sent an invalid value for the enum
         FriendlyIdPrefix = layoutResponse.FriendlyIdPrefix;
-        SelectedItemFields = ItemFieldsList.Where(f => layoutResponse.FieldVersions.ContainsValue(f.FieldVersionId))
-            .ToDictionary(f => uint.Parse(layoutResponse.FieldVersions.First(v => v.Value == f.FieldVersionId).Key), f => new SelectedItemFieldVersionModel(f.FieldVersionId, f.Name, f.IsRequired, f.Type));
+        SelectedItemFields = ItemFieldsList.Where(f => layoutResponse.FieldVersions.Any(fv => fv.Value == f.FieldVersionId))
+            .ToDictionary(f => layoutResponse.FieldVersions.First(v => v.Value == f.FieldVersionId).Key, f => new SelectedItemFieldVersionModel(f.FieldVersionId, f.Name, f.IsRequired, f.Type!.Value));
 
         SelectedItemFieldsLoading = false;
     }
@@ -113,21 +128,28 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
             if (ItemLayoutId.HasValue)
             {
-                await apiClient.CreateItemLayoutVersionAsync(ProjectId, ItemLayoutId.Value, new CreateItemLayoutVersionRequest()
+                await apiClient.Project[ProjectId].Layouts[ItemLayoutId.Value].PostAsync(new CreateItemLayoutVersionRequest()
                 {
                     Name = LayoutName,
                     LayoutUse = LayoutUse,
-                    FieldVersions = SelectedItemFields.ToDictionary(x => x.Key.ToString(), x => x.Value.FieldVersionId)
+                    FieldVersions = [..SelectedItemFields.Select(x => new Int32GuidKeyValuePair()
+                    {
+                        Key = x.Key,
+                        Value = x.Value.FieldVersionId
+                    })]
                 });
             }
             else
             {
-                await apiClient.CreateItemLayoutAsync(ProjectId, new CreateItemLayoutRequest()
+                await apiClient.Project[ProjectId].Layouts.Create.PostAsync(new CreateItemLayoutRequest()
                 {
                     Name = LayoutName,
                     LayoutUse = LayoutUse,
-                    FriendlyIdPrefix = FriendlyIdPrefix,
-                    FieldVersions = SelectedItemFields.ToDictionary(x => x.Key.ToString(), x => x.Value.FieldVersionId)
+                    FieldVersions = [..SelectedItemFields.Select(x => new Int32GuidKeyValuePair()
+                    {
+                        Key = x.Key,
+                        Value = x.Value.FieldVersionId
+                    })]
                 });
             }
 
@@ -154,7 +176,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        SelectedItemFields.Add((uint)SelectedItemFields.Count, new(field.FieldVersionId, field.Name, field.IsRequired, field.Type));
+        SelectedItemFields.Add(SelectedItemFields.Count, new(field.FieldVersionId, field.Name, field.IsRequired, field.Type!.Value));
         SelectedItemFieldsCount = SelectedItemFields.Count;
 
         Form.Validate();
@@ -162,13 +184,13 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
     private void MoveFieldDown(Guid FieldVersionId)
     {
-        if (!SelectedItemFields.Any(x => x.Value.FieldVersionId == FieldVersionId) || SelectedItemFields[(uint)(SelectedItemFields.Count - 1)].FieldVersionId == FieldVersionId)
+        if (!SelectedItemFields.Any(x => x.Value.FieldVersionId == FieldVersionId) || SelectedItemFields[(SelectedItemFields.Count - 1)].FieldVersionId == FieldVersionId)
         {
             return;
         }
 
-        KeyValuePair<uint, SelectedItemFieldVersionModel> fieldToMoveDown = SelectedItemFields.First(x => x.Value.FieldVersionId == FieldVersionId);
-        KeyValuePair<uint, SelectedItemFieldVersionModel> fieldToMoveUp = SelectedItemFields.First(x => x.Key == fieldToMoveDown.Key + 1);
+        KeyValuePair<int, SelectedItemFieldVersionModel> fieldToMoveDown = SelectedItemFields.First(x => x.Value.FieldVersionId == FieldVersionId);
+        KeyValuePair<int, SelectedItemFieldVersionModel> fieldToMoveUp = SelectedItemFields.First(x => x.Key == fieldToMoveDown.Key + 1);
 
         SelectedItemFields[fieldToMoveDown.Key] = fieldToMoveUp.Value;
         SelectedItemFields[fieldToMoveUp.Key] = fieldToMoveDown.Value;
@@ -184,8 +206,8 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        KeyValuePair<uint, SelectedItemFieldVersionModel> fieldToMoveUp = SelectedItemFields.First(x => x.Value.FieldVersionId == FieldVersionId);
-        KeyValuePair<uint, SelectedItemFieldVersionModel> fieldToMoveDown = SelectedItemFields.First(x => x.Key == fieldToMoveUp.Key - 1);
+        KeyValuePair<int, SelectedItemFieldVersionModel> fieldToMoveUp = SelectedItemFields.First(x => x.Value.FieldVersionId == FieldVersionId);
+        KeyValuePair<int, SelectedItemFieldVersionModel> fieldToMoveDown = SelectedItemFields.First(x => x.Key == fieldToMoveUp.Key - 1);
 
         SelectedItemFields[fieldToMoveUp.Key] = fieldToMoveDown.Value;
         SelectedItemFields[fieldToMoveDown.Key] = fieldToMoveUp.Value;
@@ -207,14 +229,14 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        KeyValuePair<uint, SelectedItemFieldVersionModel> fieldToRemove = SelectedItemFields.First(x => x.Value.FieldVersionId == FieldVersionId);
+        KeyValuePair<int, SelectedItemFieldVersionModel> fieldToRemove = SelectedItemFields.First(x => x.Value.FieldVersionId == FieldVersionId);
 
-        for (uint i = fieldToRemove.Key; i < SelectedItemFields.Count - 1; i++)
+        for (int i = fieldToRemove.Key; i < SelectedItemFields.Count - 1; i++)
         {
             SelectedItemFields[i] = SelectedItemFields[i + 1];
         }
 
-        SelectedItemFields.Remove((uint)(SelectedItemFields.Count - 1));
+        SelectedItemFields.Remove(SelectedItemFields.Count - 1);
         SelectedItemFieldsCount = SelectedItemFields.Count;
 
         Form.Validate();
@@ -227,5 +249,5 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
     /// <param name="Name"></param>
     /// <param name="IsRequired"></param>
     /// <param name="Type"></param>
-    public record SelectedItemFieldVersionModel(Guid FieldVersionId, string Name, bool IsRequired, Shared.Enums.FieldType Type);
+    public record SelectedItemFieldVersionModel(Guid FieldVersionId, string Name, bool IsRequired, FieldType Type);
 }

@@ -12,8 +12,6 @@ public partial class WebUiBaseUrlComponent(BonesApiClient apiClient) : Component
 
     private WebUiBaseUrlFormModel Model { get; set; } = new();
 
-
-
     /// <summary>
     ///   Fires when the page is loaded
     /// </summary>
@@ -39,7 +37,7 @@ public partial class WebUiBaseUrlComponent(BonesApiClient apiClient) : Component
 
         try
         {
-            string baseUrl = await apiClient.GetWebUiBaseUrlAsync();
+            string? baseUrl = await apiClient.SysAdmin.Settings.WebUiBaseUrl.GetAsync();
             Model = new()
             {
                 BaseUrl = baseUrl
@@ -61,10 +59,10 @@ public partial class WebUiBaseUrlComponent(BonesApiClient apiClient) : Component
 
         try
         {
-            await apiClient.SaveWebUiBaseUrlAsync(new()
+            await apiClient.SysAdmin.Settings.WebUiBaseUrl.PostAsync(new()
             {
-                BaseUrl = Model.BaseUrl,
-                ChangeReason = Model.ChangeReason
+                BaseUrl = Model.BaseUrl ?? string.Empty,
+                ChangeReason = Model.ChangeReason ?? string.Empty
             });
         }
         catch

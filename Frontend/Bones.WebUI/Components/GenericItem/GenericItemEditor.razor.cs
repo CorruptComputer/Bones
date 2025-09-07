@@ -1,8 +1,7 @@
 using System.Globalization;
 using System.Net;
-using Bones.Shared.Consts;
-using Bones.Shared.Enums;
 using Bones.Shared.Exceptions;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Components.GenericItem;
 
@@ -103,7 +102,14 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
 
         try
         {
-            List<GetLatestItemLayoutVersionFieldsResponse>? layoutFields = await apiClient.GetLatestItemLayoutVersionFieldsAsync(ItemLayoutId.Value);
+            List<GetLatestItemLayoutVersionFieldsResponse>? layoutFields = await apiClient.GenericItem.Layouts[ItemLayoutId.Value].Latest.Fields.GetAsync();
+
+            if (layoutFields is null)
+            {
+                _apiError = true;
+                return;
+            }
+
             _currentValues = layoutFields.Select(lf => new ItemValueDisplayModel
             {
                 OrderNumber = lf.OrderNumber,
@@ -142,7 +148,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
             }
 
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
             logger.LogWarning("Item layout with ID {ItemLayoutId} not found, redirecting to home", ItemLayoutId);
             navManager.NavigateTo("/");
@@ -165,7 +171,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
 
         try
         {
-            GetWorkItemByIdResponse? workItemResponse = await apiClient.GetWorkItemByIdAsync(ItemId.Value);
+            GetWorkItemByIdResponse? workItemResponse = await apiClient.WorkItem[ItemId.Value].GetAsync();
 
             if (workItemResponse is not null)
             {
@@ -176,7 +182,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                 InitializeFieldStores();
             }
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
             logger.LogWarning("Work item with ID {WorkItemId} not found, redirecting to home", ItemId);
             navManager.NavigateTo("/");
@@ -199,8 +205,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
 
         try
         {
-            GetAssetByIdResponse? assetResponse = await apiClient.GetAssetByIdAsync(ItemId.Value);
-
+            GetAssetByIdResponse? assetResponse = await apiClient.Asset[ItemId.Value].GetAsync();
             if (assetResponse is not null)
             {
                 _originalValues = _currentValues = assetResponse.ItemValues.OrderBy(x => x.OrderNumber);
@@ -210,7 +215,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                 InitializeFieldStores();
             }
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.NotFound)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
             logger.LogWarning("Work item with ID {WorkItemId} not found, redirecting to home", ItemId);
             navManager.NavigateTo("/");
@@ -341,7 +346,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                     FieldValues = values
                 };
 
-                await apiClient.CreateWorkItemActionAsync(request);
+                await apiClient.WorkItem.Action.Create.PostAsync(request);
 
                 navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, WorkItemQueueId.Value.ToString()));
             }
@@ -355,7 +360,14 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                     FieldValues = values
                 };
 
-                AssetActionResponse resp = await apiClient.CreateAssetActionAsync(request);
+                AssetActionResponse? resp = await apiClient.Asset.Action.Create.PostAsync(request);
+
+                if (resp is null)
+                {
+                    _apiError = true;
+                    logger.LogError("Create asset request returned null response");
+                    return;
+                }
 
                 navManager.NavigateTo(FrontEndUrls.Asset.VIEW_ASSET.Replace(FrontEndUrls.Asset.ASSET_ID_PLACEHOLDER, resp.AssetId.ToString()));
             }
@@ -452,7 +464,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                     FieldValues = values
                 };
 
-                await apiClient.CreateWorkItemVersionActionAsync(request);
+                await apiClient.WorkItem.Action.CreateVersion.PostAsync(request);
             }
             else if (ItemType == ItemLayoutUse.Assets)
             {
@@ -465,7 +477,7 @@ public partial class GenericItemEditor(BonesApiClient apiClient, NavigationManag
                     FieldValues = values
                 };
 
-                await apiClient.CreateAssetVersionActionAsync(request);
+                await apiClient.Asset.Action.CreateVersion.PostAsync(request);
             }
 
             _editing = false;

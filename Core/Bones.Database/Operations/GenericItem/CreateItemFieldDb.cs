@@ -9,7 +9,7 @@ namespace Bones.Database.Operations.GenericItem;
 public sealed class CreateItemFieldDb(BonesDbContext dbContext) : IRequestHandler<CreateItemFieldDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a new item field
+    ///   DB Command for creating a new item field
     /// </summary>
     /// <param name="ProjectId">Internal ID of the project</param>
     public record Command(Guid ProjectId) : IRequest<CommandResponse>;

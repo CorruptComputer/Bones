@@ -8,7 +8,7 @@ namespace Bones.Database.Operations.Audit;
 public class AddLoginAuditDb(BonesDbContext dbContext) : IRequestHandler<AddLoginAuditDb.Command, CommandResponse>
 {
     /// <summary>
-    ///     DB Command for creating a new login audit entry
+    ///   DB Command for creating a new login audit entry
     /// </summary>
     /// <param name="Email"></param>
     /// <param name="Successful"></param>

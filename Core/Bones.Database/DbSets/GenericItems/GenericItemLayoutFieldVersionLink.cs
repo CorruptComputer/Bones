@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.GenericItems;
 
 /// <summary>
-///     Model for the GenericItems.GenericItemLayoutFieldVersionLinks table
+///   Model for the GenericItems.GenericItemLayoutFieldVersionLinks table
 /// </summary>
 [Table(TableNames.GenericItem.GenericItemLayoutFieldVersionLinks, Schema = SchemaNames.GenericItem)]
 [PrimaryKey(nameof(Id))]
 public class GenericItemLayoutFieldVersionLink
 {
     /// <summary>
-    ///     Internal ID for the GenericItemLayoutFieldVersionLink
+    ///   Internal ID for the GenericItemLayoutFieldVersionLink
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; init; }
@@ -19,7 +19,7 @@ public class GenericItemLayoutFieldVersionLink
     /// <summary>
     ///   The order number for which this field should be displayed
     /// </summary>
-    public required uint OrderNumber { get; set; }
+    public required int OrderNumber { get; set; }
 
     /// <summary>
     ///   The layout version for this link

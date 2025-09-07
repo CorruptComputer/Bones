@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bones.Database.DbSets.GenericItems;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.GenericItem;
 
@@ -11,14 +11,14 @@ namespace Bones.Api.Models.GenericItem;
 public sealed record GetLatestItemLayoutVersionFieldsResponse
 {
     /// <summary>
-    ///     ID for the ItemFieldVersion
+    ///   ID for the ItemFieldVersion
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
     ///   The order number for which this field should be displayed
     /// </summary>
-    public required uint OrderNumber { get; init; }
+    public required int OrderNumber { get; init; }
 
     /// <summary>
     ///   The name of this ItemFieldVersion

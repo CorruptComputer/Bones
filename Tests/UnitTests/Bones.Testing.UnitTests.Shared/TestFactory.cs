@@ -58,11 +58,10 @@ internal static class TestFactory
                     .ReadFrom.Services(serviceProvider)
             );
 
-            services.AddValidatorsFromAssemblyContaining(typeof(BonesBackendModule), includeInternalTypes: true);
-            services.AddValidatorsFromAssemblyContaining(typeof(BonesDatabaseModule), includeInternalTypes: true);
-
             hostBuilder.ConfigureContainer<ContainerBuilder>((containerCtx, containerBuilder) =>
             {
+                containerBuilder.RegisterModule(new BonesBackendModule(services));
+                containerBuilder.RegisterModule(new BonesDatabaseModule(services));
                 containerBuilder.RegisterModule(new UnitTestModule([typeof(BonesBackendModule).Assembly, typeof(BonesDatabaseModule).Assembly]));
             });
 

@@ -1,4 +1,6 @@
 using System.Net;
+using Bones.WebUI.Services.Singleton;
+using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Pages.Account;
 
@@ -7,7 +9,8 @@ namespace Bones.WebUI.Pages.Account;
 /// </summary>
 /// <param name="apiClient"></param>
 /// <param name="navManager"></param>
-public partial class ChangeEmailPage(BonesApiClient apiClient, NavigationManager navManager) : ComponentBase
+/// <param name="authStateProvider"></param>
+public partial class ChangeEmailPage(BonesApiClient apiClient, NavigationManager navManager, BonesAuthenticationStateProvider authStateProvider) : ComponentBase
 {
     private bool FormValid { get; set; }
 
@@ -45,15 +48,18 @@ public partial class ChangeEmailPage(BonesApiClient apiClient, NavigationManager
 
         try
         {
-            await apiClient.ChangeMyEmailAsync(new()
+            await apiClient.Account.My.Email.PutAsync(new()
             {
                 NewEmail = NewEmail
             });
         }
-        catch (ApiException<ErrorResponse> ex) when (ex.StatusCode == (int)HttpStatusCode.BadRequest)
+        catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.BadRequest)
         {
-            // This is a validation error from the API
-            ValidationErrors = [.. ex.Result.Errors.Select(e => $"{e.Key}: {string.Join('\n', e.Value)}")];
+            ValidationErrors = [];
+            foreach (string key in ex.Data.Keys)
+            {
+                ValidationErrors = [.. ValidationErrors, $"{key}: {string.Join('\n', ex.Data[key])}"];
+            }
             FormValid = false;
 
             return;
@@ -73,7 +79,7 @@ public partial class ChangeEmailPage(BonesApiClient apiClient, NavigationManager
             return;
         }
 
-        await apiClient.LogoutAsync();
+        await authStateProvider.ClearCurrentUserInBrowserStorageAsync(CancellationToken.None);
         navManager.NavigateTo("/");
     }
 }

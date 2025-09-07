@@ -10,7 +10,7 @@ namespace Bones.Logic.Features.GenericItem;
 public sealed class GetItemFieldsByProject(ISender sender) : IRequestHandler<GetItemFieldsByProject.Query, QueryResponse<List<GenericItemField>>>
 {
     /// <summary>
-    ///     Query for getting the item fields in a project
+    ///   Query for getting the item fields in a project
     /// </summary>
     /// <param name="ProjectId">Internal ID of the project</param>
     /// <param name="RequestingUser">The user requesting this</param>

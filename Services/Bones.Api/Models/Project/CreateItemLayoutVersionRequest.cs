@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.GenericItem;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
 
@@ -25,10 +25,10 @@ public class CreateItemLayoutVersionRequest
     ///   The field versions to use for this layout version
     /// </summary>
     [JsonRequired]
-    public required Dictionary<uint, Guid> FieldVersions { get; init; }
+    public required List<KeyValuePair<int, Guid>> FieldVersions { get; init; }
 
     internal CreateItemLayoutVersion.Command ToInternal(Guid projectId, BonesUser user)
     {
-        return new(projectId, Name, LayoutUse, FieldVersions, user);
+        return new(projectId, Name, LayoutUse, FieldVersions.ToDictionary(), user);
     }
 }

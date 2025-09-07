@@ -5,14 +5,14 @@ using Bones.Database.DbSets.System;
 namespace Bones.Database.DbSets.Audit;
 
 /// <summary>
-///     Model for the Audit.SystemAudits table
+///   Model for the Audit.SystemAudits table
 /// </summary>
 [Table(TableNames.Audit.SystemAudits, Schema = SchemaNames.Audit)]
 [PrimaryKey(nameof(Id))]
 public class SystemAudit
 {
     /// <summary>
-    ///     Internal ID for the audit
+    ///   Internal ID for the audit
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; init; }

@@ -6,7 +6,7 @@ using Bones.Database.DbSets.GenericItems;
 using Bones.Api.Models.Project;
 using Bones.Logic.Features.GenericItem;
 using Bones.Api.Controllers.Base;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Controllers;
 
@@ -18,7 +18,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
 {
     #region GET
     /// <summary>
-    ///     Gets the projects for the current user, or specified organization
+    ///   Gets the projects for the current user, or specified organization
     /// </summary>
     /// <param name="request">The request</param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
@@ -44,7 +44,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Gets the users current quick select projects
+    ///   Gets the users current quick select projects
     /// </summary>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("projects/quick-select", Name = "GetProjectQuickSelectAsync")]
@@ -76,7 +76,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Gets a projects dashboard information
+    ///   Gets a projects dashboard information
     /// </summary>
     /// <param name="projectId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
@@ -129,7 +129,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Gets a projects info by Id
+    ///   Gets a projects info by Id
     /// </summary>
     /// <param name="projectId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
@@ -165,7 +165,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Gets the Item Fields available in a project
+    ///   Gets the Item Fields available in a project
     /// </summary>
     /// <param name="projectId">The ID of the project</param>
     /// <returns>The item fields in the project.</returns>
@@ -182,6 +182,27 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
         }
 
         return GetProjectItemFieldsResponse.FromInternalList(fieldResponse.Result);
+    }
+
+        /// <summary>
+    ///   Gets the item layouts for a project, optionally filtered by the uses they are enabled for
+    /// </summary>
+    /// <param name="projectId">The ID of the project</param>
+    /// <param name="layoutUse"></param>
+    /// <returns>The latest version of the requested layout.</returns>
+    [HttpGet("{projectId:guid}/layouts", Name = "GetProjectLayoutsAsync")]
+    [ProducesResponseType<List<GetProjectLayoutsResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<List<GetProjectLayoutsResponse>>> GetProjectLayoutsAsync(Guid projectId, [FromQuery] ItemLayoutUse? layoutUse = null)
+    {
+        QueryResponse<List<GenericItemLayout>> layouts = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, await GetCurrentBonesUserAsync()));
+
+        if (!layouts.Success || layouts.Result is null)
+        {
+            return BadRequest(ErrorResponse.FromQueryResponse(layouts));
+        }
+
+        return GetProjectLayoutsResponse.FromInternalList(layouts.Result, layoutUse);
     }
 
     /// <summary>
@@ -208,7 +229,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
 
     #region POST
     /// <summary>
-    ///     Creates a new project
+    ///   Creates a new project
     /// </summary>
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
@@ -230,7 +251,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Creates a new project
+    ///   Creates a new project
     /// </summary>
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="request">The request</param>
@@ -250,7 +271,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Creates a new item field in a project
+    ///   Creates a new item field in a project
     /// </summary>
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="request">The request</param>
@@ -270,7 +291,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Creates a new item field version in a project
+    ///   Creates a new item field version in a project
     /// </summary>
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="fieldId">The ID of the field to add this version to</param>
@@ -291,7 +312,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Creates a new item layout in a project
+    ///   Creates a new item layout in a project
     /// </summary>
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="request">The request</param>
@@ -311,7 +332,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     }
 
     /// <summary>
-    ///     Creates a new item layout version in a project
+    ///   Creates a new item layout version in a project
     /// </summary>
     /// <param name="projectId">The ID of the project to create this in</param>
     /// <param name="layoutId">The ID of the layout to add this version to</param>

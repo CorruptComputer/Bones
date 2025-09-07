@@ -17,7 +17,7 @@ public sealed class InitiativeController(ISender sender) : AuthenticatedControll
 {
     #region GET
     /// <summary>
-    ///     Gets a initiatives dashboard information
+    ///   Gets a initiatives dashboard information
     /// </summary>
     /// <param name="initiativeId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>

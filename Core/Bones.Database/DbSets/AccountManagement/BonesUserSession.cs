@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Bones.Database.DbSets.AccountManagement;
 
 /// <summary>
-///     Model for the AccountManagement.BonesUserSessions table.
+///   Model for the AccountManagement.BonesUserSessions table.
 /// </summary>
 [Table(TableNames.AccountManagement.BonesUserSessions, Schema = SchemaNames.AccountManagement)]
 [PrimaryKey(nameof(Id))]

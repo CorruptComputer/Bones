@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
 using Bones.Logic.Features.Projects;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.GenericItem;
@@ -19,7 +19,7 @@ public class CreateItemLayout(ISender sender) : IRequestHandler<CreateItemLayout
     /// <param name="FriendlyIdPrefix"></param>
     /// <param name="FieldVersions"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Command(Guid ProjectId, string Name, ItemLayoutUse LayoutUse, string FriendlyIdPrefix, Dictionary<uint, Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
+    public sealed record Command(Guid ProjectId, string Name, ItemLayoutUse LayoutUse, string FriendlyIdPrefix, Dictionary<int, Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>

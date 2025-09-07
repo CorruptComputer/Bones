@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bones.Database.Extensions;
 
 /// <summary>
-///     Extensions for IServiceProvider
+///   Extensions for IServiceProvider
 /// </summary>
 public static class ServiceProviderExtensions
 {
     /// <summary>
-    ///     Sets up the database, migrating if needed and setting up initial settings
+    ///   Sets up the database, migrating if needed and setting up initial settings
     /// </summary>
     /// <param name="serviceProvider"></param>
     /// <param name="cancellationToken"></param>

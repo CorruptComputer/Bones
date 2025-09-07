@@ -3,14 +3,14 @@ using Bones.Database.DbConsts;
 namespace Bones.Database.DbSets.System;
 
 /// <summary>
-///     Model for the System.ConfirmationEmailDeadQueue table
+///   Model for the System.ConfirmationEmailDeadQueue table
 /// </summary>
 [Table(TableNames.System.ConfirmationEmailDeadQueue, Schema = SchemaNames.System)]
 [PrimaryKey(nameof(Id))]
 public class ConfirmationEmailDeadQueue
 {
     /// <summary>
-    ///     Internal ID for the dead Queue item
+    ///   Internal ID for the dead Queue item
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

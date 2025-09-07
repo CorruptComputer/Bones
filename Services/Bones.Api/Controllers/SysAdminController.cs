@@ -17,7 +17,7 @@ public class SysAdminController(ISender sender) : AuthenticatedControllerBase(se
 {
     #region GET
     /// <summary>
-    ///     Gets the system admin dashboard
+    ///   Gets the system admin dashboard
     /// </summary>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("dashboard", Name = "GetSystemAdminDashboardAsync")]

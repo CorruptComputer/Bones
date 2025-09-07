@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.GenericItems;
 using Bones.Database.Operations.GenericItem;
-using Bones.Shared.Enums;
+using Bones.Shared.Backend.Enums;
 using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.UnitTests.Operations.GenericItem.ItemFields;
