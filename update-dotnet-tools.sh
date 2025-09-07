@@ -7,9 +7,9 @@ cd Core/Bones.Database
 dotnet tool update dotnet-ef
 dotnet tool restore
 
-cd ../../Frontend/Bones.Api.Client/
-dotnet tool update nswag.consolecore
-dotnet tool restore
+#cd ../../Core/Bones.Api.Client/
+#dotnet tool update nswag.consolecore
+#dotnet tool restore
 
 cd ../Bones.WebUI/
 dotnet workload restore

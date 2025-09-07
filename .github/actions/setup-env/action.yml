@@ -24,9 +24,9 @@ runs:
         cd Services/Bones.BackgroundService
         dotnet tool restore
         cd ../..
-        cd Frontend/Bones.Api.Client
-        dotnet tool restore
-        cd ../..
+        #cd Core/Bones.Api.Client
+        #dotnet tool restore
+        #cd ../..
         cd Frontend/Bones.WebUI
         dotnet workload restore
         cd ../..
