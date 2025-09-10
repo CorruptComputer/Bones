@@ -57,7 +57,7 @@
         <PackageReference Include="Questy" Version="0.0.4" />
         <PackageReference Include="Questy.Autofac" Version="0.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.9" />
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.8" />
     </ItemGroup>
 
