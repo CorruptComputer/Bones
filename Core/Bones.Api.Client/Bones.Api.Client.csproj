@@ -34,7 +34,7 @@
     </Target>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
         <PackageReference Include="ReQuesty.Runtime" Version="0.0.3" />
     </ItemGroup>
 
@@ -48,6 +48,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
         <Content Update="nswag.json">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
