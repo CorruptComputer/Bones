@@ -41,13 +41,13 @@ jobs:
           cd ../..
 
       - name: Upload DEB Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: 'Server DEB build.zip'
           path: ./publish/*.linux-x64.deb
 
       - name: Upload RPM Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: 'Server RPM build.zip'
           path: ./publish/*.linux-x64.rpm
