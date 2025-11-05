@@ -22,7 +22,7 @@ public sealed class GetInitiativesByProject(ISender sender) : IRequestHandler<Ge
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.ProjectId).NotNull().NotEmpty();
+            RuleFor(x => x.ProjectId).NotEmpty();
             RuleFor(x => x.RequestingUser).NotNull();
         }
     }

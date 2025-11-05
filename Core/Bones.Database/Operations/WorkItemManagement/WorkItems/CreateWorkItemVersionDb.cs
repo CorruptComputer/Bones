@@ -24,11 +24,11 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
         public Validator()
         {
             RuleFor(x => x.WorkItemId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(256);
+            RuleFor(x => x.Title).NotEmpty().MaximumLength(256);
             RuleFor(x => x.WorkItemLayoutVersionId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.Values).NotNull().ChildRules(dict =>
             {
-                dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
+                dict.RuleForEach(x => x.Keys).NotEmpty();
             });
             RuleFor(x => x.ActionDateTime).NotNull().LessThanOrEqualTo(DateTimeOffset.UtcNow)
                 .WithMessage("Action date time cannot be in the future");

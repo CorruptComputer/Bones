@@ -18,7 +18,7 @@ public sealed class IsPasswordExpired(UserManager<BonesUser> userManager) : IReq
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.Email).NotNull().NotEmpty().EmailAddress();
+            RuleFor(x => x.Email).NotEmpty().EmailAddress();
         }
     }
 

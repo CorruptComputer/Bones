@@ -18,8 +18,9 @@ public class CreateItemLayout(ISender sender) : IRequestHandler<CreateItemLayout
     /// <param name="LayoutUse"></param>
     /// <param name="FriendlyIdPrefix"></param>
     /// <param name="FieldVersions"></param>
+    /// <param name="AssigneeDefinitions"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Command(Guid ProjectId, string Name, ItemLayoutUse LayoutUse, string FriendlyIdPrefix, Dictionary<int, Guid> FieldVersions, BonesUser RequestingUser) : IRequest<CommandResponse>;
+    public sealed record Command(Guid ProjectId, string Name, ItemLayoutUse LayoutUse, string FriendlyIdPrefix, Dictionary<int, Guid> FieldVersions, Dictionary<int, (string name, AssignmentType assType, SelectionType selType)> AssigneeDefinitions, BonesUser RequestingUser) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>
@@ -27,11 +28,12 @@ public class CreateItemLayout(ISender sender) : IRequestHandler<CreateItemLayout
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.LayoutUse).NotNull().NotEqual(ItemLayoutUse.None);
-            RuleFor(x => x.FriendlyIdPrefix).NotNull().NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
-            RuleFor(x => x.FieldVersions).NotNull().NotEmpty();
+            RuleFor(x => x.FriendlyIdPrefix).NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
+            RuleFor(x => x.FieldVersions).NotEmpty();
+            RuleFor(x => x.AssigneeDefinitions).NotEmpty();
             RuleFor(x => x.RequestingUser).NotNull();
         }
     }
@@ -82,7 +84,7 @@ public class CreateItemLayout(ISender sender) : IRequestHandler<CreateItemLayout
             return createLayoutResponse;
         }
 
-        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDb.Command(createLayoutResponse.Ids[nameof(ItemLayout)], request.Name, request.LayoutUse, request.FieldVersions), cancellationToken);
+        CommandResponse createLayoutVersionResponse = await sender.Send(new CreateItemLayoutVersionDb.Command(createLayoutResponse.Ids[nameof(ItemLayout)], request.Name, request.LayoutUse, request.FieldVersions, request.AssigneeDefinitions), cancellationToken);
 
         if (!createLayoutVersionResponse.Success)
         {

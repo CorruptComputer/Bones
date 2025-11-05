@@ -32,15 +32,14 @@ internal static class TableNames
 
     internal static class Item
     {
+        internal const string Items = "Items";
+        internal const string ItemAssigneeDefinitions = "ItemAssigneeDefinitions";
         internal const string ItemFields = "ItemFields";
         internal const string ItemFieldListEntries = "ItemFieldListEntries";
         internal const string ItemFieldVersions = "ItemFieldVersions";
-
         internal const string ItemLayouts = "ItemLayouts";
         internal const string ItemLayoutFieldVersionLinks = "ItemLayoutFieldVersionLinks";
         internal const string ItemLayoutVersions = "ItemLayoutVersions";
-
-        internal const string Items = "Items";
         internal const string ItemValues = "ItemValues";
         internal const string ItemVersions = "ItemVersions";
     }

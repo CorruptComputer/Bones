@@ -28,7 +28,7 @@ public sealed class CreateWorkItemVersion(ISender sender) : IRequestHandler<Crea
         {
             RuleFor(x => x.WorkItemId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.WorkItemLayoutId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(256);
+            RuleFor(x => x.Title).NotEmpty().MaximumLength(256);
             RuleFor(x => x.Values).NotNull().ChildRules(dict =>
             {
                 dict.RuleForEach(x => x.Keys).NotNull().NotEqual(Guid.Empty);

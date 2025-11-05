@@ -320,7 +320,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpPost("{projectId:guid}/layouts/create", Name = "CreateItemLayoutAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateItemLayoutAsync(Guid projectId, [FromBody] CreateItemLayoutRequest request)
     {
@@ -330,7 +330,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Ids[nameof(ItemLayout)];
+        return Ok();
     }
 
     /// <summary>
@@ -341,9 +341,9 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     /// <param name="request">The request</param>
     /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpPost("{projectId:guid}/layouts/{layoutId:guid}", Name = "CreateItemLayoutVersionAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateItemLayoutVersionAsync(Guid projectId, Guid layoutId, [FromBody] CreateItemLayoutVersionRequest request)
+    public async ValueTask<ActionResult> CreateItemLayoutVersionAsync(Guid projectId, Guid layoutId, [FromBody] CreateItemLayoutVersionRequest request)
     {
         CommandResponse response = await Sender.Send(request.ToInternal(layoutId, await GetCurrentBonesUserAsync()));
         if (!response.Success)
@@ -351,7 +351,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Ids[nameof(ItemLayoutVersion)];
+        return Ok();
     }
 
     #endregion

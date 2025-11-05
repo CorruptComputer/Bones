@@ -18,8 +18,8 @@ public sealed class UpdateProfileDb(BonesDbContext dbContext) : IRequestHandler<
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.UserId).NotNull().NotEmpty();
-            RuleFor(x => x.DisplayName).NotNull().NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.DisplayName).NotEmpty();
         }
     }
 

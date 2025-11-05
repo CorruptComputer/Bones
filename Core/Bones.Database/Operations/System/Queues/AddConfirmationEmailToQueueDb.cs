@@ -21,7 +21,7 @@ public sealed class AddConfirmationEmailToQueueDb(BonesDbContext dbContext) : IR
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.EmailTo).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
+            RuleFor(x => x.EmailTo).NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
             {
                 if (!await email.IsValidEmailAsync(cancel))
                 {
@@ -29,7 +29,7 @@ public sealed class AddConfirmationEmailToQueueDb(BonesDbContext dbContext) : IR
                 }
             });
 
-            RuleFor(x => x.ConfirmationLink).NotNull().NotEmpty().Custom((str, ctx) =>
+            RuleFor(x => x.ConfirmationLink).NotEmpty().Custom((str, ctx) =>
             {
                 try
                 {

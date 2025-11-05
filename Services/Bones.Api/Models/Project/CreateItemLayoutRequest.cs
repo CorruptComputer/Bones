@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Bones.Api.Models.Item;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Logic.Features.Item;
 using Bones.Shared.Backend.Enums;
@@ -35,8 +36,14 @@ public class CreateItemLayoutRequest
     [JsonRequired]
     public required List<KeyValuePair<int, Guid>> FieldVersions { get; init; }
 
+    /// <summary>
+    ///   The assignee definitions to use for the initial layout version
+    /// </summary>
+    [JsonRequired]
+    public required List<ItemAssigneeDefinitionModel> AssigneeDefinitions { get; init; }
+
     internal CreateItemLayout.Command ToInternal(Guid projectId, BonesUser user)
     {
-        return new(projectId, Name, LayoutUse, FriendlyIdPrefix, FieldVersions.ToDictionary(), user);
+        return new(projectId, Name, LayoutUse, FriendlyIdPrefix, FieldVersions.ToDictionary(), AssigneeDefinitions.ToDictionary(ad => ad.OrderNumber, ad => (ad.Name, ad.AssignmentType, ad.SelectionType)), user);
     }
 }

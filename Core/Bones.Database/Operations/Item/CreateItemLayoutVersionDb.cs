@@ -14,7 +14,8 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
     /// <param name="Name"></param>
     /// <param name="LayoutUse"></param>
     /// <param name="FieldVersions"></param>
-    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUse LayoutUse, Dictionary<int, Guid> FieldVersions) : IRequest<CommandResponse>;
+    /// <param name="AssigneeDefinitions"></param>
+    public sealed record Command(Guid ItemLayoutId, string Name, ItemLayoutUse LayoutUse, Dictionary<int, Guid> FieldVersions, Dictionary<int, (string name, AssignmentType assType, SelectionType selType)> AssigneeDefinitions) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public class Validator : AbstractValidator<Command>
@@ -50,6 +51,31 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
 
                     return true;
                 }).WithMessage("Field version order numbers must be unique");
+            RuleFor(x => x.AssigneeDefinitions).NotEmpty()
+                .Must(x => x.All(a => string.IsNullOrWhiteSpace(a.Value.name))).WithMessage("Assignment names cannot be empty")
+                .Must(x =>
+                {
+                    IEnumerable<IGrouping<string, KeyValuePair<int, (string name, AssignmentType assType, SelectionType selType)>>> g = x.GroupBy(f => f.Value.name);
+                    if (!g.All(f => f.Count() == 1))
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }).WithMessage("Assignment names must be unique")
+                .Must(x => x.All(f => f.Key < 0)).WithMessage("Assignment order numbers cannot less than 0")
+                .Must(x => x.Any(f => f.Key == 0)).WithMessage("Assignment order numbers must begin with 0")
+                .Must(x => x.All(f => f.Key < x.Count)).WithMessage("Assignment order numbers must be within range")
+                .Must(x =>
+                {
+                    IEnumerable<IGrouping<int, KeyValuePair<int, (string name, AssignmentType assType, SelectionType selType)>>> g = x.GroupBy(f => f.Key);
+                    if (!g.All(f => f.Count() == 1))
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }).WithMessage("Assignment order numbers must be unique");
         }
     }
 
@@ -85,7 +111,8 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
             LayoutUse = request.LayoutUse,
             Version = (layout.LatestVersion?.Version ?? 0) + 1,
             CreateDateTime = DateTimeOffset.Now,
-            FieldLinks = []
+            FieldLinks = [],
+            AssigneeDefinitions = []
         };
 
         lv.FieldLinks.AddRange(request.FieldVersions.Select(fv => new ItemLayoutFieldVersionLink
@@ -93,6 +120,14 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
             OrderNumber = fv.Key,
             LayoutVersion = lv,
             FieldVersion = fieldVersions.Single(f => f.Id == fv.Value)
+        }));
+
+        lv.AssigneeDefinitions.AddRange(request.AssigneeDefinitions.Select(ad => new ItemAssigneeDefinition
+        {
+            OrderIndex = ad.Key,
+            Name = ad.Value.name,
+            AssignmentType = ad.Value.assType,
+            SelectionType = ad.Value.selType
         }));
 
         EntityEntry<ItemLayoutVersion> added = dbContext.ItemLayoutVersions.Add(lv);

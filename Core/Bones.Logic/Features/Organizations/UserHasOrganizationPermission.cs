@@ -21,7 +21,7 @@ public sealed class UserHasOrganizationPermission : IRequestHandler<UserHasOrgan
         {
             RuleFor(x => x.OrganizationId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.User).NotNull();
-            RuleFor(x => x.Claim).NotNull().NotEmpty().Custom((claim, ctx) =>
+            RuleFor(x => x.Claim).NotEmpty().Custom((claim, ctx) =>
             {
                 if (claim.Contains('|'))
                 {

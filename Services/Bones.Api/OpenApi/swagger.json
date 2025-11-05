@@ -2598,15 +2598,7 @@
             }
           },
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -4115,6 +4107,13 @@
         ],
         "description": "Action to assign a work item to a user."
       },
+      "AssignmentType": {
+        "enum": [
+          "user",
+          "role"
+        ],
+        "type": "string"
+      },
       "ChangeMyEmailRequest": {
         "required": [
           "newEmail"
@@ -4335,6 +4334,7 @@
       },
       "CreateItemLayoutRequest": {
         "required": [
+          "assigneeDefinitions",
           "fieldVersions",
           "friendlyIdPrefix",
           "layoutUse",
@@ -4360,6 +4360,13 @@
               "$ref": "#/components/schemas/Int32GuidKeyValuePair"
             },
             "description": "The field versions to use for the initial layout version"
+          },
+          "assigneeDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemAssigneeDefinitionModel"
+            },
+            "description": "The assignee definitions to use for the initial layout version"
           }
         },
         "additionalProperties": false,
@@ -4367,6 +4374,7 @@
       },
       "CreateItemLayoutVersionRequest": {
         "required": [
+          "assigneeDefinitions",
           "fieldVersions",
           "layoutUse",
           "name"
@@ -4386,6 +4394,13 @@
               "$ref": "#/components/schemas/Int32GuidKeyValuePair"
             },
             "description": "The field versions to use for this layout version"
+          },
+          "assigneeDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemAssigneeDefinitionModel"
+            },
+            "description": "The assignee definitions to use for the initial layout version"
           }
         },
         "additionalProperties": false,
@@ -4898,6 +4913,7 @@
       },
       "GetItemLayoutVersionResponse": {
         "required": [
+          "assigneeDefinitions",
           "fieldVersions",
           "friendlyIdPrefix",
           "latestVersion",
@@ -4947,6 +4963,13 @@
               "$ref": "#/components/schemas/Int32GuidKeyValuePair"
             },
             "description": "The field versions"
+          },
+          "assigneeDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemAssigneeDefinitionModel"
+            },
+            "description": "The assignee definitions for the layout version"
           }
         },
         "additionalProperties": false,
@@ -5626,6 +5649,34 @@
         },
         "additionalProperties": false
       },
+      "ItemAssigneeDefinitionModel": {
+        "required": [
+          "assignmentType",
+          "name",
+          "orderNumber",
+          "selectionType"
+        ],
+        "type": "object",
+        "properties": {
+          "orderNumber": {
+            "type": "integer",
+            "description": "The order number of the assignee definition",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the assignee definition"
+          },
+          "assignmentType": {
+            "$ref": "#/components/schemas/AssignmentType"
+          },
+          "selectionType": {
+            "$ref": "#/components/schemas/SelectionType"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Definition of an item assignee"
+      },
       "ItemFieldModel": {
         "required": [
           "isRequired",
@@ -6091,6 +6142,13 @@
         },
         "additionalProperties": false,
         "description": "Request for the SaveWebUiBaseUrlAsync endpoint"
+      },
+      "SelectionType": {
+        "enum": [
+          "single",
+          "multiple"
+        ],
+        "type": "string"
       },
       "StringStringListKeyValuePair": {
         "type": "object",

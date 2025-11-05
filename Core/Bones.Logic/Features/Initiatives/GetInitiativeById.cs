@@ -20,7 +20,7 @@ public sealed class GetInitiativeById(ISender sender) : IRequestHandler<GetIniti
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.InitiativeId).NotNull().NotEmpty();
+            RuleFor(x => x.InitiativeId).NotEmpty();
             RuleFor(x => x.RequestingUser).NotNull();
         }
     }

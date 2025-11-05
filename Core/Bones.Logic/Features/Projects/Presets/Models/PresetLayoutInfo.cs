@@ -11,6 +11,8 @@ internal record PresetLayoutInfo
 
     internal required Dictionary<int, PresetFields> Fields { get; init; }
 
+    internal required Dictionary<int, (string name, AssignmentType assType, SelectionType selType)> AssigneeDefinitions { get; init; }
+
     [MemberNotNullWhen(true, nameof(LayoutId))]
     [MemberNotNullWhen(true, nameof(LayoutVersionId))]
     internal bool Created => LayoutId.HasValue && LayoutVersionId.HasValue;

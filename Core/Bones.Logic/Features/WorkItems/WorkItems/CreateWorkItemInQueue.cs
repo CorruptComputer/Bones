@@ -31,10 +31,10 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
             RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.WorkItemLayoutId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.WorkItemLayoutVersionId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(256);
+            RuleFor(x => x.Title).NotEmpty().MaximumLength(256);
             RuleFor(x => x.Values).NotNull().ChildRules(dict =>
             {
-                dict.RuleForEach(x => x.Keys).NotNull().NotEmpty();
+                dict.RuleForEach(x => x.Keys).NotEmpty();
             });
             RuleFor(x => x.ActionDateTime).NotNull().LessThanOrEqualTo(DateTimeOffset.UtcNow)
                 .WithMessage("Action date time cannot be in the future");

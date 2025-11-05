@@ -52,6 +52,13 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
     private Dictionary<int, SelectedItemFieldVersionModel> SelectedItemFields { get; set; } = [];
 
+    private bool ItemAssigneesListLoading { get; set; } = true;
+    private List<ItemAssigneeDefinitionModel> ItemAssigneesList { get; set; } = [];
+
+    private string NewAssigneeName { get; set; } = string.Empty;
+    private AssignmentType NewAssigneeAssignmentType { get; set; } = AssignmentType.User;
+    private SelectionType NewAssigneeSelectionType { get; set; } = SelectionType.Single;
+
     // This is a hack so we can bind this to the UI to show a validation error for
     [Range(1, int.MaxValue, ErrorMessage = "At least one field must be selected")]
     private int SelectedItemFieldsCount { get; set; } = 0;
@@ -112,6 +119,9 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             .ToDictionary(f => layoutResponse.FieldVersions.First(v => v.Value == f.FieldVersionId).Key, f => new SelectedItemFieldVersionModel(f.FieldVersionId, f.Name, f.IsRequired, f.Type!.Value));
 
         SelectedItemFieldsLoading = false;
+
+        ItemAssigneesList = layoutResponse.AssigneeDefinitions;
+        ItemAssigneesListLoading = false;
     }
 
     private async Task SendCreateRequestAsync()
@@ -136,7 +146,8 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
                     {
                         Key = x.Key,
                         Value = x.Value.FieldVersionId
-                    })]
+                    })],
+                    AssigneeDefinitions = ItemAssigneesList
                 });
             }
             else
@@ -238,6 +249,89 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
         SelectedItemFields.Remove(SelectedItemFields.Count - 1);
         SelectedItemFieldsCount = SelectedItemFields.Count;
+
+        Form.Validate();
+    }
+
+    private void AddAssignee()
+    {
+        if (NewAssigneeName.Trim().Length == 0 || ItemAssigneesList.Any(x => x.Name == NewAssigneeName.Trim()))
+        {
+            return;
+        }
+
+        ItemAssigneesList.Add(new ItemAssigneeDefinitionModel()
+        {
+            Name = NewAssigneeName.Trim(),
+            AssignmentType = NewAssigneeAssignmentType,
+            SelectionType = NewAssigneeSelectionType,
+            OrderNumber = ItemAssigneesList.Count
+        });
+
+        Form.Validate();
+    }
+
+    private void MoveAssigneeDown(string assigneeName)
+    {
+        if (!ItemAssigneesList.Any(x => x.Name == assigneeName))
+        {
+            return;
+        }
+
+        ItemAssigneeDefinitionModel assigneeToMoveDown = ItemAssigneesList.First(x => x.Name == assigneeName);
+        ItemAssigneeDefinitionModel? assigneeToMoveUp = ItemAssigneesList.FirstOrDefault(x => x.OrderNumber == assigneeToMoveDown.OrderNumber + 1);
+
+        if (assigneeToMoveUp == null)
+        {
+            return;
+        }
+
+        assigneeToMoveDown.OrderNumber++;
+        assigneeToMoveUp.OrderNumber--;
+
+        ItemAssigneesList = [.. ItemAssigneesList.OrderBy(a => a.OrderNumber)];
+
+        Form.Validate();
+    }
+
+    private void MoveAssigneeUp(string assigneeName)
+    {
+        if (!ItemAssigneesList.Any(x => x.Name == assigneeName))
+        {
+            return;
+        }
+
+        ItemAssigneeDefinitionModel assigneeToMoveUp = ItemAssigneesList.First(x => x.Name == assigneeName);
+        ItemAssigneeDefinitionModel? assigneeToMoveDown = ItemAssigneesList.FirstOrDefault(x => x.OrderNumber == assigneeToMoveUp.OrderNumber - 1);
+
+        if (assigneeToMoveDown == null)
+        {
+            return;
+        }
+
+        assigneeToMoveUp.OrderNumber--;
+        assigneeToMoveDown.OrderNumber++;
+
+        ItemAssigneesList = [.. ItemAssigneesList.OrderBy(a => a.OrderNumber)];
+
+        Form.Validate();
+    }
+
+    private void RemoveAssignee(string assigneeName)
+    {
+        if (!ItemAssigneesList.Any(x => x.Name == assigneeName))
+        {
+            return;
+        }
+
+        ItemAssigneeDefinitionModel assigneeToRemove = ItemAssigneesList.First(x => x.Name == assigneeName);
+
+        ItemAssigneesList.Remove(assigneeToRemove);
+
+        for (int i = assigneeToRemove.OrderNumber; i < ItemAssigneesList.Count; i++)
+        {
+            ItemAssigneesList[i].OrderNumber--;
+        }
 
         Form.Validate();
     }

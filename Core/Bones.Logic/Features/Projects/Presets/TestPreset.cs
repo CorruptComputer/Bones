@@ -102,6 +102,10 @@ internal class TestPreset : PresetBase
                     { 4, PresetFields.OptionalLargeText },
                     { 5, PresetFields.OptionalBoolean },
                     { 6, PresetFields.OptionalDateTime }
+                },
+                AssigneeDefinitions = new()
+                {
+                    { 0, ("Assigned to", AssignmentType.User, SelectionType.Single) },
                 }
             }
         },
@@ -116,6 +120,10 @@ internal class TestPreset : PresetBase
                     { 0, PresetFields.RequiredSmallText },
                     { 1, PresetFields.RequiredInteger },
                     { 4, PresetFields.OptionalLargeText }
+                },
+                AssigneeDefinitions = new()
+                {
+                    { 0, ("Owning Group", AssignmentType.Role, SelectionType.Single) },
                 }
             }
         }

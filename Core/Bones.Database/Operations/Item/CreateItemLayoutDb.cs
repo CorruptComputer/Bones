@@ -21,7 +21,7 @@ public class CreateItemLayoutDb(BonesDbContext dbContext) : IRequestHandler<Crea
         public Validator()
         {
             RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.FriendlyIdPrefix).NotNull().NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
+            RuleFor(x => x.FriendlyIdPrefix).NotEmpty().MaximumLength(6).Matches(@"^[a-zA-Z]*$");
         }
     }
 

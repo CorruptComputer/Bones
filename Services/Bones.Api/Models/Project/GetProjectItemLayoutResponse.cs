@@ -1,3 +1,4 @@
+using Bones.Api.Models.Item;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
@@ -61,6 +62,12 @@ public record GetProjectItemLayoutResponse
         /// </summary>
         [JsonRequired]
         public required List<ItemFieldModel> Fields { get; init; }
+
+        /// <summary>
+        ///   The assignee definitions for the layout version
+        /// </summary>
+        [JsonRequired]
+        public required List<ItemAssigneeDefinitionModel> AssigneeDefinitions { get; init; }
 
         /// <summary>
         ///   Disables creating of new items using this layout version,

@@ -25,7 +25,7 @@ public class UserHasWorkItemPermission(ISender sender)
         {
             RuleFor(x => x.WorkItemId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.User).NotNull();
-            RuleFor(x => x.Claim).NotNull().NotEmpty().Custom((claim, ctx) =>
+            RuleFor(x => x.Claim).NotEmpty().Custom((claim, ctx) =>
             {
                 if (claim.Contains('|'))
                 {

@@ -18,7 +18,7 @@ public sealed class SetPasswordLastSetDateTimeDb(BonesDbContext dbContext) : IRe
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.UserId).NotNull().NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.LastSetDateTime).NotNull();
         }
     }

@@ -28,7 +28,7 @@ public sealed class UserHasInitiativePermission(UserManager<BonesUser> userManag
         {
             RuleFor(x => x.InitiativeId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.User).NotNull();
-            RuleFor(x => x.Claim).NotNull().NotEmpty().Custom((claim, ctx) =>
+            RuleFor(x => x.Claim).NotEmpty().Custom((claim, ctx) =>
             {
                 if (claim.Contains('|'))
                 {

@@ -27,7 +27,7 @@ public sealed class CreateInitiative(ISender sender) : IRequestHandler<CreateIni
         public Validator()
         {
             RuleFor(x => x.ProjectId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.RequestingUser).NotNull();
         }
     }

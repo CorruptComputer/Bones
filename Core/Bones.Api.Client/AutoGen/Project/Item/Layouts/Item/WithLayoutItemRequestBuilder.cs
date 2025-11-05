@@ -37,7 +37,7 @@ namespace Bones.Api.Client.AutoGen.Project.Item.Layouts.Item
         /// <summary>
         /// Creates a new item layout version in a project
         /// </summary>
-        /// <returns>A <see cref="Guid"/></returns>
+        /// <returns>A <see cref="Stream"/></returns>
         /// <param name="body">API request to create a new item layout version</param>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
@@ -45,7 +45,7 @@ namespace Bones.Api.Client.AutoGen.Project.Item.Layouts.Item
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 401 status code</exception>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 403 status code</exception>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 500 status code</exception>
-        public async Task<Guid?> PostAsync(global::Bones.Api.Client.AutoGen.Models.CreateItemLayoutVersionRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
+        public async Task<Stream?> PostAsync(global::Bones.Api.Client.AutoGen.Models.CreateItemLayoutVersionRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
             _ = body ?? throw new ArgumentNullException(nameof(body));
             var requestInfo = ToPostRequestInformation(body, requestConfiguration);
@@ -56,7 +56,7 @@ namespace Bones.Api.Client.AutoGen.Project.Item.Layouts.Item
                 { "403", global::Bones.Api.Client.AutoGen.Models.ErrorResponse.CreateFromDiscriminatorValue },
                 { "500", global::Bones.Api.Client.AutoGen.Models.ErrorResponse.CreateFromDiscriminatorValue },
             };
-            return await RequestAdapter.SendPrimitiveAsync<Guid>(requestInfo, errorMapping, cancellationToken).ConfigureAwait(false);
+            return await RequestAdapter.SendPrimitiveAsync<Stream>(requestInfo, errorMapping, cancellationToken).ConfigureAwait(false);
         }
         /// <summary>
         /// Creates a new item layout version in a project

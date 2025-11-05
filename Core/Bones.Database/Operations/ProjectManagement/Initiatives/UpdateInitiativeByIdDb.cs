@@ -19,7 +19,7 @@ public sealed class UpdateInitiativeByIdDb(BonesDbContext dbContext) : IRequestH
         public Validator()
         {
             RuleFor(x => x.InitiativeId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.NewName).NotNull().NotEmpty();
+            RuleFor(x => x.NewName).NotEmpty();
         }
     }
 

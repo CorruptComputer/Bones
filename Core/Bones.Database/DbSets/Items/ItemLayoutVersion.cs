@@ -49,6 +49,11 @@ public class ItemLayoutVersion
     public List<ItemLayoutFieldVersionLink> FieldLinks { get; init; } = [];
 
     /// <summary>
+    ///   The assignee definitions associated with this layout version
+    /// </summary>
+    public List<ItemAssigneeDefinition> AssigneeDefinitions { get; init; } = [];
+
+    /// <summary>
     ///   Disables creating of new items using this layout version,
     ///   and when all items using it are deleted it will be removed.
     /// </summary>

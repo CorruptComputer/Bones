@@ -77,6 +77,54 @@
             <MudNumericField Label="Field Count" Required ReadOnly @bind-Value="@SelectedItemFieldsCount" />
         </div>
     </div>
+    <div style="display: flex; justify-content: space-between;">
+        <div style="width:49%">
+            <MudText Typo="Typo.h5">Assignee Definition</MudText>
+
+            <MudTextField T="string" Label="Name" @bind-value="@NewAssigneeName"/>
+
+            <MudSelect T="Bones.Api.Client.AutoGen.Models.AssignmentType" Label="Assignment Type" @bind-value="@NewAssigneeAssignmentType">
+                <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.AssignmentType.User">User</MudSelectItem>
+                <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.AssignmentType.Role">Role</MudSelectItem>
+            </MudSelect>
+
+            <MudSelect T="Bones.Api.Client.AutoGen.Models.SelectionType" Label="Selection Type" @bind-value="@NewAssigneeSelectionType">
+                <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.SelectionType.Single">Single</MudSelectItem>
+                <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.SelectionType.Multiple">Multiple</MudSelectItem>
+            </MudSelect>
+
+            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => AddAssignee())" />
+
+            <MudTable Items="@ItemAssigneesList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemAssigneesListLoading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Controls</MudTh>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Assignment Type</MudTh>
+                    <MudTh>Selection Type</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Controls">
+                        <MudTd DataLabel="Controls">
+                            <div style="display: flex;">
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary" aria-label="move up" OnClick="@(() => MoveAssigneeUp(context.Name))" />
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" aria-label="move down" OnClick="@(() => MoveAssigneeDown(context.Name))" />
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="remove" OnClick="@(() => RemoveAssignee(context.Name))" />
+                            </div>
+                        </MudTd>
+                    </MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Assignment Type">@context.AssignmentType</MudTd>
+                    <MudTd DataLabel="Selection Type">@context.SelectionType</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="@TableConsts.PageSizeOptions" />
+                </PagerContent>
+            </MudTable>
+        </div>
+        <div style="width:49%">
+
+        </div>
+    </div>
 
     <div style="align-self: end;">
         <br />

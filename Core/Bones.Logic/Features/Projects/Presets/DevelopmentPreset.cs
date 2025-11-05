@@ -81,6 +81,11 @@ internal class DevelopmentPreset : PresetBase
                     { 2, PresetFields.IsCrash },
                     { 3, PresetFields.ReproductionSteps },
                     { 4, PresetFields.Description }
+                },
+                AssigneeDefinitions = new()
+                {
+                    { 0, ("Developer", AssignmentType.User, SelectionType.Single) },
+                    { 1, ("QA", AssignmentType.User, SelectionType.Single) }
                 }
             }
         },
@@ -95,6 +100,12 @@ internal class DevelopmentPreset : PresetBase
                     { 0, PresetFields.Title },
                     { 1, PresetFields.FeatureArea },
                     { 2, PresetFields.Description }
+                },
+                AssigneeDefinitions = new()
+                {
+                    { 0, ("Designer", AssignmentType.User, SelectionType.Single) },
+                    { 1, ("Developer", AssignmentType.User, SelectionType.Single) },
+                    { 2, ("QA", AssignmentType.User, SelectionType.Single) }
                 }
             }
         }

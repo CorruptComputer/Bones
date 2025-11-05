@@ -22,8 +22,8 @@ public class ConfirmEmail(UserManager<BonesUser> userManager, ISender sender) : 
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.UserId).NotNull().NotEmpty();
-            RuleFor(x => x.Code).NotNull().NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.Code).NotEmpty();
             RuleFor(x => x.ChangedEmail).Custom(async (email, ctx) =>
             {
                 if (email != null && !await email.IsValidEmailAsync())

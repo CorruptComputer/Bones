@@ -19,7 +19,7 @@ public sealed class UpdateQueueByIdDb(BonesDbContext dbContext) : IRequestHandle
         public Validator()
         {
             RuleFor(x => x.QueueId).NotNull().NotEqual(Guid.Empty);
-            RuleFor(x => x.NewName).NotNull().NotEmpty();
+            RuleFor(x => x.NewName).NotEmpty();
         }
     }
 

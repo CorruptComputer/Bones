@@ -25,7 +25,7 @@ public class SaveBackgroundServiceUserConfig(UserManager<BonesUser> userManager,
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(request => request.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
+            RuleFor(request => request.Email).NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
             {
                 if (!await email.IsValidEmailAsync(cancel))
                 {
@@ -33,7 +33,7 @@ public class SaveBackgroundServiceUserConfig(UserManager<BonesUser> userManager,
                 }
             });
 
-            RuleFor(request => request.DisplayName).NotNull().NotEmpty();
+            RuleFor(request => request.DisplayName).NotEmpty();
         }
     }
 

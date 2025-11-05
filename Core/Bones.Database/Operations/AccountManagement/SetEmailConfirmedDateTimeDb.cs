@@ -18,7 +18,7 @@ public sealed class SetEmailConfirmedDateTimeDb(BonesDbContext dbContext) : IReq
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.UserId).NotNull().NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.ConfirmedDateTime).NotNull();
         }
     }

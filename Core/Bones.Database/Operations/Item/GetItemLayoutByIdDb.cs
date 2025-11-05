@@ -34,6 +34,8 @@ public sealed class GetItemLayoutByIdDb(BonesDbContext dbContext) : IRequestHand
             .ThenInclude(x => x.FieldLinks)
             .ThenInclude(x => x.FieldVersion)
             .ThenInclude(x => x.PossibleValues)
+            .Include(x => x.Versions)
+            .ThenInclude(x => x.AssigneeDefinitions)
             .FirstOrDefaultAsync(x => x.Id == request.ItemLayoutId, cancellationToken);
     }
 }

@@ -24,7 +24,7 @@ public sealed class CreateProject(ISender sender) : IRequestHandler<CreateProjec
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.RequestingUser).NotNull();
         }
     }

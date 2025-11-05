@@ -100,7 +100,7 @@ internal abstract class PresetBase
                 }
             }
 
-            CommandResponse result = await sender.Send(new CreateItemLayout.Command(projectId, layoutName, layoutInfo.LayoutUse, layoutInfo.FriendlyIdPrefix, fields, requestingUser), cancellationToken);
+            CommandResponse result = await sender.Send(new CreateItemLayout.Command(projectId, layoutName, layoutInfo.LayoutUse, layoutInfo.FriendlyIdPrefix, fields, layoutInfo.AssigneeDefinitions, requestingUser), cancellationToken);
             if (!result.Success || result.Ids.Count == 0)
             {
                 return false;

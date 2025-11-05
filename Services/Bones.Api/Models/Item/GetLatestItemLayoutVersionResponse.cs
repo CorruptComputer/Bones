@@ -56,6 +56,12 @@ public sealed record GetItemLayoutVersionResponse
     [JsonRequired]
     public required IEnumerable<KeyValuePair<int, Guid>> FieldVersions { get; init; }
 
+    /// <summary>
+    ///   The assignee definitions for the layout version
+    /// </summary>
+    [JsonRequired]
+    public required List<ItemAssigneeDefinitionModel> AssigneeDefinitions { get; init; }
+
     internal static GetItemLayoutVersionResponse FromInternal(ItemLayoutVersion layoutVersion, Guid ProjectId, string friendlyIdPrefix, long latestVersion)
     {
         return new()
@@ -66,7 +72,16 @@ public sealed record GetItemLayoutVersionResponse
             FriendlyIdPrefix = friendlyIdPrefix,
             Version = layoutVersion.Version,
             LatestVersion = latestVersion,
-            FieldVersions = layoutVersion.FieldLinks.Select(fl => new KeyValuePair<int, Guid>(fl.OrderNumber, fl.FieldVersion.Id))
+            FieldVersions = layoutVersion.FieldLinks.Select(fl => new KeyValuePair<int, Guid>(fl.OrderNumber, fl.FieldVersion.Id)),
+            AssigneeDefinitions = [.. layoutVersion.AssigneeDefinitions
+                .OrderBy(ad => ad.OrderIndex)
+                .Select(ad => new ItemAssigneeDefinitionModel
+                {
+                    OrderNumber = ad.OrderIndex,
+                    Name = ad.Name,
+                    AssignmentType = ad.AssignmentType,
+                    SelectionType = ad.SelectionType
+                })]
         };
     }
 }

@@ -25,7 +25,7 @@ public sealed class ChangePassword(UserManager<BonesUser> userManager, ISender s
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.CurrentPassword).NotNull().NotEmpty();
+            RuleFor(x => x.CurrentPassword).NotEmpty();
 
             RuleFor(x => x.NewPassword).NotNull().MinimumLength(8).Custom((password, ctx) =>
             {

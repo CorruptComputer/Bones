@@ -14,6 +14,8 @@ namespace Bones.Api.Client.AutoGen.Models
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
     public partial class CreateItemLayoutVersionRequest : IParsable
     {
+        /// <summary>The assignee definitions to use for the initial layout version</summary>
+        public List<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel> AssigneeDefinitions { get; set; } = default!;
         /// <summary>The field versions to use for this layout version</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair> FieldVersions { get; set; } = default!;
         /// <summary>The layoutUse property</summary>
@@ -38,6 +40,7 @@ namespace Bones.Api.Client.AutoGen.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
+                { "assigneeDefinitions", n => { AssigneeDefinitions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel>(global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssigneeDefinitions'"); } },
                 { "fieldVersions", n => { FieldVersions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldVersions'"); } },
                 { "layoutUse", n => { LayoutUse = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse>(); } },
                 { "name", n => { Name = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Name'"); } },
@@ -50,6 +53,7 @@ namespace Bones.Api.Client.AutoGen.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel>("assigneeDefinitions", AssigneeDefinitions);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>("fieldVersions", FieldVersions);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse>("layoutUse", LayoutUse);
             writer.WriteStringValue("name", Name);

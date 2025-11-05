@@ -25,7 +25,7 @@ public class RegisterUser(UserManager<BonesUser> userManager, ISender sender) : 
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(request => request.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
+            RuleFor(request => request.Email).NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
             {
                 if (!await email.IsValidEmailAsync(cancel))
                 {

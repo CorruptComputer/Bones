@@ -23,7 +23,7 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
+            RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Preset).NotNull();
             RuleFor(x => x.RequestingUser).NotNull();
         }

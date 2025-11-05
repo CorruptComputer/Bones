@@ -21,7 +21,7 @@ public sealed class AddForgotPasswordEmailToQueueDb(BonesDbContext dbContext) : 
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.EmailTo).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
+            RuleFor(x => x.EmailTo).NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
             {
                 if (!await email.IsValidEmailAsync(cancel))
                 {
@@ -29,7 +29,7 @@ public sealed class AddForgotPasswordEmailToQueueDb(BonesDbContext dbContext) : 
                 }
             });
 
-            RuleFor(x => x.PasswordResetLink).NotNull().NotEmpty().Custom((str, ctx) =>
+            RuleFor(x => x.PasswordResetLink).NotEmpty().Custom((str, ctx) =>
             {
                 try
                 {

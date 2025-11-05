@@ -19,7 +19,7 @@ public class QueueResendConfirmationEmail(UserManager<BonesUser> userManager, IS
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.Email).NotNull().NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
+            RuleFor(x => x.Email).NotEmpty().EmailAddress().CustomAsync(async (email, ctx, cancel) =>
             {
                 if (!await email.IsValidEmailAsync(cancel))
                 {

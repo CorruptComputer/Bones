@@ -22,7 +22,7 @@ public class UpdateMyProfile(ISender sender) : IRequestHandler<UpdateMyProfile.C
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.DisplayName).NotNull().NotEmpty();
+            RuleFor(x => x.DisplayName).NotEmpty();
             RuleFor(x => x.RequestingUser).NotNull();
         }
     }
