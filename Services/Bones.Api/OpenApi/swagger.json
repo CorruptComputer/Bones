@@ -1552,16 +1552,26 @@
         ],
         "summary": "Gets the projects for the current user, or specified organization",
         "operationId": "GetProjectsByOwnerAsync",
-        "requestBody": {
-          "description": "The request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetProjectsByOwnerRequest"
-              }
+        "parameters": [
+          {
+            "name": "ownerType",
+            "in": "query",
+            "description": "The type of owner, User if self",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OwnershipType"
+            }
+          },
+          {
+            "name": "organizationId",
+            "in": "query",
+            "description": "The ID of the organization, if applicable",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           }
-        },
+        ],
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -4005,6 +4015,7 @@
       "ApiConfigResponse": {
         "required": [
           "apiVersion",
+          "requestedAt",
           "setupForTesting"
         ],
         "type": "object",
@@ -4016,6 +4027,11 @@
           "apiVersion": {
             "type": "string",
             "description": "The version for the API"
+          },
+          "requestedAt": {
+            "type": "string",
+            "description": "When was this config requested",
+            "format": "date-time"
           }
         },
         "additionalProperties": false,
@@ -5298,25 +5314,6 @@
         },
         "additionalProperties": false,
         "description": "Response for the GetProjectSettingsAsync endpoint"
-      },
-      "GetProjectsByOwnerRequest": {
-        "required": [
-          "ownerType"
-        ],
-        "type": "object",
-        "properties": {
-          "ownerType": {
-            "$ref": "#/components/schemas/OwnershipType"
-          },
-          "organizationId": {
-            "type": "string",
-            "description": "Optionally the organization that this should be created under, if not specified will be created for the requesting user.",
-            "format": "uuid",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Request to get the projects for a given User/Organization"
       },
       "GetSmtpConfigResponse": {
         "required": [

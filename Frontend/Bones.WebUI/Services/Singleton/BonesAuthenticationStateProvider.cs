@@ -137,7 +137,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
         await ApiClient.Login.Logout.PostAsync(cancellationToken: cancellationToken);
         await localStorageService.RemoveItemAsync(LocalStorageConsts.CURRENT_USER_KEY, cancellationToken);
         await localStorageService.RemoveItemAsync(LocalStorageConsts.SESSION_ID_KEY, cancellationToken);
-        await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, CancellationToken.None);
+        await sessionStorageService.RemoveItemAsync(SessionStorageConsts.BASE64_LOCALSTORAGE_KEY, cancellationToken);
 
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }

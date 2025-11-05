@@ -105,7 +105,8 @@ public sealed class AnonymousController(ISender sender, BonesBackendConfiguratio
             ApiVersion = Assembly.GetEntryAssembly()?
                                  .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                                  // For example: 0.0.1+b9d1873a
-                                 ?.InformationalVersion.Split('+')[1] ?? "ERROR"
+                                 ?.InformationalVersion.Split('+')[1] ?? "ERROR",
+            RequestedAt = DateTimeOffset.UtcNow
         };
     }
 }

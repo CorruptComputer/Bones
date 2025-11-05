@@ -16,6 +16,8 @@ namespace Bones.Api.Client.AutoGen.Models
     {
         /// <summary>The version for the API</summary>
         public string ApiVersion { get; set; } = default!;
+        /// <summary>When was this config requested</summary>
+        public DateTimeOffset RequestedAt { get; set; } = default!;
         /// <summary>Is the API setup for testing?</summary>
         public bool SetupForTesting { get; set; } = default!;
         /// <summary>
@@ -37,6 +39,7 @@ namespace Bones.Api.Client.AutoGen.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "apiVersion", n => { ApiVersion = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ApiVersion'"); } },
+                { "requestedAt", n => { RequestedAt = n.GetDateTimeOffsetValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'RequestedAt'"); } },
                 { "setupForTesting", n => { SetupForTesting = n.GetBoolValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'SetupForTesting'"); } },
             };
         }
@@ -48,6 +51,7 @@ namespace Bones.Api.Client.AutoGen.Models
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
             writer.WriteStringValue("apiVersion", ApiVersion);
+            writer.WriteDateTimeOffsetValue("requestedAt", RequestedAt);
             writer.WriteBoolValue("setupForTesting", SetupForTesting);
         }
     }

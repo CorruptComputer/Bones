@@ -7,6 +7,7 @@ using Bones.Api.Models.Project;
 using Bones.Logic.Features.GenericItem;
 using Bones.Api.Controllers.Base;
 using Bones.Shared.Backend.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bones.Api.Controllers;
 
@@ -20,16 +21,17 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     /// <summary>
     ///   Gets the projects for the current user, or specified organization
     /// </summary>
-    /// <param name="request">The request</param>
+    /// <param name="ownerType">The type of owner, User if self</param>
+    /// <param name="organizationId">The ID of the organization, if applicable</param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
     [HttpGet("projects/by-owner", Name = "GetProjectsByOwnerAsync")]
     [ProducesResponseType<Dictionary<Guid, string>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Dictionary<Guid, string>>> GetProjectsByOwnerAsync([FromBody] GetProjectsByOwnerRequest request)
+    public async ValueTask<ActionResult<Dictionary<Guid, string>>> GetProjectsByOwnerAsync([FromQuery] [Required] OwnershipType ownerType, [FromQuery] Guid? organizationId)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
-        QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsByOwner.Query(request.OwnerType, request.OrganizationId ?? currentUser.Id, currentUser));
+        QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsByOwner.Query(ownerType, organizationId ?? currentUser.Id, currentUser));
         if (!response.Success)
         {
             return BadRequest(response.FailureReasons);

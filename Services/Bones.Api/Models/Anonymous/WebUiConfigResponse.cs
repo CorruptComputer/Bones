@@ -17,4 +17,10 @@ public sealed record ApiConfigResponse
     /// </summary>
     [JsonRequired]
     public required string ApiVersion { get; init; }
+
+    /// <summary>
+    ///   When was this config requested
+    /// </summary>
+    [JsonRequired]
+    public required DateTimeOffset RequestedAt { get; init; }
 }

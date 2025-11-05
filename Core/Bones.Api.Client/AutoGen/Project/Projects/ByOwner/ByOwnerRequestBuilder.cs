@@ -23,7 +23,7 @@ namespace Bones.Api.Client.AutoGen.Project.Projects.ByOwner
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public ByOwnerRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Project/projects/by-owner", pathParameters)
+        public ByOwnerRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Project/projects/by-owner?ownerType={ownerType}{&organizationId*}", pathParameters)
         {
         }
         /// <summary>
@@ -31,24 +31,22 @@ namespace Bones.Api.Client.AutoGen.Project.Projects.ByOwner
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public ByOwnerRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Project/projects/by-owner", rawUrl)
+        public ByOwnerRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Project/projects/by-owner?ownerType={ownerType}{&organizationId*}", rawUrl)
         {
         }
         /// <summary>
         /// Gets the projects for the current user, or specified organization
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerGetResponse"/></returns>
-        /// <param name="body">Request to get the projects for a given User/Organization</param>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwner400Error">When receiving a 400 status code</exception>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 401 status code</exception>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 403 status code</exception>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 500 status code</exception>
-        public async Task<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerGetResponse?> GetAsync(global::Bones.Api.Client.AutoGen.Models.GetProjectsByOwnerRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
+        public async Task<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerGetResponse?> GetAsync(Action<RequestConfiguration<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerRequestBuilder.ByOwnerRequestBuilderGetQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
-            var requestInfo = ToGetRequestInformation(body, requestConfiguration);
+            var requestInfo = ToGetRequestInformation(requestConfiguration);
             var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
             {
                 { "400", global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwner400Error.CreateFromDiscriminatorValue },
@@ -62,15 +60,12 @@ namespace Bones.Api.Client.AutoGen.Project.Projects.ByOwner
         /// Gets the projects for the current user, or specified organization
         /// </summary>
         /// <returns>A <see cref="RequestInformation"/></returns>
-        /// <param name="body">Request to get the projects for a given User/Organization</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
-        public RequestInformation ToGetRequestInformation(global::Bones.Api.Client.AutoGen.Models.GetProjectsByOwnerRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default)
+        public RequestInformation ToGetRequestInformation(Action<RequestConfiguration<global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerRequestBuilder.ByOwnerRequestBuilderGetQueryParameters>>? requestConfiguration = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
             var requestInfo = new RequestInformation(Method.GET, UrlTemplate, PathParameters);
             requestInfo.Configure(requestConfiguration);
             requestInfo.Headers.TryAdd("Accept", "application/json");
-            requestInfo.SetContentFromParsable(RequestAdapter, "application/json", body);
             return requestInfo;
         }
         /// <summary>
@@ -81,6 +76,19 @@ namespace Bones.Api.Client.AutoGen.Project.Projects.ByOwner
         public global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerRequestBuilder WithUrl(string rawUrl)
         {
             return new global::Bones.Api.Client.AutoGen.Project.Projects.ByOwner.ByOwnerRequestBuilder(rawUrl, RequestAdapter);
+        }
+        /// <summary>
+        /// Gets the projects for the current user, or specified organization
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+        public partial class ByOwnerRequestBuilderGetQueryParameters 
+        {
+            /// <summary>The ID of the organization, if applicable</summary>
+            [QueryParameter("organizationId")]
+            public Guid? OrganizationId { get; set; } = default!;
+            /// <summary>The type of owner, User if self</summary>
+            [QueryParameter("ownerType")]
+            public global::Bones.Api.Client.AutoGen.Models.OwnershipType OwnerType { get; set; } = default!;
         }
     }
 }
