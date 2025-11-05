@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
@@ -34,7 +34,7 @@ public sealed record GetProjectLayoutsResponse
     /// </summary>
     public required string FriendlyIdPrefix { get; init; }
 
-    internal static List<GetProjectLayoutsResponse> FromInternalList(List<GenericItemLayout> layouts, ItemLayoutUse? layoutUse)
+    internal static List<GetProjectLayoutsResponse> FromInternalList(List<ItemLayout> layouts, ItemLayoutUse? layoutUse)
     {
         if (layoutUse is null)
         {
@@ -44,7 +44,7 @@ public sealed record GetProjectLayoutsResponse
         return [.. layouts.Where(l => (l.LatestVersion?.LayoutUse ?? ItemLayoutUse.None) == layoutUse).Select(FromInternal)];
     }
 
-    internal static GetProjectLayoutsResponse FromInternal(GenericItemLayout layout)
+    internal static GetProjectLayoutsResponse FromInternal(ItemLayout layout)
     {
         return new()
         {

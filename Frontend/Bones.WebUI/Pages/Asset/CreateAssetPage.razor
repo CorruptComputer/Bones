@@ -1,5 +1,5 @@
 ﻿@using Bones.WebUI.Models
-@using Bones.WebUI.Components.GenericItem
+@using Bones.WebUI.Components.Item
 @attribute [Route(FrontEndUrls.Asset.CREATE_ASSET)]
 
 <MudText Typo="Typo.h4">Create Asset</MudText>
@@ -48,7 +48,7 @@
         @if(SelectedAssetLayout != null)
         {
             <MudPaper Class="pa-4">
-                <GenericItemEditor ItemId="@null" ItemType="ItemLayoutUse.Assets" EditorMode="GenericItemEditor.Mode.Create" ItemLayoutId="@SelectedAssetLayout.Value" />
+                <ItemEditor ItemId="@null" ItemType="ItemLayoutUse.Assets" EditorMode="ItemEditor.Mode.Create" ItemLayoutId="@SelectedAssetLayout.Value" />
             </MudPaper>
         }
     </MudItem>

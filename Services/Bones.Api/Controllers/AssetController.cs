@@ -3,9 +3,9 @@ using Bones.Api.Models.Assets;
 using Bones.Api.Models.Assets.Actions;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Logic.Features.Assets;
-using Bones.Logic.Features.GenericItem;
+using Bones.Logic.Features.Item;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Controllers;
@@ -20,20 +20,20 @@ public sealed class AssetController(ISender sender) : AuthenticatedControllerBas
     /// <summary>
     ///   Gets the dashboard for an asset layout, which includes the layout and all assets that use it.
     /// </summary>
-    /// <param name="GenericItemLayoutId"></param>
+    /// <param name="ItemLayoutId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpGet("Layout/{GenericItemLayoutId:guid}/dashboard", Name = "GetAssetLayoutDashboardAsync")]
+    [HttpGet("Layout/{ItemLayoutId:guid}/dashboard", Name = "GetAssetLayoutDashboardAsync")]
     [ProducesResponseType<GetAssetLayoutDashboardResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
-    public async ValueTask<ActionResult<GetAssetLayoutDashboardResponse>> GetAssetLayoutDashboardAsync(Guid GenericItemLayoutId)
+    public async ValueTask<ActionResult<GetAssetLayoutDashboardResponse>> GetAssetLayoutDashboardAsync(Guid ItemLayoutId)
     {
-        GenericItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(GenericItemLayoutId, await GetCurrentBonesUserAsync()));
+        ItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(ItemLayoutId, await GetCurrentBonesUserAsync()));
         if (layout is null || layout.LatestVersion?.LayoutUse.HasFlag(ItemLayoutUse.Assets) != true)
         {
             return NotFound(new ErrorResponse());
         }
 
-        List<Asset>? assets = await Sender.Send(new GetAssetsByLayoutId.Query(GenericItemLayoutId, await GetCurrentBonesUserAsync()));
+        List<Asset>? assets = await Sender.Send(new GetAssetsByLayoutId.Query(ItemLayoutId, await GetCurrentBonesUserAsync()));
 
         assets ??= [];
 

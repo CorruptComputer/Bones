@@ -100,7 +100,7 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
     {
         if (AssetLayoutIdProvidedInQueryString)
         {
-            GetItemLayoutVersionResponse layout = await apiClient.GenericItem.Layouts[AssetLayoutId.Value].Latest.GetAsync()
+            GetItemLayoutVersionResponse layout = await apiClient.Item.Layouts[AssetLayoutId.Value].Latest.GetAsync()
                 ?? throw new InvalidOperationException("Failed to get layout from API");
             SelectedProject = layout.ProjectId;
         }

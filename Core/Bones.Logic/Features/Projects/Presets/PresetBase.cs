@@ -1,10 +1,10 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Logic.Features.Assets;
-using Bones.Logic.Features.GenericItem;
+using Bones.Logic.Features.Item;
 using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.Projects.Presets.Models;
 using Bones.Logic.Features.WorkItems.Queue;
@@ -69,8 +69,8 @@ internal abstract class PresetBase
 
             ItemFields[field] = fieldInfo with
             {
-                FieldId = result.Ids[nameof(GenericItemField)],
-                FieldVersionId = result.Ids[nameof(GenericItemFieldVersion)],
+                FieldId = result.Ids[nameof(ItemField)],
+                FieldVersionId = result.Ids[nameof(ItemFieldVersion)],
             };
         }
 
@@ -108,8 +108,8 @@ internal abstract class PresetBase
 
             ItemLayouts[layoutName] = layoutInfo with
             {
-                LayoutId = result.Ids[nameof(GenericItemLayout)],
-                LayoutVersionId = result.Ids[nameof(GenericItemLayoutVersion)],
+                LayoutId = result.Ids[nameof(ItemLayout)],
+                LayoutVersionId = result.Ids[nameof(ItemLayoutVersion)],
             };
         }
 
@@ -158,7 +158,7 @@ internal abstract class PresetBase
                         }
 
                         asset.AssetId = assetCreation.Ids[nameof(Asset)];
-                        asset.AssetVersionId = assetCreation.Ids[nameof(GenericItemVersion)];
+                        asset.AssetVersionId = assetCreation.Ids[nameof(ItemVersion)];
                     }
 
                     foreach (PresetWorkItemInfo workItem in GetWorkItems())
@@ -179,7 +179,7 @@ internal abstract class PresetBase
                         }
 
                         workItem.WorkItemId = workItemCreation.Ids[nameof(WorkItem)];
-                        workItem.WorkItemVersionId = workItemCreation.Ids[nameof(GenericItemVersion)];
+                        workItem.WorkItemVersionId = workItemCreation.Ids[nameof(ItemVersion)];
                     }
                 }
             }

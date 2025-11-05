@@ -8,8 +8,8 @@ public sealed class GetAssetsByLayoutIdDb(BonesDbContext dbContext) : IRequestHa
     /// <summary>
     ///   DB Command for getting assets by layout ID.
     /// </summary>
-    /// <param name="GenericItemLayoutId">ID of the layout</param>
-    public sealed record Query(Guid GenericItemLayoutId) : IRequest<QueryResponse<List<Asset>>>;
+    /// <param name="ItemLayoutId">ID of the layout</param>
+    public sealed record Query(Guid ItemLayoutId) : IRequest<QueryResponse<List<Asset>>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -17,7 +17,7 @@ public sealed class GetAssetsByLayoutIdDb(BonesDbContext dbContext) : IRequestHa
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.GenericItemLayoutId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.ItemLayoutId).NotNull().NotEqual(Guid.Empty);
         }
     }
 
@@ -26,11 +26,11 @@ public sealed class GetAssetsByLayoutIdDb(BonesDbContext dbContext) : IRequestHa
     {
         List<Asset> assets = await dbContext.Assets
             .Include(a => a.Item).ThenInclude(i => i.Project)
-            .Include(a => a.Item).ThenInclude(i => i.GenericItemLayout)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.GenericItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
+            .Include(a => a.Item).ThenInclude(i => i.ItemLayout)
+            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
             .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Values).ThenInclude(v => v.Field)
             .AsNoTracking()
-            .Where(i => i.Item.GenericItemLayout.Id == request.GenericItemLayoutId)
+            .Where(i => i.Item.ItemLayout.Id == request.ItemLayoutId)
             .ToListAsync(cancellationToken);
 
         return assets;

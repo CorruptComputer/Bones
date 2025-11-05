@@ -1,7 +1,7 @@
-using Bones.Api.Models.GenericItem;
+using Bones.Api.Models.Item;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.GenericItems;
-using Bones.Logic.Features.GenericItem;
+using Bones.Database.DbSets.Items;
+using Bones.Logic.Features.Item;
 using Bones.Logic.Features.WorkItems.WorkItems;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
@@ -36,7 +36,7 @@ public sealed record class CreateWorkItemVersionAction : WorkItemActionBase
 
     internal override async Task<IRequest<CommandResponse>> ToInternalAsync(BonesUser user, ISender sender)
     {
-        GenericItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(WorkItemLayoutId, user));
+        ItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(WorkItemLayoutId, user));
         if (layout?.LatestVersion is null)
         {
             throw new BadRequestException("Layout not found")
@@ -48,7 +48,7 @@ public sealed record class CreateWorkItemVersionAction : WorkItemActionBase
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (GenericItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
+        foreach (ItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
         {
             ItemValueModel? fieldValue = FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
 
@@ -86,7 +86,7 @@ public sealed record class CreateWorkItemVersionAction : WorkItemActionBase
         }
 
         if (result.Ids.Count == 0
-            || !result.Ids.TryGetValue(nameof(GenericItemVersion), out Guid workItemVersionId)
+            || !result.Ids.TryGetValue(nameof(ItemVersion), out Guid workItemVersionId)
             || workItemVersionId == Guid.Empty)
         {
             throw new BonesException("No ID returned from command with successful status code: CreateWorkItemInQueue.Command");

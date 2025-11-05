@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 using Bones.Database.DbConsts;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.ProjectManagement;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,15 +25,15 @@ public class Asset
     public required Project Project { get; set; }
 
     /// <summary>
-    ///   The generic item for this asset
+    ///   The  item for this asset
     /// </summary>
-    public required GenericItem Item { get; set; }
+    public required Item Item { get; set; }
 
     /// <summary>
-    ///   The current version of the generic item this work item is using
+    ///   The current version of the  item this work item is using
     /// </summary>
     [IgnoreDataMember]
-    public GenericItemVersion? CurrentVersion
+    public ItemVersion? CurrentVersion
         => Item.Versions.FirstOrDefault(x => x.Version == Item.CurrentVersion);
 
     /// <summary>

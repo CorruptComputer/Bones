@@ -1,4 +1,4 @@
-using Bones.Api.Models.GenericItem;
+using Bones.Api.Models.Item;
 using Bones.Database.DbSets.AssetManagement;
 
 namespace Bones.Api.Models.Assets;
@@ -30,14 +30,14 @@ public sealed record GetAssetByIdResponse
     public required Guid ProjectId { get; init; }
 
     /// <summary>
-    ///   The ID of the generic item this asset is
+    ///   The ID of the  item this asset is
     /// </summary>
-    public required Guid GenericItemId { get; init; }
+    public required Guid ItemId { get; init; }
 
     /// <summary>
-    ///   The ID of the latest version of the generic item this asset is
+    ///   The ID of the latest version of the  item this asset is
     /// </summary>
-    public required Guid LatestGenericItemVersionId { get; init; }
+    public required Guid LatestItemVersionId { get; init; }
 
     /// <summary>
     ///   The current version number for this asset
@@ -71,14 +71,14 @@ public sealed record GetAssetByIdResponse
             AssetId = asset.Id,
             ProjectId = asset.Project.Id,
             Title = asset.Item.Versions.First(v => v.Version == asset.Item.CurrentVersion).Title,
-            LayoutId = asset.Item.GenericItemLayout.Id,
-            GenericItemId = asset.Item.Id,
-            LatestGenericItemVersionId = asset.CurrentVersion?.Id ?? throw new(),
+            LayoutId = asset.Item.ItemLayout.Id,
+            ItemId = asset.Item.Id,
+            LatestItemVersionId = asset.CurrentVersion?.Id ?? throw new(),
             CurrentVersion = asset.Item.CurrentVersion,
             FriendlyId = asset.Item.FriendlyId,
             CreateDateTime = asset.Item.CreateDateTime,
             LatestVersionCreateDateTime = asset.CurrentVersion?.CreateDateTime ?? throw new(),
-            ItemValues = asset.CurrentVersion.GenericItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
+            ItemValues = asset.CurrentVersion.ItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
             {
                 OrderNumber = fl.OrderNumber,
                 FieldVersionId = fl.FieldVersion.Id,

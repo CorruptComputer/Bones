@@ -22,12 +22,12 @@ namespace Bones.Api.Client.AutoGen.Models
         public int CurrentVersion { get; set; } = default!;
         /// <summary>The friendly ID of the work item</summary>
         public string FriendlyId { get; set; } = default!;
-        /// <summary>The ID of the generic item this work item is</summary>
-        public Guid GenericItemId { get; set; } = default!;
+        /// <summary>The ID of the  item this work item is</summary>
+        public Guid ItemId { get; set; } = default!;
         /// <summary>The values for this work item</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel> ItemValues { get; set; } = default!;
-        /// <summary>The ID of the latest version of the generic item this work item is</summary>
-        public Guid LatestGenericItemVersionId { get; set; } = default!;
+        /// <summary>The ID of the latest version of the  item this work item is</summary>
+        public Guid LatestItemVersionId { get; set; } = default!;
         /// <summary>The time the latest version of this item was created</summary>
         public DateTimeOffset LatestVersionCreateDateTime { get; set; } = default!;
         /// <summary>The ID of the layout this work item uses</summary>
@@ -64,9 +64,9 @@ namespace Bones.Api.Client.AutoGen.Models
                 { "createDateTime", n => { CreateDateTime = n.GetDateTimeOffsetValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'CreateDateTime'"); } },
                 { "currentVersion", n => { CurrentVersion = n.GetIntValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'CurrentVersion'"); } },
                 { "friendlyId", n => { FriendlyId = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FriendlyId'"); } },
-                { "genericItemId", n => { GenericItemId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'GenericItemId'"); } },
+                { "itemId", n => { ItemId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ItemId'"); } },
                 { "itemValues", n => { ItemValues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel>(global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ItemValues'"); } },
-                { "latestGenericItemVersionId", n => { LatestGenericItemVersionId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'LatestGenericItemVersionId'"); } },
+                { "latestItemVersionId", n => { LatestItemVersionId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'LatestItemVersionId'"); } },
                 { "latestVersionCreateDateTime", n => { LatestVersionCreateDateTime = n.GetDateTimeOffsetValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'LatestVersionCreateDateTime'"); } },
                 { "layoutId", n => { LayoutId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'LayoutId'"); } },
                 { "projectId", n => { ProjectId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ProjectId'"); } },
@@ -87,9 +87,9 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteDateTimeOffsetValue("createDateTime", CreateDateTime);
             writer.WriteIntValue("currentVersion", CurrentVersion);
             writer.WriteStringValue("friendlyId", FriendlyId);
-            writer.WriteGuidValue("genericItemId", GenericItemId);
+            writer.WriteGuidValue("itemId", ItemId);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel>("itemValues", ItemValues);
-            writer.WriteGuidValue("latestGenericItemVersionId", LatestGenericItemVersionId);
+            writer.WriteGuidValue("latestItemVersionId", LatestItemVersionId);
             writer.WriteDateTimeOffsetValue("latestVersionCreateDateTime", LatestVersionCreateDateTime);
             writer.WriteGuidValue("layoutId", LayoutId);
             writer.WriteGuidValue("projectId", ProjectId);

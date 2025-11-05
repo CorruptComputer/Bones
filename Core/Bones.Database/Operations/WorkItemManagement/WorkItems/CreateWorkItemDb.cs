@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.WorkItemManagement;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -35,7 +35,7 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
             return CommandResponse.Fail("Invalid Queue ID.");
         }
 
-        GenericItemLayout? itemLayout = await dbContext.ItemLayouts.Include(l => l.Project).FirstOrDefaultAsync(l => l.Id == request.ItemLayoutId, cancellationToken);
+        ItemLayout? itemLayout = await dbContext.ItemLayouts.Include(l => l.Project).FirstOrDefaultAsync(l => l.Id == request.ItemLayoutId, cancellationToken);
         if (itemLayout == null)
         {
             return CommandResponse.Fail("Invalid ItemLayout ID.");
@@ -49,7 +49,7 @@ public sealed class CreateWorkItemDb(BonesDbContext dbContext) : IRequestHandler
             {
                 FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
                 Project = itemLayout.Project,
-                GenericItemLayout = itemLayout
+                ItemLayout = itemLayout
             }
         }, cancellationToken);
 

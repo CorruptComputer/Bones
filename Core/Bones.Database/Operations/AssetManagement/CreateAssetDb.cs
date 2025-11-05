@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.AssetManagement;
@@ -30,7 +30,7 @@ public sealed class CreateAssetDb(BonesDbContext dbContext) : IRequestHandler<Cr
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        GenericItemLayout? itemLayout = await dbContext.ItemLayouts.Include(l => l.Project).FirstOrDefaultAsync(l => l.Id == request.ItemLayoutId, cancellationToken);
+        ItemLayout? itemLayout = await dbContext.ItemLayouts.Include(l => l.Project).FirstOrDefaultAsync(l => l.Id == request.ItemLayoutId, cancellationToken);
         if (itemLayout == null)
         {
             return CommandResponse.Fail("Invalid ItemLayout ID.");
@@ -43,7 +43,7 @@ public sealed class CreateAssetDb(BonesDbContext dbContext) : IRequestHandler<Cr
             {
                 FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
                 Project = itemLayout.Project,
-                GenericItemLayout = itemLayout
+                ItemLayout = itemLayout
             }
         }, cancellationToken);
 

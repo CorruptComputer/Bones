@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
@@ -74,7 +74,7 @@ public sealed class CreateWorkItemInQueue(ISender sender) : IRequestHandler<Crea
         Dictionary<string, Guid> ids = new()
         {
             { nameof(WorkItem), workItem.Ids[nameof(WorkItem)] },
-            { nameof(GenericItemVersion), itemVersion.Ids[nameof(GenericItemVersion)] }
+            { nameof(ItemVersion), itemVersion.Ids[nameof(ItemVersion)] }
         };
 
         return CommandResponse.Pass(ids);

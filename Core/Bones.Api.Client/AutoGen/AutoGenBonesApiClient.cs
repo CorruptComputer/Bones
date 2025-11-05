@@ -4,8 +4,8 @@
 using Bones.Api.Client.AutoGen.Account;
 using Bones.Api.Client.AutoGen.Anonymous;
 using Bones.Api.Client.AutoGen.Asset;
-using Bones.Api.Client.AutoGen.GenericItem;
 using Bones.Api.Client.AutoGen.Initiative;
+using Bones.Api.Client.AutoGen.Item_Escaped;
 using Bones.Api.Client.AutoGen.Login;
 using Bones.Api.Client.AutoGen.Project;
 using Bones.Api.Client.AutoGen.SysAdmin;
@@ -44,15 +44,15 @@ namespace Bones.Api.Client.AutoGen
         {
             get => new global::Bones.Api.Client.AutoGen.Asset.AssetRequestBuilder(PathParameters, RequestAdapter);
         }
-        /// <summary>The GenericItem property</summary>
-        public global::Bones.Api.Client.AutoGen.GenericItem.GenericItemRequestBuilder GenericItem
-        {
-            get => new global::Bones.Api.Client.AutoGen.GenericItem.GenericItemRequestBuilder(PathParameters, RequestAdapter);
-        }
         /// <summary>The Initiative property</summary>
         public global::Bones.Api.Client.AutoGen.Initiative.InitiativeRequestBuilder Initiative
         {
             get => new global::Bones.Api.Client.AutoGen.Initiative.InitiativeRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The Item property</summary>
+        public global::Bones.Api.Client.AutoGen.Item_Escaped.Item_EscapedRequestBuilder Item
+        {
+            get => new global::Bones.Api.Client.AutoGen.Item_Escaped.Item_EscapedRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The Login property</summary>
         public global::Bones.Api.Client.AutoGen.Login.LoginRequestBuilder Login

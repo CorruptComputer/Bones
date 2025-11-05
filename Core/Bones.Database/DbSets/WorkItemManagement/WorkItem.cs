@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 using Bones.Database.DbConsts;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.WorkItemManagement;
@@ -29,15 +29,15 @@ public class WorkItem
     public required DateTimeOffset AddedToQueueDateTime { get; set; }
 
     /// <summary>
-    ///   The generic item for this work item
+    ///   The  item for this work item
     /// </summary>
-    public required GenericItem Item { get; set; }
+    public required Item Item { get; set; }
 
     /// <summary>
-    ///   The current version of the generic item this work item is using
+    ///   The current version of the  item this work item is using
     /// </summary>
     [IgnoreDataMember]
-    public GenericItemVersion? CurrentVersion => Item.Versions
+    public ItemVersion? CurrentVersion => Item.Versions
         .FirstOrDefault(x => x.Version == Item.CurrentVersion);
 
     /// <summary>

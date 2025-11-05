@@ -26,8 +26,8 @@ public sealed class GetWorkItemByIdDb(BonesDbContext dbContext) : IRequestHandle
     {
         WorkItem? workItem = await dbContext.WorkItems
             .Include(i => i.Item).ThenInclude(i => i.Project)
-            .Include(i => i.Item).ThenInclude(i => i.GenericItemLayout)
-            .Include(wi => wi.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.GenericItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
+            .Include(i => i.Item).ThenInclude(i => i.ItemLayout)
+            .Include(wi => wi.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
             .Include(wi => wi.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Values).ThenInclude(v => v.Field)
             .Include(i => i.WorkItemQueue)
             .AsNoTracking()

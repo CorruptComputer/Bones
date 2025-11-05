@@ -1,9 +1,9 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.AssetManagement;
-using Bones.Database.Operations.GenericItem;
+using Bones.Database.Operations.Item;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
 using Bones.Logic.Features.Projects;
@@ -47,7 +47,7 @@ public sealed class CreateAsset(ISender sender) : IRequestHandler<CreateAsset.Co
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        GenericItemLayout? layout = await sender.Send(new GetItemLayoutByIdDb.Query(request.LayoutId), cancellationToken);
+        ItemLayout? layout = await sender.Send(new GetItemLayoutByIdDb.Query(request.LayoutId), cancellationToken);
         if (layout is null)
         {
             return CommandResponse.Fail("Layout not found");
@@ -76,7 +76,7 @@ public sealed class CreateAsset(ISender sender) : IRequestHandler<CreateAsset.Co
         Dictionary<string, Guid> ids = new()
         {
             { nameof(Asset), asset.Ids[nameof(Asset)] },
-            { nameof(GenericItemVersion), itemVersion.Ids[nameof(GenericItemVersion)] }
+            { nameof(ItemVersion), itemVersion.Ids[nameof(ItemVersion)] }
         };
 
         return CommandResponse.Pass(ids);

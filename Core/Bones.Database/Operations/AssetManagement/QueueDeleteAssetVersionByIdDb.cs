@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 
 namespace Bones.Database.Operations.AssetManagement;
 
@@ -24,7 +24,7 @@ public sealed class QueueDeleteAssetVersionByIdDb(BonesDbContext dbContext) : IR
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        GenericItemVersion? assetVersion = await dbContext.ItemVersions
+        ItemVersion? assetVersion = await dbContext.ItemVersions
             .Include(itemVersion => itemVersion.Values)
             .FirstOrDefaultAsync(p => p.Id == request.AssetVersionId, cancellationToken);
 
@@ -33,7 +33,7 @@ public sealed class QueueDeleteAssetVersionByIdDb(BonesDbContext dbContext) : IR
             return CommandResponse.Fail("Invalid AssetVersionId.");
         }
 
-        foreach (GenericItemValue value in assetVersion.Values)
+        foreach (ItemValue value in assetVersion.Values)
         {
             value.DeleteFlag = true;
         }

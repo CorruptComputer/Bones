@@ -1,4 +1,4 @@
-using Bones.Api.Models.GenericItem;
+using Bones.Api.Models.Item;
 using Bones.Database.DbSets.WorkItemManagement;
 
 namespace Bones.Api.Models.WorkItems;
@@ -45,14 +45,14 @@ public sealed record GetWorkItemByIdResponse
     public required DateTimeOffset AddedToQueueDateTime { get; init; }
 
     /// <summary>
-    ///   The ID of the generic item this work item is
+    ///   The ID of the  item this work item is
     /// </summary>
-    public required Guid GenericItemId { get; init; }
+    public required Guid ItemId { get; init; }
 
     /// <summary>
-    ///   The ID of the latest version of the generic item this work item is
+    ///   The ID of the latest version of the  item this work item is
     /// </summary>
-    public required Guid LatestGenericItemVersionId { get; init; }
+    public required Guid LatestItemVersionId { get; init; }
 
     /// <summary>
     ///   The current version number for this work item
@@ -86,17 +86,17 @@ public sealed record GetWorkItemByIdResponse
             WorkItemId = workItem.Id,
             ProjectId = workItem.Item.Project.Id,
             Title = workItem.Item.Versions.First(v => v.Version == workItem.Item.CurrentVersion).Title,
-            LayoutId = workItem.Item.GenericItemLayout.Id,
+            LayoutId = workItem.Item.ItemLayout.Id,
             WorkItemQueueName = workItem.WorkItemQueue.Name,
             WorkItemQueueId = workItem.WorkItemQueue.Id,
             AddedToQueueDateTime = workItem.AddedToQueueDateTime,
-            GenericItemId = workItem.Item.Id,
-            LatestGenericItemVersionId = workItem.CurrentVersion?.Id ?? throw new(),
+            ItemId = workItem.Item.Id,
+            LatestItemVersionId = workItem.CurrentVersion?.Id ?? throw new(),
             CurrentVersion = workItem.Item.CurrentVersion,
             FriendlyId = workItem.Item.FriendlyId,
             CreateDateTime = workItem.Item.CreateDateTime,
             LatestVersionCreateDateTime = workItem.CurrentVersion?.CreateDateTime ?? throw new(),
-            ItemValues = workItem.CurrentVersion.GenericItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
+            ItemValues = workItem.CurrentVersion.ItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
             {
                 OrderNumber = fl.OrderNumber,
                 FieldVersionId = fl.FieldVersion.Id,

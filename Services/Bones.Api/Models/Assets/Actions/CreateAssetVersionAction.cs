@@ -1,8 +1,8 @@
-using Bones.Api.Models.GenericItem;
+using Bones.Api.Models.Item;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Logic.Features.Assets;
-using Bones.Logic.Features.GenericItem;
+using Bones.Logic.Features.Item;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
 
@@ -36,7 +36,7 @@ public sealed record class CreateAssetVersionAction : AssetActionBase
 
     internal override async Task<IRequest<CommandResponse>> ToInternalAsync(BonesUser user, ISender sender)
     {
-        GenericItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(AssetLayoutId, user));
+        ItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(AssetLayoutId, user));
         if (layout?.LatestVersion is null)
         {
             throw new BadRequestException("Layout not found")
@@ -48,7 +48,7 @@ public sealed record class CreateAssetVersionAction : AssetActionBase
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (GenericItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
+        foreach (ItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
         {
             ItemValueModel? fieldValue = FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
 
@@ -86,7 +86,7 @@ public sealed record class CreateAssetVersionAction : AssetActionBase
         }
 
         if (result.Ids.Count == 0
-            || !result.Ids.TryGetValue(nameof(GenericItemVersion), out Guid assetVersionId)
+            || !result.Ids.TryGetValue(nameof(ItemVersion), out Guid assetVersionId)
             || assetVersionId == Guid.Empty)
         {
             throw new BonesException("No ID returned from command with successful status code: CreateAssetVersion.Command");

@@ -26,8 +26,8 @@ public sealed class GetAssetByIdDb(BonesDbContext dbContext) : IRequestHandler<G
     {
         Asset? asset = await dbContext.Assets
             .Include(a => a.Project)
-            .Include(a => a.Item).ThenInclude(i => i.GenericItemLayout)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.GenericItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
+            .Include(a => a.Item).ThenInclude(i => i.ItemLayout)
+            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
             .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Values).ThenInclude(v => v.Field)
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == request.AssetId, cancellationToken);

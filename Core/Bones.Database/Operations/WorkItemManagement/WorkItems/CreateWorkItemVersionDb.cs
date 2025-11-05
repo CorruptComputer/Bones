@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.WorkItemManagement;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -47,7 +47,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
             return CommandResponse.Fail("Invalid WorkItem ID.");
         }
 
-        GenericItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions
+        ItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions
             .Include(lv => lv.FieldLinks)
             .ThenInclude(fl => fl.FieldVersion)
             .FirstOrDefaultAsync(lv => lv.Id == request.WorkItemLayoutVersionId, cancellationToken);
@@ -62,16 +62,16 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
             return CommandResponse.Fail("Invalid values provided.");
         }
 
-        List<GenericItemValue> values = [];
+        List<ItemValue> values = [];
         foreach ((Guid fieldId, object? value) in request.Values)
         {
-            GenericItemFieldVersion? field = layoutVersion.FieldLinks.Find(f => f.FieldVersion.Id == fieldId)?.FieldVersion;
+            ItemFieldVersion? field = layoutVersion.FieldLinks.Find(f => f.FieldVersion.Id == fieldId)?.FieldVersion;
             if (field == null)
             {
                 return CommandResponse.Fail($"Invalid field name provided: {fieldId}");
             }
 
-            GenericItemValue workGenericItemValue = new()
+            ItemValue workItemValue = new()
             {
                 Field = field,
 
@@ -79,7 +79,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
 
             if (value is not null)
             {
-                bool valid = workGenericItemValue.TrySetValue(value);
+                bool valid = workItemValue.TrySetValue(value);
                 if (!valid)
                 {
                     return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(field.Type)}' field '{fieldId}': {value}");
@@ -91,7 +91,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
             }
             // else if its null and not required we can just skip doing anything else
 
-            values.Add(workGenericItemValue);
+            values.Add(workItemValue);
         }
 
         int version = ++workItem.Item.CurrentVersion;
@@ -102,7 +102,7 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
             Title = request.Title,
             Version = version,
             CreateDateTime = request.ActionDateTime,
-            GenericItemLayoutVersion = layoutVersion,
+            ItemLayoutVersion = layoutVersion,
             Values = values
         });
 
@@ -110,6 +110,6 @@ public sealed class CreateWorkItemVersionDb(BonesDbContext dbContext) : IRequest
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(nameof(GenericItemVersion), updated.Entity.Item.Versions.FirstOrDefault(v => v.Version == version)?.Id);
+        return CommandResponse.Pass(nameof(ItemVersion), updated.Entity.Item.Versions.FirstOrDefault(v => v.Version == version)?.Id);
     }
 }

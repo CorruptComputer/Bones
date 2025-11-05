@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
@@ -13,7 +13,7 @@ public class GetProjectItemFieldsResponse
     /// </summary>
     public required List<ProjectItemFieldModel> ItemFields { get; init; }
 
-    internal static GetProjectItemFieldsResponse FromInternalList(List<GenericItemField> fields)
+    internal static GetProjectItemFieldsResponse FromInternalList(List<ItemField> fields)
     {
         return new()
         {
@@ -82,7 +82,7 @@ public class GetProjectItemFieldsResponse
         /// </summary>
         public AddressFields? RequiredAddressFields { get; init; }
 
-        internal static ProjectItemFieldModel FromInternal(GenericItemField field)
+        internal static ProjectItemFieldModel FromInternal(ItemField field)
         {
             if (field.LatestVersion is null)
             {

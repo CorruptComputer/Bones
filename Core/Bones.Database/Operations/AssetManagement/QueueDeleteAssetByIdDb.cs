@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.WorkItemManagement;
 
 namespace Bones.Database.Operations.AssetManagement;
@@ -36,7 +36,7 @@ public sealed class QueueDeleteAssetByIdDb(BonesDbContext dbContext, ISender sen
             return CommandResponse.Fail("Invalid AssetId.");
         }
 
-        foreach (GenericItemVersion version in asset.Item.Versions)
+        foreach (ItemVersion version in asset.Item.Versions)
         {
             await sender.Send(new QueueDeleteAssetVersionByIdDb.Command(version.Id), cancellationToken);
         }

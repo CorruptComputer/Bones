@@ -3,7 +3,7 @@ using Bones.Database.Converters;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.Audit;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.MappingManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
@@ -45,17 +45,17 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     // TODO: Add documentation management
     #endregion
 
-    #region GenericItems
-    internal DbSet<GenericItemField> ItemFields { get; set; }
-    internal DbSet<GenericItemFieldListEntry> ItemFieldListEntries { get; set; }
-    internal DbSet<GenericItemFieldVersion> ItemFieldVersions { get; set; }
+    #region Items
+    internal DbSet<ItemField> ItemFields { get; set; }
+    internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
+    internal DbSet<ItemFieldVersion> ItemFieldVersions { get; set; }
 
-    internal DbSet<GenericItemLayout> ItemLayouts { get; set; }
-    internal DbSet<GenericItemLayoutVersion> ItemLayoutVersions { get; set; }
+    internal DbSet<ItemLayout> ItemLayouts { get; set; }
+    internal DbSet<ItemLayoutVersion> ItemLayoutVersions { get; set; }
 
-    internal DbSet<GenericItem> Items { get; set; }
-    internal DbSet<GenericItemValue> ItemValues { get; set; }
-    internal DbSet<GenericItemVersion> ItemVersions { get; set; }
+    internal DbSet<Item> Items { get; set; }
+    internal DbSet<ItemValue> ItemValues { get; set; }
+    internal DbSet<ItemVersion> ItemVersions { get; set; }
     #endregion
 
     #region OrganizationManagement
@@ -157,19 +157,19 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
         builder.Entity<BonesRole>(BonesRole.BuildTable);
         builder.Entity<BonesRoleClaim>(BonesRoleClaim.BuildTable);
         builder.Entity<WorkItem>(WorkItem.BuildTable);
-        builder.Entity<GenericItemLayoutFieldVersionLink>(GenericItemLayoutFieldVersionLink.BuildTable);
+        builder.Entity<ItemLayoutFieldVersionLink>(ItemLayoutFieldVersionLink.BuildTable);
         builder.Entity<OsmObject>(OsmObject.BuildTable);
         builder.Entity<Asset>(Asset.BuildTable);
         builder.Entity<Initiative>(Initiative.BuildTable);
-        builder.Entity<GenericItemVersion>(GenericItemVersion.BuildTable);
-        builder.Entity<GenericItemField>(GenericItemField.BuildTable);
-        builder.Entity<GenericItemFieldListEntry>(GenericItemFieldListEntry.BuildTable);
-        builder.Entity<GenericItem>(GenericItem.BuildTable);
-        builder.Entity<GenericItemValue>(GenericItemValue.BuildTable);
+        builder.Entity<ItemVersion>(ItemVersion.BuildTable);
+        builder.Entity<ItemField>(ItemField.BuildTable);
+        builder.Entity<ItemFieldListEntry>(ItemFieldListEntry.BuildTable);
+        builder.Entity<Item>(Item.BuildTable);
+        builder.Entity<ItemValue>(ItemValue.BuildTable);
         builder.Entity<GeoLocation>(GeoLocation.BuildTable);
-        builder.Entity<GenericItemLayoutVersion>(GenericItemLayoutVersion.BuildTable);
-        builder.Entity<GenericItemFieldVersion>(GenericItemFieldVersion.BuildTable);
-        builder.Entity<GenericItemLayout>(GenericItemLayout.BuildTable);
+        builder.Entity<ItemLayoutVersion>(ItemLayoutVersion.BuildTable);
+        builder.Entity<ItemFieldVersion>(ItemFieldVersion.BuildTable);
+        builder.Entity<ItemLayout>(ItemLayout.BuildTable);
         builder.Entity<Project>(Project.BuildTable);
     }
 }

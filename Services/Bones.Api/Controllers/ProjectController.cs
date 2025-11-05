@@ -2,9 +2,9 @@ using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.Projects;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Api.Models.Project;
-using Bones.Logic.Features.GenericItem;
+using Bones.Logic.Features.Item;
 using Bones.Api.Controllers.Base;
 using Bones.Shared.Backend.Enums;
 using System.ComponentModel.DataAnnotations;
@@ -90,7 +90,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
         BonesUser currentUser = await GetCurrentBonesUserAsync();
         QueryResponse<Project> projectResponse = await Sender.Send(new GetProjectById.Query(projectId, currentUser));
         QueryResponse<List<Initiative>> initiativesResponse = await Sender.Send(new GetInitiativesByProject.Query(projectId, currentUser));
-        QueryResponse<List<GenericItemLayout>> layoutsResponse = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, currentUser));
+        QueryResponse<List<ItemLayout>> layoutsResponse = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, currentUser));
 
         if (!projectResponse.Success || projectResponse.Result is null)
         {
@@ -148,8 +148,8 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(projectResponse.FailureReasons);
         }
 
-        QueryResponse<List<GenericItemField>> itemFields = await Sender.Send(new GetItemFieldsByProject.Query(projectId, currentUser));
-        QueryResponse<List<GenericItemLayout>> itemLayouts = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, currentUser));
+        QueryResponse<List<ItemField>> itemFields = await Sender.Send(new GetItemFieldsByProject.Query(projectId, currentUser));
+        QueryResponse<List<ItemLayout>> itemLayouts = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, currentUser));
 
         if (!itemFields.Success || itemFields.Result is null)
         {
@@ -176,7 +176,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<GetProjectItemFieldsResponse>> GetProjectItemFieldsAsync(Guid projectId)
     {
-        QueryResponse<List<GenericItemField>> fieldResponse = await Sender.Send(new GetItemFieldsByProject.Query(projectId, await GetCurrentBonesUserAsync()));
+        QueryResponse<List<ItemField>> fieldResponse = await Sender.Send(new GetItemFieldsByProject.Query(projectId, await GetCurrentBonesUserAsync()));
 
         if (!fieldResponse.Success || fieldResponse.Result is null)
         {
@@ -197,7 +197,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<List<GetProjectLayoutsResponse>>> GetProjectLayoutsAsync(Guid projectId, [FromQuery] ItemLayoutUse? layoutUse = null)
     {
-        QueryResponse<List<GenericItemLayout>> layouts = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, await GetCurrentBonesUserAsync()));
+        QueryResponse<List<ItemLayout>> layouts = await Sender.Send(new GetItemLayoutsByProject.Query(projectId, await GetCurrentBonesUserAsync()));
 
         if (!layouts.Success || layouts.Result is null)
         {
@@ -289,7 +289,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Ids[nameof(GenericItemField)];
+        return response.Ids[nameof(ItemField)];
     }
 
     /// <summary>
@@ -310,7 +310,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Ids[nameof(GenericItemFieldVersion)];
+        return response.Ids[nameof(ItemFieldVersion)];
     }
 
     /// <summary>
@@ -330,7 +330,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Ids[nameof(GenericItemLayout)];
+        return response.Ids[nameof(ItemLayout)];
     }
 
     /// <summary>
@@ -351,7 +351,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             return BadRequest(ErrorResponse.FromCommandResponse(response));
         }
 
-        return response.Ids[nameof(GenericItemLayoutVersion)];
+        return response.Ids[nameof(ItemLayoutVersion)];
     }
 
     #endregion

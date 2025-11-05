@@ -13,7 +13,7 @@ using System;
 namespace Bones.Api.Client.AutoGen.Asset.Layout.Item.Dashboard
 {
     /// <summary>
-    /// Builds and executes requests for operations under \Asset\Layout\{GenericItemLayoutId}\dashboard
+    /// Builds and executes requests for operations under \Asset\Layout\{ItemLayoutId}\dashboard
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
     public partial class DashboardRequestBuilder : BaseRequestBuilder
@@ -23,7 +23,7 @@ namespace Bones.Api.Client.AutoGen.Asset.Layout.Item.Dashboard
         /// </summary>
         /// <param name="pathParameters">Path parameters for the request</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public DashboardRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Asset/Layout/{GenericItemLayoutId}/dashboard", pathParameters)
+        public DashboardRequestBuilder(Dictionary<string, object> pathParameters, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Asset/Layout/{ItemLayoutId}/dashboard", pathParameters)
         {
         }
         /// <summary>
@@ -31,7 +31,7 @@ namespace Bones.Api.Client.AutoGen.Asset.Layout.Item.Dashboard
         /// </summary>
         /// <param name="rawUrl">The raw URL to use for the request builder.</param>
         /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
-        public DashboardRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Asset/Layout/{GenericItemLayoutId}/dashboard", rawUrl)
+        public DashboardRequestBuilder(string rawUrl, IRequestAdapter requestAdapter) : base(requestAdapter, "{+baseurl}/Asset/Layout/{ItemLayoutId}/dashboard", rawUrl)
         {
         }
         /// <summary>

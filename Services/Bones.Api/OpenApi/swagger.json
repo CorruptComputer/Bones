@@ -573,7 +573,7 @@
         }
       }
     },
-    "/Asset/Layout/{GenericItemLayoutId}/dashboard": {
+    "/Asset/Layout/{ItemLayoutId}/dashboard": {
       "get": {
         "tags": [
           "Asset"
@@ -582,7 +582,7 @@
         "operationId": "GetAssetLayoutDashboardAsync",
         "parameters": [
           {
-            "name": "GenericItemLayoutId",
+            "name": "ItemLayoutId",
             "in": "path",
             "description": "",
             "required": true,
@@ -1003,311 +1003,6 @@
         }
       }
     },
-    "/GenericItem/fields/{fieldId}/latest": {
-      "get": {
-        "tags": [
-          "GenericItem"
-        ],
-        "summary": "Gets the latest version of a field",
-        "operationId": "GetLatestItemFieldVersionAsync",
-        "parameters": [
-          {
-            "name": "fieldId",
-            "in": "path",
-            "description": "The ID of the field",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetLatestItemFieldVersionResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/GenericItem/layouts/{layoutId}/latest": {
-      "get": {
-        "tags": [
-          "GenericItem"
-        ],
-        "summary": "Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified",
-        "operationId": "GetLatestItemLayoutVersionAsync",
-        "parameters": [
-          {
-            "name": "layoutId",
-            "in": "path",
-            "description": "The ID of the layout",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetItemLayoutVersionResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/GenericItem/layouts/{layoutId}/{requestedVersion}": {
-      "get": {
-        "tags": [
-          "GenericItem"
-        ],
-        "summary": "Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified",
-        "operationId": "GetItemLayoutVersionAsync",
-        "parameters": [
-          {
-            "name": "layoutId",
-            "in": "path",
-            "description": "The ID of the layout",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "requestedVersion",
-            "in": "path",
-            "description": "The version if you want a specific version instead of the latest",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetItemLayoutVersionResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/GenericItem/layouts/{layoutId}/latest/fields": {
-      "get": {
-        "tags": [
-          "GenericItem"
-        ],
-        "summary": "Gets the latest version of a layout",
-        "operationId": "GetLatestItemLayoutVersionFieldsAsync",
-        "parameters": [
-          {
-            "name": "layoutId",
-            "in": "path",
-            "description": "The ID of the layout",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetLatestItemLayoutVersionFieldsResponse"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/Initiative/{initiativeId}/dashboard": {
       "get": {
         "tags": [
@@ -1445,6 +1140,311 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/GetWorkItemQueuesInInitiativeResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Item/fields/{fieldId}/latest": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "summary": "Gets the latest version of a field",
+        "operationId": "GetLatestItemFieldVersionAsync",
+        "parameters": [
+          {
+            "name": "fieldId",
+            "in": "path",
+            "description": "The ID of the field",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestItemFieldVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Item/layouts/{layoutId}/latest": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "summary": "Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified",
+        "operationId": "GetLatestItemLayoutVersionAsync",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetItemLayoutVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Item/layouts/{layoutId}/{requestedVersion}": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "summary": "Get an ItemLayoutVersion by its LayoutID and version, or the latest version if no version is specified",
+        "operationId": "GetItemLayoutVersionAsync",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "requestedVersion",
+            "in": "path",
+            "description": "The version if you want a specific version instead of the latest",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetItemLayoutVersionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Item/layouts/{layoutId}/latest/fields": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "summary": "Gets the latest version of a layout",
+        "operationId": "GetLatestItemLayoutVersionFieldsAsync",
+        "parameters": [
+          {
+            "name": "layoutId",
+            "in": "path",
+            "description": "The ID of the layout",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetLatestItemLayoutVersionFieldsResponse"
                   }
                 }
               }
@@ -4726,9 +4726,9 @@
           "createDateTime",
           "currentVersion",
           "friendlyId",
-          "genericItemId",
+          "itemId",
           "itemValues",
-          "latestGenericItemVersionId",
+          "latestItemVersionId",
           "latestVersionCreateDateTime",
           "layoutId",
           "projectId",
@@ -4755,14 +4755,14 @@
             "description": "The ID of the project this asset belongs to",
             "format": "uuid"
           },
-          "genericItemId": {
+          "itemId": {
             "type": "string",
-            "description": "The ID of the generic item this asset is",
+            "description": "The ID of the  item this asset is",
             "format": "uuid"
           },
-          "latestGenericItemVersionId": {
+          "latestItemVersionId": {
             "type": "string",
-            "description": "The ID of the latest version of the generic item this asset is",
+            "description": "The ID of the latest version of the  item this asset is",
             "format": "uuid"
           },
           "currentVersion": {
@@ -5428,9 +5428,9 @@
           "createDateTime",
           "currentVersion",
           "friendlyId",
-          "genericItemId",
+          "itemId",
           "itemValues",
-          "latestGenericItemVersionId",
+          "latestItemVersionId",
           "latestVersionCreateDateTime",
           "layoutId",
           "projectId",
@@ -5474,14 +5474,14 @@
             "description": "The time this item was added to the queue",
             "format": "date-time"
           },
-          "genericItemId": {
+          "itemId": {
             "type": "string",
-            "description": "The ID of the generic item this work item is",
+            "description": "The ID of the  item this work item is",
             "format": "uuid"
           },
-          "latestGenericItemVersionId": {
+          "latestItemVersionId": {
             "type": "string",
-            "description": "The ID of the latest version of the generic item this work item is",
+            "description": "The ID of the latest version of the  item this work item is",
             "format": "uuid"
           },
           "currentVersion": {

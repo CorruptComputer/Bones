@@ -1,10 +1,10 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.AssetManagement;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
-using Bones.Logic.Features.GenericItem;
+using Bones.Logic.Features.Item;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Assets;
@@ -48,7 +48,7 @@ public sealed class CreateAssetVersion(ISender sender) : IRequestHandler<CreateA
             return CommandResponse.Forbid();
         }
 
-        GenericItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(request.LayoutId, request.RequestingUser), cancellationToken);
+        ItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(request.LayoutId, request.RequestingUser), cancellationToken);
         if (layout?.LatestVersion is null)
         {
             return CommandResponse.Fail("Layout not found");

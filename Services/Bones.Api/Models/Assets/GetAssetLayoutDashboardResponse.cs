@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.GenericItems;
+using Bones.Database.DbSets.Items;
 
 namespace Bones.Api.Models.Assets;
 
@@ -20,7 +20,7 @@ public sealed record GetAssetLayoutDashboardResponse
     public required IEnumerable<DashboardAssetModel> Assets { get; init; }
 
 
-    internal static GetAssetLayoutDashboardResponse FromInternal(GenericItemLayout layout, IEnumerable<Asset> assets)
+    internal static GetAssetLayoutDashboardResponse FromInternal(ItemLayout layout, IEnumerable<Asset> assets)
     {
         return new()
         {

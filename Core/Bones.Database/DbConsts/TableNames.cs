@@ -30,19 +30,19 @@ internal static class TableNames
         internal const string SessionAttemptAudits = "SessionAttemptAudits";
     }
 
-    internal static class GenericItem
+    internal static class Item
     {
-        internal const string GenericItemFields = "GenericItemFields";
-        internal const string GenericItemFieldListEntries = "GenericItemFieldListEntries";
-        internal const string GenericItemFieldVersions = "GenericItemFieldVersions";
+        internal const string ItemFields = "ItemFields";
+        internal const string ItemFieldListEntries = "ItemFieldListEntries";
+        internal const string ItemFieldVersions = "ItemFieldVersions";
 
-        internal const string GenericItemLayouts = "GenericItemLayouts";
-        internal const string GenericItemLayoutFieldVersionLinks = "GenericItemLayoutFieldVersionLinks";
-        internal const string GenericItemLayoutVersions = "GenericItemLayoutVersions";
+        internal const string ItemLayouts = "ItemLayouts";
+        internal const string ItemLayoutFieldVersionLinks = "ItemLayoutFieldVersionLinks";
+        internal const string ItemLayoutVersions = "ItemLayoutVersions";
 
-        internal const string GenericItems = "GenericItems";
-        internal const string GenericItemValues = "GenericItemValues";
-        internal const string GenericItemVersions = "GenericItemVersions";
+        internal const string Items = "Items";
+        internal const string ItemValues = "ItemValues";
+        internal const string ItemVersions = "ItemVersions";
     }
 
     internal static class MappingManagement

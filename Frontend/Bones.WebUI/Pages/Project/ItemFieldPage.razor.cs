@@ -73,7 +73,7 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
             return;
         }
 
-        GetLatestItemFieldVersionResponse? latestVersion = await ApiClient.GenericItem.Fields[ItemFieldId.Value].Latest.GetAsync();
+        GetLatestItemFieldVersionResponse? latestVersion = await ApiClient.Item.Fields[ItemFieldId.Value].Latest.GetAsync();
         if (latestVersion is null)
         {
             ApiError = true;

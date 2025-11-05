@@ -18,14 +18,14 @@ namespace Bones.Api.Client.AutoGen.Asset.Layout
     {
         /// <summary>Gets an item from the Bones.Api.Client.AutoGen.Asset.Layout.item collection</summary>
         /// <param name="position">Unique identifier of the item</param>
-        /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Asset.Layout.Item.WithGenericItemLayoutItemRequestBuilder"/></returns>
-        public global::Bones.Api.Client.AutoGen.Asset.Layout.Item.WithGenericItemLayoutItemRequestBuilder this[Guid position]
+        /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Asset.Layout.Item.WithItemLayoutItemRequestBuilder"/></returns>
+        public global::Bones.Api.Client.AutoGen.Asset.Layout.Item.WithItemLayoutItemRequestBuilder this[Guid position]
         {
             get
             {
                 var urlTplParams = new Dictionary<string, object>(PathParameters);
-                urlTplParams.Add("GenericItemLayoutId", position);
-                return new global::Bones.Api.Client.AutoGen.Asset.Layout.Item.WithGenericItemLayoutItemRequestBuilder(urlTplParams, RequestAdapter);
+                urlTplParams.Add("ItemLayoutId", position);
+                return new global::Bones.Api.Client.AutoGen.Asset.Layout.Item.WithItemLayoutItemRequestBuilder(urlTplParams, RequestAdapter);
             }
         }
         /// <summary>

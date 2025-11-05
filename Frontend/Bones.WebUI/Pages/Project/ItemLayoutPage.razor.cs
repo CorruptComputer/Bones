@@ -97,7 +97,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        GetItemLayoutVersionResponse? layoutResponse = await apiClient.GenericItem.Layouts[ItemLayoutId.Value].Latest.GetAsync();
+        GetItemLayoutVersionResponse? layoutResponse = await apiClient.Item.Layouts[ItemLayoutId.Value].Latest.GetAsync();
 
         if (layoutResponse is null)
         {
