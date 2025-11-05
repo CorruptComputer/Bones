@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects.Presets.Models;
 

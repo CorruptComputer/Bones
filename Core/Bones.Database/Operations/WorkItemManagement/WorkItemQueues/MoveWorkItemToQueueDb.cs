@@ -1,6 +1,4 @@
-using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.WorkItemManagement;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 

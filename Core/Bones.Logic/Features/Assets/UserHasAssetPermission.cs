@@ -1,10 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.AssetManagement;
-using Bones.Database.Operations.WorkItemManagement.WorkItems;
 using Bones.Logic.Features.Projects;
-using Bones.Logic.Features.WorkItems.Queue;
 
 namespace Bones.Logic.Features.Assets;
 

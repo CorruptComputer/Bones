@@ -2,7 +2,6 @@ using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Item;
 using Bones.Database.DbSets.Items;
 using Bones.Logic.Features.Item;
-using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Controllers;
 

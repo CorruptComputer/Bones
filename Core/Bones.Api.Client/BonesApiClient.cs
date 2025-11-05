@@ -1,5 +1,4 @@
 using Bones.Api.Client.AutoGen;
-using ReQuesty.Runtime.Abstractions;
 using ReQuesty.Runtime.Abstractions.Authentication;
 using ReQuesty.Runtime.Http;
 

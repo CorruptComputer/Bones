@@ -11,7 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Bones.Database.Operations.System;
 using Bones.Shared.Backend.Models;
-using FluentValidation;
 
 namespace Bones.Testing.UnitTests.Shared;
 

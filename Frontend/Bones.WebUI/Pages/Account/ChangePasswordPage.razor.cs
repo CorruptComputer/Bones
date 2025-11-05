@@ -1,5 +1,4 @@
 using System.Net;
-using Bones.Shared.Consts;
 using Bones.WebUI.Consts;
 using Bones.WebUI.Services.Singleton;
 using ReQuesty.Runtime.Abstractions;

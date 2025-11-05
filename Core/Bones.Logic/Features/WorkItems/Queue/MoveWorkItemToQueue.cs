@@ -1,9 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.WorkItemManagement;
 using Bones.Database.Operations.WorkItemManagement.WorkItemQueues;
 using Bones.Database.Operations.WorkItemManagement.WorkItems;
-using Bones.Logic.Features.WorkItems.Queue;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.WorkItems.Queue;

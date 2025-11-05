@@ -1,6 +1,5 @@
 using System.Net;
 using System.Security.Claims;
-using Bones.Shared.Consts;
 using Bones.WebUI.Consts;
 using Microsoft.AspNetCore.Components.Authorization;
 using ReQuesty.Runtime.Abstractions;
