@@ -28,7 +28,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     [ProducesResponseType<Dictionary<Guid, string>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<Dictionary<string, string[]>>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Dictionary<Guid, string>>> GetProjectsByOwnerAsync([FromQuery] [Required] OwnershipType ownerType, [FromQuery] Guid? organizationId)
+    public async ValueTask<ActionResult<Dictionary<Guid, string>>> GetProjectsByOwnerAsync([FromQuery][Required] OwnershipType ownerType, [FromQuery] Guid? organizationId)
     {
         BonesUser currentUser = await GetCurrentBonesUserAsync();
         QueryResponse<Dictionary<Guid, string>> response = await Sender.Send(new GetProjectsByOwner.Query(ownerType, organizationId ?? currentUser.Id, currentUser));
@@ -186,7 +186,7 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
         return GetProjectItemFieldsResponse.FromInternalList(fieldResponse.Result);
     }
 
-        /// <summary>
+    /// <summary>
     ///   Gets the item layouts for a project, optionally filtered by the uses they are enabled for
     /// </summary>
     /// <param name="projectId">The ID of the project</param>
