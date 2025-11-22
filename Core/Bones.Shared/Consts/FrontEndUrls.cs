@@ -82,7 +82,7 @@ public static class FrontEndUrls
         public static class ItemField
         {
             /// <summary>
-            ///   Item Field Page
+            ///  item Field Page
             /// </summary>
             public const string ITEM_FIELD = $"{_projectWithId}/item-field";
 
@@ -92,7 +92,7 @@ public static class FrontEndUrls
             public const string ITEM_FIELD_ID_PLACEHOLDER = "{ItemFieldId:guid}";
 
             /// <summary>
-            ///   Item Layout Page with item layout ID provided
+            ///  item Layout Page with item layout ID provided
             /// </summary>
             public const string ITEM_FIELD_WITH_ID = $"{ITEM_FIELD}?itemFieldId={ITEM_FIELD_ID_PLACEHOLDER}";
         }
@@ -103,7 +103,7 @@ public static class FrontEndUrls
         public static class ItemLayout
         {
             /// <summary>
-            ///   Item Layout Page
+            ///  item Layout Page
             /// </summary>
             public const string ITEM_LAYOUT = $"{_projectWithId}/item-layout";
 
@@ -113,7 +113,7 @@ public static class FrontEndUrls
             public const string ITEM_LAYOUT_ID_PLACEHOLDER = "{ItemLayoutId:guid}";
 
             /// <summary>
-            ///   Item Layout Page with item layout ID provided
+            ///  item Layout Page with item layout ID provided
             /// </summary>
             public const string ITEM_LAYOUT_WITH_ID = $"{ITEM_LAYOUT}?itemLayoutId={ITEM_LAYOUT_ID_PLACEHOLDER}";
         }
@@ -139,52 +139,52 @@ public static class FrontEndUrls
             public const string INITIATIVE_DASHBOARD = $"{_initiativeWithId}/dashboard";
 
             /// <summary>
-            ///   Page to create a work item queue within an initiative
+            ///   Page to create a task queue within an initiative
             /// </summary>
-            public const string INITIATIVE_CREATE_WORKITEM_QUEUE = $"{_initiativeWithId}/create-work-item-queue";
+            public const string INITIATIVE_CREATE_TASK_QUEUE = $"{_initiativeWithId}/create-task-queue";
         }
     }
 
     /// <summary>
-    ///   Work item pages
+    ///   Task pages
     /// </summary>
-    public static class WorkItem
+    public static class Task
     {
         /// <summary>
-        ///   Placeholder for the work item ID in URLs
+        ///   Placeholder for the task ID in URLs
         /// </summary>
-        public const string WORKITEM_ID_PLACEHOLDER = "{WorkItemId:guid}";
+        public const string TASK_ID_PLACEHOLDER = "{TaskId:guid}";
 
         /// <summary>
-        ///   Placeholder for the work item queue ID in URLs
+        ///   Placeholder for the task queue ID in URLs
         /// </summary>
-        public const string WORKITEM_QUEUE_ID_PLACEHOLDER = "{WorkItemQueueId:guid}";
+        public const string TASK_QUEUE_ID_PLACEHOLDER = "{TaskQueueId:guid}";
 
-        private const string _workItem = "/WorkItem";
+        private const string _task = "/Task";
 
-        private const string _workItemQueue = "/WorkItemQueue";
+        private const string _taskQueue = "/TaskQueue";
 
-        private const string _workItemQueueWithId = $"{_workItemQueue}/{WORKITEM_QUEUE_ID_PLACEHOLDER}";
+        private const string _taskQueueWithId = $"{_taskQueue}/{TASK_QUEUE_ID_PLACEHOLDER}";
 
         /// <summary>
-        ///   Work item queue dashboard page
+        ///   Task queue dashboard page
         /// </summary>
-        public const string WORKITEM_QUEUE_DASHBOARD = $"{_workItemQueueWithId}/dashboard";
+        public const string TASK_QUEUE_DASHBOARD = $"{_taskQueueWithId}/dashboard";
 
         /// <summary>
-        ///   Create work item page
+        ///   Create task page
         /// </summary>
-        public const string CREATE_WORK_ITEM = $"{_workItem}/create";
+        public const string CREATE_TASK = $"{_task}/create";
 
         /// <summary>
-        ///   Create work item page
+        ///   Create task page
         /// </summary>
-        public const string CREATE_WORK_ITEM_IN_QUEUE = $"{_workItem}/create?work-item-queue-id={WORKITEM_QUEUE_ID_PLACEHOLDER}";
+        public const string CREATE_TASK_IN_QUEUE = $"{_task}/create?task-queue-id={TASK_QUEUE_ID_PLACEHOLDER}";
 
         /// <summary>
-        ///   View work item page
+        ///   View task page
         /// </summary>
-        public const string VIEW_WORK_ITEM = $"{_workItem}/{WORKITEM_ID_PLACEHOLDER}";
+        public const string VIEW_TASK = $"{_task}/{TASK_ID_PLACEHOLDER}";
 
     }
 

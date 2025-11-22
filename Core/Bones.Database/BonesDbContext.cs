@@ -8,7 +8,7 @@ using Bones.Database.DbSets.MappingManagement;
 using Bones.Database.DbSets.OrganizationManagement;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.System;
-using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Database.DbSets.TaskManagement;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -56,6 +56,9 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     internal DbSet<Item> Items { get; set; }
     internal DbSet<ItemValue> ItemValues { get; set; }
     internal DbSet<ItemVersion> ItemVersions { get; set; }
+
+    internal DbSet<ItemAssignee> ItemAssignees { get; set; }
+    internal DbSet<ItemAssignmentSlot> ItemAssignmentSlots { get; set; }
     #endregion
 
     #region OrganizationManagement
@@ -81,10 +84,10 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     internal DbSet<TaskError> TaskErrors { get; set; }
     #endregion
 
-    #region WorkItemManagement
-    internal DbSet<WorkItemQueue> WorkItemQueues { get; set; }
+    #region TaskManagement
+    internal DbSet<TaskQueue> TaskQueues { get; set; }
 
-    internal DbSet<WorkItem> WorkItems { get; set; }
+    internal DbSet<BonesTask> Tasks { get; set; }
     #endregion
 
     /// <summary>
@@ -156,7 +159,7 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
         builder.Entity<BonesUserSession>(BonesUserSession.BuildTable);
         builder.Entity<BonesRole>(BonesRole.BuildTable);
         builder.Entity<BonesRoleClaim>(BonesRoleClaim.BuildTable);
-        builder.Entity<WorkItem>(WorkItem.BuildTable);
+        builder.Entity<BonesTask>(BonesTask.BuildTable);
         builder.Entity<ItemLayoutFieldVersionLink>(ItemLayoutFieldVersionLink.BuildTable);
         builder.Entity<OsmObject>(OsmObject.BuildTable);
         builder.Entity<Asset>(Asset.BuildTable);

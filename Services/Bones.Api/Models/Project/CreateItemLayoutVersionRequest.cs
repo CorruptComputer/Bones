@@ -29,13 +29,13 @@ public class CreateItemLayoutVersionRequest
     public required List<KeyValuePair<int, Guid>> FieldVersions { get; init; }
 
     /// <summary>
-    ///   The assignee definitions to use for the initial layout version
+    ///   The assignee slots to use for the initial layout version
     /// </summary>
     [JsonRequired]
-    public required List<ItemAssigneeDefinitionModel> AssigneeDefinitions { get; init; }
+    public required List<ItemAssigneeSlotModel> AssigneeSlots { get; init; }
 
-    internal CreateItemLayoutVersion.Command ToInternal(Guid projectId, BonesUser user)
+    internal CreateItemLayoutVersion.Command ToInternal(Guid itemLayoutId, BonesUser user)
     {
-        return new(projectId, Name, LayoutUse, FieldVersions.ToDictionary(), AssigneeDefinitions.ToDictionary(ad => ad.OrderNumber, ad => (ad.Name, ad.AssignmentType, ad.SelectionType)), user);
+        return new(itemLayoutId, Name, LayoutUse, FieldVersions.ToDictionary(), AssigneeSlots.ToDictionary(ad => ad.OrderNumber, ad => (ad.Name, ad.AssignmentType, ad.SelectionType, ad.States)), user);
     }
 }

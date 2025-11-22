@@ -146,34 +146,34 @@ public static class BonesClaimTypes
         }
 
         /// <summary>
-        ///   WorkItemQueue level claim types for organization roles
+        ///   TaskQueue level claim types for organization roles
         /// </summary>
-        public static class WorkItemQueue
+        public static class TaskQueue
         {
             /// <summary>
             ///   Claim type for if a user can view a queue
             /// </summary>
-            public const string VIEW_QUEUE = "ViewWorkItemQueue";
+            public const string VIEW_QUEUE = "ViewTaskQueue";
 
             /// <summary>
             ///   Claim type for if a user can create a queue
             /// </summary>
-            public const string CREATE_QUEUE = "CreateWorkItemQueue";
+            public const string CREATE_QUEUE = "CreateTaskQueue";
 
             /// <summary>
             ///   Claim type for if a user can delete a queue
             /// </summary>
-            public const string DELETE_QUEUE = "DeleteWorkItemQueue";
+            public const string DELETE_QUEUE = "DeleteTaskQueue";
 
             /// <summary>
             ///   Claim type for if a user can view the queues settings
             /// </summary>
-            public const string VIEW_QUEUE_SETTINGS = "ViewWorkItemQueueSettings";
+            public const string VIEW_QUEUE_SETTINGS = "ViewTaskQueueSettings";
 
             /// <summary>
             ///   Claim type for if a user can edit the queues settings
             /// </summary>
-            public const string EDIT_QUEUE_SETTINGS = "EditWorkItemQueueSettings";
+            public const string EDIT_QUEUE_SETTINGS = "EditTaskQueueSettings";
 
             /// <summary>
             ///   Gets the claim type for permissions that should apply to this queue
@@ -181,41 +181,41 @@ public static class BonesClaimTypes
             /// <param name="queueId"></param>
             /// <param name="permissionName"></param>
             /// <returns></returns>
-            public static string GetWorkItemQueueClaimType(Guid queueId, string permissionName)
+            public static string GetTaskQueueClaimType(Guid queueId, string permissionName)
             {
                 return $"Q{queueId}|{permissionName}";
             }
         }
 
         /// <summary>
-        ///   Work Item level claim types for organization roles
+        ///   Task level claim types for organization roles
         /// </summary>
-        public static class WorkItem
+        public static class Task
         {
             /// <summary>
-            ///   Claim type for if a user can view a work item
+            ///   Claim type for if a user can view a task
             /// </summary>
-            public const string VIEW_WORK_ITEM = "ViewWorkItem";
+            public const string VIEW_TASK = "ViewTask";
 
             /// <summary>
-            ///   Claim type for if a user can create a work item
+            ///   Claim type for if a user can create a task
             /// </summary>
-            public const string CREATE_WORK_ITEM = "CreateWorkItem";
+            public const string CREATE_TASK = "CreateTask";
 
             /// <summary>
-            ///   Claim type for if a user can create a new work item version
+            ///   Claim type for if a user can create a new task version
             /// </summary>
-            public const string CREATE_WORK_ITEM_VERSION = "CreateWorkItemVersion";
+            public const string CREATE_TASK_VERSION = "CreateTaskVersion";
 
             /// <summary>
-            ///   Claim type for if a user can delete a work item
+            ///   Claim type for if a user can delete a task
             /// </summary>
-            public const string DELETE_WORK_ITEM = "DeleteWorkItem";
+            public const string DELETE_TASK = "DeleteTask";
 
             /// <summary>
-            ///   Claim type for if a user can edit a work item
+            ///   Claim type for if a user can edit a task
             /// </summary>
-            public const string EDIT_WORK_ITEM = "EditWorkItem";
+            public const string EDIT_TASK = "EditTask";
         }
 
         /// <summary>

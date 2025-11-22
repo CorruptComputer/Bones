@@ -25,16 +25,9 @@ public class Asset
     public required Project Project { get; set; }
 
     /// <summary>
-    ///   The  item for this asset
+    ///   The item for this asset
     /// </summary>
     public required Item Item { get; set; }
-
-    /// <summary>
-    ///   The current version of the  item this work item is using
-    /// </summary>
-    [IgnoreDataMember]
-    public ItemVersion? CurrentVersion
-        => Item.Versions.FirstOrDefault(x => x.Version == Item.CurrentVersion);
 
     /// <summary>
     ///   Disables access to this Asset and schedules deletes for everything within,

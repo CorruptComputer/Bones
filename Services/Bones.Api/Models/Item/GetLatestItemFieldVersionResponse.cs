@@ -67,7 +67,7 @@ public sealed record GetLatestItemFieldVersionResponse
 
     internal static GetLatestItemFieldVersionResponse FromInternal(ItemField field)
     {
-        if (field.LatestVersion is null)
+        if (field.Current is null)
         {
             throw new InvalidOperationException("Field has no latest version");
         }
@@ -75,15 +75,15 @@ public sealed record GetLatestItemFieldVersionResponse
         return new()
         {
             FieldId = field.Id,
-            FieldVersionId = field.LatestVersion.Id,
-            Version = field.LatestVersion.Version,
-            Name = field.LatestVersion.Name,
-            IsRequired = field.LatestVersion.IsRequired,
-            Type = field.LatestVersion.Type,
-            CanBeNegative = field.LatestVersion.CanBeNegative,
-            PossibleValues = field.LatestVersion.PossibleValues?.Select(x => new KeyValuePair<string, StringValueMatchingType>(x.Value, x.MatchingType)),
-            GeoLocationType = field.LatestVersion.GeoLocationType,
-            RequiredAddressFields = field.LatestVersion.RequiredAddressFields
+            FieldVersionId = field.Current.Id,
+            Version = field.Current.Version,
+            Name = field.Current.Name,
+            IsRequired = field.Current.IsRequired,
+            Type = field.Current.Type,
+            CanBeNegative = field.Current.CanBeNegative,
+            PossibleValues = field.Current.PossibleValues?.Select(x => new KeyValuePair<string, StringValueMatchingType>(x.Value, x.MatchingType)),
+            GeoLocationType = field.Current.GeoLocationType,
+            RequiredAddressFields = field.Current.RequiredAddressFields
         };
     }
 }

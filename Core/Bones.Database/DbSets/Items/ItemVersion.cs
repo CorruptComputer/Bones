@@ -49,6 +49,11 @@ public class ItemVersion
     public required List<ItemValue> Values { get; set; }
 
     /// <summary>
+    ///   The assignees for this item version
+    /// </summary>
+    public required List<ItemAssignee> Assignees { get; set; }
+
+    /// <summary>
     ///   Disables viewing this item version, and when safe to do so it will be deleted.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;

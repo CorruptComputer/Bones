@@ -1,5 +1,5 @@
 using Bones.Database.DbConsts;
-using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Database.DbSets.TaskManagement;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.ProjectManagement;
@@ -31,7 +31,7 @@ public class Initiative
     /// <summary>
     ///   The child queues for this initiative
     /// </summary>
-    public List<WorkItemQueue> Queues { get; set; } = [];
+    public List<TaskQueue> Queues { get; set; } = [];
 
     /// <summary>
     ///   Disables access to this Initiative and schedules deletes for everything within,

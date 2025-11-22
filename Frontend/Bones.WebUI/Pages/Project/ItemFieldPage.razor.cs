@@ -3,7 +3,7 @@ using ReQuesty.Runtime.Abstractions;
 namespace Bones.WebUI.Pages.Project;
 
 /// <summary>
-///   Item Field page
+///  item Field page
 /// </summary>
 public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<ItemFieldPage> Logger) : ComponentBase
 {
@@ -73,7 +73,7 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
             return;
         }
 
-        GetLatestItemFieldVersionResponse? latestVersion = await ApiClient.Item.Fields[ItemFieldId.Value].Latest.GetAsync();
+        GetLatestItemFieldVersionResponse? latestVersion = await ApiClient.ItemLayout.Fields[ItemFieldId.Value].Latest.GetAsync();
         if (latestVersion is null)
         {
             ApiError = true;
@@ -109,12 +109,12 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
             if (ItemFieldId == null)
             {
                 CreateItemFieldRequest request = GetNewFieldRequest();
-                await ApiClient.Project[ProjectId].Fields.Create.PostAsync(request);
+                await ApiClient.ItemLayout.Fields.Create.PostAsync(request);
             }
             else
             {
                 CreateItemFieldVersionRequest request = GetNewVersionRequest();
-                await ApiClient.Project[ProjectId].Fields[ItemFieldId.Value].PostAsync(request);
+                await ApiClient.ItemLayout.Fields[ItemFieldId.Value].PostAsync(request);
             }
 
 
@@ -132,6 +132,7 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
     {
         CreateItemFieldRequest request = new()
         {
+            ProjectId = ProjectId,
             Name = FieldName,
             IsRequired = IsRequired,
             Type = FieldType,

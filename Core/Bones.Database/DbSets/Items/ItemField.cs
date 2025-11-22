@@ -31,7 +31,7 @@ public class ItemField
     ///   The latest version of this field
     /// </summary>
     [NotMapped]
-    public ItemFieldVersion? LatestVersion => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
+    public ItemFieldVersion? Current => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
 
     /// <summary>
     ///   The versions for this Item field

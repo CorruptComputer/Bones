@@ -64,10 +64,10 @@ public record GetProjectItemLayoutResponse
         public required List<ItemFieldModel> Fields { get; init; }
 
         /// <summary>
-        ///   The assignee definitions for the layout version
+        ///   The assignee slots for the layout version
         /// </summary>
         [JsonRequired]
-        public required List<ItemAssigneeDefinitionModel> AssigneeDefinitions { get; init; }
+        public required List<ItemAssigneeSlotModel> AssigneeSlots { get; init; }
 
         /// <summary>
         ///   Disables creating of new items using this layout version,

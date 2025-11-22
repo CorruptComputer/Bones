@@ -456,11 +456,53 @@ namespace Bones.Database.Migrations
                     b.ToTable("Items", "Item");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.Items.ItemAssigneeDefinition", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.Items.ItemAssignee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AssignedRoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("DeleteFlag")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("ItemVersionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SlotId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedRoleId");
+
+                    b.HasIndex("AssignedUserId");
+
+                    b.HasIndex("ItemVersionId");
+
+                    b.HasIndex("SlotId");
+
+                    b.ToTable("ItemAssignees", "Item");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Items.ItemAssignmentSlot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.PrimitiveCollection<List<string>>("AssignmentStates")
+                        .IsRequired()
+                        .HasColumnType("text[]");
 
                     b.Property<int>("AssignmentType")
                         .HasColumnType("integer");
@@ -485,7 +527,7 @@ namespace Bones.Database.Migrations
 
                     b.HasIndex("ItemLayoutVersionId");
 
-                    b.ToTable("ItemAssigneeDefinitions", "Item");
+                    b.ToTable("ItemAssignmentSlots", "Item");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemField", b =>
@@ -1090,7 +1132,7 @@ namespace Bones.Database.Migrations
                     b.ToTable("TaskErrors", "System");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.WorkItemManagement.WorkItem", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.TaskManagement.BonesTask", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1105,19 +1147,19 @@ namespace Bones.Database.Migrations
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("WorkItemQueueId")
+                    b.Property<Guid>("TaskQueueId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("WorkItemQueueId");
+                    b.HasIndex("TaskQueueId");
 
-                    b.ToTable("WorkItems", "WorkItemManagement");
+                    b.ToTable("TaskItems", "TaskManagement");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.WorkItemManagement.WorkItemQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.TaskManagement.TaskQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1138,7 +1180,7 @@ namespace Bones.Database.Migrations
 
                     b.HasIndex("InitiativeId");
 
-                    b.ToTable("WorkItemQueues", "WorkItemManagement");
+                    b.ToTable("TaskQueues", "TaskManagement");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.AccountManagement.BonesRole", b =>
@@ -1289,10 +1331,37 @@ namespace Bones.Database.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.Items.ItemAssigneeDefinition", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.Items.ItemAssignee", b =>
+                {
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesRole", "AssignedRole")
+                        .WithMany()
+                        .HasForeignKey("AssignedRoleId");
+
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId");
+
+                    b.HasOne("Bones.Database.DbSets.Items.ItemVersion", null)
+                        .WithMany("Assignees")
+                        .HasForeignKey("ItemVersionId");
+
+                    b.HasOne("Bones.Database.DbSets.Items.ItemAssignmentSlot", "Slot")
+                        .WithMany()
+                        .HasForeignKey("SlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssignedRole");
+
+                    b.Navigation("AssignedUser");
+
+                    b.Navigation("Slot");
+                });
+
+            modelBuilder.Entity("Bones.Database.DbSets.Items.ItemAssignmentSlot", b =>
                 {
                     b.HasOne("Bones.Database.DbSets.Items.ItemLayoutVersion", null)
-                        .WithMany("AssigneeDefinitions")
+                        .WithMany("AssigneeSlots")
                         .HasForeignKey("ItemLayoutVersionId");
                 });
 
@@ -1451,7 +1520,7 @@ namespace Bones.Database.Migrations
                     b.Navigation("OwningUser");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.WorkItemManagement.WorkItem", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.TaskManagement.BonesTask", b =>
                 {
                     b.HasOne("Bones.Database.DbSets.Items.Item", "Item")
                         .WithMany()
@@ -1459,18 +1528,18 @@ namespace Bones.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bones.Database.DbSets.WorkItemManagement.WorkItemQueue", "WorkItemQueue")
-                        .WithMany("WorkItems")
-                        .HasForeignKey("WorkItemQueueId")
+                    b.HasOne("Bones.Database.DbSets.TaskManagement.TaskQueue", "TaskQueue")
+                        .WithMany("Tasks")
+                        .HasForeignKey("TaskQueueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Item");
 
-                    b.Navigation("WorkItemQueue");
+                    b.Navigation("TaskQueue");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.WorkItemManagement.WorkItemQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.TaskManagement.TaskQueue", b =>
                 {
                     b.HasOne("Bones.Database.DbSets.ProjectManagement.Initiative", "Initiative")
                         .WithMany("Queues")
@@ -1508,13 +1577,15 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemLayoutVersion", b =>
                 {
-                    b.Navigation("AssigneeDefinitions");
+                    b.Navigation("AssigneeSlots");
 
                     b.Navigation("FieldLinks");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemVersion", b =>
                 {
+                    b.Navigation("Assignees");
+
                     b.Navigation("Values");
                 });
 
@@ -1535,9 +1606,9 @@ namespace Bones.Database.Migrations
                     b.Navigation("Initiatives");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.WorkItemManagement.WorkItemQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.TaskManagement.TaskQueue", b =>
                 {
-                    b.Navigation("WorkItems");
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

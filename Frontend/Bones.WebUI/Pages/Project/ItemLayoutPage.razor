@@ -7,7 +7,7 @@
 
     <MudSelect T="Bones.Api.Client.AutoGen.Models.ItemLayoutUse" Label="Item Layout Use" Required="true" RequiredError="Item Layout Use is required!" @bind-value="@LayoutUse">
         <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.ItemLayoutUse.Assets">Asset</MudSelectItem>
-        <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.ItemLayoutUse.WorkItems">Work Item</MudSelectItem>
+        <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.ItemLayoutUse.Tasks">Task</MudSelectItem>
     </MudSelect>
 
     @if (ItemLayoutId.HasValue)
@@ -79,7 +79,7 @@
     </div>
     <div style="display: flex; justify-content: space-between;">
         <div style="width:49%">
-            <MudText Typo="Typo.h5">Assignee Definition</MudText>
+            <MudText Typo="Typo.h5">Assignee Slot</MudText>
 
             <MudTextField T="string" Label="Name" @bind-value="@NewAssigneeName"/>
 

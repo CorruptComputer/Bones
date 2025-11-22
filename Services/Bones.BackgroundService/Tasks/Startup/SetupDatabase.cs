@@ -31,7 +31,7 @@ internal class SetupDatabase(ISender sender, BonesBackendConfiguration config) :
                 return;
             }
 
-            CommandResponse testProjectCreated = await Sender.Send(new CreateProjectWithPreset.Command("Test Project", ProjectPreset.Test, testUser, CreateWorkItems: true), cancellationToken);
+            CommandResponse testProjectCreated = await Sender.Send(new CreateProjectWithPreset.Command("Test Project", ProjectPreset.Test, testUser, CreateTasks: true), cancellationToken);
 
             if (!testProjectCreated.Success)
             {

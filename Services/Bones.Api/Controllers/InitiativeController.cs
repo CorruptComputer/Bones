@@ -3,9 +3,9 @@ using Bones.Api.Models.Initiatives;
 using Bones.Api.Models.Project;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Database.DbSets.TaskManagement;
 using Bones.Logic.Features.Initiatives;
-using Bones.Logic.Features.WorkItems.Queue;
+using Bones.Logic.Features.Tasks.TaskQueues;
 
 namespace Bones.Api.Controllers;
 
@@ -41,13 +41,13 @@ public sealed class InitiativeController(ISender sender) : AuthenticatedControll
             InitiativeId = initiative.Id,
             InitiativeName = initiative.Name,
             ProjectId = initiative.Project.Id,
-            WorkItemQueueCount = initiative.Queues.Count,
-            WorkItemQueues = initiative.Queues.Select(i =>
-                new GetInitiativeDashboardResponse.WorkItemQueueListModel
+            TaskQueueCount = initiative.Queues.Count,
+            TaskQueues = initiative.Queues.Select(i =>
+                new GetInitiativeDashboardResponse.TaskQueueListModel
                 {
-                    WorkItemQueueId = i.Id,
-                    WorkItemQueueName = i.Name,
-                    WorkItemCount = i.WorkItems.Count
+                    TaskQueueId = i.Id,
+                    TaskQueueName = i.Name,
+                    TaskCount = i.Tasks.Count
                 })
         };
 
@@ -55,23 +55,23 @@ public sealed class InitiativeController(ISender sender) : AuthenticatedControll
     }
 
     /// <summary>
-    ///   Gets the work item queues in an initiative
+    ///   Gets the task queues in an initiative
     /// </summary>
     /// <param name="initiativeId">The ID of the initiative</param>
-    /// <returns>The work item queues in the initiative.</returns>
-    [HttpGet("{initiativeId:guid}/work-item-queues", Name = "GetWorkItemQueuesInInitiativeAsync")]
-    [ProducesResponseType<List<GetWorkItemQueuesInInitiativeResponse>>(StatusCodes.Status200OK)]
+    /// <returns>The task queues in the initiative.</returns>
+    [HttpGet("{initiativeId:guid}/task-queues", Name = "GetTaskQueuesInInitiativeAsync")]
+    [ProducesResponseType<List<GetTaskQueuesInInitiativeResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<List<GetWorkItemQueuesInInitiativeResponse>>> GetWorkItemQueuesInInitiativeAsync(Guid initiativeId)
+    public async ValueTask<ActionResult<List<GetTaskQueuesInInitiativeResponse>>> GetTaskQueuesInInitiativeAsync(Guid initiativeId)
     {
-        QueryResponse<List<WorkItemQueue>> initiativeResponse = await Sender.Send(new GetWorkItemQueuesByInitiative.Query(initiativeId, await GetCurrentBonesUserAsync()));
+        QueryResponse<List<TaskQueue>> initiativeResponse = await Sender.Send(new GetTaskQueuesByInitiative.Query(initiativeId, await GetCurrentBonesUserAsync()));
 
         if (!initiativeResponse.Success || initiativeResponse.Result is null)
         {
             return BadRequest(ErrorResponse.FromQueryResponse(initiativeResponse));
         }
 
-        return GetWorkItemQueuesInInitiativeResponse.FromInternalList(initiativeResponse.Result);
+        return GetTaskQueuesInInitiativeResponse.FromInternalList(initiativeResponse.Result);
     }
     #endregion
 

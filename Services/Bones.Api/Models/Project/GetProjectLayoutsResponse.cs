@@ -41,7 +41,7 @@ public sealed record GetProjectLayoutsResponse
             return [.. layouts.Select(FromInternal)];
         }
 
-        return [.. layouts.Where(l => (l.LatestVersion?.LayoutUse ?? ItemLayoutUse.None) == layoutUse).Select(FromInternal)];
+        return [.. layouts.Where(l => (l.Current?.LayoutUse ?? ItemLayoutUse.None) == layoutUse).Select(FromInternal)];
     }
 
     internal static GetProjectLayoutsResponse FromInternal(ItemLayout layout)
@@ -49,9 +49,9 @@ public sealed record GetProjectLayoutsResponse
         return new()
         {
             LayoutId = layout.Id,
-            LatestLayoutVersionId = layout.LatestVersion?.Id ?? Guid.Empty,
-            LatestVersionNumber = layout.LatestVersion?.Version ?? 0,
-            LayoutName = layout.LatestVersion?.Name ?? "Broken",
+            LatestLayoutVersionId = layout.Current?.Id ?? Guid.Empty,
+            LatestVersionNumber = layout.Current?.Version ?? 0,
+            LayoutName = layout.Current?.Name ?? "Broken",
             FriendlyIdPrefix = layout.FriendlyIdPrefix
         };
     }

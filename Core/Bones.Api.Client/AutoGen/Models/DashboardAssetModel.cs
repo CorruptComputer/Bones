@@ -9,18 +9,18 @@ using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
     /// <summary>
-    /// Model for a work item in the dashboard
+    /// Model for a  in the dashboard
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
     public partial class DashboardAssetModel : IParsable
     {
-        /// <summary>The friendly ID of the work item</summary>
+        /// <summary>The friendly ID of the</summary>
         public string FriendlyId { get; set; } = default!;
-        /// <summary>The ID of the work item</summary>
+        /// <summary>The ID of the</summary>
         public Guid Id { get; set; } = default!;
         /// <summary>The date and time the latest version of the asset was created</summary>
         public DateTimeOffset LatestVersionCreateDateTime { get; set; } = default!;
-        /// <summary>The title of the work item</summary>
+        /// <summary>The title of the</summary>
         public string Title { get; set; } = default!;
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value

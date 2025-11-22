@@ -33,7 +33,8 @@ internal static class TableNames
     internal static class Item
     {
         internal const string Items = "Items";
-        internal const string ItemAssigneeDefinitions = "ItemAssigneeDefinitions";
+        internal const string ItemAssignmentSlots = "ItemAssignmentSlots";
+        internal const string ItemAssignees = "ItemAssignees";
         internal const string ItemFields = "ItemFields";
         internal const string ItemFieldListEntries = "ItemFieldListEntries";
         internal const string ItemFieldVersions = "ItemFieldVersions";
@@ -74,10 +75,10 @@ internal static class TableNames
         internal const string TaskErrors = "TaskErrors";
     }
 
-    internal static class WorkItemManagement
+    internal static class Task
     {
-        internal const string WorkItems = "WorkItems";
+        internal const string Tasks = "TaskItems";
 
-        internal const string WorkItemQueues = "WorkItemQueues";
+        internal const string TaskQueues = "TaskQueues";
     }
 }

@@ -2,7 +2,7 @@
 #pragma warning disable CS0618
 #nullable enable
 using Bones.Api.Client.AutoGen.Initiative.Item.Dashboard;
-using Bones.Api.Client.AutoGen.Initiative.Item.WorkItemQueues;
+using Bones.Api.Client.AutoGen.Initiative.Item.TaskQueues;
 using ReQuesty.Runtime.Abstractions;
 using ReQuesty.Runtime.Extensions;
 using System.Collections.Generic;
@@ -22,10 +22,10 @@ namespace Bones.Api.Client.AutoGen.Initiative.Item
         {
             get => new global::Bones.Api.Client.AutoGen.Initiative.Item.Dashboard.DashboardRequestBuilder(PathParameters, RequestAdapter);
         }
-        /// <summary>The workItemQueues property</summary>
-        public global::Bones.Api.Client.AutoGen.Initiative.Item.WorkItemQueues.WorkItemQueuesRequestBuilder WorkItemQueues
+        /// <summary>The taskQueues property</summary>
+        public global::Bones.Api.Client.AutoGen.Initiative.Item.TaskQueues.TaskQueuesRequestBuilder TaskQueues
         {
-            get => new global::Bones.Api.Client.AutoGen.Initiative.Item.WorkItemQueues.WorkItemQueuesRequestBuilder(PathParameters, RequestAdapter);
+            get => new global::Bones.Api.Client.AutoGen.Initiative.Item.TaskQueues.TaskQueuesRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>
         /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Initiative.Item.WithInitiativeItemRequestBuilder"/> and sets the default values.

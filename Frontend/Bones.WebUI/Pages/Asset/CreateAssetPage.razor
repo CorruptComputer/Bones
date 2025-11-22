@@ -47,9 +47,7 @@
         <br />
         @if(SelectedAssetLayout != null)
         {
-            <MudPaper Class="pa-4">
-                <ItemEditor ItemId="@null" ItemType="ItemLayoutUse.Assets" EditorMode="ItemEditor.Mode.Create" ItemLayoutId="@SelectedAssetLayout.Value" />
-            </MudPaper>
+            <ItemEditor ItemId="@null" ItemType="ItemLayoutUse.Assets" EditorMode="ItemEditor.Mode.Create" ItemLayoutId="@SelectedAssetLayout.Value" />
         }
     </MudItem>
     <MudItem xs="12" sm="5">

@@ -3,6 +3,7 @@ namespace Bones.Api.Models.Assets;
 /// <summary>
 ///   Response model for asset actions.
 /// </summary>
+[JsonSerializable(typeof(AssetActionResponse))]
 public sealed record AssetActionResponse
 {
     /// <summary>

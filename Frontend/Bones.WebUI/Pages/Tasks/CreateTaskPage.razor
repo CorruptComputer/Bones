@@ -1,0 +1,100 @@
+﻿@using Bones.WebUI.Models
+@using Bones.WebUI.Components.Item
+@attribute [Route(FrontEndUrls.Task.CREATE_TASK)]
+
+<MudText Typo="Typo.h4">Create Task</MudText>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            @if (!TaskQueueIdProvidedInQueryString)
+            {
+                <MudSelect ValueChanged="OnSelectedProjectChanged"
+                           Label="Select Project"
+                           MultiSelection="false"
+                           FullWidth="true"
+                           T="Guid?">
+
+                    <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                    @foreach (DropDownModel proj in Projects)
+                    {
+                        <MudSelectItem Value="@proj.Id">@proj.ToString()</MudSelectItem>
+                    }
+                </MudSelect>
+
+                if (SelectedProject != null)
+                {
+                    <MudSelect ValueChanged="OnSelectedInitiativeChanged"
+                               Label="Select Initiative"
+                               MultiSelection="false"
+                               FullWidth="true"
+                               T="Guid?">
+
+                        <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                        @foreach (DropDownModel initiative in Initiatives)
+                        {
+                            <MudSelectItem Value="@initiative.Id">@initiative.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    if (SelectedInitiative != null)
+                    {
+                        <MudSelect ValueChanged="OnSelectedTaskQueueChanged"
+                                   Label="Select Task Queue"
+                                   MultiSelection="false"
+                                   FullWidth="true"
+                                   T="Guid?">
+
+                            <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                            @foreach (DropDownModel taskQueue in TaskQueues)
+                            {
+                                <MudSelectItem Value="@taskQueue.Id">@taskQueue.ToString()</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                }
+            }
+            else
+            {
+                <MudTextField T="string" Label="Task Queue Name" Disabled @bind-Value="@TaskQueueName"/>
+            }
+
+            @if (SelectedTaskQueue != null)
+            {
+
+                    <MudSelect ValueChanged="OnSelectedLayoutChanged"
+                               Label="Select Task Layout"
+                               MultiSelection="false"
+                               FullWidth="true"
+                               T="Guid?">
+
+                        <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                        @foreach (DropDownModel itemLayout in TaskLayouts)
+                        {
+                            <MudSelectItem Value="@itemLayout.Id">@itemLayout.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+
+
+            }
+        </MudPaper>
+        <br />
+        <br />
+        @if(SelectedTaskLayout != null && SelectedTaskQueue != null)
+        {
+            <ItemEditor ItemId="@null" ItemType="ItemLayoutUse.Tasks" EditorMode="ItemEditor.Mode.Create" ItemLayoutId="@SelectedTaskLayout.Value" TaskQueueId="@SelectedTaskQueue.Value" />
+        }
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudItem Class="pa-2" hidden="@(!ApiError)">
+            <MudAlert Severity="Severity.Error">There was an error with the creation, please try again.</MudAlert>
+        </MudItem>
+
+        @foreach (string error in ValidationErrors)
+        {
+            <MudItem Class="pa-2">
+                <MudAlert  Severity="Severity.Error">@error</MudAlert>
+            </MudItem>
+        }
+    </MudItem>
+</MudGrid>

@@ -33,7 +33,7 @@ public sealed record class CreateAssetAction : AssetActionBase
     internal override async Task<IRequest<CommandResponse>> ToInternalAsync(BonesUser user, ISender sender)
     {
         ItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(AssetLayoutId, user));
-        if (layout?.LatestVersion is null)
+        if (layout?.Current is null)
         {
             throw new BadRequestException("Layout not found")
             {
@@ -44,7 +44,7 @@ public sealed record class CreateAssetAction : AssetActionBase
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (ItemFieldVersion fieldVersion in layout.LatestVersion.FieldLinks.Select(x => x.FieldVersion))
+        foreach (ItemFieldVersion fieldVersion in layout.Current.FieldLinks.Select(x => x.FieldVersion))
         {
             ItemValueModel? fieldValue = FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
 
@@ -71,7 +71,7 @@ public sealed record class CreateAssetAction : AssetActionBase
             fieldValues.Add(fieldVersion.Id, value);
         }
 
-        return new CreateAsset.Command(layout.Id, layout.LatestVersion.Id, Title, fieldValues, ActionDateTime, user);
+        return new CreateAsset.Command(layout.Id, layout.Current.Id, Title, fieldValues, ActionDateTime, user);
     }
 
     internal override Task<AssetActionResponse> FromInternalAsync(CommandResponse result, BonesUser user, ISender sender)

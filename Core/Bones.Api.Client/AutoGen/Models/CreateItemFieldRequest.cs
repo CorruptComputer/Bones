@@ -24,6 +24,8 @@ namespace Bones.Api.Client.AutoGen.Models
         public string Name { get; set; } = default!;
         /// <summary>If the Type of this field is a ValueList, the possible values this can have</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair> PossibleValues { get; set; } = default!;
+        /// <summary>The ID of the project to create this field in</summary>
+        public Guid ProjectId { get; set; } = default!;
         /// <summary>The requiredAddressFields property</summary>
         public global::Bones.Api.Client.AutoGen.Models.AddressFields? RequiredAddressFields { get; set; } = default!;
         /// <summary>The type property</summary>
@@ -51,6 +53,7 @@ namespace Bones.Api.Client.AutoGen.Models
                 { "isRequired", n => { IsRequired = n.GetBoolValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'IsRequired'"); } },
                 { "name", n => { Name = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Name'"); } },
                 { "possibleValues", n => { PossibleValues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'PossibleValues'"); } },
+                { "projectId", n => { ProjectId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ProjectId'"); } },
                 { "requiredAddressFields", n => { RequiredAddressFields = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.AddressFields>(); } },
                 { "type", n => { Type = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>(); } },
             };
@@ -67,6 +70,7 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteBoolValue("isRequired", IsRequired);
             writer.WriteStringValue("name", Name);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair>("possibleValues", PossibleValues);
+            writer.WriteGuidValue("projectId", ProjectId);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.AddressFields>("requiredAddressFields", RequiredAddressFields);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>("type", Type);
         }

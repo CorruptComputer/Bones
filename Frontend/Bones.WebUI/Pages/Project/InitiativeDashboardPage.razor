@@ -3,23 +3,23 @@
 <div style="display: flex;">
     <MudText Typo="Typo.h4">@InitiativeName</MudText>
     <MudSpacer/>
-    <MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_CREATE_WORKITEM_QUEUE.Replace("{InitiativeId:guid}", InitiativeId.ToString())">Create Work Item Queue</MudButton>
+    <MudButton Href="@FrontEndUrls.Project.Initiative.INITIATIVE_CREATE_TASK_QUEUE.Replace("{InitiativeId:guid}", InitiativeId.ToString())">Create Task Queue</MudButton>
 </div>
 
 
 <MudPaper Class="pa-4">
-    <MudText>Number of Work Item queues: @QueueCount</MudText>
+    <MudText>Number of Task queues: @TaskQueueCount</MudText>
 
-    <MudTable Items="@QueueList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@QueueListLoading" LoadingProgressColor="Color.Info">
+    <MudTable Items="@TaskQueueList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@TaskQueueListLoading" LoadingProgressColor="Color.Info">
         <HeaderContent>
-            <MudTh>Work Item Queue Name</MudTh>
-            <MudTh>Work Item Count</MudTh>
-            <MudTh>Go to Work Item Queue</MudTh>
+            <MudTh>Task Queue Name</MudTh>
+            <MudTh>Task Count</MudTh>
+            <MudTh>Go to Task Queue</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Work Item Queue Name">@context.WorkItemQueueName</MudTd>
-            <MudTd DataLabel="Work Item Count">@context.WorkItemCount</MudTd>
-            <MudTd DataLabel="Go to Work Item Queue"><MudButton Href="@FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace("{WorkItemQueueId:guid}", context.WorkItemQueueId.ToString())">Dashboard</MudButton></MudTd>
+            <MudTd DataLabel="Task Queue Name">@context.TaskQueueName</MudTd>
+            <MudTd DataLabel="Task Count">@context.TaskCount</MudTd>
+            <MudTd DataLabel="Go to Task Queue"><MudButton Href="@FrontEndUrls.Task.TASK_QUEUE_DASHBOARD.Replace("{TaskQueueId:guid}", context.TaskQueueId.ToString())">Dashboard</MudButton></MudTd>
         </RowTemplate>
     </MudTable>
 </MudPaper>

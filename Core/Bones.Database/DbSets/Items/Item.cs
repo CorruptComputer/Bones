@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.ProjectManagement;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -42,6 +43,12 @@ public class Item
     ///   The versions for this item
     /// </summary>
     public List<ItemVersion> Versions { get; set; } = [];
+
+    /// <summary>
+    ///   The current version of the this
+    /// </summary>
+    [NotMapped]
+    public ItemVersion? Current => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
 
     /// <summary>
     ///   The version this item is currently using

@@ -18,7 +18,7 @@
                 <div style="width: 20%;"> <!-- Hack to make this thing not tiny, will fuck up mobile -->
                     <MudSelectExtended SelectedValues="[]"
                                        SelectedValuesChanged="OnGoToProjectChanged"
-                                       ItemCollection="@Projects"
+                                      itemCollection="@Projects"
                                        KeyDownPreventDefault="true"
                                        KeyUpPreventDefault="true"
                                        SearchBox="true"
@@ -60,7 +60,7 @@
         <MudNavMenu>
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.HOME">Home</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.Asset.CREATE_ASSET">Create Asset</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.WorkItem.CREATE_WORK_ITEM">Create Work Item</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.Task.CREATE_TASK">Create Task</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="/TestMapPage">Test Map Page</MudNavLink>
             <AuthorizeView Roles="@SystemRoles.SYSTEM_ADMINISTRATORS">
                 <Authorized>

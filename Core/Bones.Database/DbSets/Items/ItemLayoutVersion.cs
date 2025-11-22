@@ -49,9 +49,9 @@ public class ItemLayoutVersion
     public List<ItemLayoutFieldVersionLink> FieldLinks { get; init; } = [];
 
     /// <summary>
-    ///   The assignee definitions associated with this layout version
+    ///   The assignee slots associated with this layout version
     /// </summary>
-    public List<ItemAssigneeDefinition> AssigneeDefinitions { get; init; } = [];
+    public List<ItemAssignmentSlot> AssigneeSlots { get; init; } = [];
 
     /// <summary>
     ///   Disables creating of new items using this layout version,

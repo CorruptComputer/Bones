@@ -1,6 +1,6 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.Items;
-using Bones.Database.Operations.Item;
+using Bones.Database.Operations.Items;
 using Bones.Logic.Features.Projects;
 using Bones.Shared.Consts;
 

@@ -1,0 +1,62 @@
+﻿@using Bones.WebUI.Models
+@using Bones.WebUI.Components.Item
+@attribute [Route(FrontEndUrls.Task.VIEW_TASK)]
+
+<MudText Typo="Typo.h4">@_taskTitle (v@_currentVersion)</MudText>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <ItemEditor ItemId="@TaskId" ItemType="ItemLayoutUse.Tasks" EditorMode="ItemEditor.Mode.ViewEdit" />
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.h6">Queue</MudText>
+            <MudTextField T="string" Label="Name" Value="@_queueName" ReadOnly />
+            <MudTextField T="string" Label="Added to queue time" Value="@_addedToQueueDateTime" ReadOnly />
+            @if (_moveToQueue)
+            {
+                <MudSelect ValueChanged="OnSelectedInitiativeChanged"
+                                Label="Select Initiative"
+                                MultiSelection="false"
+                                FullWidth="true"
+                                T="Guid?">
+
+                    <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                    @foreach (DropDownModel initiative in _initiatives)
+                    {
+                        <MudSelectItem Value="@initiative.Id">@initiative.ToString()</MudSelectItem>
+                    }
+                </MudSelect>
+
+                @if (_selectedInitiative != null)
+                {
+                    <MudSelect ValueChanged="OnSelectedTaskQueueChanged"
+                                Label="Select Task Queue"
+                                MultiSelection="false"
+                                FullWidth="true"
+                                T="Guid?">
+
+                        <MudSelectItem Value="@((Guid?)null)" Disabled="true" Style="height: 1px; margin: 0; padding: 0;"></MudSelectItem>
+                        @foreach (DropDownModel taskQueue in _taskQueues)
+                        {
+                            <MudSelectItem Value="@taskQueue.Id">@taskQueue.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    @if (_selectedNewTaskQueue != null)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@SendMoveToQueueRequestAsync">Move to Queue</MudButton>
+                    }
+                }
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _moveToQueue = false)">Cancel Move to Queue</MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => _moveToQueue = true)">Move to Queue</MudButton>
+            }
+        </MudPaper>
+        <ItemAssignment TaskId="@TaskId" />
+    </MudItem>
+
+</MudGrid>

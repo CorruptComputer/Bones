@@ -112,11 +112,11 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
             ProjectId = projectResponse.Result.Id,
             ProjectName = projectResponse.Result.Name,
             InitiativeCount = initiativesResponse.Result.Count,
-            AssetTypes = layoutsResponse.Result.Where(layout => layout.LatestVersion!.LayoutUse == ItemLayoutUse.Assets).Select(layout =>
+            AssetTypes = layoutsResponse.Result.Where(layout => layout.Current!.LayoutUse == ItemLayoutUse.Assets).Select(layout =>
                 new GetProjectDashboardResponse.AssetTypesListModel
                 {
                     LayoutId = layout.Id,
-                    LayoutName = layout.LatestVersion!.Name,
+                    LayoutName = layout.Current!.Name,
                 }),
             Initiatives = initiativesResponse.Result.Select(i =>
                 new GetProjectDashboardResponse.InitiativeListModel
@@ -271,88 +271,5 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
 
         return response.Ids[nameof(Initiative)];
     }
-
-    /// <summary>
-    ///   Creates a new item field in a project
-    /// </summary>
-    /// <param name="projectId">The ID of the project to create this in</param>
-    /// <param name="request">The request</param>
-    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{projectId:guid}/fields/create", Name = "CreateItemFieldAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateItemFieldAsync(Guid projectId, [FromBody] CreateItemFieldRequest request)
-    {
-        CommandResponse response = await Sender.Send(request.ToInternal(projectId, await GetCurrentBonesUserAsync()));
-        if (!response.Success)
-        {
-            return BadRequest(ErrorResponse.FromCommandResponse(response));
-        }
-
-        return response.Ids[nameof(ItemField)];
-    }
-
-    /// <summary>
-    ///   Creates a new item field version in a project
-    /// </summary>
-    /// <param name="projectId">The ID of the project to create this in</param>
-    /// <param name="fieldId">The ID of the field to add this version to</param>
-    /// <param name="request">The request</param>
-    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{projectId:guid}/fields/{fieldId:guid}", Name = "CreateItemFieldVersionAsync")]
-    [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateItemFieldVersionAsync(Guid projectId, Guid fieldId, [FromBody] CreateItemFieldVersionRequest request)
-    {
-        CommandResponse response = await Sender.Send(request.ToInternal(fieldId, await GetCurrentBonesUserAsync()));
-        if (!response.Success)
-        {
-            return BadRequest(ErrorResponse.FromCommandResponse(response));
-        }
-
-        return response.Ids[nameof(ItemFieldVersion)];
-    }
-
-    /// <summary>
-    ///   Creates a new item layout in a project
-    /// </summary>
-    /// <param name="projectId">The ID of the project to create this in</param>
-    /// <param name="request">The request</param>
-    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{projectId:guid}/layouts/create", Name = "CreateItemLayoutAsync")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult<Guid>> CreateItemLayoutAsync(Guid projectId, [FromBody] CreateItemLayoutRequest request)
-    {
-        CommandResponse response = await Sender.Send(request.ToInternal(projectId, await GetCurrentBonesUserAsync()));
-        if (!response.Success)
-        {
-            return BadRequest(ErrorResponse.FromCommandResponse(response));
-        }
-
-        return Ok();
-    }
-
-    /// <summary>
-    ///   Creates a new item layout version in a project
-    /// </summary>
-    /// <param name="projectId">The ID of the project to create this in</param>
-    /// <param name="layoutId">The ID of the layout to add this version to</param>
-    /// <param name="request">The request</param>
-    /// <returns>Created if created, otherwise BadRequest with a message of what went wrong.</returns>
-    [HttpPost("{projectId:guid}/layouts/{layoutId:guid}", Name = "CreateItemLayoutVersionAsync")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
-    public async ValueTask<ActionResult> CreateItemLayoutVersionAsync(Guid projectId, Guid layoutId, [FromBody] CreateItemLayoutVersionRequest request)
-    {
-        CommandResponse response = await Sender.Send(request.ToInternal(layoutId, await GetCurrentBonesUserAsync()));
-        if (!response.Success)
-        {
-            return BadRequest(ErrorResponse.FromCommandResponse(response));
-        }
-
-        return Ok();
-    }
-
     #endregion
 }

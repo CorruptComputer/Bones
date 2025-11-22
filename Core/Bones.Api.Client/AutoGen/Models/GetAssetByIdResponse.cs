@@ -22,11 +22,11 @@ namespace Bones.Api.Client.AutoGen.Models
         public int CurrentVersion { get; set; } = default!;
         /// <summary>The friendly ID of the asset</summary>
         public string FriendlyId { get; set; } = default!;
-        /// <summary>The ID of the  item this asset is</summary>
+        /// <summary>The ID of the item this asset is</summary>
         public Guid ItemId { get; set; } = default!;
         /// <summary>The values for this asset</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel> ItemValues { get; set; } = default!;
-        /// <summary>The ID of the latest version of the  item this asset is</summary>
+        /// <summary>The ID of the latest version of the item this asset is</summary>
         public Guid LatestItemVersionId { get; set; } = default!;
         /// <summary>The time the latest version of this asset was created</summary>
         public DateTimeOffset LatestVersionCreateDateTime { get; set; } = default!;

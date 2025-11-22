@@ -21,9 +21,9 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The ID of the project the initiative is in</summary>
         public Guid ProjectId { get; set; } = default!;
         /// <summary>The number of initiatives in the project</summary>
-        public int WorkItemQueueCount { get; set; } = default!;
+        public int TaskQueueCount { get; set; } = default!;
         /// <summary>A list of the initiatives in the project</summary>
-        public List<global::Bones.Api.Client.AutoGen.Models.WorkItemQueueListModel> WorkItemQueues { get; set; } = default!;
+        public List<global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel> TaskQueues { get; set; } = default!;
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -45,8 +45,8 @@ namespace Bones.Api.Client.AutoGen.Models
                 { "initiativeId", n => { InitiativeId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'InitiativeId'"); } },
                 { "initiativeName", n => { InitiativeName = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'InitiativeName'"); } },
                 { "projectId", n => { ProjectId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ProjectId'"); } },
-                { "workItemQueueCount", n => { WorkItemQueueCount = n.GetIntValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'WorkItemQueueCount'"); } },
-                { "workItemQueues", n => { WorkItemQueues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.WorkItemQueueListModel>(global::Bones.Api.Client.AutoGen.Models.WorkItemQueueListModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'WorkItemQueues'"); } },
+                { "taskQueueCount", n => { TaskQueueCount = n.GetIntValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'TaskQueueCount'"); } },
+                { "taskQueues", n => { TaskQueues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel>(global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'TaskQueues'"); } },
             };
         }
         /// <summary>
@@ -59,8 +59,8 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteGuidValue("initiativeId", InitiativeId);
             writer.WriteStringValue("initiativeName", InitiativeName);
             writer.WriteGuidValue("projectId", ProjectId);
-            writer.WriteIntValue("workItemQueueCount", WorkItemQueueCount);
-            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.WorkItemQueueListModel>("workItemQueues", WorkItemQueues);
+            writer.WriteIntValue("taskQueueCount", TaskQueueCount);
+            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel>("taskQueues", TaskQueues);
         }
     }
 }

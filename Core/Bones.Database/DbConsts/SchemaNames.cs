@@ -21,5 +21,5 @@ internal static class SchemaNames
 
     internal const string System = "System";
 
-    internal const string WorkItemManagement = "WorkItemManagement";
+    internal const string TaskManagement = "TaskManagement";
 }

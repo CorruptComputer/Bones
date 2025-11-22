@@ -24,28 +24,28 @@ public sealed record GetAssetLayoutDashboardResponse
     {
         return new()
         {
-            LayoutName = layout.LatestVersion?.Name ?? string.Empty,
+            LayoutName = layout.Current?.Name ?? string.Empty,
             Assets = assets.Select(DashboardAssetModel.FromAsset)
         };
     }
 
     /// <summary>
-    ///   Model for a work item in the dashboard
+    ///   Model for a  in the dashboard
     /// </summary>
     public record DashboardAssetModel
     {
         /// <summary>
-        ///   The ID of the work item
+        ///   The ID of the
         /// </summary>
         public required Guid Id { get; init; }
 
         /// <summary>
-        ///   The friendly ID of the work item
+        ///   The friendly ID of the
         /// </summary>
         public required string FriendlyId { get; init; }
 
         /// <summary>
-        ///   The title of the work item
+        ///   The title of the
         /// </summary>
         public required string Title { get; init; }
 
@@ -60,8 +60,8 @@ public sealed record GetAssetLayoutDashboardResponse
             {
                 Id = asset.Id,
                 FriendlyId = asset.Item.FriendlyId,
-                Title = asset.CurrentVersion?.Title ?? string.Empty,
-                LatestVersionCreateDateTime = asset.CurrentVersion?.CreateDateTime ?? DateTimeOffset.MinValue
+                Title = asset.Item.Current?.Title ?? string.Empty,
+                LatestVersionCreateDateTime = asset.Item.Current?.CreateDateTime ?? DateTimeOffset.MinValue
             };
         }
     }
