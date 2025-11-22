@@ -28,36 +28,36 @@ public record GetInitiativeDashboardResponse
     ///   The number of initiatives in the project
     /// </summary>
     [JsonRequired]
-    public required int WorkItemQueueCount { get; init; }
+    public required int TaskQueueCount { get; init; }
 
     /// <summary>
     ///   A list of the initiatives in the project
     /// </summary>
     [JsonRequired]
-    public required IEnumerable<WorkItemQueueListModel> WorkItemQueues { get; init; }
+    public required IEnumerable<TaskQueueListModel> TaskQueues { get; init; }
 
     /// <summary>
-    ///   Model for the work item queues to be listed in an initiative
+    ///   Model for the  queues to be listed in an initiative
     /// </summary>
-    [JsonSerializable(typeof(WorkItemQueueListModel))]
-    public sealed record WorkItemQueueListModel
+    [JsonSerializable(typeof(TaskQueueListModel))]
+    public sealed record TaskQueueListModel
     {
         /// <summary>
-        ///   The work item queue ID
+        ///   The  queue ID
         /// </summary>
         [JsonRequired]
-        public required Guid WorkItemQueueId { get; init; }
+        public required Guid TaskQueueId { get; init; }
 
         /// <summary>
-        ///   The name of the work item queue
+        ///   The name of the  queue
         /// </summary>
         [JsonRequired]
-        public required string WorkItemQueueName { get; init; }
+        public required string TaskQueueName { get; init; }
 
         /// <summary>
-        ///   The number of work items in the work item queue
+        ///   The number of s in the  queue
         /// </summary>
         [JsonRequired]
-        public required int WorkItemCount { get; init; }
+        public required int TaskCount { get; init; }
     }
 }

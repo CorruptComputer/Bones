@@ -53,7 +53,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
     private Dictionary<int, SelectedItemFieldVersionModel> SelectedItemFields { get; set; } = [];
 
     private bool ItemAssigneesListLoading { get; set; } = true;
-    private List<ItemAssigneeDefinitionModel> ItemAssigneesList { get; set; } = [];
+    private List<ItemAssigneeSlotModel> ItemAssigneesList { get; set; } = [];
 
     private string NewAssigneeName { get; set; } = string.Empty;
     private AssignmentType NewAssigneeAssignmentType { get; set; } = AssignmentType.User;
@@ -101,10 +101,11 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         if (ItemLayoutId is null || ItemLayoutId == Guid.Empty)
         {
             SelectedItemFieldsLoading = false;
+            ItemAssigneesListLoading = false;
             return;
         }
 
-        GetItemLayoutVersionResponse? layoutResponse = await apiClient.Item.Layouts[ItemLayoutId.Value].Latest.GetAsync();
+        GetItemLayoutVersionResponse? layoutResponse = await apiClient.ItemLayout.Layouts[ItemLayoutId.Value].Latest.GetAsync();
 
         if (layoutResponse is null)
         {
@@ -120,7 +121,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
         SelectedItemFieldsLoading = false;
 
-        ItemAssigneesList = layoutResponse.AssigneeDefinitions;
+        ItemAssigneesList = layoutResponse.AssigneeSlots;
         ItemAssigneesListLoading = false;
     }
 
@@ -138,7 +139,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
             if (ItemLayoutId.HasValue)
             {
-                await apiClient.Project[ProjectId].Layouts[ItemLayoutId.Value].PostAsync(new CreateItemLayoutVersionRequest()
+                await apiClient.ItemLayout.Layouts[ItemLayoutId.Value].PostAsync(new CreateItemLayoutVersionRequest()
                 {
                     Name = LayoutName,
                     LayoutUse = LayoutUse,
@@ -147,13 +148,14 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
                         Key = x.Key,
                         Value = x.Value.FieldVersionId
                     })],
-                    AssigneeDefinitions = ItemAssigneesList
+                    AssigneeSlots = ItemAssigneesList
                 });
             }
             else
             {
-                await apiClient.Project[ProjectId].Layouts.Create.PostAsync(new CreateItemLayoutRequest()
+                await apiClient.ItemLayout.Layouts.Create.PostAsync(new CreateItemLayoutRequest()
                 {
+                    ProjectId = ProjectId,
                     Name = LayoutName,
                     LayoutUse = LayoutUse,
                     FieldVersions = [..SelectedItemFields.Select(x => new Int32GuidKeyValuePair()
@@ -260,7 +262,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        ItemAssigneesList.Add(new ItemAssigneeDefinitionModel()
+        ItemAssigneesList.Add(new ItemAssigneeSlotModel()
         {
             Name = NewAssigneeName.Trim(),
             AssignmentType = NewAssigneeAssignmentType,
@@ -278,8 +280,8 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        ItemAssigneeDefinitionModel assigneeToMoveDown = ItemAssigneesList.First(x => x.Name == assigneeName);
-        ItemAssigneeDefinitionModel? assigneeToMoveUp = ItemAssigneesList.FirstOrDefault(x => x.OrderNumber == assigneeToMoveDown.OrderNumber + 1);
+        ItemAssigneeSlotModel assigneeToMoveDown = ItemAssigneesList.First(x => x.Name == assigneeName);
+        ItemAssigneeSlotModel? assigneeToMoveUp = ItemAssigneesList.FirstOrDefault(x => x.OrderNumber == assigneeToMoveDown.OrderNumber + 1);
 
         if (assigneeToMoveUp == null)
         {
@@ -301,8 +303,8 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        ItemAssigneeDefinitionModel assigneeToMoveUp = ItemAssigneesList.First(x => x.Name == assigneeName);
-        ItemAssigneeDefinitionModel? assigneeToMoveDown = ItemAssigneesList.FirstOrDefault(x => x.OrderNumber == assigneeToMoveUp.OrderNumber - 1);
+        ItemAssigneeSlotModel assigneeToMoveUp = ItemAssigneesList.First(x => x.Name == assigneeName);
+        ItemAssigneeSlotModel? assigneeToMoveDown = ItemAssigneesList.FirstOrDefault(x => x.OrderNumber == assigneeToMoveUp.OrderNumber - 1);
 
         if (assigneeToMoveDown == null)
         {
@@ -324,7 +326,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             return;
         }
 
-        ItemAssigneeDefinitionModel assigneeToRemove = ItemAssigneesList.First(x => x.Name == assigneeName);
+        ItemAssigneeSlotModel assigneeToRemove = ItemAssigneesList.First(x => x.Name == assigneeName);
 
         ItemAssigneesList.Remove(assigneeToRemove);
 

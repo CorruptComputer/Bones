@@ -11,7 +11,7 @@ namespace Bones.Logic.Features.Assets;
 public sealed class CreateAssetVersion(ISender sender) : IRequestHandler<CreateAssetVersion.Command, CommandResponse>
 {
     /// <summary>
-    ///   Command for creating a Work Item in a Queue.
+    ///   Command for creating a Task in a Queue.
     /// </summary>
     /// <param name="AssetId"></param>
     /// <param name="LayoutId"></param>
@@ -47,7 +47,7 @@ public sealed class CreateAssetVersion(ISender sender) : IRequestHandler<CreateA
         }
 
         ItemLayout? layout = await sender.Send(new GetItemLayoutById.Query(request.LayoutId, request.RequestingUser), cancellationToken);
-        if (layout?.LatestVersion is null)
+        if (layout?.Current is null)
         {
             return CommandResponse.Fail("Layout not found");
         }
@@ -58,6 +58,6 @@ public sealed class CreateAssetVersion(ISender sender) : IRequestHandler<CreateA
             return CommandResponse.Fail("Asset not found");
         }
 
-        return await sender.Send(new CreateAssetVersionDb.Command(asset.Id, request.Title, layout.LatestVersion.Id, request.Values, request.ActionDateTime), cancellationToken);
+        return await sender.Send(new CreateAssetVersionDb.Command(asset.Id, request.Title, layout.Current.Id, request.Values, request.ActionDateTime), cancellationToken);
     }
 }

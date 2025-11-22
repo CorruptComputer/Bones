@@ -32,7 +32,7 @@ public class ItemLayout
     ///   The latest version of this layout
     /// </summary>
     [NotMapped]
-    public ItemLayoutVersion? LatestVersion => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
+    public ItemLayoutVersion? Current => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
 
     /// <summary>
     ///   The versions for this Item layout

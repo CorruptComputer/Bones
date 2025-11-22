@@ -12,9 +12,9 @@ namespace Bones.Api.Client.AutoGen.Models
         #pragma warning disable CS1591
         None,
         #pragma warning restore CS1591
-        [EnumMember(Value = "workItems")]
+        [EnumMember(Value = "tasks")]
         #pragma warning disable CS1591
-        WorkItems,
+        Tasks,
         #pragma warning restore CS1591
         [EnumMember(Value = "assets")]
         #pragma warning disable CS1591

@@ -14,8 +14,8 @@ namespace Bones.Api.Client.AutoGen.Models
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
     public partial class GetItemLayoutVersionResponse : IParsable
     {
-        /// <summary>The assignee definitions for the layout version</summary>
-        public List<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel> AssigneeDefinitions { get; set; } = default!;
+        /// <summary>The assignee slots for the layout version</summary>
+        public List<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel> AssigneeSlots { get; set; } = default!;
         /// <summary>The field versions</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair> FieldVersions { get; set; } = default!;
         /// <summary>The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.</summary>
@@ -50,7 +50,7 @@ namespace Bones.Api.Client.AutoGen.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "assigneeDefinitions", n => { AssigneeDefinitions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel>(global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssigneeDefinitions'"); } },
+                { "assigneeSlots", n => { AssigneeSlots = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel>(global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssigneeSlots'"); } },
                 { "fieldVersions", n => { FieldVersions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldVersions'"); } },
                 { "friendlyIdPrefix", n => { FriendlyIdPrefix = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FriendlyIdPrefix'"); } },
                 { "latestVersion", n => { LatestVersion = n.GetLongValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'LatestVersion'"); } },
@@ -68,7 +68,7 @@ namespace Bones.Api.Client.AutoGen.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
-            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeDefinitionModel>("assigneeDefinitions", AssigneeDefinitions);
+            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel>("assigneeSlots", AssigneeSlots);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>("fieldVersions", FieldVersions);
             writer.WriteStringValue("friendlyIdPrefix", FriendlyIdPrefix);
             writer.WriteLongValue("latestVersion", LatestVersion);

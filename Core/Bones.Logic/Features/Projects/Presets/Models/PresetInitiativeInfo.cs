@@ -4,7 +4,7 @@ namespace Bones.Logic.Features.Projects.Presets.Models;
 
 internal record PresetInitiativeInfo
 {
-    internal Dictionary<string, PresetWorkItemQueueInfo> WorkItemQueues { get; init; } = [];
+    internal Dictionary<string, PresetTaskQueueInfo> TaskQueues { get; init; } = [];
 
     [MemberNotNullWhen(true, nameof(InitiativeId))]
     internal bool Created => InitiativeId.HasValue;

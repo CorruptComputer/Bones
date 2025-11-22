@@ -6,8 +6,12 @@
 
 <MudGrid>
     <MudItem xs="12" sm="7">
+        <ItemEditor ItemId="@AssetId" ItemType="ItemLayoutUse.Assets" EditorMode="ItemEditor.Mode.ViewEdit" />
+    </MudItem>
+    <MudItem xs="12" sm="5">
         <MudPaper Class="pa-4">
-            <ItemEditor ItemId="@AssetId" ItemType="ItemLayoutUse.Assets" EditorMode="ItemEditor.Mode.ViewEdit" />
+            <MudText Typo="Typo.h6">Assignments</MudText>
+
         </MudPaper>
     </MudItem>
 </MudGrid>

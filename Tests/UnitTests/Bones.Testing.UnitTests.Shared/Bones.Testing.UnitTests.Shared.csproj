@@ -11,7 +11,7 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <IsPackable>false</IsPackable>
         <IsPublishable>false</IsPublishable>
-        
+
         <!-- Assembly info -->
         <VersionPrefix>0.0.1</VersionPrefix>
         <VersionSuffix>$(SourceRevisionId)</VersionSuffix>

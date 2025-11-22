@@ -11,12 +11,12 @@ public enum ItemLayoutUse : ushort
     None = 0,
 
     /// <summary>
-    ///   They can be used in work items
+    ///   It can be used for tasks
     /// </summary>
-    WorkItems = 1,
+    Tasks = 1,
 
     /// <summary>
-    ///   They can be used in assets
+    ///   It can be used for assets
     /// </summary>
     Assets = 2
 }

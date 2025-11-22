@@ -4,13 +4,14 @@
 using Bones.Api.Client.AutoGen.Account;
 using Bones.Api.Client.AutoGen.Anonymous;
 using Bones.Api.Client.AutoGen.Asset;
+using Bones.Api.Client.AutoGen.Assignment;
 using Bones.Api.Client.AutoGen.Initiative;
-using Bones.Api.Client.AutoGen.Item_Escaped;
+using Bones.Api.Client.AutoGen.ItemLayout;
 using Bones.Api.Client.AutoGen.Login;
 using Bones.Api.Client.AutoGen.Project;
 using Bones.Api.Client.AutoGen.SysAdmin;
-using Bones.Api.Client.AutoGen.WorkItem;
-using Bones.Api.Client.AutoGen.WorkItemQueue;
+using Bones.Api.Client.AutoGen.TaskNamespace;
+using Bones.Api.Client.AutoGen.TaskQueue;
 using ReQuesty.Runtime.Abstractions;
 using ReQuesty.Runtime.Extensions;
 using ReQuesty.Runtime.Serialization.Form;
@@ -44,15 +45,20 @@ namespace Bones.Api.Client.AutoGen
         {
             get => new global::Bones.Api.Client.AutoGen.Asset.AssetRequestBuilder(PathParameters, RequestAdapter);
         }
+        /// <summary>The Assignment property</summary>
+        public global::Bones.Api.Client.AutoGen.Assignment.AssignmentRequestBuilder Assignment
+        {
+            get => new global::Bones.Api.Client.AutoGen.Assignment.AssignmentRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>The Initiative property</summary>
         public global::Bones.Api.Client.AutoGen.Initiative.InitiativeRequestBuilder Initiative
         {
             get => new global::Bones.Api.Client.AutoGen.Initiative.InitiativeRequestBuilder(PathParameters, RequestAdapter);
         }
-        /// <summary>The Item property</summary>
-        public global::Bones.Api.Client.AutoGen.Item_Escaped.Item_EscapedRequestBuilder Item
+        /// <summary>The ItemLayout property</summary>
+        public global::Bones.Api.Client.AutoGen.ItemLayout.ItemLayoutRequestBuilder ItemLayout
         {
-            get => new global::Bones.Api.Client.AutoGen.Item_Escaped.Item_EscapedRequestBuilder(PathParameters, RequestAdapter);
+            get => new global::Bones.Api.Client.AutoGen.ItemLayout.ItemLayoutRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The Login property</summary>
         public global::Bones.Api.Client.AutoGen.Login.LoginRequestBuilder Login
@@ -69,15 +75,15 @@ namespace Bones.Api.Client.AutoGen
         {
             get => new global::Bones.Api.Client.AutoGen.SysAdmin.SysAdminRequestBuilder(PathParameters, RequestAdapter);
         }
-        /// <summary>The WorkItem property</summary>
-        public global::Bones.Api.Client.AutoGen.WorkItem.WorkItemRequestBuilder WorkItem
+        /// <summary>The Task property</summary>
+        public global::Bones.Api.Client.AutoGen.TaskNamespace.TaskRequestBuilder Task
         {
-            get => new global::Bones.Api.Client.AutoGen.WorkItem.WorkItemRequestBuilder(PathParameters, RequestAdapter);
+            get => new global::Bones.Api.Client.AutoGen.TaskNamespace.TaskRequestBuilder(PathParameters, RequestAdapter);
         }
-        /// <summary>The WorkItemQueue property</summary>
-        public global::Bones.Api.Client.AutoGen.WorkItemQueue.WorkItemQueueRequestBuilder WorkItemQueue
+        /// <summary>The TaskQueue property</summary>
+        public global::Bones.Api.Client.AutoGen.TaskQueue.TaskQueueRequestBuilder TaskQueue
         {
-            get => new global::Bones.Api.Client.AutoGen.WorkItemQueue.WorkItemQueueRequestBuilder(PathParameters, RequestAdapter);
+            get => new global::Bones.Api.Client.AutoGen.TaskQueue.TaskQueueRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>
         /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.AutoGenBonesApiClient"/> and sets the default values.

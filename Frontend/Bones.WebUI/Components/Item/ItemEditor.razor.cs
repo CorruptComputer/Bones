@@ -6,7 +6,7 @@ using ReQuesty.Runtime.Abstractions;
 namespace Bones.WebUI.Components.Item;
 
 /// <summary>
-///   Page for viewing a work item
+///   Page for viewing an item
 /// </summary>
 public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navManager, ILogger<ItemEditor> logger) : ComponentBase
 {
@@ -29,13 +29,13 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
     public required Mode EditorMode { get; set; }
 
     /// <summary>
-    ///   If the editor is in Create mode, this is the ID of the work item queue to create the item in
+    ///   If the editor is in Create mode, this is the ID of the task queue to create the item in
     /// </summary>
     [Parameter]
-    public Guid? WorkItemQueueId { get; set; }
+    public Guid? TaskQueueId { get; set; }
 
     /// <summary>
-    ///   If the editor is in Create mode, this is the ID of the work item layout to use for the item
+    ///   If the editor is in Create mode, this is the ID of the task layout to use for the item
     /// </summary>
     [Parameter]
     public Guid? ItemLayoutId { get; set; }
@@ -47,7 +47,7 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
     private string[] _editFormValidationErrors { get; set; } = [];
 
     /// <summary>
-    ///   Item values displayed on the page for this work item, if editing is enabled: the values that are being changed.
+    ///  item values displayed on the page for this task, if editing is enabled: the values that are being changed.
     /// </summary>
     private IOrderedEnumerable<ItemValueDisplayModel> _currentValues = Enumerable.Empty<ItemValueDisplayModel>().OrderBy(x => x.OrderNumber);
 
@@ -73,9 +73,9 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
     /// <returns></returns>
     protected override async Task OnInitializedAsync()
     {
-        if (ItemType is ItemLayoutUse.WorkItems)
+        if (ItemType is ItemLayoutUse.Tasks)
         {
-            await FetchWorkItemFromAPI();
+            await FetchTaskFromAPI();
         }
         else if (ItemType is ItemLayoutUse.Assets)
         {
@@ -102,7 +102,7 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
 
         try
         {
-            List<GetLatestItemLayoutVersionFieldsResponse>? layoutFields = await apiClient.Item.Layouts[ItemLayoutId.Value].Latest.Fields.GetAsync();
+            List<GetLatestItemLayoutVersionFieldsResponse>? layoutFields = await apiClient.ItemLayout.Layouts[ItemLayoutId.Value].Latest.Fields.GetAsync();
 
             if (layoutFields is null)
             {
@@ -160,7 +160,7 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
         }
     }
 
-    private async Task FetchWorkItemFromAPI()
+    private async Task FetchTaskFromAPI()
     {
         _apiError = false;
 
@@ -171,25 +171,25 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
 
         try
         {
-            GetWorkItemByIdResponse? workItemResponse = await apiClient.WorkItem[ItemId.Value].GetAsync();
+            GetTaskByIdResponse? taskResponse = await apiClient.Task[ItemId.Value].GetAsync();
 
-            if (workItemResponse is not null)
+            if (taskResponse is not null)
             {
-                _originalValues = _currentValues = workItemResponse.ItemValues.OrderBy(x => x.OrderNumber);
-                _title = workItemResponse.Title;
-                _layoutId = workItemResponse.LayoutId;
+                _originalValues = _currentValues = taskResponse.ItemValues.OrderBy(x => x.OrderNumber);
+                _title = taskResponse.Title;
+                _layoutId = taskResponse.LayoutId;
 
                 InitializeFieldStores();
             }
         }
         catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
-            logger.LogWarning("Work item with ID {WorkItemId} not found, redirecting to home", ItemId);
+            logger.LogWarning("Task with ID {TaskId} not found, redirecting to home", ItemId);
             navManager.NavigateTo("/");
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Error fetching work item with ID {WorkItemId}", ItemId);
+            logger.LogError(e, "Error fetching task with ID {TaskId}", ItemId);
             _apiError = true;
         }
     }
@@ -217,12 +217,12 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
         }
         catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
-            logger.LogWarning("Work item with ID {WorkItemId} not found, redirecting to home", ItemId);
+            logger.LogWarning("Task with ID {TaskId} not found, redirecting to home", ItemId);
             navManager.NavigateTo("/");
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Error fetching work item with ID {WorkItemId}", ItemId);
+            logger.LogError(e, "Error fetching task with ID {TaskId}", ItemId);
             _apiError = true;
         }
     }
@@ -335,20 +335,20 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
                 }
             }
 
-            if (ItemType == ItemLayoutUse.WorkItems && WorkItemQueueId.HasValue)
+            if (ItemType == ItemLayoutUse.Tasks && TaskQueueId.HasValue)
             {
-                CreateWorkItemAction request = new()
+                CreateTaskAction request = new()
                 {
                     ActionDateTime = DateTime.Now,
-                    WorkItemLayoutId = ItemLayoutId.Value,
-                    WorkItemQueueId = WorkItemQueueId.Value,
+                    TaskLayoutId = ItemLayoutId.Value,
+                    TaskQueueId = TaskQueueId.Value,
                     Title = _title,
                     FieldValues = values
                 };
 
-                await apiClient.WorkItem.Action.Create.PostAsync(request);
+                await apiClient.Task.Action.Create.PostAsync(request);
 
-                navManager.NavigateTo(FrontEndUrls.WorkItem.WORKITEM_QUEUE_DASHBOARD.Replace(FrontEndUrls.WorkItem.WORKITEM_QUEUE_ID_PLACEHOLDER, WorkItemQueueId.Value.ToString()));
+                navManager.NavigateTo(FrontEndUrls.Task.TASK_QUEUE_DASHBOARD.Replace(FrontEndUrls.Task.TASK_QUEUE_ID_PLACEHOLDER, TaskQueueId.Value.ToString()));
             }
             else if (ItemType == ItemLayoutUse.Assets)
             {
@@ -374,7 +374,7 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
         }
         catch (ApiException ex)
         {
-            logger.LogError(ex, "Error while creating a work item");
+            logger.LogError(ex, "Error while creating a task");
             _apiError = true;
         }
     }
@@ -453,18 +453,18 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
                 }
             }
 
-            if (ItemType == ItemLayoutUse.WorkItems)
+            if (ItemType == ItemLayoutUse.Tasks)
             {
-                CreateWorkItemVersionAction request = new()
+                CreateTaskVersionAction request = new()
                 {
-                    WorkItemId = ItemId ?? throw new BonesException("Work item ID cannot be null"),
-                    WorkItemLayoutId = _layoutId,
+                    TaskId = ItemId ?? throw new BonesException("Task ID cannot be null"),
+                    TaskLayoutId = _layoutId,
                     ActionDateTime = DateTime.Now,
                     Title = _title,
                     FieldValues = values
                 };
 
-                await apiClient.WorkItem.Action.CreateVersion.PostAsync(request);
+                await apiClient.Task.Action.CreateVersion.PostAsync(request);
             }
             else if (ItemType == ItemLayoutUse.Assets)
             {
@@ -486,7 +486,7 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
         }
         catch (ApiException ex)
         {
-            logger.LogError(ex, "Error while creating a work item");
+            logger.LogError(ex, "Error while creating a task");
             _apiError = true;
         }
     }

@@ -28,7 +28,7 @@ public sealed class AssetController(ISender sender) : AuthenticatedControllerBas
     public async ValueTask<ActionResult<GetAssetLayoutDashboardResponse>> GetAssetLayoutDashboardAsync(Guid ItemLayoutId)
     {
         ItemLayout? layout = await Sender.Send(new GetItemLayoutById.Query(ItemLayoutId, await GetCurrentBonesUserAsync()));
-        if (layout is null || layout.LatestVersion?.LayoutUse.HasFlag(ItemLayoutUse.Assets) != true)
+        if (layout is null || layout.Current?.LayoutUse.HasFlag(ItemLayoutUse.Assets) != true)
         {
             return NotFound(new ErrorResponse());
         }

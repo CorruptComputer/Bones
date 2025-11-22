@@ -2,14 +2,15 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.DbSets.WorkItemManagement;
+using Bones.Database.DbSets.TaskManagement;
 using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.Item;
 using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.Projects.Presets.Models;
-using Bones.Logic.Features.WorkItems.Queue;
-using Bones.Logic.Features.WorkItems.WorkItems;
+using Bones.Logic.Features.Tasks.TaskQueues;
+using Bones.Logic.Features.Tasks.Tasks;
 using Bones.Shared.Backend.Enums;
+using Bones.Database.Operations.Items;
 
 namespace Bones.Logic.Features.Projects.Presets;
 
@@ -25,11 +26,11 @@ internal abstract class PresetBase
 
     internal abstract Dictionary<string, PresetInitiativeInfo> ItemInitiatives { get; }
 
-    internal abstract List<PresetWorkItemInfo> GetWorkItems();
+    internal abstract List<PresetTaskInfo> GetTasks();
 
     internal abstract List<PresetAssetInfo> GetAssets();
 
-    internal async Task<bool> CreatePresetAsync(ISender sender, bool createWorkItemsAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
+    internal async Task<bool> CreatePresetAsync(ISender sender, bool createTasksAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
     {
         CommandResponse projectCreation = await sender.Send(new CreateProject.Command(ProjectName, requestingUser), cancellationToken);
         if (!projectCreation.Success || projectCreation.Ids.Count == 0)
@@ -49,7 +50,7 @@ internal abstract class PresetBase
             return false;
         }
 
-        if (!await CreatePresetInitiativesAsync(sender, projectId, createWorkItemsAndAssets, requestingUser, cancellationToken))
+        if (!await CreatePresetInitiativesAsync(sender, projectId, createTasksAndAssets, requestingUser, cancellationToken))
         {
             return false;
         }
@@ -100,23 +101,31 @@ internal abstract class PresetBase
                 }
             }
 
-            CommandResponse result = await sender.Send(new CreateItemLayout.Command(projectId, layoutName, layoutInfo.LayoutUse, layoutInfo.FriendlyIdPrefix, fields, layoutInfo.AssigneeDefinitions, requestingUser), cancellationToken);
+            CommandResponse result = await sender.Send(new CreateItemLayout.Command(projectId, layoutName, layoutInfo.LayoutUse, layoutInfo.FriendlyIdPrefix, fields, layoutInfo.AssigneeSlots, requestingUser), cancellationToken);
             if (!result.Success || result.Ids.Count == 0)
+            {
+                return false;
+            }
+
+            ItemLayout? layout = await sender.Send(new GetItemLayoutByIdDb.Query(result.Ids[nameof(ItemLayout)]), cancellationToken);
+
+            if (layout?.Current is null)
             {
                 return false;
             }
 
             ItemLayouts[layoutName] = layoutInfo with
             {
-                LayoutId = result.Ids[nameof(ItemLayout)],
-                LayoutVersionId = result.Ids[nameof(ItemLayoutVersion)],
+                LayoutId = layout.Id,
+                LayoutVersionId = layout.Current.Id,
+                AssigneeSlotIds = [.. layout.Current.AssigneeSlots.Select(ad => ad.Id)],
             };
         }
 
         return true;
     }
 
-    private async Task<bool> CreatePresetInitiativesAsync(ISender sender, Guid projectId, bool createWorkItemsAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
+    private async Task<bool> CreatePresetInitiativesAsync(ISender sender, Guid projectId, bool createTasksAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
     {
         foreach ((string initiativeName, PresetInitiativeInfo initiativeInfo) in ItemInitiatives)
         {
@@ -128,18 +137,18 @@ internal abstract class PresetBase
 
             initiativeInfo.InitiativeId = result.Ids[nameof(Initiative)];
 
-            foreach (KeyValuePair<string, PresetWorkItemQueueInfo> workItemQueue in initiativeInfo.WorkItemQueues)
+            foreach (KeyValuePair<string, PresetTaskQueueInfo> taskQueue in initiativeInfo.TaskQueues)
             {
-                CommandResponse queueResult = await sender.Send(new CreateWorkItemQueue.Command(workItemQueue.Key, initiativeInfo.InitiativeId.Value, requestingUser), cancellationToken);
+                CommandResponse queueResult = await sender.Send(new CreateTaskQueue.Command(taskQueue.Key, initiativeInfo.InitiativeId.Value, requestingUser), cancellationToken);
                 if (!queueResult.Success || queueResult.Ids.Count == 0)
                 {
                     return false;
                 }
 
-                PresetWorkItemQueueInfo queue = workItemQueue.Value;
-                queue.WorkItemQueueId = queueResult.Ids[nameof(WorkItemQueue)];
+                PresetTaskQueueInfo queue = taskQueue.Value;
+                queue.TaskQueueId = queueResult.Ids[nameof(TaskQueue)];
 
-                if (createWorkItemsAndAssets)
+                if (createTasksAndAssets)
                 {
                     foreach (PresetAssetInfo asset in GetAssets())
                     {
@@ -161,25 +170,34 @@ internal abstract class PresetBase
                         asset.AssetVersionId = assetCreation.Ids[nameof(ItemVersion)];
                     }
 
-                    foreach (PresetWorkItemInfo workItem in GetWorkItems())
+                    foreach (PresetTaskInfo task in GetTasks())
                     {
-                        CommandResponse workItemCreation = await sender.Send(new CreateWorkItemInQueue.Command(
-                            queue.WorkItemQueueId.Value,
-                            workItem.Layout.LayoutId!.Value,
-                            workItem.Layout.LayoutVersionId!.Value,
-                            workItem.Title,
-                            workItem.Fields.ToDictionary(kvp => kvp.Key.FieldVersionId!.Value, kvp => kvp.Value),
+                        CommandResponse taskCreation = await sender.Send(new CreateTaskInQueue.Command(
+                            queue.TaskQueueId.Value,
+                            task.Layout.LayoutId!.Value,
+                            task.Layout.LayoutVersionId!.Value,
+                            task.Title,
+                            task.Fields.ToDictionary(kvp => kvp.Key.FieldVersionId!.Value, kvp => kvp.Value),
                             DateTimeOffset.UtcNow,
                             requestingUser
                         ), cancellationToken);
 
-                        if (!workItemCreation.Success || workItemCreation.Ids.Count == 0)
+                        if (!taskCreation.Success || taskCreation.Ids.Count == 0)
                         {
                             return false;
                         }
 
-                        workItem.WorkItemId = workItemCreation.Ids[nameof(WorkItem)];
-                        workItem.WorkItemVersionId = workItemCreation.Ids[nameof(ItemVersion)];
+                        task.TaskId = taskCreation.Ids[nameof(BonesTask)];
+                        task.TaskVersionId = taskCreation.Ids[nameof(ItemVersion)];
+
+                        if (task.ShouldAssignToCreator)
+                        {
+                            CommandResponse assignResponse = await sender.Send(new AssignTask.Command(task.TaskId.Value, task.Layout.AssigneeSlotIds!.First(), requestingUser.Id, task.AssignmentState, requestingUser), cancellationToken);
+                            if (!assignResponse.Success)
+                            {
+                                return false;
+                            }
+                        }
                     }
                 }
             }

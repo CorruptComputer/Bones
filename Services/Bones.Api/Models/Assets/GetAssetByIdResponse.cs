@@ -30,12 +30,12 @@ public sealed record GetAssetByIdResponse
     public required Guid ProjectId { get; init; }
 
     /// <summary>
-    ///   The ID of the  item this asset is
+    ///   The ID of the item this asset is
     /// </summary>
     public required Guid ItemId { get; init; }
 
     /// <summary>
-    ///   The ID of the latest version of the  item this asset is
+    ///   The ID of the latest version of the item this asset is
     /// </summary>
     public required Guid LatestItemVersionId { get; init; }
 
@@ -73,12 +73,12 @@ public sealed record GetAssetByIdResponse
             Title = asset.Item.Versions.First(v => v.Version == asset.Item.CurrentVersion).Title,
             LayoutId = asset.Item.ItemLayout.Id,
             ItemId = asset.Item.Id,
-            LatestItemVersionId = asset.CurrentVersion?.Id ?? throw new(),
+            LatestItemVersionId = asset.Item.Current?.Id ?? throw new(),
             CurrentVersion = asset.Item.CurrentVersion,
             FriendlyId = asset.Item.FriendlyId,
             CreateDateTime = asset.Item.CreateDateTime,
-            LatestVersionCreateDateTime = asset.CurrentVersion?.CreateDateTime ?? throw new(),
-            ItemValues = asset.CurrentVersion.ItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
+            LatestVersionCreateDateTime = asset.Item.Current?.CreateDateTime ?? throw new(),
+            ItemValues = asset.Item.Current.ItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
             {
                 OrderNumber = fl.OrderNumber,
                 FieldVersionId = fl.FieldVersion.Id,
@@ -87,7 +87,7 @@ public sealed record GetAssetByIdResponse
                 IsRequired = fl.FieldVersion.IsRequired,
                 CanBeNegative = fl.FieldVersion.CanBeNegative,
                 PossibleValues = fl.FieldVersion.PossibleValues?.Select(v => v.Value),
-                Value = asset.CurrentVersion.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
+                Value = asset.Item.Current.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
             })
         };
     }

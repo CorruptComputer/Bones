@@ -10,12 +10,12 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
     /// <summary>
     ///   DB Command for creating an ItemVersion.
     /// </summary>
-    /// <param name="AssetId">Internal ID of the item</param>
+    /// <param name="ItemId">Internal ID of the item</param>
     /// <param name="Title">The title to use for this version</param>
     /// <param name="LayoutVersionId">Internal ID of the layout version this item is using</param>
     /// <param name="Values">The values to use for this asset version</param>
     /// <param name="ActionDateTime"></param>
-    public record Command(Guid AssetId, string Title, Guid LayoutVersionId, Dictionary<Guid, object?> Values, DateTimeOffset ActionDateTime) : IRequest<CommandResponse>;
+    public record Command(Guid ItemId, string Title, Guid LayoutVersionId, Dictionary<Guid, object?> Values, DateTimeOffset ActionDateTime) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     internal sealed class Validator : AbstractValidator<Command>
@@ -23,7 +23,7 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.AssetId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.ItemId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.Title).NotEmpty().MaximumLength(256);
             RuleFor(x => x.LayoutVersionId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.Values).NotNull().ChildRules(dict =>
@@ -40,11 +40,13 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
     {
         Asset? asset = await dbContext.Assets
             .Include(item => item.Item)
-            .FirstOrDefaultAsync(i => i.Id == request.AssetId, cancellationToken);
+            .ThenInclude(i => i.Versions)
+            .ThenInclude(v => v.Assignees)
+            .FirstOrDefaultAsync(i => i.Id == request.ItemId, cancellationToken);
 
         if (asset == null)
         {
-            return CommandResponse.Fail("Invalid Asset ID.");
+            return CommandResponse.Fail("Invalid Item ID.");
         }
 
         ItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions
@@ -71,7 +73,7 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
                 return CommandResponse.Fail($"Invalid field name provided: {fieldId}");
             }
 
-            ItemValue workItemValue = new()
+            ItemValue assetValue = new()
             {
                 Field = field,
 
@@ -79,7 +81,7 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
 
             if (value is not null)
             {
-                bool valid = workItemValue.TrySetValue(value);
+                bool valid = assetValue.TrySetValue(value);
                 if (!valid)
                 {
                     return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(field.Type)}' field '{fieldId}': {value}");
@@ -91,8 +93,10 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
             }
             // else if its null and not required we can just skip doing anything else
 
-            values.Add(workItemValue);
+            values.Add(assetValue);
         }
+
+        List<ItemAssignee> assignees = asset.Item.Current?.Assignees ?? [];
 
         int version = ++asset.Item.CurrentVersion;
 
@@ -103,7 +107,8 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
             Version = version,
             CreateDateTime = request.ActionDateTime,
             ItemLayoutVersion = layoutVersion,
-            Values = values
+            Values = values,
+            Assignees = assignees
         });
 
         EntityEntry<Asset> updated = dbContext.Assets.Update(asset);

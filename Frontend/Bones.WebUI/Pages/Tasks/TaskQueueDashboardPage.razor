@@ -1,0 +1,27 @@
+﻿@attribute [Route(FrontEndUrls.Task.TASK_QUEUE_DASHBOARD)]
+
+<div style="display: flex;">
+    <MudText Typo="Typo.h4">@QueueName</MudText>
+    <MudSpacer/>
+    <MudButton Href="@FrontEndUrls.Task.CREATE_TASK_IN_QUEUE.Replace(FrontEndUrls.Task.TASK_QUEUE_ID_PLACEHOLDER, TaskQueueId.ToString())">Create Task in Queue</MudButton>
+</div>
+
+<MudPaper Class="pa-4">
+    <MudTable Items="@Tasks" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@TasksLoading" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>Friendly ID</MudTh>
+            <MudTh>Title</MudTh>
+            <MudTh>Added to Queue At</MudTh>
+            <MudTh>View Task</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Friendly ID">@context.FriendlyId</MudTd>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Added to Queue At">@context.AddedToQueueDateTime.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss tt")</MudTd>
+            <MudTd DataLabel="View Task"><MudButton Href="@FrontEndUrls.Task.VIEW_TASK.Replace(FrontEndUrls.Task.TASK_ID_PLACEHOLDER, context.Id.ToString())">View</MudButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="@TableConsts.PageSizeOptions" />
+        </PagerContent>
+    </MudTable>
+</MudPaper>

@@ -87,18 +87,18 @@ public record GetProjectSettingsResponse
                 new ItemFieldModel
                 {
                     ItemFieldId = i.Id,
-                    ItemFieldLatestVersionId = i.LatestVersion!.Id,
-                    Name = i.LatestVersion.Name,
-                    IsRequired = i.LatestVersion.IsRequired,
-                    Type = i.LatestVersion.Type
+                    ItemFieldLatestVersionId = i.Current!.Id,
+                    Name = i.Current.Name,
+                    IsRequired = i.Current.IsRequired,
+                    Type = i.Current.Type
                 }),
             ItemLayoutCount = itemLayouts.Count,
             ItemLayouts = itemLayouts.Select(i =>
                 new ItemLayoutModel
                 {
                     ItemLayoutId = i.Id,
-                    Name = i.LatestVersion!.Name,
-                    LayoutUse = i.LatestVersion!.LayoutUse.ToString()
+                    Name = i.Current!.Name,
+                    LayoutUse = i.Current!.LayoutUse.ToString()
                 })
         };
     }

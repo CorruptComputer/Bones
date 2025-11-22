@@ -11,6 +11,12 @@ namespace Bones.Api.Models.Project;
 public record CreateItemFieldRequest
 {
     /// <summary>
+    ///   The ID of the project to create this field in
+    /// </summary>
+    [JsonRequired]
+    public required Guid ProjectId { get; init; }
+
+    /// <summary>
     ///   Name of the item field to create
     /// </summary>
     [JsonRequired]
@@ -48,8 +54,8 @@ public record CreateItemFieldRequest
     /// </summary>
     public AddressFields? RequiredAddressFields { get; init; }
 
-    internal CreateItemField.Command ToInternal(Guid projectId, BonesUser user)
+    internal CreateItemField.Command ToInternal(BonesUser user)
     {
-        return new(projectId, Name, IsRequired, Type, CanBeNegative, PossibleValues?.ToDictionary(), GeoLocationType, RequiredAddressFields, user);
+        return new(ProjectId, Name, IsRequired, Type, CanBeNegative, PossibleValues?.ToDictionary(), GeoLocationType, RequiredAddressFields, user);
     }
 }

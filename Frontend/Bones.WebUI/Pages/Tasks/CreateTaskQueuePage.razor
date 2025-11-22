@@ -1,0 +1,32 @@
+@attribute [Route(FrontEndUrls.Project.Initiative.INITIATIVE_CREATE_TASK_QUEUE)]
+
+<MudText Typo="Typo.h4">Create Task Queue</MudText>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm @bind-IsValid="@FormValid" @bind-Errors="@ValidationErrors">
+                <MudTextField T="string" Label="Task Queue Name" Required="true" RequiredError="Task Queue name is required!" @bind-Value="@TaskQueueName" Immediate="true" />
+
+                <div style="align-self: end;">
+                    <br />
+                    <a onclick="history.back();">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+                    </a>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!FormValid)" Class="ml-auto" OnClick="@SendCreateRequestAsync">Create</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudItem Class="pa-2" hidden="@(!ApiError)">
+            <MudAlert Severity="Severity.Error">There was an error with the creation, please try again.</MudAlert>
+        </MudItem>
+
+        @foreach (string error in ValidationErrors)
+        {
+            <MudItem Class="pa-2">
+                <MudAlert  Severity="Severity.Error">@error</MudAlert>
+            </MudItem>
+        }
+    </MudItem>
+</MudGrid>

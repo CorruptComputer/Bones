@@ -68,7 +68,7 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
     protected string[] ValidationErrors { get; set; } = [];
 
     /// <summary>
-    ///   The name of the work item queue, received from the API
+    ///   The name of the task queue, received from the API
     /// </summary>
     protected string? AssetLayoutName { get; set; }
 
@@ -100,7 +100,7 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
     {
         if (AssetLayoutIdProvidedInQueryString)
         {
-            GetItemLayoutVersionResponse layout = await apiClient.Item.Layouts[AssetLayoutId.Value].Latest.GetAsync()
+            GetItemLayoutVersionResponse layout = await apiClient.ItemLayout.Layouts[AssetLayoutId.Value].Latest.GetAsync()
                 ?? throw new InvalidOperationException("Failed to get layout from API");
             SelectedProject = layout.ProjectId;
         }
@@ -159,7 +159,7 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
     }
 
     /// <summary>
-    ///   Event for when the selected work item layout is changed
+    ///   Event for when the selected task layout is changed
     /// </summary>
     /// <param name="selectedLayout"></param>
     /// <returns></returns>

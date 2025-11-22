@@ -17,19 +17,19 @@ public partial class InitiativeDashboardPage(BonesApiClient ApiClient) : Compone
     public string? InitiativeName { get; set; }
 
     /// <summary>
-    ///   The number of queues on the initiative, received from the API
+    ///   The number of task queues on the initiative, received from the API
     /// </summary>
-    public int? QueueCount { get; set; }
+    public int? TaskQueueCount { get; set; }
 
     /// <summary>
-    ///   Is the queue list still loading from the API?
+    ///   Is the task queue list still loading from the API?
     /// </summary>
-    public bool QueueListLoading { get; set; } = true;
+    public bool TaskQueueListLoading { get; set; } = true;
 
     /// <summary>
-    ///   The list of queues on the initiative, received from the API
+    ///   The list of task queues on the initiative, received from the API
     /// </summary>
-    public List<WorkItemQueueListModel> QueueList { get; set; } = [];
+    public List<TaskQueueListModel> TaskQueueList { get; set; } = [];
 
     /// <summary>
     ///   Fires when the page is loaded
@@ -62,8 +62,8 @@ public partial class InitiativeDashboardPage(BonesApiClient ApiClient) : Compone
         }
 
         InitiativeName = dashboardResponse.InitiativeName;
-        QueueCount = dashboardResponse.WorkItemQueueCount;
-        QueueList = dashboardResponse.WorkItemQueues;
-        QueueListLoading = false;
+        TaskQueueCount = dashboardResponse.TaskQueueCount;
+        TaskQueueList = dashboardResponse.TaskQueues;
+        TaskQueueListLoading = false;
     }
 }

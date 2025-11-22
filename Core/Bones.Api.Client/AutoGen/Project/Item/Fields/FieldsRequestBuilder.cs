@@ -2,8 +2,6 @@
 #pragma warning disable CS0618
 #nullable enable
 using Bones.Api.Client.AutoGen.Models;
-using Bones.Api.Client.AutoGen.Project.Item.Fields.Create;
-using Bones.Api.Client.AutoGen.Project.Item.Fields.Item;
 using ReQuesty.Runtime.Abstractions.Serialization;
 using ReQuesty.Runtime.Abstractions;
 using ReQuesty.Runtime.Extensions;
@@ -20,23 +18,6 @@ namespace Bones.Api.Client.AutoGen.Project.Item.Fields
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
     public partial class FieldsRequestBuilder : BaseRequestBuilder
     {
-        /// <summary>The create property</summary>
-        public global::Bones.Api.Client.AutoGen.Project.Item.Fields.Create.CreateRequestBuilder Create
-        {
-            get => new global::Bones.Api.Client.AutoGen.Project.Item.Fields.Create.CreateRequestBuilder(PathParameters, RequestAdapter);
-        }
-        /// <summary>Gets an item from the Bones.Api.Client.AutoGen.Project.item.fields.item collection</summary>
-        /// <param name="position">The ID of the field to add this version to</param>
-        /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Project.Item.Fields.Item.WithFieldItemRequestBuilder"/></returns>
-        public global::Bones.Api.Client.AutoGen.Project.Item.Fields.Item.WithFieldItemRequestBuilder this[Guid position]
-        {
-            get
-            {
-                var urlTplParams = new Dictionary<string, object>(PathParameters);
-                urlTplParams.Add("fieldId", position);
-                return new global::Bones.Api.Client.AutoGen.Project.Item.Fields.Item.WithFieldItemRequestBuilder(urlTplParams, RequestAdapter);
-            }
-        }
         /// <summary>
         /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Project.Item.Fields.FieldsRequestBuilder"/> and sets the default values.
         /// </summary>

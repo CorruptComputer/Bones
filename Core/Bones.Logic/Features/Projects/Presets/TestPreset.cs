@@ -84,15 +84,14 @@ internal class TestPreset : PresetBase
         }
     };
 
-
     internal override Dictionary<string, PresetLayoutInfo> ItemLayouts { get; } = new()
     {
         {
-            "Test Work Item",
+            "Test Task",
             new PresetLayoutInfo
             {
-                LayoutUse = ItemLayoutUse.WorkItems,
-                FriendlyIdPrefix = "TWI",
+                LayoutUse = ItemLayoutUse.Tasks,
+                FriendlyIdPrefix = "TT",
                 Fields = new()
                 {
                     { 0, PresetFields.RequiredSmallText },
@@ -103,9 +102,10 @@ internal class TestPreset : PresetBase
                     { 5, PresetFields.OptionalBoolean },
                     { 6, PresetFields.OptionalDateTime }
                 },
-                AssigneeDefinitions = new()
+                AssigneeSlots = new()
                 {
-                    { 0, ("Assigned to", AssignmentType.User, SelectionType.Single) },
+                    { 0, ("Slot one", AssignmentType.User, SelectionType.Single, ["To do", "In Progress", "Done"]) },
+                    { 1, ("Slot two", AssignmentType.User, SelectionType.Single, ["To do", "In Progress", "Done"]) },
                 }
             }
         },
@@ -121,9 +121,9 @@ internal class TestPreset : PresetBase
                     { 1, PresetFields.RequiredInteger },
                     { 4, PresetFields.OptionalLargeText }
                 },
-                AssigneeDefinitions = new()
+                AssigneeSlots = new()
                 {
-                    { 0, ("Owning Group", AssignmentType.Role, SelectionType.Single) },
+                    { 0, ("Owning Group", AssignmentType.Role, SelectionType.Single, ["To do", "In Progress", "Done"]) },
                 }
             }
         }
@@ -135,7 +135,7 @@ internal class TestPreset : PresetBase
             "Test Initiative",
             new PresetInitiativeInfo
             {
-                WorkItemQueues = new()
+                TaskQueues = new()
                 {
                     {
                         "Test Queue",
@@ -167,15 +167,15 @@ internal class TestPreset : PresetBase
         return assets;
     }
 
-    internal override List<PresetWorkItemInfo> GetWorkItems()
+    internal override List<PresetTaskInfo> GetTasks()
     {
-        List<PresetWorkItemInfo> workItems = [];
+        List<PresetTaskInfo> tasks = [];
         for (int i = 0; i < 100; i++)
         {
-            workItems.Add(new PresetWorkItemInfo
+            tasks.Add(new PresetTaskInfo
             {
-                Title = $"Test Work Item {i + 1}",
-                Layout = ItemLayouts["Test Work Item"],
+                Title = $"Test Task {i + 1}",
+                Layout = ItemLayouts["Test Task"],
                 Fields = new Dictionary<PresetFieldInfo, object?>
                 {
                     { ItemFields[PresetFields.RequiredSmallText], "Test Value" },
@@ -185,10 +185,12 @@ internal class TestPreset : PresetBase
                     { ItemFields[PresetFields.OptionalLargeText], "Large Text\n\n\n\n\n\n\n\n\nLarge Text" },
                     { ItemFields[PresetFields.OptionalBoolean], true },
                     { ItemFields[PresetFields.OptionalDateTime], DateTimeOffset.UtcNow }
-                }
+                },
+                ShouldAssignToCreator = i == 0,
+                AssignmentState = "To do"
             });
         }
 
-        return workItems;
+        return tasks;
     }
 }

@@ -72,7 +72,7 @@ internal class DevelopmentPreset : PresetBase
             "Bug",
             new PresetLayoutInfo
             {
-                LayoutUse = ItemLayoutUse.WorkItems,
+                LayoutUse = ItemLayoutUse.Tasks,
                 FriendlyIdPrefix = "BUG",
                 Fields = new()
                 {
@@ -82,10 +82,10 @@ internal class DevelopmentPreset : PresetBase
                     { 3, PresetFields.ReproductionSteps },
                     { 4, PresetFields.Description }
                 },
-                AssigneeDefinitions = new()
+                AssigneeSlots = new()
                 {
-                    { 0, ("Developer", AssignmentType.User, SelectionType.Single) },
-                    { 1, ("QA", AssignmentType.User, SelectionType.Single) }
+                    { 0, ("Developer", AssignmentType.User, SelectionType.Single, ["To do", "In Progress", "Done"]) },
+                    { 1, ("QA", AssignmentType.User, SelectionType.Single, ["To do", "In Progress", "Done"]) }
                 }
             }
         },
@@ -93,7 +93,7 @@ internal class DevelopmentPreset : PresetBase
             "Feature",
             new PresetLayoutInfo
             {
-                LayoutUse = ItemLayoutUse.WorkItems,
+                LayoutUse = ItemLayoutUse.Tasks,
                 FriendlyIdPrefix = "FEAT",
                 Fields = new()
                 {
@@ -101,11 +101,11 @@ internal class DevelopmentPreset : PresetBase
                     { 1, PresetFields.FeatureArea },
                     { 2, PresetFields.Description }
                 },
-                AssigneeDefinitions = new()
+                AssigneeSlots = new()
                 {
-                    { 0, ("Designer", AssignmentType.User, SelectionType.Single) },
-                    { 1, ("Developer", AssignmentType.User, SelectionType.Single) },
-                    { 2, ("QA", AssignmentType.User, SelectionType.Single) }
+                    { 0, ("Designer", AssignmentType.User, SelectionType.Single, ["To do", "In Progress", "Done"]) },
+                    { 1, ("Developer", AssignmentType.User, SelectionType.Single, ["To do", "In Progress", "Done"]) },
+                    { 2, ("QA", AssignmentType.User, SelectionType.Single, ["To do", "In Progress", "Done"]) }
                 }
             }
         }
@@ -117,7 +117,7 @@ internal class DevelopmentPreset : PresetBase
             "v1.0",
             new PresetInitiativeInfo
             {
-                WorkItemQueues = new()
+                TaskQueues = new()
                 {
                     { "Backlog", new() },
                     { "In Progress", new() },
@@ -129,7 +129,7 @@ internal class DevelopmentPreset : PresetBase
             "v2.0",
             new PresetInitiativeInfo
             {
-                WorkItemQueues = new()
+                TaskQueues = new()
                 {
                     { "Backlog", new() },
                     { "In Progress", new() },
@@ -141,5 +141,5 @@ internal class DevelopmentPreset : PresetBase
 
     internal override List<PresetAssetInfo> GetAssets() => [];
 
-    internal override List<PresetWorkItemInfo> GetWorkItems() => [];
+    internal override List<PresetTaskInfo> GetTasks() => [];
 }
