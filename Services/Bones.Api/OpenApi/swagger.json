@@ -6524,5 +6524,40 @@
         "description": "Request for the UpdateMyProfileAsync endpoint"
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Account"
+    },
+    {
+      "name": "Anonymous"
+    },
+    {
+      "name": "Asset"
+    },
+    {
+      "name": "Assignment"
+    },
+    {
+      "name": "Initiative"
+    },
+    {
+      "name": "ItemLayout"
+    },
+    {
+      "name": "Login"
+    },
+    {
+      "name": "Project"
+    },
+    {
+      "name": "SysAdmin"
+    },
+    {
+      "name": "Task"
+    },
+    {
+      "name": "TaskQueue"
+    }
+  ]
 }

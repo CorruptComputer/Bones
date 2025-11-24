@@ -1,9 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <Sdk Name="Aspire.AppHost.Sdk" Version="9.5.2" />
+<Project Sdk="Aspire.AppHost.Sdk/13.0.0">
 
     <PropertyGroup>
         <!-- Build info -->
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <OutputType>Exe</OutputType>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
@@ -32,10 +31,6 @@
             <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
         </Exec>
     </Target>
-
-    <ItemGroup>
-        <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.2" />
-    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="../../Frontend/Bones.WebUI/Bones.WebUI.csproj" />

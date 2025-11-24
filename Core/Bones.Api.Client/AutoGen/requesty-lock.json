@@ -1,5 +1,5 @@
 {
-  "descriptionHash": "3B2CB57E340E8758BFDAF4ED61098504A95C094A4108EA556FB7B45D585013D98248CAF0455893E9787C1758AC6E2DD70B5F0C5C657266EE115451C8AB6DC36E",
+  "descriptionHash": "EB22657BB350AE0CFBF43F5FCB33EA9FC0993C400BFDC9CDD881F7EF122C4D6EFB3A60E0F293A0D1B6F83EEBBD2745C085E812CBA0711DAB4D718CD592EA65AC",
   "descriptionLocation": "../../../Services/Bones.Api/OpenApi/swagger.json",
   "lockFileVersion": "1.0.0",
   "reQuestyVersion": "0.0.1",
@@ -8,7 +8,6 @@
   "clientNamespaceName": "Bones.Api.Client.AutoGen",
   "language": "CSharp",
   "usesBackingStore": false,
-  "excludeBackwardCompatible": false,
   "includeAdditionalData": true,
   "disableSSLValidation": false,
   "serializers": [
