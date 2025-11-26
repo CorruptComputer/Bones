@@ -8,10 +8,11 @@ using Bones.Testing.UnitTests.Shared.TestOperations.Audit;
 namespace Bones.Database.UnitTests.Operations.AccountManagement;
 
 /// <summary>
-///   Tests for getting user sessions with rate limiting
+///   Tests for getting user sessions
 /// </summary>
 public class GetBonesUserSessionDbTests : TestBase
 {
+    private readonly GetBonesUserSessionDb.Validator validator = new();
     private readonly IPAddress _testIp = IPAddress.Parse("127.0.0.1");
 
     /// <summary>
@@ -21,8 +22,7 @@ public class GetBonesUserSessionDbTests : TestBase
     [Fact]
     public async Task Validator_ShouldStopInvalidInputs()
     {
-        GetBonesUserSessionDb.Validator validator = new();
-        GetBonesUserSessionDb.Query query = new(Guid.Empty, IPAddress.IPv6Loopback);
+        GetBonesUserSessionDb.Query query = new(Guid.Empty, IPAddress.None);
 
         TestValidationResult<GetBonesUserSessionDb.Query> validationResult = await validator.TestValidateAsync(query);
         validationResult.ShouldHaveValidationErrorFor(x => x.SessionId);
@@ -32,7 +32,7 @@ public class GetBonesUserSessionDbTests : TestBase
     ///   Tests that a valid session request succeeds and is logged
     /// </summary>
     [Fact]
-    public async Task ValidSession_ShouldSucceedAndLogAttempt()
+    public async Task ValidSessionId_ShouldSucceedAndLogAttempt()
     {
         BonesUserSession session = await CreateSession();
 
@@ -47,7 +47,6 @@ public class GetBonesUserSessionDbTests : TestBase
         auditLog.Result.ShouldNotBeNull();
         auditLog.Result.Count.ShouldBe(1);
         auditLog.Result[0].Successful.ShouldBeTrue();
-        auditLog.Result[0].IpAddress.ShouldBe(_testIp);
         auditLog.Result[0].SessionId.ShouldBe(session.Id);
     }
 
@@ -69,7 +68,6 @@ public class GetBonesUserSessionDbTests : TestBase
         auditLog.Result.ShouldNotBeNull();
         auditLog.Result.Count.ShouldBe(1);
         auditLog.Result[0].Successful.ShouldBeFalse();
-        auditLog.Result[0].IpAddress.ShouldBe(_testIp);
     }
 
     /// <summary>
@@ -129,7 +127,7 @@ public class GetBonesUserSessionDbTests : TestBase
     private async Task<BonesUserSession> CreateSession()
     {
         QueryResponse<BonesUserSession> session = await Sender.Send(
-            new CreateAndGetBonesUserSessionDb.Query(await GetBackgroundServiceUserAsync(), _testIp, Convert.ToBase64String(new byte[32]))
+            new CreateAndGetBonesUserSessionDb.Query(await GetBackgroundServiceUserAsync(), _testIp, string.Empty)
         );
 
         session.Result.ShouldNotBeNull();

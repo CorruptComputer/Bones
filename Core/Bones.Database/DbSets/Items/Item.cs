@@ -1,4 +1,3 @@
-using System.Runtime.Serialization;
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.ProjectManagement;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

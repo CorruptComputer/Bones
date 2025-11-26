@@ -30,7 +30,6 @@ public sealed class GetMySession(ISender sender) : IRequestHandler<GetMySession.
     /// <inheritdoc />
     public async Task<QueryResponse<BonesUserSession?>> Handle(Query request, CancellationToken cancellationToken)
     {
-
         BonesUserSession? session = await sender.Send(new GetBonesUserSessionDb.Query(request.SessionId, request.RequestingIp), cancellationToken);
 
         // If something funky is happening just invalidate the session and force them to login again

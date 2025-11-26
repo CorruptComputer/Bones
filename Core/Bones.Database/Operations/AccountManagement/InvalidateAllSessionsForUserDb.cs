@@ -19,6 +19,8 @@ public class InvalidateAllSessionsForUserDb(BonesDbContext dbContext) : IRequest
         public Validator()
         {
             RuleFor(x => x.UserId).NotNull().NotEqual(Guid.Empty);
+            RuleFor(x => x.ExcludeSessions).Must(list => list == null || list.All(id => id != Guid.Empty))
+                .WithMessage("ExcludeSessions cannot contain empty IDs");
         }
     }
 
@@ -33,7 +35,9 @@ public class InvalidateAllSessionsForUserDb(BonesDbContext dbContext) : IRequest
             userSessions = userSessions.Where(x => !request.ExcludeSessions.Contains(x.Id));
         }
 
-        foreach (BonesUserSession session in userSessions)
+        List<BonesUserSession> sessionsToInvalidate = await userSessions.ToListAsync(cancellationToken);
+
+        foreach (BonesUserSession session in sessionsToInvalidate)
         {
             session.IsInvalidated = true;
             dbContext.UserSessions.Update(session);

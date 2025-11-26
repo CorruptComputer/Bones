@@ -1,9 +1,7 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Assignment;
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.TaskManagement;
 using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.Tasks.Tasks;
 

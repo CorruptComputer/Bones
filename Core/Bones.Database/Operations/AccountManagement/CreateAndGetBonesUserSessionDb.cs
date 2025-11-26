@@ -21,7 +21,7 @@ public class CreateAndGetBonesUserSessionDb(BonesDbContext dbContext) : IRequest
         public Validator()
         {
             RuleFor(x => x.RequestingUser).NotNull();
-            RuleFor(x => x.RequestingIp).NotNull();
+            RuleFor(x => x.RequestingIp).NotNull().NotEqual(IPAddress.None);
             RuleFor(x => x.Base64LocalStorageKey).NotNull();
         }
     }

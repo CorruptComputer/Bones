@@ -81,8 +81,8 @@ public class SetupDb(ISender sender, UserManager<BonesUser> userManager, RoleMan
 
             await userManager.CreateAsync(userToCreate);
 
-            user = await userManager.FindByEmailAsync(defaultEmail)
-                ?? throw new BonesException("Failed to find the Background Service user after creation.");
+            user = await userManager.FindByEmailAsync(defaultEmail);
+            BonesException.ThrowIfNull(user);
 
             await userManager.AddToRoleAsync(user, SystemRoles.SYSTEM_ADMINISTRATORS);
 

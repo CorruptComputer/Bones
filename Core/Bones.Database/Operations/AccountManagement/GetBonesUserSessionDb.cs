@@ -51,8 +51,7 @@ public class GetBonesUserSessionDb(BonesDbContext dbContext) : IRequestHandler<G
             return QueryResponse<BonesUserSession?>.Fail("Too many failed attempts. Please try again later.");
         }
 
-        BonesUserSession? session = await dbContext.UserSessions
-            .FirstOrDefaultAsync(x => x.Id == request.SessionId, cancellationToken);
+        BonesUserSession? session = await dbContext.UserSessions.FindAsync([request.SessionId], cancellationToken);
 
         bool successful = session is not null;
 
@@ -70,7 +69,7 @@ public class GetBonesUserSessionDb(BonesDbContext dbContext) : IRequestHandler<G
             session.LastAccessedDateTime = DateTimeOffset.UtcNow;
             dbContext.UserSessions.Update(session);
             await dbContext.SaveChangesAsync(cancellationToken);
-            return QueryResponse<BonesUserSession?>.Pass(session);
+            return session;
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);

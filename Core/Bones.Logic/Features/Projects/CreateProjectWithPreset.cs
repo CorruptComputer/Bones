@@ -1,4 +1,5 @@
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.ProjectManagement;
 using Bones.Logic.Features.Projects.Presets;
 using Bones.Shared.Backend.Enums;
 
@@ -41,10 +42,11 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
             _ => null
         };
 
+        Guid? projectId;
         if (preset != null)
         {
-            bool success = await preset.CreatePresetAsync(sender, request.CreateTasks, request.RequestingUser, cancellationToken);
-            if (!success)
+            projectId = await preset.CreatePresetAsync(sender, request.CreateTasks, request.RequestingUser, cancellationToken);
+            if (projectId is null)
             {
                 return CommandResponse.Fail($"Failed to create preset: {preset.GetType().FullName}");
             }
@@ -54,6 +56,6 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
             return CommandResponse.Fail($"Preset not found or unsupported: {request.Preset}");
         }
 
-        return CommandResponse.Pass();
+        return CommandResponse.Pass(nameof(Project), projectId.Value);
     }
 }

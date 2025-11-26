@@ -30,32 +30,32 @@ internal abstract class PresetBase
 
     internal abstract List<PresetAssetInfo> GetAssets();
 
-    internal async Task<bool> CreatePresetAsync(ISender sender, bool createTasksAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
+    internal async Task<Guid?> CreatePresetAsync(ISender sender, bool createTasksAndAssets, BonesUser requestingUser, CancellationToken cancellationToken)
     {
         CommandResponse projectCreation = await sender.Send(new CreateProject.Command(ProjectName, requestingUser), cancellationToken);
         if (!projectCreation.Success || projectCreation.Ids.Count == 0)
         {
-            return false;
+            return null;
         }
 
         Guid projectId = projectCreation.Ids[nameof(Project)];
 
         if (!await CreatePresetFieldsAsync(sender, projectId, requestingUser, cancellationToken))
         {
-            return false;
+            return null;
         }
 
         if (!await CreatePresetLayoutsAsync(sender, projectId, requestingUser, cancellationToken))
         {
-            return false;
+            return null;
         }
 
         if (!await CreatePresetInitiativesAsync(sender, projectId, createTasksAndAssets, requestingUser, cancellationToken))
         {
-            return false;
+            return null;
         }
 
-        return true;
+        return projectId;
     }
 
     private async Task<bool> CreatePresetFieldsAsync(ISender sender, Guid projectId, BonesUser requestingUser, CancellationToken cancellationToken)

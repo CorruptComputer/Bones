@@ -1,5 +1,4 @@
 using Bones.Database.DbSets.Items;
-using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Assignment;
 

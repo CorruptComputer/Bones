@@ -36,9 +36,8 @@ public class IsPasswordExpiredTests : TestBase
     {
         // Create a user with expired password
         const string email = "expired@example.com";
-        const string password = "Password123!";
 
-        await Sender.Send(new CreateBonesUser.Query(email, password));
+        await Sender.Send(new CreateBonesUser.Query(email));
         BonesUser? user = await GetUserByEmailAsync(email);
         user.ShouldNotBeNull();
         user.PasswordExpired = true;
@@ -57,9 +56,8 @@ public class IsPasswordExpiredTests : TestBase
     {
         // Create a user with valid password
         const string email = "valid@example.com";
-        const string password = "Password123!";
 
-        await Sender.Send(new CreateBonesUser.Query(email, password));
+        await Sender.Send(new CreateBonesUser.Query(email));
 
         QueryResponse<bool> response = await Sender.Send(new IsPasswordExpired.Query(email));
 

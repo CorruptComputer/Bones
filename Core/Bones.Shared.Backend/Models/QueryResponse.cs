@@ -30,17 +30,6 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
     };
 
     /// <summary>
-    ///   Creates a failure response, optionally with the reasons why it failed.
-    /// </summary>
-    /// <param name="failureReasons"></param>
-    /// <returns></returns>
-    public static QueryResponse<TResult> Fail(Dictionary<string, List<string>>? failureReasons = null) => new()
-    {
-        Success = false,
-        FailureReasons = failureReasons
-    };
-
-    /// <summary>
     ///   Creates a failure response, optionally with the reason why it failed.
     /// </summary>
     /// <param name="failureReason"></param>
@@ -52,6 +41,17 @@ public sealed record QueryResponse<TResult> : BonesResponseBase
         {
             { SERVER_ERROR_KEY, [ failureReason ?? UNKNOWN_ERROR_VALUE ] }
         }
+    };
+
+    /// <summary>
+    ///   Creates a failure response, with multiple failure reasons.
+    /// </summary>
+    /// <param name="failureReasons"></param>
+    /// <returns></returns>
+    public static QueryResponse<TResult> Fail(Dictionary<string, List<string>> failureReasons) => new()
+    {
+        Success = false,
+        FailureReasons = failureReasons
     };
 
     /// <summary>

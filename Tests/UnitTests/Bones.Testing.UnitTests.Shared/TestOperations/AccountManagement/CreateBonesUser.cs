@@ -6,17 +6,16 @@ using Microsoft.AspNetCore.Identity;
 namespace Bones.Testing.UnitTests.Shared.TestOperations.AccountManagement;
 
 /// <inheritdoc />
-public class CreateBonesUser(UserManager<BonesUser> userManager) : IRequestHandler<CreateBonesUser.Query, QueryResponse<IdentityResult>>
+public class CreateBonesUser(UserManager<BonesUser> userManager) : IRequestHandler<CreateBonesUser.Query, QueryResponse<BonesUser>>
 {
     /// <summary>
     ///   TESTING QUERY: Create a user for testing
     /// </summary>
     /// <param name="Email"></param>
-    /// <param name="Password"></param>
-    public record Query(string Email, string Password) : IRequest<QueryResponse<IdentityResult>>;
+    public record Query(string Email) : IRequest<QueryResponse<BonesUser>>;
 
     /// <inheritdoc />
-    public async Task<QueryResponse<IdentityResult>> Handle(Query request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<BonesUser>> Handle(Query request, CancellationToken cancellationToken)
     {
         BonesUser user = new()
         {
@@ -25,6 +24,13 @@ public class CreateBonesUser(UserManager<BonesUser> userManager) : IRequestHandl
             EmailConfirmed = true
         };
 
-        return await userManager.CreateAsync(user, request.Password);
+        // Its for unit tests, doesn't really matter what the password is, it will probably not even be used
+        await userManager.CreateAsync(user, "Password123!");
+
+        BonesUser? createdUser = await userManager.FindByEmailAsync(request.Email);
+
+        return createdUser is null
+            ? QueryResponse<BonesUser>.Fail("User creation failed")
+            : createdUser;
     }
 }
