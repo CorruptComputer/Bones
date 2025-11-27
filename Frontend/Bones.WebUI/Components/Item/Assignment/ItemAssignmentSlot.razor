@@ -1,0 +1,22 @@
+﻿@using Bones.WebUI.Models
+
+<MudCard Class="mb-4">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@AssignmentSlot.AssignmentSlotName</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (Assignees.Count == 0)
+        {
+            <MudText Typo="Typo.body2">No assignees in this slot</MudText>
+        }
+        else
+        {
+            foreach (AssigneeModel? assignee in Assignees)
+            {
+                <ItemAssignee Assignee="assignee" AssignmentSlot="AssignmentSlot" />
+            }
+        }
+    </MudCardContent>
+</MudCard>

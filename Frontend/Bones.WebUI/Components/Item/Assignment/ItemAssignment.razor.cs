@@ -1,11 +1,13 @@
 using System.Net;
 using ReQuesty.Runtime.Abstractions;
 
-namespace Bones.WebUI.Components.Item;
+namespace Bones.WebUI.Components.Item.Assignment;
 
 /// <summary>
 ///   Page for viewing an items assignees
 /// </summary>
+/// <param name="apiClient"></param>
+/// <param name="logger"></param>
 public partial class ItemAssignment(BonesApiClient apiClient, ILogger<ItemAssignment> logger) : ComponentBase
 {
     /// <summary>

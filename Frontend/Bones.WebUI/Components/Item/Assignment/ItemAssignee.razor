@@ -1,0 +1,13 @@
+﻿@using Bones.WebUI.Models
+
+<MudPaper Class="pa-4">
+    @if (Assignee is null)
+    {
+        <MudText Typo="Typo.body1">No assignee</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => {/* todo */})">Add Assignee</MudButton>
+    }
+    else
+    {
+        <MudText Typo="Typo.body1">@Assignee.AssigneeDisplayName (@Assignee.AssignmentState)</MudText>
+    }
+</MudPaper>

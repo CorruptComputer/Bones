@@ -1,0 +1,19 @@
+﻿@using Bones.WebUI.Models
+
+<MudPaper Class="pa-4">
+    @if (_apiError)
+    {
+        <MudAlert Severity="Severity.Error">Error loading assignments</MudAlert>
+    }
+    else if (_assignmentSlots.Count == 0)
+    {
+        <MudText Typo="Typo.body1">No assignment slots for this item</MudText>
+    }
+    else
+    {
+        @foreach (AssignmentSlotModel slot in _assignmentSlots.OrderBy(s => s.OrderIndex))
+        {
+            <ItemAssignmentSlot AssignmentSlot="slot" Assignees="_slotAssignees[slot]" />
+        }
+    }
+</MudPaper>
