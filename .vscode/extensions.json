@@ -1,7 +1,6 @@
 {
     "recommendations": [
         "ms-dotnettools.csharp",
-        "ms-dotnettools.vscodeintellicode-csharp",
         "ms-dotnettools.vscode-dotnet-runtime",
         "ms-ossdata.vscode-pgsql",
         "richardwillis.vscode-entity-framework",

@@ -49,12 +49,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Operations/Item/ItemLayouts/" />
-        <Folder Include="Operations\ProjectManagement\Initiatives\" />
-        <Folder Include="Operations\ProjectManagement\Items\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\Bones.Testing.UnitTests.Shared\Bones.Testing.UnitTests.Shared.csproj" />
     </ItemGroup>
 
