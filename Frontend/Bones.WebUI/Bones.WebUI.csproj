@@ -37,12 +37,12 @@
     </Target>
 
     <ItemGroup Condition="$(Configuration) == 'Debug'">
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.1" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.1" />
         <PackageReference Include="MudBlazor" Version="8.15.0" />
         <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="8.3.0" />
     </ItemGroup>
@@ -58,7 +58,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.0" />
+      <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.1" />
         <Content Remove="wwwroot\appsettings.Development.json" Condition="$(Configuration) == 'Release'" />
     </ItemGroup>
 
