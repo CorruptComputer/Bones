@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
     #pragma warning disable CS1591
     public enum FieldType
     #pragma warning restore CS1591
