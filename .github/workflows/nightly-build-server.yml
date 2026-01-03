@@ -48,8 +48,8 @@ jobs:
 
       - name: Build Packages
         run: |
-          shipyard --config ./Services/Bones.Api/shipyard.json --output ./publish
-          shipyard --config ./Services/Bones.BackgroundService/shipyard.json --output ./publish
+          shipyard --config ./Services/Bones.Api/shipyard.json --output ./publish-api
+          shipyard --config ./Services/Bones.BackgroundService/shipyard.json --output ./publish-backgroundservice
           mkdir ./publish
           mv ./publish-api/*.rpm ./publish/
           mv ./publish-backgroundservice/*.rpm ./publish/
