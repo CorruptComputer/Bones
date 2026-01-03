@@ -46,19 +46,10 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup-env
 
-      - name: Build API Packages
+      - name: Build Packages
         run: |
-          cd Services/Bones.Api
-          dotnet deb --configuration Release --version-suffix nightly --output ../../publish/
-          dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
-          cd ../..
-
-      - name: Build Background Service Packages
-        run: |
-          cd Services/Bones.BackgroundService
-          dotnet deb --configuration Release --version-suffix nightly --output ../../publish/
-          dotnet rpm --configuration Release --version-suffix nightly --output ../../publish/
-          cd ../..
+          shipyard --config ./Bones.Api/shipyard.json --output ./publish
+          shipyard --config ./Bones.BackgroundService/shipyard.json --output ./publish
 
       - name: Delete previous release
         env:
@@ -75,4 +66,4 @@ jobs:
           tag: 'nightly'
           makeLatest: true
           prerelease: true
-          artifacts: './publish/Bones.Api.*.linux-x64.deb,./publish/Bones.Api.*.linux-x64.rpm,./publish/Bones.BackgroundService.*.linux-x64.deb,./publish/Bones.BackgroundService.*.linux-x64.rpm'
+          artifacts: './publish/*.deb,./publish/*.rpm'

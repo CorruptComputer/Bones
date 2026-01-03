@@ -8,20 +8,6 @@
         "swagger"
       ],
       "rollForward": false
-    },
-    "dotnet-rpm": {
-      "version": "0.1.232",
-      "commands": [
-        "dotnet-rpm"
-      ],
-      "rollForward": false
-    },
-    "dotnet-deb": {
-      "version": "0.1.232",
-      "commands": [
-        "dotnet-deb"
-      ],
-      "rollForward": false
     }
   }
 }

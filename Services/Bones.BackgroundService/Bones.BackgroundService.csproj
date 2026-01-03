@@ -43,9 +43,6 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
-        <PackageReference Update="Packaging.Targets">
-            <Version>0.1.232</Version>
-        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

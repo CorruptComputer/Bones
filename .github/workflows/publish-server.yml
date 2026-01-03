@@ -26,28 +26,19 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup-env
 
-      - name: Build API Packages
+      - name: Build Packages
         run: |
-          cd Services/Bones.Api
-          dotnet deb --configuration Release --version-suffix commit --output ../../publish/
-          dotnet rpm --configuration Release --version-suffix commit --output ../../publish/
-          cd ../..
+          shipyard --config ./Bones.Api/shipyard.json --output ./publish
+          shipyard --config ./Bones.BackgroundService/shipyard.json --output ./publish
 
-      - name: Build Background Service Packages
-        run: |
-          cd Services/Bones.BackgroundService
-          dotnet deb --configuration Release --version-suffix commit --output ../../publish/
-          dotnet rpm --configuration Release --version-suffix commit --output ../../publish/
-          cd ../..
-
-      - name: Upload DEB Build Artifacts
-        uses: actions/upload-artifact@v6
-        with:
-          name: 'Server DEB build.zip'
-          path: ./publish/*.linux-x64.deb
+      #- name: Upload DEB Build Artifacts
+      #  uses: actions/upload-artifact@v6
+      #  with:
+      #    name: 'Server DEB build.zip'
+      #    path: ./publish/*.linux-x64.deb
 
       - name: Upload RPM Build Artifacts
         uses: actions/upload-artifact@v6
         with:
           name: 'Server RPM build.zip'
-          path: ./publish/*.linux-x64.rpm
+          path: ./publish/*.rpm

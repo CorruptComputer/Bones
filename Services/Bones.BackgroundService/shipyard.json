@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/CorruptComputer/Shipyard/refs/heads/release/shipyard.schema.json",
+  "executable": "Bones.BackgroundService",
+  "version": "0.0.1",
+  "author": "Nickolas Gupton",
+  "license": "MIT",
+  "repositoryUrl": "https://github.com/CorruptComputer/Bones",
+  "dotnet": {
+    "projectFile": "./Bones.BackgroundService.csproj",
+    "framework": "net10.0",
+    "configuration": "Release",
+    "runtimes": [
+      "linux-x64"
+    ],
+    "publish": []
+  },
+  "formats": [
+    {
+      "format": "rpm",
+      "packageName": "Bones.BackgroundService",
+      "release": 1,
+      "provides": [],
+      "dependsOn": [
+        "dotnet-runtime-10.0"
+      ],
+      "installSystemdService": true,
+      "systemdServiceName": "bones-backgroundservice.service",
+      "postInstallScript": "systemctl daemon-reload && systemctl enable --now bones-backgroundservice.service || true",
+      "preUninstallScript": "systemctl disable --now bones-backgroundservice.service || true"
+    }
+  ]
+}

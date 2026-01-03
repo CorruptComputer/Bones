@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/CorruptComputer/Shipyard/refs/heads/release/shipyard.schema.json",
+  "executable": "Bones.Api",
+  "version": "0.0.1",
+  "author": "Nickolas Gupton",
+  "license": "MIT",
+  "repositoryUrl": "https://github.com/CorruptComputer/Bones",
+  "dotnet": {
+    "projectFile": "./Bones.Api.csproj",
+    "framework": "net10.0",
+    "configuration": "Release",
+    "runtimes": [
+      "linux-x64"
+    ],
+    "publish": []
+  },
+  "formats": [
+    {
+      "format": "rpm",
+      "packageName": "Bones.Api",
+      "release": 1,
+      "provides": [],
+      "dependsOn": [
+        "dotnet-runtime-10.0",
+        "aspnetcore-runtime-10.0"
+      ],
+      "installSystemdService": true,
+      "systemdServiceName": "bones-api.service",
+      "postInstallScript": "systemctl daemon-reload && systemctl enable --now bones-api.service || true",
+      "preUninstallScript": "systemctl disable --now bones-api.service || true"
+    }
+  ]
+}
