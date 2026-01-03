@@ -9,11 +9,14 @@ runs:
       with:
         dotnet-version: '10.0.x'
 
-    - name: Install Shipyard
+    - name: Install Tools
       shell: bash
       run: |
         sudo apt-get install -y rpm
         dotnet tool install --global shipyard
+        cd Frontend/Bones.WebUI
+        dotnet workload restore
+        cd ../..
 
     - name: Print .NET version and SDKs
       shell: bash
