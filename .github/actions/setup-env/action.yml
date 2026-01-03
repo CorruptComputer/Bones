@@ -14,6 +14,9 @@ runs:
       run: |
         sudo apt-get install -y rpm
         dotnet tool install --global shipyard
+        cd Services/Bones.Api
+        dotnet tool restore
+        cd ../..
         cd Frontend/Bones.WebUI
         dotnet workload restore
         cd ../..
