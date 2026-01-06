@@ -1,11 +1,12 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"entityframework.project": "Core/Bones.Database",
-		"entityframework.startupProject": "Services/Bones.BackgroundService"
-	}
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "dotnet.defaultSolution": "./Bones.sln",
+        "entityframework.project": "./Core/Bones.Database",
+        "entityframework.startupProject": "./Services/Bones.BackgroundService"
+    }
 }

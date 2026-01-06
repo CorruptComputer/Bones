@@ -35,7 +35,7 @@ public sealed class CreateProjectWithPreset(ISender sender) : IRequestHandler<Cr
     {
         PresetBase? preset = request.Preset switch
         {
-            ProjectPreset.Development => new DevelopmentPreset(),
+            ProjectPreset.Development => new DevelopmentPreset(request.Name),
             //ProjectPreset.InformationTechnology => new InformationTechnologyPreset(),
             //ProjectPreset.HomeManagement => new HomeManagementPreset(),
             ProjectPreset.Test => new TestPreset(),

@@ -3,11 +3,11 @@ using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects.Presets;
 
-internal class DevelopmentPreset : PresetBase
+internal class DevelopmentPreset(string projectName) : PresetBase
 {
     internal override ProjectPreset Preset => ProjectPreset.Development;
 
-    internal override string ProjectName => "Development";
+    internal override string ProjectName => projectName;
 
     internal override Dictionary<PresetFields, PresetFieldInfo> ItemFields { get; } = new()
     {

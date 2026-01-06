@@ -7,17 +7,20 @@
     /// <summary>
     ///   The text for the button
     /// </summary>
-    [Parameter] public required string ButtonText { get; set; }
-    
+    [Parameter]
+    public required string ButtonText { get; set; }
+
     /// <summary>
     ///   The handler for drawing
     /// </summary>
-    [Parameter] public required DrawHandler DrawHandler { get; set; }
-    
+    [Parameter]
+    public required DrawHandler DrawHandler { get; set; }
+
     /// <summary>
     ///   The toggle for if you're drawing
     /// </summary>
-    [Parameter] public required EventCallback<bool> OnToggleCallback { get; set; }
+    [Parameter]
+    public required EventCallback<bool> OnToggleCallback { get; set; }
 
     /// <inheritdoc />
     protected override void OnInitialized()
