@@ -39,8 +39,8 @@
     <ItemGroup>
         <!-- Aspire -->
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.1.0" />
-        <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="10.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.2.0" />
+        <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="10.2.0" />
         <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.14.0" />
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.14.0" />
@@ -56,7 +56,7 @@
         <PackageReference Include="NetTopologySuite.Features" Version="2.2.0" />
         <PackageReference Include="Questy" Version="0.0.7" />
         <PackageReference Include="Questy.Autofac" Version="0.0.6" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.2" />
     </ItemGroup>
 
     <ItemGroup>
