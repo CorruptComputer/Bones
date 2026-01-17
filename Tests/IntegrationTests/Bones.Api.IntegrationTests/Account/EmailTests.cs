@@ -10,7 +10,7 @@ public class EmailTests : TestBase
     ///   Default admin should be able to change their email
     /// </summary>
     /// <returns></returns>
-    [Fact]
+    [Fact(Skip = "need to make an account specifically for this")]
     public async Task DefaultAdmin_ShouldBeAbleToChangeEmail()
     {
         await SetupApiClientAsync();

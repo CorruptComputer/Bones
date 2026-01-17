@@ -11,7 +11,7 @@ public class PasswordTests : TestBase
     ///   Default admin should be able to change their password
     /// </summary>
     /// <returns></returns>
-    [Fact]
+    [Fact(Skip = "need to make an account specifically for this")]
     public async Task DefaultAdmin_ShouldBeAbleToChangePassword()
     {
         await SetupApiClientAsync();
