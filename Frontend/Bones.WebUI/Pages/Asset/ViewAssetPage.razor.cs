@@ -19,7 +19,7 @@ public partial class ViewAssetPage(BonesApiClient apiClient, NavigationManager n
     /// </summary>
     protected bool ApiError { get; set; } = false;
 
-    private int _currentVersion = 0;
+    private long _currentVersion = 0;
     private Guid _projectId = Guid.Empty;
     private string _assetTitle { get; set; } = string.Empty;
 

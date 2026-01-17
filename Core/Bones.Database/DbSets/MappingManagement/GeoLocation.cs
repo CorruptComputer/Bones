@@ -19,9 +19,9 @@ public sealed class GeoLocation
     public Guid Id { get; set; }
 
     /// <summary>
-    ///   The project this GeoLocation belongs to
+    ///   The ID of the project this GeoLocation belongs to
     /// </summary>
-    public required Project Project { get; set; }
+    public required Guid ProjectId { get; init; }
 
     /// <summary>
     ///   The latitude of this object, centeroid if its a polygon
@@ -40,9 +40,9 @@ public sealed class GeoLocation
 
     #region OsmObject
     /// <summary>
-    ///   The OSM object this GeoLocation is based on
+    ///   The ID of the OSM object this GeoLocation is based on
     /// </summary>
-    public OsmObject? OsmObject { get; set; }
+    public Guid? OsmObjectId { get; set; }
 
     /// <summary>
     ///   The last acknowledged OSM version, once acknowledged the geometry from that version will be copied to here
@@ -99,9 +99,30 @@ public sealed class GeoLocation
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property for the project this GeoLocation belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public Project? Project { get; set; }
+
+    /// <summary>
+    ///   Navigational property for the OSM object this GeoLocation is based on, null if not .Include()'d in the query or not applicable
+    /// </summary>
+    public OsmObject? OsmObject { get; set; }
+    #endregion
+
+
     internal static void BuildTable(EntityTypeBuilder<GeoLocation> builder)
     {
         // Remove deleted items from being included in default queries
         builder.HasQueryFilter(x => !x.DeleteFlag);
+
+        builder.HasOne(gl => gl.Project)
+               .WithMany()
+               .HasForeignKey(gl => gl.ProjectId);
+
+        builder.HasOne(gl => gl.OsmObject)
+               .WithMany()
+               .HasForeignKey(gl => gl.OsmObjectId);
     }
 }

@@ -30,7 +30,7 @@ public sealed class CreateMySession(ISender sender) : IRequestHandler<CreateMySe
     public async Task<QueryResponse<BonesUserSession?>> Handle(Query request, CancellationToken cancellationToken)
     {
         string base64LocalStorageKey = EncryptionHelper.GenerateAESKey();
-        BonesUserSession? session = await sender.Send(new CreateAndGetBonesUserSessionDb.Query(request.RequestingUser, request.RequestingIp, base64LocalStorageKey), cancellationToken);
+        BonesUserSession? session = await sender.Send(new CreateAndGetBonesUserSessionDb.Query(request.RequestingUser.Id, request.RequestingIp, base64LocalStorageKey), cancellationToken);
 
         return session;
     }

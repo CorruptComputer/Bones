@@ -1,7 +1,9 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.TaskQueues;
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.TaskManagement;
+using Bones.Logic.Features.Items;
 using Bones.Logic.Features.Tasks.TaskQueues;
 
 namespace Bones.Api.Controllers;
@@ -14,7 +16,7 @@ public class TaskQueueController(ISender sender) : AuthenticatedControllerBase(s
 {
     #region GET
     /// <summary>
-    ///   Gets the dashboard for a  queue
+    ///   Gets the dashboard for a queue
     /// </summary>
     /// <param name="taskQueueId"></param>
     /// <returns>Ok with the results if successful, otherwise BadRequest with a message of what went wrong.</returns>
@@ -23,11 +25,17 @@ public class TaskQueueController(ISender sender) : AuthenticatedControllerBase(s
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
     public async ValueTask<ActionResult<GetTaskQueueDashboardResponse>> GetTaskQueueDashboardAsync(Guid taskQueueId)
     {
-        TaskQueue? queue = await Sender.Send(new GetTaskQueueById.Query(taskQueueId, await GetCurrentBonesUserAsync()));
+        TaskQueue? queue = await Sender.Send(new GetTaskQueueById.Query(taskQueueId, await GetCurrentBonesUserAsync(), IncludeTasks: true));
 
         if (queue is null)
         {
             return NotFound(new ErrorResponse());
+        }
+
+        // The Item will not have been populated in the above query, need to pull that in
+        foreach (BonesTask task in queue.BonesTasks)
+        {
+            task.Item = await Sender.Send(new GetItemById.Query(task.ItemId, await GetCurrentBonesUserAsync(), IncludeVersions: true));
         }
 
         return GetTaskQueueDashboardResponse.FromInternal(queue);
@@ -43,7 +51,7 @@ public class TaskQueueController(ISender sender) : AuthenticatedControllerBase(s
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
     public async ValueTask<ActionResult<GetTaskQueueByIdResponse>> GetTaskQueueByIdAsync(Guid taskQueueId)
     {
-        TaskQueue? queue = await Sender.Send(new GetTaskQueueById.Query(taskQueueId, await GetCurrentBonesUserAsync()));
+        TaskQueue? queue = await Sender.Send(new GetTaskQueueById.Query(taskQueueId, await GetCurrentBonesUserAsync(), IncludeInitiative: true));
 
         if (queue is null)
         {

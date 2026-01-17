@@ -40,43 +40,67 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
     {
         Asset? asset = await dbContext.Assets
             .Include(item => item.Item)
-            .ThenInclude(i => i.Versions)
-            .ThenInclude(v => v.Assignees)
             .FirstOrDefaultAsync(i => i.Id == request.ItemId, cancellationToken);
 
-        if (asset == null)
+        if (asset is null)
         {
             return CommandResponse.Fail("Invalid Item ID.");
         }
 
         ItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions
-            .Include(lv => lv.FieldLinks)
-            .ThenInclude(fl => fl.FieldVersion)
-            .FirstOrDefaultAsync(lv => lv.Id == request.LayoutVersionId, cancellationToken);
+            .Include(ilv => ilv.ItemLayoutFieldVersionLinks)
+                .ThenInclude(ilfvl => ilfvl.ItemFieldVersion)
+            .FirstOrDefaultAsync(ilv => ilv.Id == request.LayoutVersionId, cancellationToken);
 
-        if (layoutVersion == null)
+        if (layoutVersion is null)
         {
             return CommandResponse.Fail("Invalid LayoutVersionId.");
         }
 
-        if (request.Values.Count > layoutVersion.FieldLinks.Count)
+        if (request.Values.Count > layoutVersion.ItemLayoutFieldVersionLinks.Count)
         {
             return CommandResponse.Fail("Invalid values provided.");
         }
 
-        List<ItemValue> values = [];
+        Item? item = await dbContext.Items
+            .Include(i => i.Versions)
+                .ThenInclude(i => i.ItemAssignees)
+            .FirstOrDefaultAsync(i => i.Id == asset.ItemId, cancellationToken);
+
+        if (item is null)
+        {
+            return CommandResponse.Fail("Invalid Item ID.");
+        }
+
+        List<ItemAssignee> assignees = item.Current?.ItemAssignees ?? [];
+
+        long version = ++item.CurrentVersion;
+
+        EntityEntry<ItemVersion> newItemVersionEntry = dbContext.ItemVersions.Add(new()
+        {
+            ItemId = item.Id,
+            Title = request.Title,
+            Version = version,
+            CreateDateTime = request.ActionDateTime,
+            ItemLayoutVersionId = layoutVersion.Id,
+            ItemAssignees = assignees
+        });
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
         foreach ((Guid fieldId, object? value) in request.Values)
         {
-            ItemFieldVersion? field = layoutVersion.FieldLinks.Find(f => f.FieldVersion.Id == fieldId)?.FieldVersion;
-            if (field == null)
+            ItemFieldVersion? itemFieldVersion = layoutVersion.ItemLayoutFieldVersionLinks.Find(f => f.ItemFieldVersionId == fieldId)?.ItemFieldVersion;
+            if (itemFieldVersion == null)
             {
                 return CommandResponse.Fail($"Invalid field name provided: {fieldId}");
             }
 
             ItemValue assetValue = new()
             {
-                Field = field,
-
+                ItemFieldVersionId = itemFieldVersion.Id,
+                ItemVersionId = newItemVersionEntry.Entity.Id,
+                ItemFieldVersion = itemFieldVersion
             };
 
             if (value is not null)
@@ -84,37 +108,20 @@ public sealed class CreateAssetVersionDb(BonesDbContext dbContext) : IRequestHan
                 bool valid = assetValue.TrySetValue(value);
                 if (!valid)
                 {
-                    return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(field.Type)}' field '{fieldId}': {value}");
+                    return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(itemFieldVersion.Type)}' field '{fieldId}': {value}");
                 }
             }
-            else if (field.IsRequired)
+            else if (itemFieldVersion.IsRequired)
             {
                 return CommandResponse.Fail($"Field '{fieldId}' is required, but no value was provided.");
             }
             // else if its null and not required we can just skip doing anything else
 
-            values.Add(assetValue);
+            dbContext.ItemValues.Add(assetValue);
         }
-
-        List<ItemAssignee> assignees = asset.Item.Current?.Assignees ?? [];
-
-        int version = ++asset.Item.CurrentVersion;
-
-        asset.Item.Versions.Add(new()
-        {
-            Item = asset.Item,
-            Title = request.Title,
-            Version = version,
-            CreateDateTime = request.ActionDateTime,
-            ItemLayoutVersion = layoutVersion,
-            Values = values,
-            Assignees = assignees
-        });
-
-        EntityEntry<Asset> updated = dbContext.Assets.Update(asset);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(nameof(ItemVersion), updated.Entity.Item.Versions.FirstOrDefault(v => v.Version == version)?.Id);
+        return CommandResponse.Pass(nameof(ItemVersion), newItemVersionEntry.Entity.Id);
     }
 }

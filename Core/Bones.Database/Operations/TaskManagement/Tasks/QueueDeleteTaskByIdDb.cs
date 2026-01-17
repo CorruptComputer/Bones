@@ -27,10 +27,10 @@ public sealed class QueueDeleteTaskByIdDb(BonesDbContext dbContext, ISender send
     {
         BonesTask? task = await dbContext.Tasks
             .Include(item => item.Item)
-            .ThenInclude(item => item.Versions)
+                .ThenInclude(item => item!.Versions)
             .FirstOrDefaultAsync(p => p.Id == request.TaskId, cancellationToken);
 
-        if (task == null)
+        if (task is null || task.Item is null)
         {
             return CommandResponse.Fail("Invalid ItemId.");
         }

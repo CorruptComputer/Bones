@@ -11,7 +11,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Request to create a new item field
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class CreateItemFieldRequest : IParsable
     {
         /// <summary>If the Type of this field is either an Integer or Decimal, can it be negative?</summary>

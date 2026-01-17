@@ -48,7 +48,7 @@ public partial class ChangeEmailPage(BonesApiClient apiClient, NavigationManager
 
         try
         {
-            await apiClient.Account.My.Email.PutAsync(new()
+            await apiClient.MyAccount.Email.PutAsync(new()
             {
                 NewEmail = NewEmail
             });

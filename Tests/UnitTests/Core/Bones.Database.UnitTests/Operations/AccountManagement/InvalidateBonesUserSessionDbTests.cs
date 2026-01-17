@@ -37,7 +37,7 @@ public class InvalidateBonesUserSessionDbTests : TestBase
         BonesUser user = await GetBackgroundServiceUserAsync();
 
         // Create a session
-        BonesUserSession? session = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user, _testIp, string.Empty));
+        BonesUserSession? session = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user.Id, _testIp, string.Empty));
         BonesTestException.ThrowIfNull(session);
 
         CommandResponse result = await Sender.Send(new InvalidateBonesUserSessionDb.Command(session.Id));
@@ -57,10 +57,10 @@ public class InvalidateBonesUserSessionDbTests : TestBase
         BonesUser user = await GetBackgroundServiceUserAsync();
 
         // Create a couple sessions
-        BonesUserSession? session = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user, _testIp, string.Empty));
+        BonesUserSession? session = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user.Id, _testIp, string.Empty));
         BonesTestException.ThrowIfNull(session);
 
-        BonesUserSession? session2 = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user, _testIp, string.Empty));
+        BonesUserSession? session2 = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user.Id, _testIp, string.Empty));
         BonesTestException.ThrowIfNull(session2);
 
         // Only invalidate the second session

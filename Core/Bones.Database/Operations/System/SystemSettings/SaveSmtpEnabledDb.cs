@@ -39,7 +39,7 @@ public class SaveSmtpEnabledDb(BonesDbContext dbContext) : IRequestHandler<SaveS
             ActionDateTime = DateTimeOffset.Now,
             ActionTaken = SystemAudit.Actions.SystemSettingUpdate,
             SettingChanged = SystemSetting.SettingType.SmtpEnabled,
-            ActionTakenBy = request.ActionTakenBy,
+            ActionTakenByUserId = request.ActionTakenBy.Id,
             Reason = request.Reason
         };
         dbContext.SystemAudits.Add(enabledAudit);

@@ -19,7 +19,7 @@ namespace Bones.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
@@ -311,7 +311,7 @@ namespace Bones.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AccountId")
+                    b.Property<Guid>("AccountBonesUserId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("ActionDateTime")
@@ -320,7 +320,7 @@ namespace Bones.Database.Migrations
                     b.Property<int>("ActionTaken")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("ActionTakenById")
+                    b.Property<Guid>("ActionTakenByBonesUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Reason")
@@ -330,9 +330,9 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountBonesUserId");
 
-                    b.HasIndex("ActionTakenById");
+                    b.HasIndex("ActionTakenByBonesUserId");
 
                     b.ToTable("AccountAudits", "Audit");
                 });
@@ -343,7 +343,7 @@ namespace Bones.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AccountId")
+                    b.Property<Guid?>("BonesUserId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("LoginDateTime")
@@ -361,7 +361,7 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("BonesUserId");
 
                     b.ToTable("LoginAudits", "Audit");
                 });
@@ -402,7 +402,7 @@ namespace Bones.Database.Migrations
                     b.Property<int>("ActionTaken")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("ActionTakenById")
+                    b.Property<Guid>("ActionTakenByUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Reason")
@@ -415,7 +415,7 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActionTakenById");
+                    b.HasIndex("ActionTakenByUserId");
 
                     b.ToTable("SystemAudits", "Audit");
                 });
@@ -429,8 +429,8 @@ namespace Bones.Database.Migrations
                     b.Property<DateTimeOffset>("CreateDateTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("CurrentVersion")
-                        .HasColumnType("integer");
+                    b.Property<long>("CurrentVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
@@ -471,10 +471,10 @@ namespace Bones.Database.Migrations
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("ItemVersionId")
+                    b.Property<Guid>("ItemAssignmentSlotId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SlotId")
+                    b.Property<Guid>("ItemVersionId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("State")
@@ -487,9 +487,9 @@ namespace Bones.Database.Migrations
 
                     b.HasIndex("AssignedUserId");
 
-                    b.HasIndex("ItemVersionId");
+                    b.HasIndex("ItemAssignmentSlotId");
 
-                    b.HasIndex("SlotId");
+                    b.HasIndex("ItemVersionId");
 
                     b.ToTable("ItemAssignees", "Item");
                 });
@@ -510,7 +510,7 @@ namespace Bones.Database.Migrations
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("ItemLayoutVersionId")
+                    b.Property<Guid>("ItemLayoutVersionId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -664,10 +664,10 @@ namespace Bones.Database.Migrations
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("FieldVersionId")
+                    b.Property<Guid>("ItemFieldVersionId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("LayoutVersionId")
+                    b.Property<Guid>("ItemLayoutVersionId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("OrderNumber")
@@ -675,9 +675,9 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FieldVersionId");
+                    b.HasIndex("ItemFieldVersionId");
 
-                    b.HasIndex("LayoutVersionId");
+                    b.HasIndex("ItemLayoutVersionId");
 
                     b.ToTable("ItemLayoutFieldVersionLinks", "Item");
                 });
@@ -727,10 +727,10 @@ namespace Bones.Database.Migrations
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("FieldId")
+                    b.Property<Guid>("ItemFieldVersionId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ItemVersionId")
+                    b.Property<Guid>("ItemVersionId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("LocationId")
@@ -741,7 +741,7 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FieldId");
+                    b.HasIndex("ItemFieldVersionId");
 
                     b.HasIndex("ItemVersionId");
 
@@ -925,6 +925,12 @@ namespace Bones.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("BonesOrganizationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("BonesUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("DeleteFlag")
                         .HasColumnType("boolean");
 
@@ -943,6 +949,10 @@ namespace Bones.Database.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BonesOrganizationId");
+
+                    b.HasIndex("BonesUserId");
 
                     b.HasIndex("OwningOrganizationId");
 
@@ -1152,7 +1162,8 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemId")
+                        .IsUnique();
 
                     b.HasIndex("TaskQueueId");
 
@@ -1275,41 +1286,41 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.Audit.AccountAudit", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "Account")
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "AccountBonesUser")
                         .WithMany()
-                        .HasForeignKey("AccountId")
+                        .HasForeignKey("AccountBonesUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenBy")
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenByBonesUser")
                         .WithMany()
-                        .HasForeignKey("ActionTakenById")
+                        .HasForeignKey("ActionTakenByBonesUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.Navigation("AccountBonesUser");
 
-                    b.Navigation("ActionTakenBy");
+                    b.Navigation("ActionTakenByBonesUser");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Audit.LoginAudit", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "Account")
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "BonesUser")
                         .WithMany()
-                        .HasForeignKey("AccountId");
+                        .HasForeignKey("BonesUserId");
 
-                    b.Navigation("Account");
+                    b.Navigation("BonesUser");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Audit.SystemAudit", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenBy")
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "ActionTakenByUser")
                         .WithMany()
-                        .HasForeignKey("ActionTakenById")
+                        .HasForeignKey("ActionTakenByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ActionTakenBy");
+                    b.Navigation("ActionTakenByUser");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.Item", b =>
@@ -1341,13 +1352,15 @@ namespace Bones.Database.Migrations
                         .WithMany()
                         .HasForeignKey("AssignedUserId");
 
-                    b.HasOne("Bones.Database.DbSets.Items.ItemVersion", null)
-                        .WithMany("Assignees")
-                        .HasForeignKey("ItemVersionId");
-
-                    b.HasOne("Bones.Database.DbSets.Items.ItemAssignmentSlot", "Slot")
+                    b.HasOne("Bones.Database.DbSets.Items.ItemAssignmentSlot", "ItemAssignmentSlot")
                         .WithMany()
-                        .HasForeignKey("SlotId")
+                        .HasForeignKey("ItemAssignmentSlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bones.Database.DbSets.Items.ItemVersion", "ItemVersion")
+                        .WithMany("ItemAssignees")
+                        .HasForeignKey("ItemVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1355,14 +1368,20 @@ namespace Bones.Database.Migrations
 
                     b.Navigation("AssignedUser");
 
-                    b.Navigation("Slot");
+                    b.Navigation("ItemAssignmentSlot");
+
+                    b.Navigation("ItemVersion");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemAssignmentSlot", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.Items.ItemLayoutVersion", null)
-                        .WithMany("AssigneeSlots")
-                        .HasForeignKey("ItemLayoutVersionId");
+                    b.HasOne("Bones.Database.DbSets.Items.ItemLayoutVersion", "ItemLayoutVersion")
+                        .WithMany("ItemAssignmentSlots")
+                        .HasForeignKey("ItemLayoutVersionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemLayoutVersion");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemField", b =>
@@ -1378,11 +1397,13 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemFieldListEntry", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.Items.ItemFieldVersion", null)
+                    b.HasOne("Bones.Database.DbSets.Items.ItemFieldVersion", "ItemFieldVersion")
                         .WithMany("PossibleValues")
                         .HasForeignKey("ItemFieldVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ItemFieldVersion");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemFieldVersion", b =>
@@ -1409,21 +1430,21 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemLayoutFieldVersionLink", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.Items.ItemFieldVersion", "FieldVersion")
+                    b.HasOne("Bones.Database.DbSets.Items.ItemFieldVersion", "ItemFieldVersion")
                         .WithMany()
-                        .HasForeignKey("FieldVersionId")
+                        .HasForeignKey("ItemFieldVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bones.Database.DbSets.Items.ItemLayoutVersion", "LayoutVersion")
-                        .WithMany("FieldLinks")
-                        .HasForeignKey("LayoutVersionId")
+                    b.HasOne("Bones.Database.DbSets.Items.ItemLayoutVersion", "ItemLayoutVersion")
+                        .WithMany("ItemLayoutFieldVersionLinks")
+                        .HasForeignKey("ItemLayoutVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FieldVersion");
+                    b.Navigation("ItemFieldVersion");
 
-                    b.Navigation("LayoutVersion");
+                    b.Navigation("ItemLayoutVersion");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemLayoutVersion", b =>
@@ -1439,21 +1460,25 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemValue", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.Items.ItemFieldVersion", "Field")
+                    b.HasOne("Bones.Database.DbSets.Items.ItemFieldVersion", "ItemFieldVersion")
                         .WithMany()
-                        .HasForeignKey("FieldId")
+                        .HasForeignKey("ItemFieldVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bones.Database.DbSets.Items.ItemVersion", null)
-                        .WithMany("Values")
-                        .HasForeignKey("ItemVersionId");
+                    b.HasOne("Bones.Database.DbSets.Items.ItemVersion", "ItemVersion")
+                        .WithMany("ItemValues")
+                        .HasForeignKey("ItemVersionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Bones.Database.DbSets.MappingManagement.GeoLocation", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId");
 
-                    b.Navigation("Field");
+                    b.Navigation("ItemFieldVersion");
+
+                    b.Navigation("ItemVersion");
 
                     b.Navigation("Location");
                 });
@@ -1507,12 +1532,20 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.ProjectManagement.Project", b =>
                 {
-                    b.HasOne("Bones.Database.DbSets.OrganizationManagement.BonesOrganization", "OwningOrganization")
+                    b.HasOne("Bones.Database.DbSets.OrganizationManagement.BonesOrganization", null)
                         .WithMany("Projects")
+                        .HasForeignKey("BonesOrganizationId");
+
+                    b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("BonesUserId");
+
+                    b.HasOne("Bones.Database.DbSets.OrganizationManagement.BonesOrganization", "OwningOrganization")
+                        .WithMany()
                         .HasForeignKey("OwningOrganizationId");
 
                     b.HasOne("Bones.Database.DbSets.AccountManagement.BonesUser", "OwningUser")
-                        .WithMany("Projects")
+                        .WithMany()
                         .HasForeignKey("OwningUserId");
 
                     b.Navigation("OwningOrganization");
@@ -1523,8 +1556,8 @@ namespace Bones.Database.Migrations
             modelBuilder.Entity("Bones.Database.DbSets.TaskManagement.BonesTask", b =>
                 {
                     b.HasOne("Bones.Database.DbSets.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
+                        .WithOne()
+                        .HasForeignKey("Bones.Database.DbSets.TaskManagement.BonesTask", "ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1577,16 +1610,16 @@ namespace Bones.Database.Migrations
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemLayoutVersion", b =>
                 {
-                    b.Navigation("AssigneeSlots");
+                    b.Navigation("ItemAssignmentSlots");
 
-                    b.Navigation("FieldLinks");
+                    b.Navigation("ItemLayoutFieldVersionLinks");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.Items.ItemVersion", b =>
                 {
-                    b.Navigation("Assignees");
+                    b.Navigation("ItemAssignees");
 
-                    b.Navigation("Values");
+                    b.Navigation("ItemValues");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.OrganizationManagement.BonesOrganization", b =>

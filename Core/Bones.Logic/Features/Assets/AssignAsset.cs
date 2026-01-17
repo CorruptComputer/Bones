@@ -1,6 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.Items;
+using Bones.Database.Operations.AccountManagement;
 using Bones.Database.Operations.AssetManagement;
 using Bones.Database.Operations.Items;
 using Bones.Shared.Backend.Enums;
@@ -48,15 +49,15 @@ public sealed class AssignAsset(ISender sender) : IRequestHandler<AssignAsset.Co
         }
 
         // Get the asset
-        Asset? asset = await sender.Send(new GetAssetByIdDb.Query(request.AssetId), cancellationToken);
+        Asset? asset = await sender.Send(new GetAssetByIdDb.Query(request.AssetId, IncludeItem: true), cancellationToken);
 
-        if (asset is null)
+        if (asset is null || asset.Item is null || asset.Item.Current is null)
         {
             return CommandResponse.Fail("Asset not found");
         }
 
         // Get the assignee slot
-        ItemAssignmentSlot? assigneeSlot = asset.Item.Current!.ItemLayoutVersion.AssigneeSlots.FirstOrDefault(x => x.Id == request.AssignmentSlotId);
+        ItemAssignmentSlot? assigneeSlot = asset.Item.Current.ItemLayoutVersion?.ItemAssignmentSlots.FirstOrDefault(x => x.Id == request.AssignmentSlotId);
         if (assigneeSlot is null)
         {
             return CommandResponse.Fail("Assignment slot not found");
@@ -65,7 +66,7 @@ public sealed class AssignAsset(ISender sender) : IRequestHandler<AssignAsset.Co
         // Check if the assignment slot is full
         if (assigneeSlot.SelectionType == SelectionType.Single)
         {
-            bool isAlreadyAssigned = asset.Item.Current!.Assignees.Any(x => x.Slot.Id == request.AssignmentSlotId);
+            bool isAlreadyAssigned = asset.Item.Current!.ItemAssignees.Any(x => x.ItemAssignmentSlotId == request.AssignmentSlotId);
             if (isAlreadyAssigned)
             {
                 return CommandResponse.Fail("Assignment slot is already filled");
@@ -78,9 +79,15 @@ public sealed class AssignAsset(ISender sender) : IRequestHandler<AssignAsset.Co
             return CommandResponse.Fail("Assignment slot does not accept user assignees");
         }
 
+        BonesUser? assigneeUser = await sender.Send(new GetUserByIdDb.Query(request.BonesUserId), cancellationToken);
+        if (assigneeUser is null)
+        {
+            return CommandResponse.Fail("User not found");
+        }
+
         // Check if the user being assigned has view permissions
         bool? hasViewPermission =
-            await sender.Send(new UserIdHasAssetPermission.Query(request.AssetId, request.BonesUserId, BonesClaimTypes.Role.Asset.VIEW_ASSET), cancellationToken);
+            await sender.Send(new UserHasAssetPermission.Query(request.AssetId, assigneeUser, BonesClaimTypes.Role.Asset.VIEW_ASSET), cancellationToken);
 
         if (hasViewPermission != true)
         {

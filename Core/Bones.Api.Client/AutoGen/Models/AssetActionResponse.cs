@@ -11,7 +11,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response model for asset actions.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class AssetActionResponse : IParsable
     {
         /// <summary>The unique identifier of the current version of the asset.</summary>

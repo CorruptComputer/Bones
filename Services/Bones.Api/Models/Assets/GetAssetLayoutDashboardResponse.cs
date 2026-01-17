@@ -59,9 +59,9 @@ public sealed record GetAssetLayoutDashboardResponse
             return new()
             {
                 Id = asset.Id,
-                FriendlyId = asset.Item.FriendlyId,
-                Title = asset.Item.Current?.Title ?? string.Empty,
-                LatestVersionCreateDateTime = asset.Item.Current?.CreateDateTime ?? DateTimeOffset.MinValue
+                FriendlyId = asset.Item?.FriendlyId  ?? string.Empty,
+                Title = asset.Item?.Current?.Title ?? string.Empty,
+                LatestVersionCreateDateTime = asset.Item?.Current?.CreateDateTime ?? DateTimeOffset.MinValue
             };
         }
     }

@@ -20,7 +20,7 @@ public class SessionTests : TestBase
         GetOrCreateMySessionResponse? session = null;
         if (ApiClient is not null)
         {
-            Task<GetOrCreateMySessionResponse?> task = ApiClient.Account.My.Session.GetAsync();
+            Task<GetOrCreateMySessionResponse?> task = ApiClient.MyAccount.Session.GetAsync();
             await task.ShouldNotThrowAsync();
             session = await task;
         }
@@ -28,6 +28,33 @@ public class SessionTests : TestBase
         session.ShouldNotBeNull();
         session.SessionId.ShouldNotBe(Guid.Empty);
         session.Base64LocalStorageKey.ShouldNotBeNullOrEmpty();
+    }
+
+        /// <summary>
+    ///   Default admin should be able to get their session
+    /// </summary>
+    /// <returns></returns>
+    [Fact]
+    public async Task DefaultAdmin_ShouldBeAbleToGetTheirSession()
+    {
+        await SetupApiClientAsync();
+        await LoginAsync(TestCredentials.User.DefaultAdmin);
+
+        GetOrCreateMySessionResponse? createdSession = null;
+        if (ApiClient is not null)
+        {
+            createdSession = await ApiClient.MyAccount.Session.GetAsync();
+        }
+
+        GetOrCreateMySessionResponse? gottenSession = null;
+        if (ApiClient is not null)
+        {
+            gottenSession = await ApiClient.MyAccount.Session.GetAsync(req => req.QueryParameters.SessionId = createdSession!.SessionId.ToString());
+        }
+
+        gottenSession.ShouldNotBeNull();
+        gottenSession.SessionId.ShouldBe(createdSession!.SessionId);
+        gottenSession.Base64LocalStorageKey.ShouldBe(createdSession.Base64LocalStorageKey);
     }
 
     /// <summary>
@@ -42,7 +69,7 @@ public class SessionTests : TestBase
 
         if (ApiClient is not null)
         {
-            Task<GetOrCreateMySessionResponse?> task = ApiClient.Account.My.Session.GetAsync();
+            Task<GetOrCreateMySessionResponse?> task = ApiClient.MyAccount.Session.GetAsync();
 
             await task.ShouldThrowAsync<ApiException>();
         }
@@ -60,7 +87,7 @@ public class SessionTests : TestBase
 
         if (ApiClient is not null)
         {
-            Task<GetOrCreateMySessionResponse?> task = ApiClient.Account.My.Session.GetAsync(req => req.QueryParameters.SessionId = Guid.NewGuid().ToString());
+            Task<GetOrCreateMySessionResponse?> task = ApiClient.MyAccount.Session.GetAsync(req => req.QueryParameters.SessionId = Guid.NewGuid().ToString());
 
             await task.ShouldThrowAsync<ApiException>();
         }

@@ -2,7 +2,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.TaskManagement;
 using Bones.Database.Operations.TaskManagement.Tasks;
-using Bones.Logic.Features.Item;
+using Bones.Logic.Features.Items;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Tasks.Tasks;

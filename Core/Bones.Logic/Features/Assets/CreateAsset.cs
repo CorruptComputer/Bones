@@ -49,7 +49,7 @@ public sealed class CreateAsset(ISender sender) : IRequestHandler<CreateAsset.Co
             return CommandResponse.Fail("Layout not found");
         }
 
-        bool? permission = await sender.Send(new UserHasProjectPermission.Query(layout.Project.Id, request.RequestingUser, BonesClaimTypes.Role.Asset.CREATE_ASSET), cancellationToken);
+        bool? permission = await sender.Send(new UserHasProjectPermission.Query(layout.ProjectId, request.RequestingUser, BonesClaimTypes.Role.Asset.CREATE_ASSET), cancellationToken);
         if (permission != true)
         {
             return CommandResponse.Forbid();

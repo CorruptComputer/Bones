@@ -41,19 +41,23 @@ public sealed class CreateTaskDb(BonesDbContext dbContext) : IRequestHandler<Cre
             return CommandResponse.Fail("Invalid ItemLayout ID.");
         }
 
-        EntityEntry<BonesTask> created = await dbContext.Tasks.AddAsync(new()
+        EntityEntry<Item> item = await dbContext.Items.AddAsync(new()
         {
-            TaskQueue = queue,
-            AddedToQueueDateTime = request.ActionDateTime,
-            Item = new()
-            {
-                FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
-                Project = itemLayout.Project,
-                ItemLayout = itemLayout
-            }
+            FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
+            ProjectId = itemLayout.ProjectId,
+            ItemLayoutId = itemLayout.Id
         }, cancellationToken);
 
         dbContext.ItemLayouts.Update(itemLayout);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        EntityEntry<BonesTask> created = await dbContext.Tasks.AddAsync(new()
+        {
+            TaskQueueId = queue.Id,
+            AddedToQueueDateTime = request.ActionDateTime,
+            ItemId = item.Entity.Id
+        }, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

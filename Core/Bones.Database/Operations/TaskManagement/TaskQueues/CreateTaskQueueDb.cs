@@ -37,7 +37,7 @@ public sealed class CreateTaskQueueDb(BonesDbContext dbContext) : IRequestHandle
         EntityEntry<TaskQueue> created = await dbContext.TaskQueues.AddAsync(new()
         {
             Name = request.Name,
-            Initiative = initiative
+            InitiativeId = initiative.Id
         }, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);

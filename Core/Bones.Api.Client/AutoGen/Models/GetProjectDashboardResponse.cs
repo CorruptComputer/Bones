@@ -11,7 +11,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response for the GetProjectDashboardAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class GetProjectDashboardResponse : IParsable
     {
         /// <summary>The types of assets in the project</summary>

@@ -72,8 +72,8 @@ public sealed record GetItemLayoutVersionResponse
             FriendlyIdPrefix = friendlyIdPrefix,
             Version = layoutVersion.Version,
             LatestVersion = latestVersion,
-            FieldVersions = layoutVersion.FieldLinks.Select(fl => new KeyValuePair<int, Guid>(fl.OrderNumber, fl.FieldVersion.Id)),
-            AssigneeSlots = [.. layoutVersion.AssigneeSlots
+            FieldVersions = layoutVersion.ItemLayoutFieldVersionLinks.Select(fl => new KeyValuePair<int, Guid>(fl.OrderNumber, fl.ItemFieldVersionId)),
+            AssigneeSlots = [.. layoutVersion.ItemAssignmentSlots
                 .OrderBy(ad => ad.OrderIndex)
                 .Select(ad => new ItemAssigneeSlotModel
                 {

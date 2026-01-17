@@ -11,7 +11,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// API response for the GetProjectItemFieldsAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class GetProjectItemFieldsResponse : IParsable
     {
         /// <summary>List of item fields associated with the project</summary>

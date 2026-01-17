@@ -93,7 +93,7 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
         List<ItemField> fields = await dbContext.ItemFields.Where(f => fieldVersions.Select(v => v.Id).Contains(f.Id)).ToListAsync(cancellationToken);
 
         // Check that all fields found are in the same project as the layout
-        if (fields.Any(f => f.Project.Id != layout.Project.Id))
+        if (fields.Any(f => f.ProjectId != layout.ProjectId))
         {
             return CommandResponse.Forbid();
         }
@@ -106,35 +106,38 @@ public class CreateItemLayoutVersionDb(BonesDbContext dbContext) : IRequestHandl
 
         ItemLayoutVersion lv = new()
         {
-            ItemLayout = layout,
+            ItemLayoutId = layout.Id,
             Name = request.Name,
             LayoutUse = request.LayoutUse,
             Version = (layout.Current?.Version ?? 0) + 1,
             CreateDateTime = DateTimeOffset.Now,
-            FieldLinks = [],
-            AssigneeSlots = []
+            ItemLayoutFieldVersionLinks = [],
+            ItemAssignmentSlots = []
         };
 
-        lv.FieldLinks.AddRange(request.FieldVersions.Select(fv => new ItemLayoutFieldVersionLink
+        EntityEntry<ItemLayoutVersion> addedLayoutVersion = dbContext.ItemLayoutVersions.Add(lv);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        await dbContext.ItemLayoutFieldVersionLinks.AddRangeAsync(request.FieldVersions.Select(fv => new ItemLayoutFieldVersionLink
         {
             OrderNumber = fv.Key,
-            LayoutVersion = lv,
-            FieldVersion = fieldVersions.Single(f => f.Id == fv.Value)
-        }));
+            ItemLayoutVersionId = addedLayoutVersion.Entity.Id,
+            ItemFieldVersionId = fieldVersions.Single(f => f.Id == fv.Value).Id
+        }), cancellationToken);
 
-        lv.AssigneeSlots.AddRange(request.AssigneeSlots.Select(ad => new ItemAssignmentSlot
+        await dbContext.ItemAssignmentSlots.AddRangeAsync(request.AssigneeSlots.Select(ad => new ItemAssignmentSlot
         {
             OrderIndex = ad.Key,
             Name = ad.Value.name,
             AssignmentType = ad.Value.assType,
             SelectionType = ad.Value.selType,
-            AssignmentStates = ad.Value.states
+            AssignmentStates = ad.Value.states,
+            ItemLayoutVersionId = addedLayoutVersion.Entity.Id
         }));
-
-        EntityEntry<ItemLayoutVersion> added = dbContext.ItemLayoutVersions.Add(lv);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(nameof(ItemLayoutVersion), added.Entity.Id);
+        return CommandResponse.Pass(nameof(ItemLayoutVersion), addedLayoutVersion.Entity.Id);
     }
 }

@@ -1,5 +1,6 @@
 using System.Net;
 using Bones.Database.DbConsts;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.Audit;
 
@@ -35,4 +36,9 @@ public class SessionAttemptAudit
     ///   When the attempt was made
     /// </summary>
     public required DateTimeOffset AttemptDateTime { get; init; }
+
+    internal static void BuildTable(EntityTypeBuilder<SessionAttemptAudit> builder)
+    {
+
+    }
 }

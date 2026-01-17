@@ -11,7 +11,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response model for item fields
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class ProjectItemFieldModel : IParsable
     {
         /// <summary>If the field is numeric, can it be negative?</summary>

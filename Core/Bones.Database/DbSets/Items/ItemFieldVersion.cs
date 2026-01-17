@@ -23,9 +23,9 @@ public class ItemFieldVersion
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The field this version belongs to
+    ///   The ID of the ItemField this version belongs to
     /// </summary>
-    public required ItemField ItemField { get; init; }
+    public required Guid ItemFieldId { get; init; }
 
     /// <summary>
     ///   The version number for this
@@ -54,11 +54,6 @@ public class ItemFieldVersion
     public bool? CanBeNegative { get; set; }
 
     /// <summary>
-    ///   If the Type of this field is a ValueList, the possible values this can have
-    /// </summary>
-    public List<ItemFieldListEntry>? PossibleValues { get; set; }
-
-    /// <summary>
     ///   If the FieldType is GeoLocation, the type of GeoLocation
     /// </summary>
     public GeoLocationType? GeoLocationType { get; set; }
@@ -74,9 +69,29 @@ public class ItemFieldVersion
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property to the ItemField this version belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public ItemField? ItemField { get; set; }
+
+    /// <summary>
+    ///   Navigational property to the possible values for this field version, empty if not .Include()'d in the query or not valid for this item type
+    /// </summary>
+    public List<ItemFieldListEntry> PossibleValues { get; set; } = [];
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<ItemFieldVersion> builder)
     {
         // Remove deleted items from being included in default queries
         builder.HasQueryFilter(x => !x.DeleteFlag);
+
+        builder.HasOne(ifv => ifv.ItemField)
+               .WithMany(itf => itf.Versions)
+               .HasForeignKey(ifv => ifv.ItemFieldId);
+
+        builder.HasMany(ifv => ifv.PossibleValues)
+               .WithOne(pv => pv.ItemFieldVersion)
+               .HasForeignKey(pv => pv.ItemFieldVersionId);
     }
 }

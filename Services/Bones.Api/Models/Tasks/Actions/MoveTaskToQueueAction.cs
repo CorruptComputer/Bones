@@ -39,7 +39,7 @@ public sealed record class MoveTaskToQueueAction : TaskActionBase
         return new TaskActionResponse
         {
             TaskId = task.Id,
-            TaskCurrentVersionId = task.Item.Current?.Id ?? Guid.Empty,
+            TaskCurrentVersionId = task.Item!.Current?.Id ?? Guid.Empty,
         };
     }
 }

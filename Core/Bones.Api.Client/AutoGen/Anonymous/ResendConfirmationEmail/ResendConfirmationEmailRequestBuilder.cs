@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.ResendConfirmationEmail
     /// <summary>
     /// Builds and executes requests for operations under \Anonymous\resend-confirmation-email
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class ResendConfirmationEmailRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -74,7 +74,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.ResendConfirmationEmail
         /// <summary>
         /// Re-queues the confirmation email to send
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
         public partial class ResendConfirmationEmailRequestBuilderPostQueryParameters 
         {
             #pragma warning disable CS1591

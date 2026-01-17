@@ -26,7 +26,7 @@ public sealed class QueueDeleteQueueByIdDb(BonesDbContext dbContext, ISender sen
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         TaskQueue? queue = await dbContext.TaskQueues
-            .Include(queue => queue.Tasks)
+            .Include(queue => queue.BonesTasks)
             .FirstOrDefaultAsync(p => p.Id == request.QueueId, cancellationToken);
 
         if (queue == null)
@@ -34,7 +34,7 @@ public sealed class QueueDeleteQueueByIdDb(BonesDbContext dbContext, ISender sen
             return CommandResponse.Fail("Invalid QueueId.");
         }
 
-        foreach (BonesTask item in queue.Tasks)
+        foreach (BonesTask item in queue.BonesTasks)
         {
             // TODO: Might want to eventually add the ability to move these to a different queue instead
             await sender.Send(new QueueDeleteTaskByIdDb.Command(item.Id), cancellationToken);

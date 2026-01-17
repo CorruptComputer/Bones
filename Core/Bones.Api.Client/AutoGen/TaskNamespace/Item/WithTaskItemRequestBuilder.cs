@@ -2,6 +2,7 @@
 #pragma warning disable CS0618
 #nullable enable
 using Bones.Api.Client.AutoGen.Models;
+using Bones.Api.Client.AutoGen.TaskNamespace.Item.Assignments;
 using ReQuesty.Runtime.Abstractions.Serialization;
 using ReQuesty.Runtime.Abstractions;
 using ReQuesty.Runtime.Extensions;
@@ -15,9 +16,14 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.Item
     /// <summary>
     /// Builds and executes requests for operations under \Task\{taskId}
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class WithTaskItemRequestBuilder : BaseRequestBuilder
     {
+        /// <summary>The assignments property</summary>
+        public global::Bones.Api.Client.AutoGen.TaskNamespace.Item.Assignments.AssignmentsRequestBuilder Assignments
+        {
+            get => new global::Bones.Api.Client.AutoGen.TaskNamespace.Item.Assignments.AssignmentsRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>
         /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.TaskNamespace.Item.WithTaskItemRequestBuilder"/> and sets the default values.
         /// </summary>

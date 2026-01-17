@@ -18,9 +18,9 @@ public class ItemVersion
     public Guid Id { get; set; }
 
     /// <summary>
-    ///   The Item this version belongs to
+    ///   The ID of the Item this version belongs to
     /// </summary>
-    public required Item Item { get; init; }
+    public required Guid ItemId { get; init; }
 
     /// <summary>
     ///   The title of this version of the item
@@ -39,28 +39,56 @@ public class ItemVersion
     public required DateTimeOffset CreateDateTime { get; init; }
 
     /// <summary>
-    ///   The layout version this item version uses
+    ///   The ID of the ItemLayoutVersion this version uses
     /// </summary>
-    public required ItemLayoutVersion ItemLayoutVersion { get; set; }
-
-    /// <summary>
-    ///   The values for the fields defined by this items layout version
-    /// </summary>
-    public required List<ItemValue> Values { get; set; }
-
-    /// <summary>
-    ///   The assignees for this item version
-    /// </summary>
-    public required List<ItemAssignee> Assignees { get; set; }
+    public required Guid ItemLayoutVersionId { get; init; }
 
     /// <summary>
     ///   Disables viewing this item version, and when safe to do so it will be deleted.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property for the Item, null if not .Include()'d in the query
+    /// </summary>
+    public Item? Item { get; init; }
+
+    /// <summary>
+    ///   Navigational property for the ItemLayoutVersion, null if not .Include()'d in the query
+    /// </summary>
+    public ItemLayoutVersion? ItemLayoutVersion { get; set; }
+
+    /// <summary>
+    ///   Navigational property for the Values, empty if not .Include()'d in the query
+    /// </summary>
+    public List<ItemValue> ItemValues { get; set; } = [];
+
+    /// <summary>
+    ///   Navigational property for the Assignees, empty if not .Include()'d in the query
+    /// </summary>
+    public List<ItemAssignee> ItemAssignees { get; set; } = [];
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<ItemVersion> builder)
     {
         // Remove deleted items from being included in default queries
-        builder.HasQueryFilter(x => !x.DeleteFlag);
+        builder.HasQueryFilter(iver => !iver.DeleteFlag);
+
+        builder.HasOne(iver => iver.Item)
+            .WithMany(i => i.Versions)
+            .HasForeignKey(iver => iver.ItemId);
+
+        builder.HasOne(iver => iver.ItemLayoutVersion)
+            .WithMany()
+            .HasForeignKey(iver => iver.ItemLayoutVersionId);
+
+        builder.HasMany(iver => iver.ItemValues)
+               .WithOne(ival => ival.ItemVersion)
+               .HasForeignKey(ival => ival.ItemVersionId);
+
+        builder.HasMany(iver => iver.ItemAssignees)
+               .WithOne(ia => ia.ItemVersion)
+               .HasForeignKey(ia => ia.ItemVersionId);
     }
 }

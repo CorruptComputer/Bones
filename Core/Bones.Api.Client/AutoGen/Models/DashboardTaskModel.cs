@@ -9,18 +9,18 @@ using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
     /// <summary>
-    /// Model for a  in the dashboard
+    /// Model for a Task in the dashboard
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class DashboardTaskModel : IParsable
     {
-        /// <summary>The date and time the  was added to the queue</summary>
+        /// <summary>The date and time the Task was added to the queue</summary>
         public DateTimeOffset AddedToQueueDateTime { get; set; } = default!;
-        /// <summary>The friendly ID of the</summary>
+        /// <summary>The friendly ID of the Task</summary>
         public string FriendlyId { get; set; } = default!;
-        /// <summary>The ID of the</summary>
+        /// <summary>The ID of the Task</summary>
         public Guid Id { get; set; } = default!;
-        /// <summary>The title of the</summary>
+        /// <summary>The title of the Task</summary>
         public string Title { get; set; } = default!;
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value

@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.SysAdmin.Settings.SystemAdminMaskUserConfig
     /// <summary>
     /// Builds and executes requests for operations under \SysAdmin\settings\system-admin-mask-user-config
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class SystemAdminMaskUserConfigRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

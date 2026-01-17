@@ -13,7 +13,9 @@ public class GetTaskQueueById(ISender sender) : IRequestHandler<GetTaskQueueById
     /// </summary>
     /// <param name="TaskQueueId">Internal ID of the task queue</param>
     /// <param name="RequestingUser">The user requesting this</param>
-    public record Query(Guid TaskQueueId, BonesUser RequestingUser) : IRequest<QueryResponse<TaskQueue?>>;
+    /// <param name="IncludeInitiative">Whether to include the related initiative</param>
+    /// <param name="IncludeTasks">Whether to include the related tasks</param>
+    public record Query(Guid TaskQueueId, BonesUser RequestingUser, bool IncludeInitiative = false, bool IncludeTasks = false) : IRequest<QueryResponse<TaskQueue?>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -38,6 +40,6 @@ public class GetTaskQueueById(ISender sender) : IRequestHandler<GetTaskQueueById
             return QueryResponse<TaskQueue?>.Forbid();
         }
 
-        return await sender.Send(new GetTaskQueueByIdDb.Query(request.TaskQueueId), cancellationToken);
+        return await sender.Send(new GetTaskQueueByIdDb.Query(request.TaskQueueId, request.IncludeInitiative, request.IncludeTasks), cancellationToken);
     }
 }

@@ -36,18 +36,21 @@ public sealed class CreateAssetDb(BonesDbContext dbContext) : IRequestHandler<Cr
             return CommandResponse.Fail("Invalid ItemLayout ID.");
         }
 
-        EntityEntry<Asset> created = await dbContext.Assets.AddAsync(new()
+        EntityEntry<Item> createdItem = await dbContext.Items.AddAsync(new()
         {
-            Project = itemLayout.Project,
-            Item = new()
-            {
-                FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
-                Project = itemLayout.Project,
-                ItemLayout = itemLayout
-            }
+            FriendlyId = $"{itemLayout.FriendlyIdPrefix}-{itemLayout.FriendlyIdNonce++}",
+            ProjectId = itemLayout.ProjectId,
+            ItemLayoutId = itemLayout.Id
         }, cancellationToken);
 
-        dbContext.ItemLayouts.Update(itemLayout);
+        // ID of the Item is DB generated, need to save it to the DB before its ID is available
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        EntityEntry<Asset> created = await dbContext.Assets.AddAsync(new()
+        {
+            ProjectId = itemLayout.ProjectId,
+            ItemId = createdItem.Entity.Id
+        }, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

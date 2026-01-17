@@ -1,4 +1,5 @@
 using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.Items;
 
 namespace Bones.Database.Operations.AssetManagement;
 
@@ -24,14 +25,12 @@ public sealed class GetAssetsByLayoutIdDb(BonesDbContext dbContext) : IRequestHa
     /// <inheritdoc />
     public async Task<QueryResponse<List<Asset>>> Handle(Query request, CancellationToken cancellationToken)
     {
-        List<Asset> assets = await dbContext.Assets
-            .Include(a => a.Item).ThenInclude(i => i.Project)
-            .Include(a => a.Item).ThenInclude(i => i.ItemLayout)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Values).ThenInclude(v => v.Field)
-            .AsNoTracking()
-            .Where(i => i.Item.ItemLayout.Id == request.ItemLayoutId)
+        List<Item> items = await dbContext.Items
+            .Where(i => i.ItemLayoutId == request.ItemLayoutId)
             .ToListAsync(cancellationToken);
+
+        IEnumerable<Guid> itemIds = items.Select(i => i.Id);
+        List<Asset> assets = await dbContext.Assets.Where(a => itemIds.Contains(a.ItemId)).ToListAsync(cancellationToken);
 
         return assets;
     }

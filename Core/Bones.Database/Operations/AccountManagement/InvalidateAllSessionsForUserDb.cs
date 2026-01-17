@@ -28,7 +28,7 @@ public class InvalidateAllSessionsForUserDb(BonesDbContext dbContext) : IRequest
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         IQueryable<BonesUserSession> userSessions = dbContext.UserSessions
-            .Where(x => x.User.Id == request.UserId);
+            .Where(x => x.UserId == request.UserId);
 
         if (request.ExcludeSessions != null && request.ExcludeSessions.Count != 0)
         {

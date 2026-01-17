@@ -18,25 +18,25 @@ public class ItemLayoutVersion
     public Guid Id { get; init; }
 
     /// <summary>
-    ///   The name for this Item layout
+    ///   The name for this ItemLayoutVersion
     /// </summary>
     [MaxLength(512)]
     public required string Name { get; set; }
 
     /// <summary>
-    ///   The usage this layout is applicable for
+    ///   The usage this ItemLayoutVersion is applicable for
     /// </summary>
     public required ItemLayoutUse LayoutUse { get; set; }
 
     /// <summary>
-    ///   The date and time this layout version was created
+    ///   The date and time this ItemLayoutVersion was created
     /// </summary>
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The ID of the layout this version belongs to
+    ///   The ID of the layout this ItemLayoutVersion belongs to
     /// </summary>
-    public required ItemLayout ItemLayout { get; init; }
+    public required Guid ItemLayoutId { get; init; }
 
     /// <summary>
     ///   The version number for this
@@ -44,24 +44,43 @@ public class ItemLayoutVersion
     public required long Version { get; init; }
 
     /// <summary>
-    ///   The field links associated with this layout version
-    /// </summary>
-    public List<ItemLayoutFieldVersionLink> FieldLinks { get; init; } = [];
-
-    /// <summary>
-    ///   The assignee slots associated with this layout version
-    /// </summary>
-    public List<ItemAssignmentSlot> AssigneeSlots { get; init; } = [];
-
-    /// <summary>
     ///   Disables creating of new items using this layout version,
     ///   and when all items using it are deleted it will be removed.
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   The ID of the layout this version belongs to
+    /// </summary>
+    public ItemLayout? ItemLayout { get; init; }
+
+    /// <summary>
+    ///   The field links associated with this layout version
+    /// </summary>
+    public List<ItemLayoutFieldVersionLink> ItemLayoutFieldVersionLinks { get; init; } = [];
+
+    /// <summary>
+    ///   The assignee slots associated with this layout version
+    /// </summary>
+    public List<ItemAssignmentSlot> ItemAssignmentSlots { get; init; } = [];
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<ItemLayoutVersion> builder)
     {
         // Remove deleted items from being included in default queries
         builder.HasQueryFilter(x => !x.DeleteFlag);
+
+        builder.HasOne(ilv => ilv.ItemLayout)
+               .WithMany(il => il.Versions)
+               .HasForeignKey(ilv => ilv.ItemLayoutId);
+
+        builder.HasMany(ilv => ilv.ItemLayoutFieldVersionLinks)
+               .WithOne(ilfvl => ilfvl.ItemLayoutVersion)
+               .HasForeignKey(ilfvl => ilfvl.ItemLayoutVersionId);
+
+        builder.HasMany(ilv => ilv.ItemAssignmentSlots)
+               .WithOne(ias => ias.ItemLayoutVersion)
+               .HasForeignKey(ias => ias.ItemLayoutVersionId);
     }
 }

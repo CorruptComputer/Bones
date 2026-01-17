@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.TaskQueue.Item.Dashboard
     /// <summary>
     /// Builds and executes requests for operations under \TaskQueue\{taskQueueId}\dashboard
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class DashboardRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -35,7 +35,7 @@ namespace Bones.Api.Client.AutoGen.TaskQueue.Item.Dashboard
         {
         }
         /// <summary>
-        /// Gets the dashboard for a  queue
+        /// Gets the dashboard for a queue
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.GetTaskQueueDashboardResponse"/></returns>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
@@ -57,7 +57,7 @@ namespace Bones.Api.Client.AutoGen.TaskQueue.Item.Dashboard
             return await RequestAdapter.SendAsync<global::Bones.Api.Client.AutoGen.Models.GetTaskQueueDashboardResponse>(requestInfo, global::Bones.Api.Client.AutoGen.Models.GetTaskQueueDashboardResponse.CreateFromDiscriminatorValue, errorMapping, cancellationToken).ConfigureAwait(false);
         }
         /// <summary>
-        /// Gets the dashboard for a  queue
+        /// Gets the dashboard for a queue
         /// </summary>
         /// <returns>A <see cref="RequestInformation"/></returns>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>

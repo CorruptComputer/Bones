@@ -26,7 +26,7 @@ public sealed class GetInitiativesByProjectDb(BonesDbContext dbContext) : IReque
     {
         return await dbContext.Initiatives
             .Include(i => i.Queues)
-            .Where(i => i.Project.Id == request.ProjectId)
+            .Where(i => i.Project!.Id == request.ProjectId)
             .ToListAsync(cancellationToken);
     }
 }

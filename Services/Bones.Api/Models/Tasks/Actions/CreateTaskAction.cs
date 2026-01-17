@@ -1,7 +1,8 @@
 using Bones.Api.Models.Item;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.Items;
-using Bones.Logic.Features.Item;
+using Bones.Database.DbSets.TaskManagement;
+using Bones.Logic.Features.Items;
 using Bones.Logic.Features.Tasks.Tasks;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
@@ -48,8 +49,14 @@ public sealed record class CreateTaskAction : TaskActionBase
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (ItemFieldVersion fieldVersion in layout.Current.FieldLinks.Select(x => x.FieldVersion))
+        foreach (ItemFieldVersion? fieldVersion in layout.Current.ItemLayoutFieldVersionLinks.Select(x => x.ItemFieldVersion))
         {
+            if (fieldVersion is null)
+            {
+                Log.Error("Null fieldVersion encountered in CreateTaskAction");
+                continue;
+            }
+
             ItemValueModel? fieldValue = FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
 
             object? value = fieldVersion.Type switch
@@ -86,7 +93,7 @@ public sealed record class CreateTaskAction : TaskActionBase
         }
 
         if (result.Ids.Count == 0
-            || !result.Ids.TryGetValue(nameof(Task), out Guid taskId)
+            || !result.Ids.TryGetValue(nameof(BonesTask), out Guid taskId)
             || taskId == Guid.Empty
             || !result.Ids.TryGetValue(nameof(ItemVersion), out Guid taskVersionId)
             || taskVersionId == Guid.Empty)

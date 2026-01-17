@@ -1,7 +1,9 @@
 using Bones.Api.Controllers.Base;
+using Bones.Api.Models.Assignment;
 using Bones.Api.Models.Tasks;
 using Bones.Api.Models.Tasks.Actions;
 using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.TaskManagement;
 using Bones.Logic.Features.Tasks.Tasks;
 
@@ -32,6 +34,29 @@ public class TaskController(ISender sender) : AuthenticatedControllerBase(sender
         }
 
         return GetTaskByIdResponse.FromInternal(item);
+    }
+
+    /// <summary>
+    ///   Gets the assignment information for the latest version of a task
+    /// </summary>
+    /// <param name="taskId">The ID of the task</param>
+    /// <returns>The currently assigned users and the layout needed to display them.</returns>
+    [HttpGet("{taskId:guid}/assignments", Name = "GetLatestTaskAssignmentsAsync")]
+    [ProducesResponseType<GetLatestAssignmentsResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+    public async ValueTask<ActionResult<GetLatestAssignmentsResponse>> GetLatestTaskAssignmentsAsync(Guid taskId)
+    {
+        BonesUser currentUser = await GetCurrentBonesUserAsync();
+        List<ItemAssignmentSlot>? assigneeSlots = await Sender.Send(new GetTaskAssigneeSlotsById.Query(taskId, currentUser));
+        List<ItemAssignee>? assignees = await Sender.Send(new GetTaskCurrentAssigneesById.Query(taskId, currentUser));
+
+        // It'll be an empty list if the item exists but has no assignee slots
+        if (assigneeSlots is null)
+        {
+            return BadRequest(new ErrorResponse("Task not found."));
+        }
+
+        return GetLatestAssignmentsResponse.FromInternal(assigneeSlots, assignees ?? []);
     }
     #endregion
 

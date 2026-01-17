@@ -37,10 +37,12 @@ public class BonesUser : IdentityUser<Guid>
     /// </summary>
     public bool PasswordExpired { get; set; } = false;
 
+    #region Navigational Properties
     /// <summary>
-    ///   The projects that the user owns.
+    ///   Navigational property for the projects that the user owns, empty if not .Include()'d in the query
     /// </summary>
-    public List<Project> Projects { get; set; } = [];
+    public ICollection<Project> Projects { get; set; } = [];
+    #endregion
 
     /// <summary>
     ///   Needed to override the default table name and schema that <see cref="IdentityUser{Guid}" /> uses.
@@ -50,5 +52,9 @@ public class BonesUser : IdentityUser<Guid>
     internal static void BuildTable(EntityTypeBuilder<BonesUser> builder)
     {
         builder.ToTable(TableNames.AccountManagement.BonesUsers, SchemaNames.AccountManagement);
+
+        builder.HasMany(u => u.Projects)
+               .WithOne(p => p.OwningUser)
+               .HasForeignKey(p => p.OwningUserId);
     }
 }

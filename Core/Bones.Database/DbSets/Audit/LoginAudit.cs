@@ -1,6 +1,7 @@
 using System.Net;
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.AccountManagement;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.Audit;
 
@@ -18,9 +19,9 @@ public class LoginAudit
     public Guid Id { get; init; }
 
     /// <summary>
-    ///   The user account that was attempted to be logged into, if known
+    ///   The ID of the user account that was attempted to be logged into, if known
     /// </summary>
-    public BonesUser? Account { get; init; }
+    public Guid? BonesUserId { get; init; }
 
     /// <summary>
     ///   If the account is unknown, the email address that was used in the login attempt
@@ -45,4 +46,18 @@ public class LoginAudit
     // Ideally I'd also like to add a bool for if the password used has been flagged by HaveIBeenPwned
     // https://haveibeenpwned.com/API/v3#PwnedPasswords
     // https://github.com/IEvangelist/pwned-client?tab=readme-ov-file#dependency-injection
+
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property for the account this audit entry belongs to, null if not .Include()'d in the query or unknown
+    /// </summary>
+    public BonesUser? BonesUser { get; set; }
+    #endregion
+
+    internal static void BuildTable(EntityTypeBuilder<LoginAudit> builder)
+    {
+        builder.HasOne(la => la.BonesUser)
+               .WithMany()
+               .HasForeignKey(la => la.BonesUserId);
+    }
 }

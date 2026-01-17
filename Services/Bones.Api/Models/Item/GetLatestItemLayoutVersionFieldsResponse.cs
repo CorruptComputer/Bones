@@ -48,15 +48,15 @@ public sealed record GetLatestItemLayoutVersionFieldsResponse
 
     internal static List<GetLatestItemLayoutVersionFieldsResponse> FromInternal(ItemLayout layout)
     {
-        return layout.Current?.FieldLinks.Select(fl => new GetLatestItemLayoutVersionFieldsResponse
+        return layout.Current?.ItemLayoutFieldVersionLinks.Select(fl => new GetLatestItemLayoutVersionFieldsResponse
         {
-            Id = fl.FieldVersion.Id,
+            Id = fl.ItemFieldVersionId,
             OrderNumber = fl.OrderNumber,
-            Name = fl.FieldVersion.Name,
-            Type = fl.FieldVersion.Type,
-            IsRequired = fl.FieldVersion.IsRequired,
-            PossibleValues = fl.FieldVersion.PossibleValues?.Select(pv => pv.Value),
-            CanBeNegative = fl.FieldVersion.CanBeNegative
+            Name = fl.ItemFieldVersion!.Name,
+            Type = fl.ItemFieldVersion.Type,
+            IsRequired = fl.ItemFieldVersion.IsRequired,
+            PossibleValues = fl.ItemFieldVersion.PossibleValues?.Select(pv => pv.Value),
+            CanBeNegative = fl.ItemFieldVersion.CanBeNegative
         }).ToList() ?? [];
     }
 }

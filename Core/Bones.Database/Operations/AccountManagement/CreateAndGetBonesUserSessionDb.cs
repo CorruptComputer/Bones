@@ -9,10 +9,10 @@ public class CreateAndGetBonesUserSessionDb(BonesDbContext dbContext) : IRequest
     /// <summary>
     ///   DB Query for creating a user session
     /// </summary>
-    /// <param name="RequestingUser"></param>
+    /// <param name="RequestingUserId"></param>
     /// <param name="RequestingIp"></param>
     /// <param name="Base64LocalStorageKey"></param>
-    public sealed record Query(BonesUser RequestingUser, IPAddress RequestingIp, string Base64LocalStorageKey) : IRequest<QueryResponse<BonesUserSession>>;
+    public sealed record Query(Guid RequestingUserId, IPAddress RequestingIp, string Base64LocalStorageKey) : IRequest<QueryResponse<BonesUserSession>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -20,7 +20,7 @@ public class CreateAndGetBonesUserSessionDb(BonesDbContext dbContext) : IRequest
         /// <inheritdoc />
         public Validator()
         {
-            RuleFor(x => x.RequestingUser).NotNull();
+            RuleFor(x => x.RequestingUserId).NotNull().NotEqual(Guid.Empty);
             RuleFor(x => x.RequestingIp).NotNull().NotEqual(IPAddress.None);
             RuleFor(x => x.Base64LocalStorageKey).NotNull();
         }
@@ -31,7 +31,7 @@ public class CreateAndGetBonesUserSessionDb(BonesDbContext dbContext) : IRequest
     {
         BonesUserSession session = new()
         {
-            User = request.RequestingUser,
+            UserId = request.RequestingUserId,
             IpAddress = request.RequestingIp,
             Base64LocalStorageKey = request.Base64LocalStorageKey,
             CreatedDateTime = DateTimeOffset.UtcNow

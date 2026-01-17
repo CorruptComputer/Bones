@@ -24,20 +24,9 @@ public class ItemLayout
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The project this ItemLayout belongs to
+    ///   The ID of the project this ItemLayout belongs to
     /// </summary>
-    public required Project Project { get; set; }
-
-    /// <summary>
-    ///   The latest version of this layout
-    /// </summary>
-    [NotMapped]
-    public ItemLayoutVersion? Current => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
-
-    /// <summary>
-    ///   The versions for this Item layout
-    /// </summary>
-    public List<ItemLayoutVersion> Versions { get; set; } = [];
+    public required Guid ProjectId { get; init; }
 
     /// <summary>
     ///   The prefix at the start of a Friendly ID for items using this layout,
@@ -60,9 +49,38 @@ public class ItemLayout
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational Property for the project this ItemLayout belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public Project? Project { get; set; }
+
+    /// <summary>
+    ///   Navigational Property for the versions of this ItemLayout, empty if not .Include()'d in the query
+    /// </summary>
+    public List<ItemLayoutVersion> Versions { get; set; } = [];
+    #endregion
+
+    #region Non-Mapped Properties
+    /// <summary>
+    ///   The latest version of this layout
+    /// </summary>
+    [NotMapped]
+    public ItemLayoutVersion? Current => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
+
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<ItemLayout> builder)
     {
         // Remove deleted items from being included in default queries
         builder.HasQueryFilter(x => !x.DeleteFlag);
+
+        builder.HasOne(il => il.Project)
+               .WithMany()
+               .HasForeignKey(il => il.ProjectId);
+
+        builder.HasMany(il => il.Versions)
+               .WithOne(ilv => ilv.ItemLayout)
+               .HasForeignKey(ilv => ilv.ItemLayoutId);
     }
 }

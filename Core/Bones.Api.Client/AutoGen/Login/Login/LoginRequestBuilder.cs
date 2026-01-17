@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.Login.Login
     /// <summary>
     /// Builds and executes requests for operations under \Login\login
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class LoginRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

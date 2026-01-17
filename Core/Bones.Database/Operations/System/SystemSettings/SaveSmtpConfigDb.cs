@@ -42,7 +42,7 @@ public class SaveSmtpConfigDb(BonesDbContext dbContext) : IRequestHandler<SaveSm
             ActionDateTime = DateTimeOffset.Now,
             ActionTaken = SystemAudit.Actions.SystemSettingUpdate,
             SettingChanged = SystemSetting.SettingType.SmtpConfig,
-            ActionTakenBy = request.ActionTakenBy,
+            ActionTakenByUserId = request.ActionTakenBy.Id,
             Reason = request.Reason
         };
         dbContext.SystemAudits.Add(configAudit);

@@ -34,7 +34,7 @@ public class AddLoginAuditDb(BonesDbContext dbContext) : IRequestHandler<AddLogi
 
         LoginAudit audit = new()
         {
-            Account = account,
+            BonesUserId = account?.Id,
             UnknownEmail = accountKnown ? null : request.Email,
             LoginDateTime = DateTimeOffset.Now,
             Successful = request.Successful,

@@ -1,5 +1,7 @@
 using Bones.Api.Models.Item;
+using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.TaskManagement;
+using Bones.Shared.Exceptions;
 
 namespace Bones.Api.Models.Tasks;
 
@@ -57,7 +59,7 @@ public sealed record GetTaskByIdResponse
     /// <summary>
     ///   The current version number for this
     /// </summary>
-    public required int CurrentVersion { get; init; }
+    public required long CurrentVersion { get; init; }
 
     /// <summary>
     ///   The friendly ID of the
@@ -74,39 +76,35 @@ public sealed record GetTaskByIdResponse
     /// </summary>
     public required DateTimeOffset LatestVersionCreateDateTime { get; init; }
 
-    /// <summary>
-    ///   The values for this
-    /// </summary>
-    public required IEnumerable<ItemValueDisplayModel> ItemValues { get; init; }
-
     internal static GetTaskByIdResponse FromInternal(BonesTask task)
     {
+        ItemVersion? currentVersion = task.Item!.Current;
+        if (currentVersion is null)
+        {
+            throw new BonesException("Current item version is null");
+        }
+
+        ItemLayoutVersion? itemLayoutVersion = currentVersion.ItemLayoutVersion;
+        if (itemLayoutVersion is null)
+        {
+            throw new BonesException("Current item layout version is null");
+        }
+
         return new()
         {
             TaskId = task.Id,
-            ProjectId = task.Item.Project.Id,
-            Title = task.Item.Versions.First(v => v.Version == task.Item.CurrentVersion).Title,
-            LayoutId = task.Item.ItemLayout.Id,
-            TaskQueueName = task.TaskQueue.Name,
-            TaskQueueId = task.TaskQueue.Id,
+            ProjectId = task.Item.ProjectId,
+            Title = currentVersion.Title,
+            LayoutId = task.Item.ItemLayoutId,
+            TaskQueueName = task.TaskQueue!.Name,
+            TaskQueueId = task.TaskQueueId,
             AddedToQueueDateTime = task.AddedToQueueDateTime,
             ItemId = task.Item.Id,
-            LatestItemVersionId = task.Item.Current?.Id ?? throw new(),
+            LatestItemVersionId = currentVersion.Id,
             CurrentVersion = task.Item.CurrentVersion,
             FriendlyId = task.Item.FriendlyId,
             CreateDateTime = task.Item.CreateDateTime,
-            LatestVersionCreateDateTime = task.Item.Current?.CreateDateTime ?? throw new(),
-            ItemValues = task.Item.Current.ItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
-            {
-                OrderNumber = fl.OrderNumber,
-                FieldVersionId = fl.FieldVersion.Id,
-                Name = fl.FieldVersion.Name,
-                ValueType = fl.FieldVersion.Type,
-                IsRequired = fl.FieldVersion.IsRequired,
-                CanBeNegative = fl.FieldVersion.CanBeNegative,
-                PossibleValues = fl.FieldVersion.PossibleValues?.Select(v => v.Value),
-                Value = task.Item.Current.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
-            })
+            LatestVersionCreateDateTime = currentVersion.CreateDateTime
         };
     }
 }

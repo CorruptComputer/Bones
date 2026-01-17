@@ -41,24 +41,18 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     internal DbSet<SystemAudit> SystemAudits { get; set; }
     #endregion
 
-    #region DocumentationManagement
-    // TODO: Add documentation management
-    #endregion
-
     #region Items
+    internal DbSet<Item> Items { get; set; }
+    internal DbSet<ItemAssignee> ItemAssignees { get; set; }
+    internal DbSet<ItemAssignmentSlot> ItemAssignmentSlots { get; set; }
     internal DbSet<ItemField> ItemFields { get; set; }
     internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
     internal DbSet<ItemFieldVersion> ItemFieldVersions { get; set; }
-
     internal DbSet<ItemLayout> ItemLayouts { get; set; }
+    internal DbSet<ItemLayoutFieldVersionLink> ItemLayoutFieldVersionLinks { get; set; }
     internal DbSet<ItemLayoutVersion> ItemLayoutVersions { get; set; }
-
-    internal DbSet<Item> Items { get; set; }
     internal DbSet<ItemValue> ItemValues { get; set; }
     internal DbSet<ItemVersion> ItemVersions { get; set; }
-
-    internal DbSet<ItemAssignee> ItemAssignees { get; set; }
-    internal DbSet<ItemAssignmentSlot> ItemAssignmentSlots { get; set; }
     #endregion
 
     #region OrganizationManagement
@@ -150,29 +144,59 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
         // Go ahead and let the base class do its thing
         base.OnModelCreating(builder);
 
-        // Then set what we want
-        builder.Entity<BonesUser>(BonesUser.BuildTable);
-        builder.Entity<BonesUserRole>(BonesUserRole.BuildTable);
-        builder.Entity<BonesUserLogin>(BonesUserLogin.BuildTable);
-        builder.Entity<BonesUserClaim>(BonesUserClaim.BuildTable);
-        builder.Entity<BonesUserToken>(BonesUserToken.BuildTable);
-        builder.Entity<BonesUserSession>(BonesUserSession.BuildTable);
+        // Account management, most of these are what we're overriding from the base
         builder.Entity<BonesRole>(BonesRole.BuildTable);
         builder.Entity<BonesRoleClaim>(BonesRoleClaim.BuildTable);
-        builder.Entity<BonesTask>(BonesTask.BuildTable);
-        builder.Entity<ItemLayoutFieldVersionLink>(ItemLayoutFieldVersionLink.BuildTable);
-        builder.Entity<OsmObject>(OsmObject.BuildTable);
+        builder.Entity<BonesUser>(BonesUser.BuildTable);
+        builder.Entity<BonesUserClaim>(BonesUserClaim.BuildTable);
+        builder.Entity<BonesUserLogin>(BonesUserLogin.BuildTable);
+        builder.Entity<BonesUserRole>(BonesUserRole.BuildTable);
+        builder.Entity<BonesUserSession>(BonesUserSession.BuildTable);
+        builder.Entity<BonesUserToken>(BonesUserToken.BuildTable);
+
+        // Asset Management
         builder.Entity<Asset>(Asset.BuildTable);
-        builder.Entity<Initiative>(Initiative.BuildTable);
-        builder.Entity<ItemVersion>(ItemVersion.BuildTable);
+
+        // Audit
+        builder.Entity<AccountAudit>(AccountAudit.BuildTable);
+        builder.Entity<LoginAudit>(LoginAudit.BuildTable);
+        builder.Entity<SessionAttemptAudit>(SessionAttemptAudit.BuildTable);
+        builder.Entity<SystemAudit>(SystemAudit.BuildTable);
+
+        // Items
+        builder.Entity<Item>(Item.BuildTable);
+        builder.Entity<ItemAssignee>(ItemAssignee.BuildTable);
+        builder.Entity<ItemAssignmentSlot>(ItemAssignmentSlot.BuildTable);
         builder.Entity<ItemField>(ItemField.BuildTable);
         builder.Entity<ItemFieldListEntry>(ItemFieldListEntry.BuildTable);
-        builder.Entity<Item>(Item.BuildTable);
-        builder.Entity<ItemValue>(ItemValue.BuildTable);
-        builder.Entity<GeoLocation>(GeoLocation.BuildTable);
-        builder.Entity<ItemLayoutVersion>(ItemLayoutVersion.BuildTable);
         builder.Entity<ItemFieldVersion>(ItemFieldVersion.BuildTable);
         builder.Entity<ItemLayout>(ItemLayout.BuildTable);
+        builder.Entity<ItemLayoutFieldVersionLink>(ItemLayoutFieldVersionLink.BuildTable);
+        builder.Entity<ItemLayoutVersion>(ItemLayoutVersion.BuildTable);
+        builder.Entity<ItemValue>(ItemValue.BuildTable);
+        builder.Entity<ItemVersion>(ItemVersion.BuildTable);
+
+        // Mapping Management
+        builder.Entity<GeoLocation>(GeoLocation.BuildTable);
+        builder.Entity<OsmObject>(OsmObject.BuildTable);
+
+        // Organization Management
+        builder.Entity<BonesOrganization>(BonesOrganization.BuildTable);
+
+        // Project Management
+        builder.Entity<Initiative>(Initiative.BuildTable);
         builder.Entity<Project>(Project.BuildTable);
+
+        // System
+        //builder.Entity<ConfirmationEmailDeadQueue>(ConfirmationEmailDeadQueue.BuildTable);
+        //builder.Entity<ConfirmationEmailQueue>(ConfirmationEmailQueue.BuildTable);
+        //builder.Entity<ForgotPasswordEmailDeadQueue>(ForgotPasswordEmailDeadQueue.BuildTable);
+        //builder.Entity<ForgotPasswordEmailQueue>(ForgotPasswordEmailQueue.BuildTable);
+        //builder.Entity<SystemSetting>(SystemSetting.BuildTable);
+        //builder.Entity<TaskError>(TaskError.BuildTable);
+
+        // Task Management
+        builder.Entity<BonesTask>(BonesTask.BuildTable);
+        builder.Entity<TaskQueue>(TaskQueue.BuildTable);
     }
 }

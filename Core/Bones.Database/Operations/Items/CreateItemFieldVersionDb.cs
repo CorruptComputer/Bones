@@ -51,7 +51,7 @@ public sealed class CreateItemFieldVersionDb(BonesDbContext dbContext) : IReques
 
         EntityEntry<ItemFieldVersion> added = dbContext.ItemFieldVersions.Add(new()
         {
-            ItemField = field,
+            ItemFieldId = field.Id,
             // Version numbers are increment only, going back to a previous version just creates a new version with the old values
             Version = (field.Current?.Version ?? 0) + 1,
             Name = request.Name,

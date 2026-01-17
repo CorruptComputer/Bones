@@ -22,7 +22,7 @@ public partial class ViewTaskPage(BonesApiClient apiClient, NavigationManager na
     /// </summary>
     protected bool ApiError { get; set; } = false;
 
-    private int _currentVersion = 0;
+    private long _currentVersion = 0;
     private Guid _projectId = Guid.Empty;
     private Guid _queueId = Guid.Empty;
     private string _queueName = string.Empty;

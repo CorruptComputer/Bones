@@ -38,12 +38,12 @@ public sealed class CreateProjectDb(BonesDbContext dbContext) : IRequestHandler<
         if (request.Organization == null)
         {
             project.OwnerType = OwnershipType.User;
-            project.OwningUser = request.RequestingUser;
+            project.OwningUserId = request.RequestingUser.Id;
         }
         else
         {
             project.OwnerType = OwnershipType.Organization;
-            project.OwningOrganization = request.Organization;
+            project.OwningOrganizationId = request.Organization.Id;
         }
 
 

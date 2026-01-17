@@ -28,8 +28,8 @@ public sealed record GetTaskQueueByIdResponse
         return new()
         {
             QueueName = queue.Name,
-            ProjectId = queue.Initiative.Project.Id,
-            InitiativeId = queue.Initiative.Id,
+            ProjectId = queue.Initiative!.ProjectId,
+            InitiativeId = queue.InitiativeId,
         };
     }
 }

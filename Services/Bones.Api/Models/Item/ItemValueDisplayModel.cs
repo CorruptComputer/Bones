@@ -1,3 +1,4 @@
+using Bones.Database.DbSets.Items;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Item;
@@ -46,4 +47,19 @@ public sealed record ItemValueDisplayModel
     ///   The value of the field
     /// </summary>
     public string? Value { get; init; }
+
+    internal static ItemValueDisplayModel FromInternal(int orderNumber, ItemFieldVersion itemFieldVersion, ItemValue value)
+    {
+        return new()
+        {
+            OrderNumber = orderNumber,
+            FieldVersionId = itemFieldVersion.Id,
+            Name = itemFieldVersion.Name,
+            ValueType = itemFieldVersion.Type,
+            IsRequired = itemFieldVersion.IsRequired,
+            CanBeNegative = itemFieldVersion.CanBeNegative,
+            PossibleValues = itemFieldVersion.PossibleValues?.Select(v => v.Value),
+            Value = value.Value
+        };
+    }
 }

@@ -27,7 +27,7 @@ public sealed class GetItemFieldsByProjectDb(BonesDbContext dbContext) : IReques
         return await dbContext.ItemFields
             .Include(x => x.Versions)
             .ThenInclude(x => x.PossibleValues)
-            .Where(x => x.Project.Id == request.ProjectId)
+            .Where(x => x.ProjectId == request.ProjectId)
             .ToListAsync(cancellationToken);
     }
 }

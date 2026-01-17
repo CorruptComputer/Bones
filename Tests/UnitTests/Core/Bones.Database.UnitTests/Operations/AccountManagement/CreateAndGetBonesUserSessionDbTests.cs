@@ -21,10 +21,10 @@ public class CreateAndGetBonesUserSessionDbTests : TestBase
     [Fact]
     public async Task Validator_ShouldStopInvalidInputs()
     {
-        CreateAndGetBonesUserSessionDb.Query query = new(null!, IPAddress.None, string.Empty);
+        CreateAndGetBonesUserSessionDb.Query query = new(Guid.Empty, IPAddress.None, string.Empty);
 
         TestValidationResult<CreateAndGetBonesUserSessionDb.Query> validationResult = await validator.TestValidateAsync(query);
-        validationResult.ShouldHaveValidationErrorFor(x => x.RequestingUser);
+        validationResult.ShouldHaveValidationErrorFor(x => x.RequestingUserId);
         validationResult.ShouldHaveValidationErrorFor(x => x.RequestingIp);
     }
 
@@ -37,7 +37,7 @@ public class CreateAndGetBonesUserSessionDbTests : TestBase
         BonesUser user = await GetBackgroundServiceUserAsync();
 
         // Get the session
-        QueryResponse<BonesUserSession> result = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user, _testIp, string.Empty));
+        QueryResponse<BonesUserSession> result = await Sender.Send(new CreateAndGetBonesUserSessionDb.Query(user.Id, _testIp, string.Empty));
         result.Success.ShouldBeTrue();
         result.Result.ShouldNotBeNull();
         result.Result.IpAddress.ShouldBe(_testIp);

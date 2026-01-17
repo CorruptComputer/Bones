@@ -1,6 +1,7 @@
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.Operations.AccountManagement;
 using Bones.Database.Operations.Items;
 using Bones.Database.Operations.TaskManagement.Tasks;
 using Bones.Shared.Backend.Enums;
@@ -55,7 +56,7 @@ public sealed class AssignTask(ISender sender) : IRequestHandler<AssignTask.Comm
         }
 
         // Get the assignee slot
-        ItemAssignmentSlot? assigneeSlot = task.Item.Current!.ItemLayoutVersion.AssigneeSlots.FirstOrDefault(x => x.Id == request.AssignmentSlotId);
+        ItemAssignmentSlot? assigneeSlot = task.Item!.Current!.ItemLayoutVersion?.ItemAssignmentSlots.FirstOrDefault(x => x.Id == request.AssignmentSlotId);
         if (assigneeSlot is null)
         {
             return CommandResponse.Fail("Assignment slot not found");
@@ -64,7 +65,7 @@ public sealed class AssignTask(ISender sender) : IRequestHandler<AssignTask.Comm
         // Check if the assignment slot is full
         if (assigneeSlot.SelectionType == SelectionType.Single)
         {
-            bool isAlreadyAssigned = task.Item.Current!.Assignees.Any(x => x.Slot.Id == request.AssignmentSlotId);
+            bool isAlreadyAssigned = task.Item.Current!.ItemAssignees.Any(x => x.ItemAssignmentSlotId == request.AssignmentSlotId);
             if (isAlreadyAssigned)
             {
                 return CommandResponse.Fail("Assignment slot is already filled");
@@ -77,9 +78,15 @@ public sealed class AssignTask(ISender sender) : IRequestHandler<AssignTask.Comm
             return CommandResponse.Fail("Assignment slot does not accept user assignees");
         }
 
+        BonesUser? assigneeUser = await sender.Send(new GetUserByIdDb.Query(request.BonesUserId), cancellationToken);
+        if (assigneeUser is null)
+        {
+            return CommandResponse.Fail("User not found");
+        }
+
         // Check if the user being assigned has view permissions
         bool? hasViewPermission =
-            await sender.Send(new UserIdHasTaskPermission.Query(request.TaskId, request.BonesUserId, BonesClaimTypes.Role.Task.VIEW_TASK), cancellationToken);
+            await sender.Send(new UserHasTaskPermission.Query(request.TaskId, assigneeUser, BonesClaimTypes.Role.Task.VIEW_TASK), cancellationToken);
 
         if (hasViewPermission != true)
         {

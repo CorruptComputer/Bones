@@ -40,13 +40,13 @@ public sealed class MoveTaskToQueue(ISender sender) : IRequestHandler<MoveTaskTo
             return CommandResponse.Forbid();
         }
 
-        bool? currentQueuePermission = await sender.Send(new UserHasTaskQueuePermission.Query(task.TaskQueue.Id, request.RequestingUser, BonesClaimTypes.Role.Task.EDIT_TASK), cancellationToken);
+        bool? currentQueuePermission = await sender.Send(new UserHasTaskQueuePermission.Query(task.TaskQueueId, request.RequestingUser, BonesClaimTypes.Role.Task.EDIT_TASK), cancellationToken);
         if (currentQueuePermission != true)
         {
             return CommandResponse.Forbid();
         }
 
-        TaskQueue? currentQueue = await sender.Send(new GetTaskQueueByIdDb.Query(task.TaskQueue.Id), cancellationToken);
+        TaskQueue? currentQueue = await sender.Send(new GetTaskQueueByIdDb.Query(task.TaskQueueId), cancellationToken);
         if (currentQueue is null)
         {
             return CommandResponse.Fail("Queue not found");
@@ -69,7 +69,7 @@ public sealed class MoveTaskToQueue(ISender sender) : IRequestHandler<MoveTaskTo
             return CommandResponse.Fail("Task is already in the specified queue");
         }
 
-        if (currentQueue.Initiative.Project.Id != newQueue.Initiative.Project.Id)
+        if (currentQueue.Initiative!.ProjectId != newQueue.Initiative!.ProjectId)
         {
             return CommandResponse.Fail("Cannot move task to a queue in a different project");
         }

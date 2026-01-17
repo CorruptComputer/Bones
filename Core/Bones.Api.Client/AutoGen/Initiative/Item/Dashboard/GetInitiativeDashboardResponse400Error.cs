@@ -9,7 +9,7 @@ using System.IO;
 using System;
 namespace Bones.Api.Client.AutoGen.Initiative.Item.Dashboard
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     #pragma warning disable CS1591
     public partial class GetInitiativeDashboardResponse400Error : ApiException, IAdditionalDataHolder, IParsable
     #pragma warning restore CS1591

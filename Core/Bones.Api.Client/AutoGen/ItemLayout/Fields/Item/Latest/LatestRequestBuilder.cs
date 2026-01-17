@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.ItemLayout.Fields.Item.Latest
     /// <summary>
     /// Builds and executes requests for operations under \ItemLayout\fields\{fieldId}\latest
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class LatestRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

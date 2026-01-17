@@ -1,5 +1,6 @@
 using Bones.Api.Models.Item;
 using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.Items;
 
 namespace Bones.Api.Models.Assets;
 
@@ -25,6 +26,11 @@ public sealed record GetAssetByIdResponse
     public required Guid LayoutId { get; init; }
 
     /// <summary>
+    ///   The ID of the layout version the latest version of this asset uses
+    /// </summary>
+    public required Guid LayoutVersionId { get; init; }
+
+    /// <summary>
     ///   The ID of the project this asset belongs to
     /// </summary>
     public required Guid ProjectId { get; init; }
@@ -42,7 +48,7 @@ public sealed record GetAssetByIdResponse
     /// <summary>
     ///   The current version number for this asset
     /// </summary>
-    public required int CurrentVersion { get; init; }
+    public required long CurrentVersion { get; init; }
 
     /// <summary>
     ///   The friendly ID of the asset
@@ -59,36 +65,27 @@ public sealed record GetAssetByIdResponse
     /// </summary>
     public required DateTimeOffset LatestVersionCreateDateTime { get; init; }
 
-    /// <summary>
-    ///   The values for this asset
-    /// </summary>
-    public required IEnumerable<ItemValueDisplayModel> ItemValues { get; init; }
-
     internal static GetAssetByIdResponse FromInternal(Asset asset)
     {
+        ItemVersion? currentItem = asset.Item!.Current;
+        if (currentItem is null)
+        {
+            throw new ArgumentNullException(nameof(currentItem), "Current item version is null");
+        }
+
         return new()
         {
             AssetId = asset.Id,
-            ProjectId = asset.Project.Id,
-            Title = asset.Item.Versions.First(v => v.Version == asset.Item.CurrentVersion).Title,
-            LayoutId = asset.Item.ItemLayout.Id,
-            ItemId = asset.Item.Id,
-            LatestItemVersionId = asset.Item.Current?.Id ?? throw new(),
+            ProjectId = asset.ProjectId,
+            Title = currentItem.Title,
+            LayoutId = asset.Item.ItemLayoutId,
+            LayoutVersionId = currentItem.ItemLayoutVersionId,
+            ItemId = asset.ItemId,
+            LatestItemVersionId = currentItem.Id,
             CurrentVersion = asset.Item.CurrentVersion,
             FriendlyId = asset.Item.FriendlyId,
             CreateDateTime = asset.Item.CreateDateTime,
-            LatestVersionCreateDateTime = asset.Item.Current?.CreateDateTime ?? throw new(),
-            ItemValues = asset.Item.Current.ItemLayoutVersion.FieldLinks.Select(fl => new ItemValueDisplayModel
-            {
-                OrderNumber = fl.OrderNumber,
-                FieldVersionId = fl.FieldVersion.Id,
-                Name = fl.FieldVersion.Name,
-                ValueType = fl.FieldVersion.Type,
-                IsRequired = fl.FieldVersion.IsRequired,
-                CanBeNegative = fl.FieldVersion.CanBeNegative,
-                PossibleValues = fl.FieldVersion.PossibleValues?.Select(v => v.Value),
-                Value = asset.Item.Current.Values.FirstOrDefault(v => v.Field.Id == fl.FieldVersion.Id)?.Value
-            })
+            LatestVersionCreateDateTime = currentItem.CreateDateTime,
         };
     }
 }

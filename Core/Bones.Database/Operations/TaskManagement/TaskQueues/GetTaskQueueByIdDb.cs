@@ -9,7 +9,9 @@ public class GetTaskQueueByIdDb(BonesDbContext dbContext) : IRequestHandler<GetT
     ///   DB query for getting a task queue by its ID.
     /// </summary>
     /// <param name="TaskQueueId">Internal ID of the task queue</param>
-    public record Query(Guid TaskQueueId) : IRequest<QueryResponse<TaskQueue?>>;
+    /// <param name="IncludeInitiative">Whether to include the related initiative</param>
+    /// <param name="IncludeTasks">Whether to include the related tasks</param>
+    public record Query(Guid TaskQueueId, bool IncludeInitiative = false, bool IncludeTasks = false) : IRequest<QueryResponse<TaskQueue?>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -24,12 +26,18 @@ public class GetTaskQueueByIdDb(BonesDbContext dbContext) : IRequestHandler<GetT
     /// <inheritdoc />
     public async Task<QueryResponse<TaskQueue?>> Handle(Query request, CancellationToken cancellationToken)
     {
-        return await dbContext.TaskQueues
-            .Include(q => q.Initiative)
-                .ThenInclude(i => i.Project)
-            .Include(q => q.Tasks)
-                .ThenInclude(wi => wi.Item)
-                .ThenInclude(i => i.Versions)
-            .FirstOrDefaultAsync(x => x.Id == request.TaskQueueId, cancellationToken);
+        IQueryable<TaskQueue> query = dbContext.TaskQueues.AsNoTracking();
+
+        if (request.IncludeInitiative)
+        {
+            query = query.Include(q => q.Initiative);
+        }
+
+        if (request.IncludeTasks)
+        {
+            query = query.Include(q => q.BonesTasks);
+        }
+
+        return await query.FirstOrDefaultAsync(x => x.Id == request.TaskQueueId, cancellationToken);
     }
 }

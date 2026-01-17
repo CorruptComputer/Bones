@@ -39,7 +39,7 @@ public class SaveBackgroundServiceUserIdDb(BonesDbContext dbContext) : IRequestH
             ActionDateTime = DateTimeOffset.Now,
             ActionTaken = SystemAudit.Actions.SystemSettingUpdate,
             SettingChanged = SystemSetting.SettingType.BackgroundServiceUserId,
-            ActionTakenBy = request.ActionTakenBy,
+            ActionTakenByUserId = request.ActionTakenBy.Id,
             Reason = request.Reason
         };
         dbContext.SystemAudits.Add(audit);

@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.ItemLayout.Layouts.Item.Item
     /// <summary>
     /// Builds and executes requests for operations under \ItemLayout\layouts\{layoutId}\{requestedVersion}
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class WithRequestedVersionItemRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

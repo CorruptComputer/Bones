@@ -27,9 +27,14 @@ public class ItemValue
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The field this value belongs to
+    ///   The ID of the ItemVersion this value belongs to
     /// </summary>
-    public required ItemFieldVersion Field { get; set; }
+    public required Guid ItemVersionId { get; init; }
+
+    /// <summary>
+    ///   The ID of the ItemFieldVersion this value belongs to
+    /// </summary>
+    public required Guid ItemFieldVersionId { get; init; }
 
     /// <summary>
     ///   If the field this value belongs to is a Location, the location info will be saved here
@@ -46,10 +51,30 @@ public class ItemValue
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property to the ItemVersion this value belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public ItemVersion? ItemVersion { get; set; }
+
+    /// <summary>
+    ///   Navigational property to the ItemFieldVersion this value belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public ItemFieldVersion? ItemFieldVersion { get; set; }
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<ItemValue> builder)
     {
         // Remove deleted items from being included in default queries
-        builder.HasQueryFilter(x => !x.DeleteFlag);
+        builder.HasQueryFilter(ival => !ival.DeleteFlag);
+
+        builder.HasOne(ival => ival.ItemVersion)
+            .WithMany(iver => iver.ItemValues)
+            .HasForeignKey(ival => ival.ItemVersionId);
+
+        builder.HasOne(ival => ival.ItemFieldVersion)
+            .WithMany()
+            .HasForeignKey(ival => ival.ItemFieldVersionId);
     }
 
     /// <summary>
@@ -62,7 +87,7 @@ public class ItemValue
     public bool TrySetValue<T>(T valueToSet)
         where T : notnull
     {
-        bool success = Field.Type switch
+        bool success = ItemFieldVersion?.Type switch
         {
             FieldType.TextField or FieldType.TextBox => ValidateAndSetTextValue(valueToSet),
             FieldType.Integer => ValidateAndSetIntegerValue(valueToSet),
@@ -85,16 +110,16 @@ public class ItemValue
     /// <exception cref="BonesException">Throw up, we can't digest this the type isn't valid</exception>
     public T? GetValue<T>()
     {
-        if (Field.Type != FieldType.GeoLocation && Value == null)
+        if (ItemFieldVersion?.Type != FieldType.GeoLocation && Value == null)
         {
             return default;
         }
-        else if (Field.Type == FieldType.GeoLocation && Location == null)
+        else if (ItemFieldVersion?.Type == FieldType.GeoLocation && Location == null)
         {
             return default;
         }
 
-        return Field.Type switch
+        return ItemFieldVersion?.Type switch
         {
             FieldType.TextField or FieldType.TextBox => GetStringValue<T>(),
             FieldType.ValueList => GetStringValue<T>(),
@@ -103,7 +128,7 @@ public class ItemValue
             FieldType.Boolean => GetBooleanValue<T>(),
             FieldType.DateTime => GetDateTimeValue<T>(),
             FieldType.GeoLocation => GetGeoLocationValue<T>(),
-            _ => throw new BonesException($"Invalid {Field.Type} specified.")
+            _ => throw new BonesException($"Invalid ItemFieldVersion.Type '{ItemFieldVersion?.Type}' specified.")
         };
     }
 
@@ -123,8 +148,8 @@ public class ItemValue
     private bool ValidateAndSetIntegerValue<T>(T valueToSet)
         where T : notnull
     {
-        if ((Field.CanBeNegative == true && valueToSet.IsSignedIntegerType())
-            || (Field.CanBeNegative == false && valueToSet.IsUnsignedIntegerType()))
+        if ((ItemFieldVersion?.CanBeNegative == true && valueToSet.IsSignedIntegerType())
+            || (ItemFieldVersion?.CanBeNegative == false && valueToSet.IsUnsignedIntegerType()))
         {
             Value = valueToSet.ToString();
             return true;
@@ -136,9 +161,9 @@ public class ItemValue
     private bool ValidateAndSetDecimalValue<T>(T valueToSet)
         where T : notnull
     {
-        if (Field.CanBeNegative != null && valueToSet.IsDecimalType())
+        if (ItemFieldVersion?.CanBeNegative is not null && valueToSet.IsDecimalType())
         {
-            if (Field.CanBeNegative == false && Convert.ToDouble(valueToSet) < 0)
+            if (ItemFieldVersion.CanBeNegative == false && Convert.ToDouble(valueToSet) < 0)
             {
                 return false;
             }
@@ -178,8 +203,8 @@ public class ItemValue
         where T : notnull
     {
         if (valueToSet is string str
-            && Field.PossibleValues != null
-            && Field.PossibleValues.Any(pv => pv.Matches(str)))
+            && ItemFieldVersion?.PossibleValues is not null
+            && ItemFieldVersion.PossibleValues.Any(pv => pv.Matches(str)))
         {
             Value = str;
             return true;
@@ -214,7 +239,7 @@ public class ItemValue
         // This should only convert to a string
         if (typeof(T) != typeof(string))
         {
-            throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a string instead.");
+            throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a string instead.");
         }
 
         return (T?)Convert.ChangeType(Value, typeof(T));
@@ -222,16 +247,16 @@ public class ItemValue
 
     private T? GetIntegerValue<T>()
     {
-        if (Field.CanBeNegative == true && typeof(T) == typeof(long))
+        if (ItemFieldVersion?.CanBeNegative == true && typeof(T) == typeof(long))
         {
             return (T?)Convert.ChangeType(Value, typeof(long));
         }
-        else if (Field.CanBeNegative == false && typeof(T) == typeof(ulong))
+        else if (ItemFieldVersion?.CanBeNegative == false && typeof(T) == typeof(ulong))
         {
             return (T?)Convert.ChangeType(Value, typeof(ulong));
         }
 
-        throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a long or ulong instead.");
+        throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a long or ulong instead.");
     }
 
     private T? GetDecimalValue<T>()
@@ -241,7 +266,7 @@ public class ItemValue
             return (T?)Convert.ChangeType(Value, typeof(double));
         }
 
-        throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a double instead.");
+        throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a double instead.");
     }
 
     private T? GetBooleanValue<T>()
@@ -251,7 +276,7 @@ public class ItemValue
             return (T?)Convert.ChangeType(Value, typeof(bool));
         }
 
-        throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a bool instead.");
+        throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a bool instead.");
     }
 
     private T? GetDateTimeValue<T>()
@@ -261,7 +286,7 @@ public class ItemValue
             return (T?)Convert.ChangeType(Value, typeof(DateTimeOffset), CultureInfo.InvariantCulture);
         }
 
-        throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a DateTimeOffset instead.");
+        throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a DateTimeOffset instead.");
     }
 
     private T? GetGeoLocationValue<T>()
@@ -271,7 +296,7 @@ public class ItemValue
             return (T?)Convert.ChangeType(Location, typeof(GeoLocation));
         }
 
-        throw new BonesException($"Cannot convert {Field.Type} to {typeof(T).Name}, try a GeoLocation instead.");
+        throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a GeoLocation instead.");
     }
     #endregion
 }

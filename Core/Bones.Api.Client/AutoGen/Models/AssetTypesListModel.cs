@@ -11,7 +11,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model for the asset types to be listed in a project&apos;s dashboard
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class AssetTypesListModel : IParsable
     {
         /// <summary>The asset layout&apos;s ID</summary>

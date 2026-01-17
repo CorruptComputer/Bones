@@ -27,20 +27,24 @@ public sealed class QueueDeleteAssetByIdDb(BonesDbContext dbContext, ISender sen
     {
         Asset? asset = await dbContext.Assets
             .Include(item => item.Item)
-            .ThenInclude(item => item.Versions)
             .FirstOrDefaultAsync(p => p.Id == request.AssetId, cancellationToken);
 
-        if (asset == null)
+        if (asset == null || asset.Item == null)
         {
             return CommandResponse.Fail("Invalid AssetId.");
         }
 
-        foreach (ItemVersion version in asset.Item.Versions)
+        List<ItemVersion> versions = await dbContext.ItemVersions
+            .Where(iv => iv.ItemId == asset.ItemId)
+            .ToListAsync(cancellationToken);
+
+        foreach (ItemVersion version in versions)
         {
             await sender.Send(new QueueDeleteAssetVersionByIdDb.Command(version.Id), cancellationToken);
         }
 
         asset.DeleteFlag = true;
+        asset.Item.DeleteFlag = true;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

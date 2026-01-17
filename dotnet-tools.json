@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "requesty": {
+      "version": "0.0.2",
+      "commands": [
+        "requesty"
+      ],
+      "rollForward": false
+    }
+  }
+}

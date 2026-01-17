@@ -33,10 +33,10 @@ public class AddAccountAuditDb(BonesDbContext dbContext) : IRequestHandler<AddAc
     {
         AccountAudit audit = new()
         {
-            Account = request.Account,
+            AccountBonesUserId = request.Account.Id,
             ActionDateTime = DateTimeOffset.Now,
             ActionTaken = request.ActionTaken,
-            ActionTakenBy = request.ActionTakenBy,
+            ActionTakenByBonesUserId = request.ActionTakenBy.Id,
             Reason = request.Reason
         };
 

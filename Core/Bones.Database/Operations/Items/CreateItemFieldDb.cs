@@ -36,7 +36,7 @@ public sealed class CreateItemFieldDb(BonesDbContext dbContext) : IRequestHandle
 
         EntityEntry<ItemField> added = dbContext.ItemFields.Add(new()
         {
-            Project = project,
+            ProjectId = project.Id,
         });
 
         await dbContext.SaveChangesAsync(cancellationToken);

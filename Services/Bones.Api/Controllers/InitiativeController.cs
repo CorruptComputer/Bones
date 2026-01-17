@@ -40,14 +40,14 @@ public sealed class InitiativeController(ISender sender) : AuthenticatedControll
         {
             InitiativeId = initiative.Id,
             InitiativeName = initiative.Name,
-            ProjectId = initiative.Project.Id,
+            ProjectId = initiative.ProjectId,
             TaskQueueCount = initiative.Queues.Count,
             TaskQueues = initiative.Queues.Select(i =>
                 new GetInitiativeDashboardResponse.TaskQueueListModel
                 {
                     TaskQueueId = i.Id,
                     TaskQueueName = i.Name,
-                    TaskCount = i.Tasks.Count
+                    TaskCount = i.BonesTasks.Count
                 })
         };
 

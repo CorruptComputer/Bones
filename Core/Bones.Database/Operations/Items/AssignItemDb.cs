@@ -32,7 +32,7 @@ public sealed class AssignItemDb(BonesDbContext dbContext) : IRequestHandler<Ass
     {
         Item? item = await dbContext.Items
             .Include(i => i.Versions)
-                .ThenInclude(iv => iv.Assignees)
+                .ThenInclude(iv => iv.ItemAssignees)
             .FirstOrDefaultAsync(i => i.Id == request.ItemId, cancellationToken);
 
         if (item?.Current == null)
@@ -40,7 +40,7 @@ public sealed class AssignItemDb(BonesDbContext dbContext) : IRequestHandler<Ass
             return CommandResponse.Fail("Invalid Item ID.");
         }
 
-        ItemAssignmentSlot? assigneeSlot = item.Current.ItemLayoutVersion.AssigneeSlots.FirstOrDefault(x => x.Id == request.AssignmentSlotId);
+        ItemAssignmentSlot? assigneeSlot = item.Current.ItemLayoutVersion?.ItemAssignmentSlots.FirstOrDefault(x => x.Id == request.AssignmentSlotId);
         if (assigneeSlot == null)
         {
             return CommandResponse.Fail("Invalid Assignment Slot ID.");
@@ -54,13 +54,14 @@ public sealed class AssignItemDb(BonesDbContext dbContext) : IRequestHandler<Ass
 
         ItemAssignee newAssignee = new()
         {
-            Slot = assigneeSlot,
-            AssignedUser = user,
-            AssignedRole = null,
-            State = request.State
+            ItemAssignmentSlotId = assigneeSlot.Id,
+            ItemVersionId = item.Current.Id,
+            AssignedUserId = user.Id,
+            AssignedRoleId = null,
+            State = request.State,
         };
 
-        item.Current.Assignees.Add(newAssignee);
+        item.Current.ItemAssignees.Add(newAssignee);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return CommandResponse.Pass(nameof(ItemAssignee), newAssignee.Id);

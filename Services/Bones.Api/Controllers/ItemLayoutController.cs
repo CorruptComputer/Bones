@@ -2,7 +2,7 @@ using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Item;
 using Bones.Api.Models.Project;
 using Bones.Database.DbSets.Items;
-using Bones.Logic.Features.Item;
+using Bones.Logic.Features.Items;
 
 namespace Bones.Api.Controllers;
 
@@ -70,7 +70,7 @@ public sealed class ItemLayoutController(ISender sender) : AuthenticatedControll
             }
         }
 
-        return GetItemLayoutVersionResponse.FromInternal(layoutVersion, layoutResponse.Result.Project.Id, layoutResponse.Result.FriendlyIdPrefix, layoutResponse.Result.Current?.Version ?? 0);
+        return GetItemLayoutVersionResponse.FromInternal(layoutVersion, layoutResponse.Result.ProjectId, layoutResponse.Result.FriendlyIdPrefix, layoutResponse.Result.Current?.Version ?? 0);
     }
 
     /// <summary>

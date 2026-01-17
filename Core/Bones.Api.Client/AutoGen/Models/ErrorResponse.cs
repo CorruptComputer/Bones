@@ -12,7 +12,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// The response body is empty, this is a workaround for the limitations of the API client.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class ErrorResponse : ApiException, IParsable
     {
         /// <summary>The error message, if any.</summary>

@@ -39,7 +39,7 @@ public class SaveSystemAdminMaskUserEnabledDb(BonesDbContext dbContext) : IReque
             ActionDateTime = DateTimeOffset.Now,
             ActionTaken = SystemAudit.Actions.SystemSettingUpdate,
             SettingChanged = SystemSetting.SettingType.SystemAdminMaskUserEnabled,
-            ActionTakenBy = request.ActionTakenBy,
+            ActionTakenByUserId = request.ActionTakenBy.Id,
             Reason = request.Reason
         };
         dbContext.SystemAudits.Add(enabledAudit);

@@ -18,9 +18,9 @@ public class BonesUserSession
     public Guid Id { get; init; }
 
     /// <summary>
-    ///   The user this session is for
+    ///   The ID of the user this session is for
     /// </summary>
-    public required BonesUser User { get; init; }
+    public required Guid UserId { get; init; }
 
     /// <summary>
     ///   The IP address that the session was created from, if it changes the session should be invalidated
@@ -49,11 +49,20 @@ public class BonesUserSession
     /// </summary>
     public bool IsInvalidated { get; set; } = false;
 
-    // public DateTimeOffset? InvalidatedDateTime { get; set; }
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigation property for the user this session is for, null if not .Include()'d in the query
+    /// </summary>
+    public BonesUser? User { get; }
+    #endregion
 
     internal static void BuildTable(EntityTypeBuilder<BonesUserSession> builder)
     {
         // Go ahead and remove these from being included in default queries
         builder.HasQueryFilter(x => !x.IsInvalidated);
+
+        builder.HasOne(s => s.User)
+               .WithMany()
+               .HasForeignKey(s => s.UserId);
     }
 }

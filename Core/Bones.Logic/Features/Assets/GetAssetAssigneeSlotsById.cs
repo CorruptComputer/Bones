@@ -36,12 +36,12 @@ public sealed class GetAssetAssigneeSlotsById(ISender sender) : IRequestHandler<
             return QueryResponse<List<ItemAssignmentSlot>?>.Forbid();
         }
 
-        Asset? asset = await sender.Send(new GetAssetByIdDb.Query(request.AssetId), cancellationToken);
-        if (asset is null)
+        Asset? asset = await sender.Send(new GetAssetByIdDb.Query(request.AssetId, IncludeItem: true), cancellationToken);
+        if (asset is null || asset.Item is null || asset.Item.Current is null)
         {
             return QueryResponse<List<ItemAssignmentSlot>?>.Fail("Asset not found");
         }
 
-        return asset.Item.Current?.ItemLayoutVersion.AssigneeSlots;
+        return asset.Item.Current.ItemLayoutVersion?.ItemAssignmentSlots;
     }
 }

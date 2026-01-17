@@ -25,8 +25,8 @@ public sealed class GetTaskCurrentAssigneesByIdDb(BonesDbContext dbContext) : IR
     public async Task<QueryResponse<BonesTask?>> Handle(Query request, CancellationToken cancellationToken)
     {
         BonesTask? task = await dbContext.Tasks
-            .Include(t => t.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees).ThenInclude(a => a.Slot)
-            .Include(t => t.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees).ThenInclude(a => a.AssignedUser)
+            .Include(t => t.Item).ThenInclude(i => i!.Versions).ThenInclude(iv => iv.ItemAssignees).ThenInclude(a => a.ItemAssignmentSlot)
+            .Include(t => t.Item).ThenInclude(i => i!.Versions).ThenInclude(iv => iv.ItemAssignees).ThenInclude(a => a.AssignedUser)
             //.Include(t => t.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees).ThenInclude(a => a.AssignedRole)
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == request.TaskId, cancellationToken);

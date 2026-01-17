@@ -4,11 +4,14 @@
 using Bones.Api.Client.AutoGen.Account;
 using Bones.Api.Client.AutoGen.Anonymous;
 using Bones.Api.Client.AutoGen.Asset;
-using Bones.Api.Client.AutoGen.Assignment;
+using Bones.Api.Client.AutoGen.AssetSearch;
 using Bones.Api.Client.AutoGen.Initiative;
 using Bones.Api.Client.AutoGen.ItemLayout;
+using Bones.Api.Client.AutoGen.ItemVersion;
 using Bones.Api.Client.AutoGen.Login;
+using Bones.Api.Client.AutoGen.MyAccount;
 using Bones.Api.Client.AutoGen.Project;
+using Bones.Api.Client.AutoGen.ProjectSearch;
 using Bones.Api.Client.AutoGen.SysAdmin;
 using Bones.Api.Client.AutoGen.TaskNamespace;
 using Bones.Api.Client.AutoGen.TaskQueue;
@@ -27,7 +30,7 @@ namespace Bones.Api.Client.AutoGen
     /// <summary>
     /// The main entry point of the SDK, exposes the configuration and the fluent API.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class AutoGenBonesApiClient : BaseRequestBuilder
     {
         /// <summary>The Account property</summary>
@@ -45,10 +48,10 @@ namespace Bones.Api.Client.AutoGen
         {
             get => new global::Bones.Api.Client.AutoGen.Asset.AssetRequestBuilder(PathParameters, RequestAdapter);
         }
-        /// <summary>The Assignment property</summary>
-        public global::Bones.Api.Client.AutoGen.Assignment.AssignmentRequestBuilder Assignment
+        /// <summary>The AssetSearch property</summary>
+        public global::Bones.Api.Client.AutoGen.AssetSearch.AssetSearchRequestBuilder AssetSearch
         {
-            get => new global::Bones.Api.Client.AutoGen.Assignment.AssignmentRequestBuilder(PathParameters, RequestAdapter);
+            get => new global::Bones.Api.Client.AutoGen.AssetSearch.AssetSearchRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The Initiative property</summary>
         public global::Bones.Api.Client.AutoGen.Initiative.InitiativeRequestBuilder Initiative
@@ -60,15 +63,30 @@ namespace Bones.Api.Client.AutoGen
         {
             get => new global::Bones.Api.Client.AutoGen.ItemLayout.ItemLayoutRequestBuilder(PathParameters, RequestAdapter);
         }
+        /// <summary>The ItemVersion property</summary>
+        public global::Bones.Api.Client.AutoGen.ItemVersion.ItemVersionRequestBuilder ItemVersion
+        {
+            get => new global::Bones.Api.Client.AutoGen.ItemVersion.ItemVersionRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>The Login property</summary>
         public global::Bones.Api.Client.AutoGen.Login.LoginRequestBuilder Login
         {
             get => new global::Bones.Api.Client.AutoGen.Login.LoginRequestBuilder(PathParameters, RequestAdapter);
         }
+        /// <summary>The MyAccount property</summary>
+        public global::Bones.Api.Client.AutoGen.MyAccount.MyAccountRequestBuilder MyAccount
+        {
+            get => new global::Bones.Api.Client.AutoGen.MyAccount.MyAccountRequestBuilder(PathParameters, RequestAdapter);
+        }
         /// <summary>The Project property</summary>
         public global::Bones.Api.Client.AutoGen.Project.ProjectRequestBuilder Project
         {
             get => new global::Bones.Api.Client.AutoGen.Project.ProjectRequestBuilder(PathParameters, RequestAdapter);
+        }
+        /// <summary>The ProjectSearch property</summary>
+        public global::Bones.Api.Client.AutoGen.ProjectSearch.ProjectSearchRequestBuilder ProjectSearch
+        {
+            get => new global::Bones.Api.Client.AutoGen.ProjectSearch.ProjectSearchRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>The SysAdmin property</summary>
         public global::Bones.Api.Client.AutoGen.SysAdmin.SysAdminRequestBuilder SysAdmin

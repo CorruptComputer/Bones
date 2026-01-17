@@ -14,7 +14,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace
     /// <summary>
     /// Builds and executes requests for operations under \Task
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class TaskRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The action property</summary>

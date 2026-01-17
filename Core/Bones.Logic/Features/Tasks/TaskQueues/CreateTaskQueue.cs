@@ -42,8 +42,8 @@ public sealed class CreateTaskQueue(ISender sender) : IRequestHandler<CreateTask
             return CommandResponse.Fail("Initiative not found");
         }
 
-        if (initiative.Project.OwnerType == OwnershipType.User
-            && initiative.Project.OwningUser!.Id == request.RequestingUser.Id)
+        if (initiative.Project!.OwnerType == OwnershipType.User
+            && initiative.Project.OwningUserId == request.RequestingUser.Id)
         {
             return await sender.Send(new CreateTaskQueueDb.Command(request.Name, request.InitiativeId), cancellationToken);
         }

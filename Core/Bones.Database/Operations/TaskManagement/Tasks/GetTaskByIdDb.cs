@@ -25,13 +25,13 @@ public sealed class GetTaskByIdDb(BonesDbContext dbContext) : IRequestHandler<Ge
     public async Task<QueryResponse<BonesTask?>> Handle(Query request, CancellationToken cancellationToken)
     {
         BonesTask? task = await dbContext.Tasks
-            .Include(wi => wi.Item).ThenInclude(i => i.Project)
-            .Include(wi => wi.Item).ThenInclude(i => i.ItemLayout)
-            .Include(wi => wi.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
-            .Include(wi => wi.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Values).ThenInclude(v => v.Field)
-            .Include(wi => wi.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees)
-            .Include(wi => wi.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.AssigneeSlots)
-            .Include(i => i.TaskQueue)
+            .Include(t => t.Item).ThenInclude(i => i!.Project)
+            .Include(t => t.Item).ThenInclude(i => i!.ItemLayout)
+            .Include(t => t.Item).ThenInclude(i => i!.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(ilv => ilv!.ItemLayoutFieldVersionLinks).ThenInclude(ilfvl => ilfvl.ItemFieldVersion).ThenInclude(ifv => ifv!.PossibleValues)
+            .Include(t => t.Item).ThenInclude(i => i!.Versions).ThenInclude(iv => iv.ItemValues).ThenInclude(v => v.ItemFieldVersion)
+            .Include(t => t.Item).ThenInclude(i => i!.Versions).ThenInclude(iv => iv.ItemAssignees)
+            .Include(t => t.Item).ThenInclude(i => i!.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv!.ItemAssignmentSlots)
+            .Include(t => t.TaskQueue)
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == request.TaskId, cancellationToken);
 

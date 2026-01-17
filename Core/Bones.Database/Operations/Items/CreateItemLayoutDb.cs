@@ -38,7 +38,7 @@ public class CreateItemLayoutDb(BonesDbContext dbContext) : IRequestHandler<Crea
 
         ItemLayout newLayout = new()
         {
-            Project = project,
+            ProjectId = project.Id,
             FriendlyIdPrefix = request.FriendlyIdPrefix
         };
 

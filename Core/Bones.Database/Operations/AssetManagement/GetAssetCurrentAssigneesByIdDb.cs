@@ -1,15 +1,18 @@
 using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.Items;
 
 namespace Bones.Database.Operations.AssetManagement;
 
 /// <inheritdoc />
-public sealed class GetAssetCurrentAssigneesByIdDb(BonesDbContext dbContext) : IRequestHandler<GetAssetCurrentAssigneesByIdDb.Query, QueryResponse<Asset?>>
+public sealed class GetAssetCurrentAssigneesByIdDb(BonesDbContext dbContext) : IRequestHandler<GetAssetCurrentAssigneesByIdDb.Query, QueryResponse<List<ItemAssignee>>>
 {
     /// <summary>
     ///   DB Command for getting an Asset by id.
     /// </summary>
     /// <param name="AssetId">ID of the item</param>
-    public sealed record Query(Guid AssetId) : IRequest<QueryResponse<Asset?>>;
+    /// <param name="IncludeAssigneeSlot">Whether to include the related AssigneeSlot in the query</param>
+    /// <param name="IncludeAssignee">Whether to include the related BonesUser or BonesRole in the query</param>
+    public sealed record Query(Guid AssetId, bool IncludeAssigneeSlot = false, bool IncludeAssignee = false) : IRequest<QueryResponse<List<ItemAssignee>>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -22,15 +25,43 @@ public sealed class GetAssetCurrentAssigneesByIdDb(BonesDbContext dbContext) : I
     }
 
     /// <inheritdoc />
-    public async Task<QueryResponse<Asset?>> Handle(Query request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<List<ItemAssignee>>> Handle(Query request, CancellationToken cancellationToken)
     {
-        Asset? asset = await dbContext.Assets
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees).ThenInclude(a => a.Slot)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees).ThenInclude(a => a.AssignedUser)
-            //.Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees).ThenInclude(a => a.AssignedRole)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(i => i.Id == request.AssetId, cancellationToken);
+        Asset? asset = await dbContext.Assets.FirstOrDefaultAsync(i => i.Id == request.AssetId, cancellationToken);
 
-        return asset;
+        if (asset is null)
+        {
+            return QueryResponse<List<ItemAssignee>>.Fail("Asset not found.");
+        }
+
+        Item? item = await dbContext.Items
+            .Include(i => i.Versions)
+            .FirstOrDefaultAsync(i => i.Id == asset.ItemId, cancellationToken);
+
+        if (item is null || item.Current is null)
+        {
+            return QueryResponse<List<ItemAssignee>>.Fail("Item not found.");
+        }
+
+        IQueryable<ItemVersion> versionQuery = dbContext.ItemVersions.Include(iv => iv.ItemAssignees);
+        if (request.IncludeAssigneeSlot)
+        {
+            versionQuery = versionQuery.Include(iv => iv.ItemAssignees).ThenInclude(a => a.ItemAssignmentSlot);
+        }
+
+        if (request.IncludeAssignee)
+        {
+            versionQuery = versionQuery.Include(iv => iv.ItemAssignees).ThenInclude(a => a.AssignedUser)
+                                       .Include(iv => iv.ItemAssignees).ThenInclude(a => a.AssignedRole);
+        }
+
+        ItemVersion? itemVersion = await versionQuery.FirstOrDefaultAsync(iv => iv.Id == item.Current.Id, cancellationToken);
+
+        if (itemVersion is null)
+        {
+            return QueryResponse<List<ItemAssignee>>.Fail("Item version not found.");
+        }
+
+        return itemVersion.ItemAssignees;
     }
 }

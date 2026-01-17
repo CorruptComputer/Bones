@@ -1,36 +1,13 @@
 <Project Sdk="Aspire.AppHost.Sdk/13.1.0">
 
     <PropertyGroup>
-        <!-- Build info -->
-        <TargetFramework>net10.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
         <OutputType>Exe</OutputType>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
-        <!-- Assembly info -->
-        <VersionPrefix>0.0.1</VersionPrefix>
-        <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
-        <Authors>Nickolas Gupton</Authors>
-        <RepositoryUrl>https://github.com/CorruptComputer/Bones</RepositoryUrl>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
-        <SourceRevisionId>develop</SourceRevisionId>
 
         <!-- Aspire info -->
         <IsAspireHost>true</IsAspireHost>
         <UserSecretsId>98048c9c-bf28-46ba-a98e-63767ee5e3a8</UserSecretsId>
     </PropertyGroup>
-
-    <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
-    <Target Condition="$(Configuration) == 'Release'" Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
-        <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8" ConsoleToMSBuild="True" IgnoreExitCode="False">
-            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
-        </Exec>
-    </Target>
 
     <ItemGroup>
         <ProjectReference Include="../../Frontend/Bones.WebUI/Bones.WebUI.csproj" />

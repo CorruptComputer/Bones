@@ -19,14 +19,14 @@ public class Asset
     public Guid Id { get; set; }
 
     /// <summary>
-    ///   The project this Asset belongs to
+    ///   ID of the project this Asset belongs to
     /// </summary>
-    public required Project Project { get; set; }
+    public required Guid ProjectId { get; set; }
 
     /// <summary>
-    ///   The item for this asset
+    ///   The ID of the item this Asset represents
     /// </summary>
-    public required Item Item { get; set; }
+    public required Guid ItemId { get; set; }
 
     /// <summary>
     ///   Disables access to this Asset and schedules deletes for everything within,
@@ -34,9 +34,29 @@ public class Asset
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property for the project this Asset belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public Project? Project { get; set; }
+
+    /// <summary>
+    ///   Navigational property for the item this Asset represents, null if not .Include()'d in the query
+    /// </summary>
+    public Item? Item { get; set; }
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<Asset> builder)
     {
         // Remove deleted items from being included in default queries
         builder.HasQueryFilter(x => !x.DeleteFlag);
+
+        builder.HasOne(x => x.Project)
+               .WithMany()
+               .HasForeignKey(x => x.ProjectId);
+
+        builder.HasOne(x => x.Item)
+               .WithMany()
+               .HasForeignKey(x => x.ItemId);
     }
 }

@@ -13,7 +13,9 @@ public sealed class GetAssetById(ISender sender) : IRequestHandler<GetAssetById.
     /// </summary>
     /// <param name="AssetId">Internal ID of the asset</param>
     /// <param name="RequestingUser"></param>
-    public sealed record Query(Guid AssetId, BonesUser RequestingUser) : IRequest<QueryResponse<Asset?>>;
+    /// <param name="IncludeProject"></param>
+    /// <param name="IncludeItem"></param>
+    public sealed record Query(Guid AssetId, BonesUser RequestingUser, bool IncludeProject = false, bool IncludeItem = false) : IRequest<QueryResponse<Asset?>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -35,6 +37,6 @@ public sealed class GetAssetById(ISender sender) : IRequestHandler<GetAssetById.
             return QueryResponse<Asset?>.Forbid();
         }
 
-        return await sender.Send(new GetAssetByIdDb.Query(request.AssetId), cancellationToken);
+        return await sender.Send(new GetAssetByIdDb.Query(request.AssetId, request.IncludeProject, request.IncludeItem), cancellationToken);
     }
 }

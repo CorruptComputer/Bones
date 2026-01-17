@@ -5,7 +5,7 @@ namespace Bones.WebUI.Pages.Project;
 /// <summary>
 ///   Create project page
 /// </summary>
-public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManager NavManager, ILogger<CreateProjectPage> Logger) : ComponentBase
+public partial class CreateProjectPage(BonesApiClient apiClient, NavigationManager navManager, ILogger<CreateProjectPage> logger) : ComponentBase
 {
     /// <summary>
     ///   Did the request to the API result in an error?
@@ -35,7 +35,7 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
         {
             ApiError = false;
 
-            Guid? projectId = await ApiClient.Project.Create.PostAsync(new()
+            Guid? projectId = await apiClient.Project.Create.PostAsync(new()
             {
                 Name = ProjectName,
                 Preset = projectPreset,
@@ -45,14 +45,15 @@ public partial class CreateProjectPage(BonesApiClient ApiClient, NavigationManag
             if (projectId is null)
             {
                 ApiError = true;
+                logger.LogError("Project creation returned null project ID");
                 return;
             }
 
-            NavManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString()));
+            navManager.NavigateTo(FrontEndUrls.Project.PROJECT_DASHBOARD.Replace(FrontEndUrls.Project.PROJECT_ID_PLACEHOLDER, projectId.ToString()));
         }
         catch (ApiException ex)
         {
-            Logger.LogError(ex, "Error while creating project");
+            logger.LogError(ex, "Error while creating project");
             ApiError = true;
         }
     }

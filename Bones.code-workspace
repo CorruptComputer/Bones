@@ -5,8 +5,8 @@
         }
     ],
     "settings": {
-        "dotnet.defaultSolution": "./Bones.sln",
-        "entityframework.project": "./Core/Bones.Database",
-        "entityframework.startupProject": "./Services/Bones.BackgroundService"
+        "dotnet.defaultSolution": "Bones.sln",
+        "entityframework.project": "Core/Bones.Database",
+        "entityframework.startupProject": "Services/Bones.BackgroundService"
     }
 }

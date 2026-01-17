@@ -112,7 +112,7 @@ public partial class CreateAssetPage(BonesApiClient apiClient) : ComponentBase
 
     private async Task GetProjects()
     {
-        List<GetProjectQuickSelectResponse>? resp = await apiClient.Project.Projects.QuickSelect.GetAsync();
+        List<GetProjectQuickSelectResponse>? resp = await apiClient.ProjectSearch.QuickSelect.GetAsync();
 
         if (resp is null)
         {

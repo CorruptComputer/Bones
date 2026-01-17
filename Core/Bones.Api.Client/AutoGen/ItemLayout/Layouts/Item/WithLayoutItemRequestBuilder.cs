@@ -17,7 +17,7 @@ namespace Bones.Api.Client.AutoGen.ItemLayout.Layouts.Item
     /// <summary>
     /// Builds and executes requests for operations under \ItemLayout\layouts\{layoutId}
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class WithLayoutItemRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The latest property</summary>

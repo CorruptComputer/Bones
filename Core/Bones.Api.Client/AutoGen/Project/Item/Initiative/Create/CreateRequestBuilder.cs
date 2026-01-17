@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.Project.Item.Initiative.Create
     /// <summary>
     /// Builds and executes requests for operations under \Project\{projectId}\initiative\create
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class CreateRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

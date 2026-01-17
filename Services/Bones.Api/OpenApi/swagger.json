@@ -14,140 +14,21 @@
     "version": "develop"
   },
   "paths": {
-    "/Account/my/profile": {
+    "/Account/{bonesUserId}/public-profile": {
       "get": {
         "tags": [
           "Account"
         ],
-        "summary": "Returns a users own full profile info",
-        "operationId": "GetMyProfileAsync",
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetMyProfileResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Account"
-        ],
-        "summary": "Updates the current users profile",
-        "operationId": "UpdateMyProfileAsync",
-        "requestBody": {
-          "description": "The request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateMyProfileRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Account/my/session": {
-      "get": {
-        "tags": [
-          "Account"
-        ],
-        "summary": "Gets or creates a session token for the user and an encryption key to be used for the session.\nAll data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.\n\nThis encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.",
-        "operationId": "GetOrCreateMySessionAsync",
+        "summary": "Returns a users public profile",
+        "operationId": "GetPublicProfileAsync",
         "parameters": [
           {
-            "name": "sessionId",
-            "in": "query",
-            "description": "The session token to use, if null a new one will be created",
+            "name": "bonesUserId",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -187,159 +68,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetOrCreateMySessionResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Account/my/password": {
-      "put": {
-        "tags": [
-          "Account"
-        ],
-        "summary": "Updates the current users password",
-        "operationId": "ChangeMyPasswordAsync",
-        "requestBody": {
-          "description": "The request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangeMyPasswordRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Account/my/email": {
-      "put": {
-        "tags": [
-          "Account"
-        ],
-        "summary": "Updates the current users email address",
-        "operationId": "ChangeMyEmailAsync",
-        "requestBody": {
-          "description": "The request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangeMyEmailRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/GetPublicProfileResponse"
                 }
               }
             }
@@ -573,80 +302,7 @@
         }
       }
     },
-    "/Asset/Layout/{ItemLayoutId}/dashboard": {
-      "get": {
-        "tags": [
-          "Asset"
-        ],
-        "summary": "Gets the dashboard for an asset layout, which includes the layout and all assets that use it.",
-        "operationId": "GetAssetLayoutDashboardAsync",
-        "parameters": [
-          {
-            "name": "ItemLayoutId",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAssetLayoutDashboardResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Asset/{AssetId}": {
+    "/Asset/{assetId}": {
       "get": {
         "tags": [
           "Asset"
@@ -655,7 +311,7 @@
         "operationId": "GetAssetByIdAsync",
         "parameters": [
           {
-            "name": "AssetId",
+            "name": "assetId",
             "in": "path",
             "description": "",
             "required": true,
@@ -719,7 +375,80 @@
         }
       }
     },
-    "/Asset/action/create": {
+    "/Asset/{assetId}/assignments": {
+      "get": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Gets the assignment information for the latest version of an asset",
+        "operationId": "GetLatestAssetAssignmentsAsync",
+        "parameters": [
+          {
+            "name": "assetId",
+            "in": "path",
+            "description": "The ID of the asset",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestAssignmentsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Asset/create": {
       "post": {
         "tags": [
           "Asset"
@@ -790,13 +519,23 @@
         }
       }
     },
-    "/Asset/action/create-version": {
+    "/Asset/{AssetId}/create-version": {
       "post": {
         "tags": [
           "Asset"
         ],
         "summary": "Creates a new asset version",
         "operationId": "CreateAssetVersionActionAsync",
+        "parameters": [
+          {
+            "name": "AssetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -861,13 +600,23 @@
         }
       }
     },
-    "/Asset/action/delete": {
+    "/Asset/{AssetId}/delete": {
       "post": {
         "tags": [
           "Asset"
         ],
         "summary": "Deletes an asset",
         "operationId": "DeleteAssetActionAsync",
+        "parameters": [
+          {
+            "name": "AssetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -932,13 +681,23 @@
         }
       }
     },
-    "/Asset/action/delete-version": {
+    "/Asset/{AssetId}/delete-version": {
       "post": {
         "tags": [
           "Asset"
         ],
         "summary": "Deletes an asset version",
         "operationId": "DeleteAssetVersionActionAsync",
+        "parameters": [
+          {
+            "name": "AssetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "",
           "content": {
@@ -1003,18 +762,18 @@
         }
       }
     },
-    "/Assignment/asset/{assetId}/latest": {
+    "/AssetSearch/by-layout/{ItemLayoutId}": {
       "get": {
         "tags": [
-          "Assignment"
+          "AssetSearch"
         ],
-        "summary": "Gets the assignment information for the latest version of an asset",
-        "operationId": "GetLatestAssetAssignmentsAsync",
+        "summary": "Gets the dashboard for an asset layout, which includes the layout and all assets that use it.",
+        "operationId": "GetAssetsByLayoutId",
         "parameters": [
           {
-            "name": "assetId",
+            "name": "ItemLayoutId",
             "in": "path",
-            "description": "The ID of the asset",
+            "description": "",
             "required": true,
             "schema": {
               "type": "string",
@@ -1058,86 +817,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetLatestAssignmentsResponse"
+                  "$ref": "#/components/schemas/GetAssetLayoutDashboardResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Assignment/task/{taskId}/latest": {
-      "get": {
-        "tags": [
-          "Assignment"
-        ],
-        "summary": "Gets the assignment information for the latest version of a task",
-        "operationId": "GetLatestTaskAssignmentsAsync",
-        "parameters": [
-          {
-            "name": "taskId",
-            "in": "path",
-            "description": "The ID of the task",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetLatestAssignmentsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
+          "404": {
+            "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1913,6 +1599,79 @@
         }
       }
     },
+    "/ItemVersion/{ItemVersionId}": {
+      "get": {
+        "tags": [
+          "ItemVersion"
+        ],
+        "summary": "Gets an item version by its ID",
+        "operationId": "GetItemVersionByIdAsync",
+        "parameters": [
+          {
+            "name": "ItemVersionId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetItemVersionByIdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Login/login": {
       "post": {
         "tags": [
@@ -1995,33 +1754,13 @@
         }
       }
     },
-    "/Project/projects/by-owner": {
+    "/MyAccount/profile": {
       "get": {
         "tags": [
-          "Project"
+          "MyAccount"
         ],
-        "summary": "Gets the projects for the current user, or specified organization",
-        "operationId": "GetProjectsByOwnerAsync",
-        "parameters": [
-          {
-            "name": "ownerType",
-            "in": "query",
-            "description": "The type of owner, User if self",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/OwnershipType"
-            }
-          },
-          {
-            "name": "organizationId",
-            "in": "query",
-            "description": "The ID of the organization, if applicable",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
+        "summary": "Returns a users own full profile info",
+        "operationId": "GetMyProfileAsync",
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -2058,29 +1797,76 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
+                  "$ref": "#/components/schemas/GetMyProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "MyAccount"
+        ],
+        "summary": "Updates the current users profile",
+        "operationId": "UpdateMyProfileAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMyProfileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
-          "204": {
-            "description": "No Content"
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2088,13 +1874,23 @@
         }
       }
     },
-    "/Project/projects/quick-select": {
+    "/MyAccount/session": {
       "get": {
         "tags": [
-          "Project"
+          "MyAccount"
         ],
-        "summary": "Gets the users current quick select projects",
-        "operationId": "GetProjectQuickSelectAsync",
+        "summary": "Gets or creates a session token for the user and an encryption key to be used for the session.\nAll data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.\n            \nThis encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.",
+        "operationId": "GetOrCreateMySessionAsync",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "query",
+            "description": "The session token to use, if null a new one will be created",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "401": {
             "description": "Unauthorized",
@@ -2131,10 +1927,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetProjectQuickSelectResponse"
-                  }
+                  "$ref": "#/components/schemas/GetOrCreateMySessionResponse"
                 }
               }
             }
@@ -2144,7 +1937,68 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/MyAccount/password": {
+      "put": {
+        "tags": [
+          "MyAccount"
+        ],
+        "summary": "Updates the current users password",
+        "operationId": "ChangeMyPasswordAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMyPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -2154,13 +2008,78 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/MyAccount/email": {
+      "put": {
+        "tags": [
+          "MyAccount"
+        ],
+        "summary": "Updates the current users email address",
+        "operationId": "ChangeMyEmailAsync",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMyEmailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2708,6 +2627,179 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectSearch/by-owner": {
+      "get": {
+        "tags": [
+          "ProjectSearch"
+        ],
+        "summary": "Gets the projects for the current user, or specified organization",
+        "operationId": "SearchProjectsByOwnerAsync",
+        "parameters": [
+          {
+            "name": "ownerType",
+            "in": "query",
+            "description": "The type of owner, User if self",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OwnershipType"
+            }
+          },
+          {
+            "name": "organizationId",
+            "in": "query",
+            "description": "The ID of the organization, if applicable",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectSearch/quick-select": {
+      "get": {
+        "tags": [
+          "ProjectSearch"
+        ],
+        "summary": "Gets the users current quick select projects",
+        "operationId": "GetProjectQuickSelectAsync",
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetProjectQuickSelectResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -3369,6 +3461,79 @@
         }
       }
     },
+    "/Task/{taskId}/assignments": {
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Gets the assignment information for the latest version of a task",
+        "operationId": "GetLatestTaskAssignmentsAsync",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "The ID of the task",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLatestAssignmentsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Task/action/assign": {
       "post": {
         "tags": [
@@ -3871,7 +4036,7 @@
         "tags": [
           "TaskQueue"
         ],
-        "summary": "Gets the dashboard for a  queue",
+        "summary": "Gets the dashboard for a queue",
         "operationId": "GetTaskQueueDashboardAsync",
         "parameters": [
           {
@@ -4774,25 +4939,25 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The ID of the",
+            "description": "The ID of the Task",
             "format": "uuid"
           },
           "friendlyId": {
             "type": "string",
-            "description": "The friendly ID of the"
+            "description": "The friendly ID of the Task"
           },
           "title": {
             "type": "string",
-            "description": "The title of the"
+            "description": "The title of the Task"
           },
           "addedToQueueDateTime": {
             "type": "string",
-            "description": "The date and time the  was added to the queue",
+            "description": "The date and time the Task was added to the queue",
             "format": "date-time"
           }
         },
         "additionalProperties": false,
-        "description": "Model for a  in the dashboard"
+        "description": "Model for a Task in the dashboard"
       },
       "DeleteAssetAction": {
         "allOf": [
@@ -4943,10 +5108,10 @@
           "currentVersion",
           "friendlyId",
           "itemId",
-          "itemValues",
           "latestItemVersionId",
           "latestVersionCreateDateTime",
           "layoutId",
+          "layoutVersionId",
           "projectId",
           "title"
         ],
@@ -4964,6 +5129,11 @@
           "layoutId": {
             "type": "string",
             "description": "The ID of the layout this asset uses",
+            "format": "uuid"
+          },
+          "layoutVersionId": {
+            "type": "string",
+            "description": "The ID of the layout version the latest version of this asset uses",
             "format": "uuid"
           },
           "projectId": {
@@ -4984,7 +5154,7 @@
           "currentVersion": {
             "type": "integer",
             "description": "The current version number for this asset",
-            "format": "int32"
+            "format": "int64"
           },
           "friendlyId": {
             "type": "string",
@@ -4999,13 +5169,6 @@
             "type": "string",
             "description": "The time the latest version of this asset was created",
             "format": "date-time"
-          },
-          "itemValues": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ItemValueDisplayModel"
-            },
-            "description": "The values for this asset"
           }
         },
         "additionalProperties": false,
@@ -5175,6 +5338,23 @@
         },
         "additionalProperties": false,
         "description": "API response for the GetLatestItemLayoutVersionAsync endpoint"
+      },
+      "GetItemVersionByIdResponse": {
+        "required": [
+          "itemValues"
+        ],
+        "type": "object",
+        "properties": {
+          "itemValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemValueDisplayModel"
+            },
+            "description": "The values for this item version"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API response for the GetItemVersionByIdAsync endpoint"
       },
       "GetLatestAssignmentsResponse": {
         "required": [
@@ -5564,6 +5744,32 @@
         "additionalProperties": false,
         "description": "Response for the GetProjectSettingsAsync endpoint"
       },
+      "GetPublicProfileResponse": {
+        "required": [
+          "bonesUserId",
+          "createDateTime",
+          "displayName"
+        ],
+        "type": "object",
+        "properties": {
+          "bonesUserId": {
+            "type": "string",
+            "description": "The ID of the user",
+            "format": "uuid"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the user, defaults to their email if they don't have one set"
+          },
+          "createDateTime": {
+            "type": "string",
+            "description": "The date and time the user was created",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response for the GetPublicProfileAsync endpoint"
+      },
       "GetSmtpConfigResponse": {
         "required": [
           "fromAddress",
@@ -5678,7 +5884,6 @@
           "currentVersion",
           "friendlyId",
           "itemId",
-          "itemValues",
           "latestItemVersionId",
           "latestVersionCreateDateTime",
           "layoutId",
@@ -5736,7 +5941,7 @@
           "currentVersion": {
             "type": "integer",
             "description": "The current version number for this",
-            "format": "int32"
+            "format": "int64"
           },
           "friendlyId": {
             "type": "string",
@@ -5751,13 +5956,6 @@
             "type": "string",
             "description": "The time the latest version of this item was created",
             "format": "date-time"
-          },
-          "itemValues": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ItemValueDisplayModel"
-            },
-            "description": "The values for this"
           }
         },
         "additionalProperties": false,
@@ -6536,7 +6734,7 @@
       "name": "Asset"
     },
     {
-      "name": "Assignment"
+      "name": "AssetSearch"
     },
     {
       "name": "Initiative"
@@ -6545,10 +6743,19 @@
       "name": "ItemLayout"
     },
     {
+      "name": "ItemVersion"
+    },
+    {
       "name": "Login"
     },
     {
+      "name": "MyAccount"
+    },
+    {
       "name": "Project"
+    },
+    {
+      "name": "ProjectSearch"
     },
     {
       "name": "SysAdmin"

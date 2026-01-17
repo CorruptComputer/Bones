@@ -1,4 +1,5 @@
 using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.Items;
 
 namespace Bones.Database.Operations.AssetManagement;
 
@@ -9,7 +10,9 @@ public sealed class GetAssetByIdDb(BonesDbContext dbContext) : IRequestHandler<G
     ///   DB Command for getting an Asset by id.
     /// </summary>
     /// <param name="AssetId">ID of the item</param>
-    public sealed record Query(Guid AssetId) : IRequest<QueryResponse<Asset?>>;
+    /// <param name="IncludeProject">Whether to include the related Project in the query</param>
+    /// <param name="IncludeItem">Whether to include the related Item in the query</param>
+    public sealed record Query(Guid AssetId, bool IncludeProject = false, bool IncludeItem = false) : IRequest<QueryResponse<Asset?>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -24,15 +27,20 @@ public sealed class GetAssetByIdDb(BonesDbContext dbContext) : IRequestHandler<G
     /// <inheritdoc />
     public async Task<QueryResponse<Asset?>> Handle(Query request, CancellationToken cancellationToken)
     {
-        Asset? asset = await dbContext.Assets
-            .Include(a => a.Project)
-            .Include(a => a.Item).ThenInclude(i => i.ItemLayout)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.FieldLinks).ThenInclude(fl => fl.FieldVersion).ThenInclude(fv => fv.PossibleValues)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Values).ThenInclude(v => v.Field)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.Assignees)
-            .Include(a => a.Item).ThenInclude(i => i.Versions).ThenInclude(iv => iv.ItemLayoutVersion).ThenInclude(lv => lv.AssigneeSlots)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(i => i.Id == request.AssetId, cancellationToken);
+        IQueryable<Asset> assetQuery = dbContext.Assets;
+
+        if (request.IncludeProject)
+        {
+            assetQuery = assetQuery.Include(a => a.Project);
+        }
+
+        if (request.IncludeItem)
+        {
+            assetQuery = assetQuery.Include(a => a.Item);
+        }
+
+        Asset? asset = await assetQuery.AsNoTracking()
+                                       .FirstOrDefaultAsync(i => i.Id == request.AssetId, cancellationToken);
 
         return asset;
     }

@@ -25,9 +25,9 @@ public class GetAccountAuditsByAccountIdDb(BonesDbContext dbContext) : IRequestH
     public async Task<QueryResponse<List<AccountAudit>>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.AccountAudits
-            .Include(x => x.Account)
-            .Include(x => x.ActionTakenBy)
-            .Where(x => x.Account.Id == request.BonesUsedId)
+            .Include(x => x.AccountBonesUser)
+            .Include(x => x.ActionTakenByBonesUser)
+            .Where(x => x.AccountBonesUser!.Id == request.BonesUsedId)
             .ToListAsync(cancellationToken);
     }
 }

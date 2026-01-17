@@ -3,7 +3,6 @@
 #nullable enable
 using Bones.Api.Client.AutoGen.Project.Create;
 using Bones.Api.Client.AutoGen.Project.Item;
-using Bones.Api.Client.AutoGen.Project.Projects;
 using ReQuesty.Runtime.Abstractions;
 using ReQuesty.Runtime.Extensions;
 using System.Collections.Generic;
@@ -15,18 +14,13 @@ namespace Bones.Api.Client.AutoGen.Project
     /// <summary>
     /// Builds and executes requests for operations under \Project
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class ProjectRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The create property</summary>
         public global::Bones.Api.Client.AutoGen.Project.Create.CreateRequestBuilder Create
         {
             get => new global::Bones.Api.Client.AutoGen.Project.Create.CreateRequestBuilder(PathParameters, RequestAdapter);
-        }
-        /// <summary>The projects property</summary>
-        public global::Bones.Api.Client.AutoGen.Project.Projects.ProjectsRequestBuilder Projects
-        {
-            get => new global::Bones.Api.Client.AutoGen.Project.Projects.ProjectsRequestBuilder(PathParameters, RequestAdapter);
         }
         /// <summary>Gets an item from the Bones.Api.Client.AutoGen.Project.item collection</summary>
         /// <param name="position">Unique identifier of the item</param>

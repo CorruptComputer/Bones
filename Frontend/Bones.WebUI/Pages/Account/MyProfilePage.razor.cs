@@ -61,7 +61,7 @@ public partial class MyProfilePage(BonesApiClient apiClient, NavigationManager n
     {
         AccountAuditsLoading = true;
 
-        GetMyProfileResponse? response = await apiClient.Account.My.Profile.GetAsync();
+        GetMyProfileResponse? response = await apiClient.MyAccount.Profile.GetAsync();
 
         if (response is null)
         {
@@ -88,7 +88,7 @@ public partial class MyProfilePage(BonesApiClient apiClient, NavigationManager n
             return;
         }
 
-        await apiClient.Account.My.Profile.PutAsync(new UpdateMyProfileRequest
+        await apiClient.MyAccount.Profile.PutAsync(new UpdateMyProfileRequest
         {
             DisplayName = DisplayName
         });

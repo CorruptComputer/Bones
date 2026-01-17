@@ -1,6 +1,7 @@
 using Bones.Database.DbConsts;
 using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.System;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.Audit;
 
@@ -33,15 +34,29 @@ public class SystemAudit
     public SystemSetting.SettingType? SettingChanged { get; init; }
 
     /// <summary>
-    ///   The entity that took the action
+    ///   The ID of the user that took the action
     /// </summary>
-    public required BonesUser ActionTakenBy { get; init; }
+    public required Guid ActionTakenByUserId { get; init; }
 
     /// <summary>
     ///   The reason the action was taken
     /// </summary>
     [MaxLength(512)]
     public required string Reason { get; init; }
+
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property for the account this audit entry belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public BonesUser? ActionTakenByUser { get; set; }
+    #endregion
+
+    internal static void BuildTable(EntityTypeBuilder<SystemAudit> builder)
+    {
+        builder.HasOne(sa => sa.ActionTakenByUser)
+               .WithMany()
+               .HasForeignKey(sa => sa.ActionTakenByUserId);
+    }
 
     /// <summary>
     ///   The actions that can be taken

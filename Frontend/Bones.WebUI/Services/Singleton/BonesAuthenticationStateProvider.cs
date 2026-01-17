@@ -36,7 +36,7 @@ public class BonesAuthenticationStateProvider(LocalStorageService localStorageSe
 
             try
             {
-                GetOrCreateMySessionResponse? session = await ApiClient.Account.My.Session.GetAsync(req => req.QueryParameters.SessionId = sessionId.Value.ToString());
+                GetOrCreateMySessionResponse? session = await ApiClient.MyAccount.Session.GetAsync(req => req.QueryParameters.SessionId = sessionId.Value.ToString());
                 if (session is null)
                 {
                     throw new InvalidOperationException("Received null session from API");

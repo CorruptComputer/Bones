@@ -10,6 +10,3 @@ dotnet tool restore
 cd ../../Frontend/Bones.WebUI/
 dotnet workload restore
 
-cd ../../Services/Bones.Api/
-dotnet tool update swashbuckle.aspnetcore.cli
-dotnet tool restore

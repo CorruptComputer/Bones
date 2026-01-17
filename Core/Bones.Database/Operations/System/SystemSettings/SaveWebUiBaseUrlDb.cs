@@ -39,7 +39,7 @@ public class SaveWebUiBaseUrlDb(BonesDbContext dbContext) : IRequestHandler<Save
             ActionDateTime = DateTimeOffset.Now,
             ActionTaken = SystemAudit.Actions.SystemSettingUpdate,
             SettingChanged = SystemSetting.SettingType.WebUIBaseUrl,
-            ActionTakenBy = request.ActionTakenBy,
+            ActionTakenByUserId = request.ActionTakenBy.Id,
             Reason = request.Reason
         };
         dbContext.SystemAudits.Add(audit);

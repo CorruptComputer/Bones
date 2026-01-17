@@ -175,11 +175,16 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
 
             if (taskResponse is not null)
             {
-                _originalValues = _currentValues = taskResponse.ItemValues.OrderBy(x => x.OrderNumber);
                 _title = taskResponse.Title;
                 _layoutId = taskResponse.LayoutId;
 
-                InitializeFieldStores();
+                GetItemVersionByIdResponse? itemVersionResponse = await apiClient.ItemVersion[taskResponse.LatestItemVersionId].GetAsync();
+
+                if (itemVersionResponse is not null)
+                {
+                    _originalValues = _currentValues = itemVersionResponse.ItemValues.OrderBy(x => x.OrderNumber);
+                    InitializeFieldStores();
+                }
             }
         }
         catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
@@ -208,11 +213,16 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
             GetAssetByIdResponse? assetResponse = await apiClient.Asset[ItemId.Value].GetAsync();
             if (assetResponse is not null)
             {
-                _originalValues = _currentValues = assetResponse.ItemValues.OrderBy(x => x.OrderNumber);
                 _title = assetResponse.Title;
                 _layoutId = assetResponse.LayoutId;
 
-                InitializeFieldStores();
+                GetItemVersionByIdResponse? itemVersionResponse = await apiClient.ItemVersion[assetResponse.LatestItemVersionId].GetAsync();
+
+                if (itemVersionResponse is not null)
+                {
+                    _originalValues = _currentValues = itemVersionResponse.ItemValues.OrderBy(x => x.OrderNumber);
+                    InitializeFieldStores();
+                }
             }
         }
         catch (ApiException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
@@ -360,7 +370,7 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
                     FieldValues = values
                 };
 
-                AssetActionResponse? resp = await apiClient.Asset.Action.Create.PostAsync(request);
+                AssetActionResponse? resp = await apiClient.Asset.Create.PostAsync(request);
 
                 if (resp is null)
                 {
@@ -457,7 +467,7 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
             {
                 CreateTaskVersionAction request = new()
                 {
-                    TaskId = ItemId ?? throw new BonesException("Task ID cannot be null"),
+                    TaskId = ItemId!.Value,
                     TaskLayoutId = _layoutId,
                     ActionDateTime = DateTime.Now,
                     Title = _title,
@@ -470,14 +480,14 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
             {
                 CreateAssetVersionAction request = new()
                 {
-                    AssetId = ItemId ?? throw new BonesException("Asset ID cannot be null"),
+                    AssetId = ItemId!.Value,
                     AssetLayoutId = _layoutId,
                     ActionDateTime = DateTime.Now,
                     Title = _title,
                     FieldValues = values
                 };
 
-                await apiClient.Asset.Action.CreateVersion.PostAsync(request);
+                await apiClient.Asset[ItemId.Value].CreateVersion.PostAsync(request);
             }
 
             _editing = false;

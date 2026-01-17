@@ -42,6 +42,6 @@ public sealed class GetTaskAssigneeSlotsById(ISender sender) : IRequestHandler<G
             return QueryResponse<List<ItemAssignmentSlot>?>.Fail("Task not found");
         }
 
-        return task.Item.Current?.ItemLayoutVersion.AssigneeSlots;
+        return task.Item?.Current?.ItemLayoutVersion?.ItemAssignmentSlots;
     }
 }

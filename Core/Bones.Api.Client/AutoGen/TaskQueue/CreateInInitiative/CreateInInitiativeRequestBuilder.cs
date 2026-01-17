@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.TaskQueue.CreateInInitiative
     /// <summary>
     /// Builds and executes requests for operations under \TaskQueue\create-in-initiative
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class CreateInInitiativeRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

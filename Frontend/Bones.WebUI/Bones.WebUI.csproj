@@ -1,40 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
     <PropertyGroup>
-        <!-- Build info -->
-        <TargetFramework>net10.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <PublishTrimmed>false</PublishTrimmed>
 
-        <!-- Assembly info -->
-        <VersionPrefix>0.0.1</VersionPrefix>
-        <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
-        <Authors>Nickolas Gupton</Authors>
-        <RepositoryUrl>https://github.com/CorruptComputer/Bones</RepositoryUrl>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
-        <SourceRevisionId>develop</SourceRevisionId>
         <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
         <!-- Recommended for mobile browsers: https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly?view=aspnetcore-8.0#decrease-maximum-heap-size-for-some-mobile-device-browsers -->
         <EmccMaximumHeapSize>268435456</EmccMaximumHeapSize>
     </PropertyGroup>
-
-    <!-- This seems like it could be useful -->
-    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    </PropertyGroup>
-
-    <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
-    <Target Condition="$(Configuration) == 'Release'" Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
-        <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8" ConsoleToMSBuild="True" IgnoreExitCode="False">
-            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
-        </Exec>
-    </Target>
 
     <ItemGroup Condition="$(Configuration) == 'Debug'">
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.2" PrivateAssets="all" />

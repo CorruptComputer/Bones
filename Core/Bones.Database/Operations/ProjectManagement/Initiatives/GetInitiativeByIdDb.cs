@@ -25,7 +25,7 @@ public sealed class GetInitiativesByIdDb(BonesDbContext dbContext) : IRequestHan
     public async Task<QueryResponse<Initiative>> Handle(Query request, CancellationToken cancellationToken)
     {
         return await dbContext.Initiatives
-            .Include(i => i.Queues).ThenInclude(q => q.Tasks)
+            .Include(i => i.Queues).ThenInclude(q => q.BonesTasks)
             .Include(i => i.Project)
             .FirstOrDefaultAsync(i => i.Id == request.InitiativeId, cancellationToken);
     }

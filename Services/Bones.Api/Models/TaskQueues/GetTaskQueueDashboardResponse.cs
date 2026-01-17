@@ -24,32 +24,32 @@ public sealed record GetTaskQueueDashboardResponse
         return new()
         {
             QueueName = queue.Name,
-            Tasks = [.. queue.Tasks.Select(DashboardTaskModel.FromTask)]
+            Tasks = [.. queue.BonesTasks.Select(DashboardTaskModel.FromTask)]
         };
     }
 
     /// <summary>
-    ///   Model for a  in the dashboard
+    ///   Model for a Task in the dashboard
     /// </summary>
     public record DashboardTaskModel
     {
         /// <summary>
-        ///   The ID of the
+        ///   The ID of the Task
         /// </summary>
         public required Guid Id { get; init; }
 
         /// <summary>
-        ///   The friendly ID of the
+        ///   The friendly ID of the Task
         /// </summary>
         public required string FriendlyId { get; init; }
 
         /// <summary>
-        ///   The title of the
+        ///   The title of the Task
         /// </summary>
         public required string Title { get; init; }
 
         /// <summary>
-        ///   The date and time the  was added to the queue
+        ///   The date and time the Task was added to the queue
         /// </summary>
         public required DateTimeOffset AddedToQueueDateTime { get; init; }
 
@@ -58,7 +58,7 @@ public sealed record GetTaskQueueDashboardResponse
             return new()
             {
                 Id = task.Id,
-                FriendlyId = task.Item.FriendlyId,
+                FriendlyId = task.Item!.FriendlyId,
                 Title = task.Item.Current?.Title ?? string.Empty,
                 AddedToQueueDateTime = task.AddedToQueueDateTime
             };

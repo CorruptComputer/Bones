@@ -4,7 +4,7 @@ using Bones.Database.DbSets.Items;
 using Bones.Database.DbSets.ProjectManagement;
 using Bones.Database.DbSets.TaskManagement;
 using Bones.Logic.Features.Assets;
-using Bones.Logic.Features.Item;
+using Bones.Logic.Features.Items;
 using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.Projects.Presets.Models;
 using Bones.Logic.Features.Tasks.TaskQueues;
@@ -118,7 +118,7 @@ internal abstract class PresetBase
             {
                 LayoutId = layout.Id,
                 LayoutVersionId = layout.Current.Id,
-                AssigneeSlotIds = [.. layout.Current.AssigneeSlots.Select(ad => ad.Id)],
+                AssigneeSlotIds = [.. layout.Current.ItemAssignmentSlots.Select(ad => ad.Id)],
             };
         }
 

@@ -42,6 +42,6 @@ public sealed class GetTaskCurrentAssigneesById(ISender sender) : IRequestHandle
             return QueryResponse<List<ItemAssignee>?>.Fail("Task not found");
         }
 
-        return task.Item.Current?.Assignees;
+        return task.Item?.Current?.ItemAssignees;
     }
 }

@@ -25,7 +25,7 @@ public sealed class QueueDeleteTaskVersionByIdDb(BonesDbContext dbContext) : IRe
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
         ItemVersion? taskVersion = await dbContext.ItemVersions
-            .Include(itemVersion => itemVersion.Values)
+            .Include(itemVersion => itemVersion.ItemValues)
             .FirstOrDefaultAsync(iv => iv.Id == request.ItemVersionId, cancellationToken);
 
         if (taskVersion == null)
@@ -33,7 +33,7 @@ public sealed class QueueDeleteTaskVersionByIdDb(BonesDbContext dbContext) : IRe
             return CommandResponse.Fail("Invalid ItemVersionId.");
         }
 
-        foreach (ItemValue value in taskVersion.Values)
+        foreach (ItemValue value in taskVersion.ItemValues)
         {
             value.DeleteFlag = true;
         }

@@ -40,18 +40,18 @@ public sealed class CreateTaskVersionDb(BonesDbContext dbContext) : IRequestHand
     {
         BonesTask? task = await dbContext.Tasks
             .Include(t => t.Item)
-                .ThenInclude(i => i.Versions)
-                .ThenInclude(v => v.Assignees)
+                .ThenInclude(i => i!.Versions)
+                .ThenInclude(v => v.ItemAssignees)
             .FirstOrDefaultAsync(t => t.Id == request.TaskId, cancellationToken);
 
-        if (task == null)
+        if (task is null || task.Item is null)
         {
             return CommandResponse.Fail("Invalid Item ID.");
         }
 
         ItemLayoutVersion? layoutVersion = await dbContext.ItemLayoutVersions
-            .Include(lv => lv.FieldLinks)
-                .ThenInclude(fl => fl.FieldVersion)
+            .Include(lv => lv.ItemLayoutFieldVersionLinks)
+                .ThenInclude(fl => fl.ItemFieldVersion)
             .FirstOrDefaultAsync(lv => lv.Id == request.TaskLayoutVersionId, cancellationToken);
 
         if (layoutVersion == null)
@@ -59,24 +59,49 @@ public sealed class CreateTaskVersionDb(BonesDbContext dbContext) : IRequestHand
             return CommandResponse.Fail("Invalid LayoutVersionId.");
         }
 
-        if (request.Values.Count > layoutVersion.FieldLinks.Count)
+        if (request.Values.Count > layoutVersion.ItemLayoutFieldVersionLinks.Count)
         {
             return CommandResponse.Fail("Invalid values provided.");
         }
 
-        List<ItemValue> values = [];
+        Item? item = await dbContext.Items
+            .Include(i => i.Versions)
+                .ThenInclude(i => i.ItemAssignees)
+            .FirstOrDefaultAsync(i => i.Id == task.ItemId, cancellationToken);
+
+        if (item is null)
+        {
+            return CommandResponse.Fail("Invalid Item ID.");
+        }
+
+        List<ItemAssignee> assignees = item.Current?.ItemAssignees ?? [];
+        long version = ++item.CurrentVersion;
+
+        EntityEntry<ItemVersion> newItemVersionEntry = dbContext.ItemVersions.Add(new()
+        {
+            ItemId = item.Id,
+            Title = request.Title,
+            Version = version,
+            CreateDateTime = request.ActionDateTime,
+            ItemLayoutVersionId = layoutVersion.Id,
+            ItemAssignees = assignees
+        });
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
         foreach ((Guid fieldId, object? value) in request.Values)
         {
-            ItemFieldVersion? field = layoutVersion.FieldLinks.Find(f => f.FieldVersion.Id == fieldId)?.FieldVersion;
-            if (field == null)
+            ItemFieldVersion? itemFieldVersion = layoutVersion.ItemLayoutFieldVersionLinks.Find(f => f.ItemFieldVersionId == fieldId)?.ItemFieldVersion;
+            if (itemFieldVersion == null)
             {
                 return CommandResponse.Fail($"Invalid field name provided: {fieldId}");
             }
 
             ItemValue taskValue = new()
             {
-                Field = field,
-
+                ItemFieldVersionId = itemFieldVersion.Id,
+                ItemVersionId = newItemVersionEntry.Entity.Id,
+                ItemFieldVersion = itemFieldVersion
             };
 
             if (value is not null)
@@ -84,37 +109,20 @@ public sealed class CreateTaskVersionDb(BonesDbContext dbContext) : IRequestHand
                 bool valid = taskValue.TrySetValue(value);
                 if (!valid)
                 {
-                    return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(field.Type)}' field '{fieldId}': {value}");
+                    return CommandResponse.Fail($"Invalid value provided for '{Enum.GetName(itemFieldVersion.Type)}' field '{fieldId}': {value}");
                 }
             }
-            else if (field.IsRequired)
+            else if (itemFieldVersion.IsRequired)
             {
                 return CommandResponse.Fail($"Field '{fieldId}' is required, but no value was provided.");
             }
             // else if its null and not required we can just skip doing anything else
 
-            values.Add(taskValue);
+            dbContext.ItemValues.Add(taskValue);
         }
-
-        List<ItemAssignee> assignees = task.Item.Current?.Assignees ?? [];
-
-        int version = ++task.Item.CurrentVersion;
-
-        task.Item.Versions.Add(new()
-        {
-            Item = task.Item,
-            Title = request.Title,
-            Version = version,
-            CreateDateTime = request.ActionDateTime,
-            ItemLayoutVersion = layoutVersion,
-            Values = values,
-            Assignees = assignees
-        });
-
-        EntityEntry<BonesTask> updated = dbContext.Tasks.Update(task);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return CommandResponse.Pass(nameof(ItemVersion), updated.Entity.Item.Versions.FirstOrDefault(v => v.Version == version)?.Id);
+        return CommandResponse.Pass(nameof(ItemVersion), newItemVersionEntry.Entity.Id);
     }
 }

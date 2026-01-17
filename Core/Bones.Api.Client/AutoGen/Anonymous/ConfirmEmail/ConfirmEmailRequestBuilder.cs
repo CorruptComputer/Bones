@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.ConfirmEmail
     /// <summary>
     /// Builds and executes requests for operations under \Anonymous\confirm-email
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class ConfirmEmailRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -74,7 +74,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.ConfirmEmail
         /// <summary>
         /// Confirms a users email address
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
         public partial class ConfirmEmailRequestBuilderGetQueryParameters 
         {
             #pragma warning disable CS1591

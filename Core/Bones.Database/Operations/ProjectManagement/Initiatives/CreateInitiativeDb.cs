@@ -35,7 +35,7 @@ public sealed class CreateInitiativeDb(BonesDbContext dbContext) : IRequestHandl
         EntityEntry<Initiative> created = await dbContext.Initiatives.AddAsync(new()
         {
             Name = request.Name,
-            Project = project
+            ProjectId = project.Id
         }, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);

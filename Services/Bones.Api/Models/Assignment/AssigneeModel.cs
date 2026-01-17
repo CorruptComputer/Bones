@@ -56,9 +56,9 @@ public sealed record AssigneeModel
         return new()
         {
             AssigneeId = assignee.Id,
-            AssignmentSlotId = assignee.Slot.Id,
-            AssignedUserId = assignee.AssignedUser?.Id,
-            AssignedRoleId = assignee.AssignedRole?.Id,
+            AssignmentSlotId = assignee.ItemAssignmentSlotId,
+            AssignedUserId = assignee.AssignedUserId,
+            AssignedRoleId = assignee.AssignedRoleId,
             AssigneeDisplayName = displayName,
             AssignmentState = assignee.State
         };

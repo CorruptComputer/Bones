@@ -1,40 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
-        <!-- Build info -->
-        <TargetFramework>net10.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
         <OutputType>Exe</OutputType>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
-        <!-- Assembly info -->
-        <VersionPrefix>0.0.1</VersionPrefix>
-        <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
-        <Authors>Nickolas Gupton</Authors>
-        <RepositoryUrl>https://github.com/CorruptComputer/Bones</RepositoryUrl>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
-        <SourceRevisionId>develop</SourceRevisionId>
-        <NoDefaultLaunchSettingsFile>True</NoDefaultLaunchSettingsFile>
     </PropertyGroup>
 
     <!-- install the systemd service when installing the deb/rpm -->
     <PropertyGroup Condition="$(Configuration) == 'Release'">
         <InstallService>true</InstallService>
     </PropertyGroup>
-
-    <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
-    <Target Condition="$(Configuration) == 'Release'" Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
-        <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8"
-              ConsoleToMSBuild="True" IgnoreExitCode="False">
-            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
-        </Exec>
-    </Target>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">

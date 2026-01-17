@@ -1,5 +1,4 @@
 using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.Items;
 using Bones.Database.Operations.AssetManagement;
 using Bones.Shared.Consts;
@@ -36,12 +35,12 @@ public sealed class GetAssetCurrentAssigneesById(ISender sender) : IRequestHandl
             return QueryResponse<List<ItemAssignee>?>.Forbid();
         }
 
-        Asset? asset = await sender.Send(new GetAssetCurrentAssigneesByIdDb.Query(request.AssetId), cancellationToken);
-        if (asset is null)
+        List<ItemAssignee>? assignees = await sender.Send(new GetAssetCurrentAssigneesByIdDb.Query(request.AssetId), cancellationToken);
+        if (assignees is null)
         {
-            return QueryResponse<List<ItemAssignee>?>.Fail("Asset not found");
+            return QueryResponse<List<ItemAssignee>?>.Fail("Assignees not found");
         }
 
-        return asset.Item.Current?.Assignees;
+        return assignees;
     }
 }

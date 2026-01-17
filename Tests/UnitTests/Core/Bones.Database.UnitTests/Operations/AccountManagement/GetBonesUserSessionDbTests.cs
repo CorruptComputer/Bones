@@ -127,7 +127,7 @@ public class GetBonesUserSessionDbTests : TestBase
     private async Task<BonesUserSession> CreateSession()
     {
         QueryResponse<BonesUserSession> session = await Sender.Send(
-            new CreateAndGetBonesUserSessionDb.Query(await GetBackgroundServiceUserAsync(), _testIp, string.Empty)
+            new CreateAndGetBonesUserSessionDb.Query((await GetBackgroundServiceUserAsync()).Id, _testIp, string.Empty)
         );
 
         session.Result.ShouldNotBeNull();

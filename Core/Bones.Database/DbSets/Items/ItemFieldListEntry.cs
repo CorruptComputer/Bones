@@ -56,9 +56,20 @@ public class ItemFieldListEntry
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational property to the ItemFieldVersion this entry belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public ItemFieldVersion? ItemFieldVersion { get; set; }
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<ItemFieldListEntry> builder)
     {
         // Remove deleted items from being included in default queries
         builder.HasQueryFilter(x => !x.DeleteFlag);
+
+        builder.HasOne(ifle => ifle.ItemFieldVersion)
+               .WithMany(ifv => ifv.PossibleValues)
+               .HasForeignKey(ifle => ifle.ItemFieldVersionId);
     }
 }

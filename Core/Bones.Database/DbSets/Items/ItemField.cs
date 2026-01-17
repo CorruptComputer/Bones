@@ -23,20 +23,9 @@ public class ItemField
     public DateTimeOffset CreateDateTime { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///   The project this ItemField belongs to
+    ///   The ID of the project this ItemField belongs to
     /// </summary>
-    public required Project Project { get; set; }
-
-    /// <summary>
-    ///   The latest version of this field
-    /// </summary>
-    [NotMapped]
-    public ItemFieldVersion? Current => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
-
-    /// <summary>
-    ///   The versions for this Item field
-    /// </summary>
-    public List<ItemFieldVersion> Versions { get; set; } = [];
+    public required Guid ProjectId { get; init; }
 
     /// <summary>
     ///   Disables creating of new layouts with this field,
@@ -44,9 +33,37 @@ public class ItemField
     /// </summary>
     public bool DeleteFlag { get; set; } = false;
 
+    #region Navigational Properties
+    /// <summary>
+    ///   Navigational Property for the project this ItemField belongs to, null if not .Include()'d in the query
+    /// </summary>
+    public Project? Project { get; set; }
+
+    /// <summary>
+    ///   Navigational Property for the versions of this ItemField, empty if not .Include()'d in the query
+    /// </summary>
+    public List<ItemFieldVersion> Versions { get; set; } = [];
+    #endregion
+
+    #region Non-Mapped Properties
+    /// <summary>
+    ///   The latest version of this field
+    /// </summary>
+    [NotMapped]
+    public ItemFieldVersion? Current => Versions.OrderByDescending(v => v.Version).FirstOrDefault();
+    #endregion
+
     internal static void BuildTable(EntityTypeBuilder<ItemField> builder)
     {
         // Remove deleted items from being included in default queries
-        builder.HasQueryFilter(x => !x.DeleteFlag);
+        builder.HasQueryFilter(itf => !itf.DeleteFlag);
+
+        builder.HasOne(itf => itf.Project)
+            .WithMany()
+            .HasForeignKey(itf => itf.ProjectId);
+
+        builder.HasMany(itf => itf.Versions)
+            .WithOne(ifv => ifv.ItemField)
+            .HasForeignKey(ifv => ifv.ItemFieldId);
     }
 }

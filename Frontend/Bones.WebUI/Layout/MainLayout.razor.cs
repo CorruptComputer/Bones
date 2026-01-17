@@ -159,7 +159,7 @@ public partial class MainLayout(BonesAuthenticationStateProvider authStateProvid
 
         try
         {
-            List<GetProjectQuickSelectResponse>? projects = await apiClient.Project.Projects.QuickSelect.GetAsync();
+            List<GetProjectQuickSelectResponse>? projects = await apiClient.ProjectSearch.QuickSelect.GetAsync();
 
             if (projects is null)
             {

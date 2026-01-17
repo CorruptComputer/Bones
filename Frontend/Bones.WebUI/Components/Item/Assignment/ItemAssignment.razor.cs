@@ -55,11 +55,11 @@ public partial class ItemAssignment(BonesApiClient apiClient, ILogger<ItemAssign
 
             if (TaskId.HasValue)
             {
-                response = await apiClient.Assignment.Task[TaskId.Value].Latest.GetAsync();
+                response = await apiClient.Task[TaskId.Value].Assignments.GetAsync();
             }
             else if (AssetId.HasValue)
             {
-                response = await apiClient.Assignment.Asset[AssetId.Value].Latest.GetAsync();
+                response = await apiClient.Asset[AssetId.Value].Assignments.GetAsync();
             }
 
             if (response is not null)

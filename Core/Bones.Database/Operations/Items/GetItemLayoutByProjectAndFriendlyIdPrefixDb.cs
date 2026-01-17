@@ -29,8 +29,8 @@ public sealed class GetItemLayoutByProjectAndFriendlyIdPrefixDb(BonesDbContext d
     {
         return await dbContext.ItemLayouts
             .Include(x => x.Versions)
-            .ThenInclude(x => x.FieldLinks)
-            .ThenInclude(x => x.FieldVersion)
-            .FirstOrDefaultAsync(x => x.Project.Id == request.ProjectId && x.FriendlyIdPrefix == request.FriendlyIdPrefix, cancellationToken);
+            .ThenInclude(x => x.ItemLayoutFieldVersionLinks)
+            .ThenInclude(x => x.ItemFieldVersion)
+            .FirstOrDefaultAsync(x => x.ProjectId == request.ProjectId && x.FriendlyIdPrefix == request.FriendlyIdPrefix, cancellationToken);
     }
 }

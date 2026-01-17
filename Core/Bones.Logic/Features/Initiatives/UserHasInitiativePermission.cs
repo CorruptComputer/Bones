@@ -49,7 +49,7 @@ public sealed class UserHasInitiativePermission(UserManager<BonesUser> userManag
         }
 
         bool? projectPermission = await sender.Send(
-            new UserHasProjectPermission.Query(initiative.Project.Id, request.User, request.Claim),
+            new UserHasProjectPermission.Query(initiative.ProjectId, request.User, request.Claim),
             cancellationToken);
 
         if (projectPermission == true)

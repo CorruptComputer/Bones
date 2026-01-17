@@ -1,46 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <!-- Build info -->
-        <TargetFramework>net10.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
         <OutputType>Library</OutputType>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
-        <!-- Assembly info -->
-        <VersionPrefix>0.0.1</VersionPrefix>
-        <VersionSuffix>$(SourceRevisionId)</VersionSuffix>
-        <Authors>Nickolas Gupton</Authors>
-        <RepositoryUrl>https://github.com/CorruptComputer/Bones</RepositoryUrl>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <SourceControlInformationFeatureSupported>true</SourceControlInformationFeatureSupported>
-        <SourceRevisionId>develop</SourceRevisionId>
     </PropertyGroup>
-
-    <!-- This seems like it could be useful -->
-    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    </PropertyGroup>
-
-    <!-- If building in release mode, replace the SourceRevisionId with the 8 character git commit hash -->
-    <Target Condition="$(Configuration) == 'Release'" Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
-        <Exec Command="git describe --long --always --dirty --exclude=* --abbrev=8" ConsoleToMSBuild="True" IgnoreExitCode="False">
-            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
-        </Exec>
-    </Target>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2" />
         <PackageReference Include="ReQuesty.Runtime" Version="0.0.7" />
     </ItemGroup>
 
-    <Target Name="GenerateApiClient" BeforeTargets="BeforeBuild" Condition="$(Configuration) == 'Debug'">
+    <Target Name="GenerateApiClient" AfterTargets="BeforeBuild" Condition="$(Configuration) == 'Debug'">
+        <Message Text="Installing ReQuesty" Importance="High" />
+        <Exec Command="dotnet tool install requesty --allow-downgrade --version 0.0.2" />
+
         <Message Text="Generating API Client" Importance="High" />
-        <Exec Command="./requesty-bin/requesty generate --openapi ../../../Bones/Services/Bones.Api/OpenApi/swagger.json --output ./AutoGen --class-name AutoGenBonesApiClient --namespace-name Bones.Api.Client.AutoGen --clean-output" />
+        <Exec Command="dotnet tool run requesty generate --openapi ../../../Bones/Services/Bones.Api/OpenApi/swagger.json --output ./AutoGen --class-name AutoGenBonesApiClient --namespace-name Bones.Api.Client.AutoGen --clean-output" />
     </Target>
 
     <ItemGroup>

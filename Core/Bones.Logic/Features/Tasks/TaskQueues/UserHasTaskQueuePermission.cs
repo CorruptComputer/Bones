@@ -49,7 +49,7 @@ public class UserHasTaskQueuePermission(UserManager<BonesUser> userManager, Role
         }
 
         bool? initiativePermission = await sender.Send(
-            new UserHasInitiativePermission.Query(taskQueue.Initiative.Id, request.User, request.Claim),
+            new UserHasInitiativePermission.Query(taskQueue.InitiativeId, request.User, request.Claim),
             cancellationToken);
 
         if (initiativePermission == true)

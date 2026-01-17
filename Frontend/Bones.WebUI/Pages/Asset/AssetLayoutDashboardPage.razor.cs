@@ -50,7 +50,7 @@ public partial class AssetLayoutDashboardPage(BonesApiClient apiClient, ILogger<
     private async Task FetchFromAPI()
     {
         AssetsLoading = true;
-        GetAssetLayoutDashboardResponse? dashboardResponse = await apiClient.Asset.Layout[AssetLayoutId].Dashboard.GetAsync();
+        GetAssetLayoutDashboardResponse? dashboardResponse = await apiClient.AssetSearch.ByLayout[AssetLayoutId].GetAsync();
         if (dashboardResponse is null)
         {
             logger.LogError("Failed to get asset layout dashboard for layout ID {AssetLayoutId}", AssetLayoutId);

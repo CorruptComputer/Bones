@@ -38,7 +38,7 @@ public partial class ChangePasswordPage(BonesApiClient apiClient, NavigationMana
         {
             Guid currentSessionId = await localStorageService.GetItemAsync<Guid>(LocalStorageConsts.SESSION_ID_KEY, string.Empty, CancellationToken.None);
 
-            await apiClient.Account.My.Password.PutAsync(new()
+            await apiClient.MyAccount.Password.PutAsync(new()
             {
                 CurrentPassword = CurrentPassword,
                 NewPassword = NewPassword,

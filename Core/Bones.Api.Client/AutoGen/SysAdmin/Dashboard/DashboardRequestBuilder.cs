@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.SysAdmin.Dashboard
     /// <summary>
     /// Builds and executes requests for operations under \SysAdmin\dashboard
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class DashboardRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

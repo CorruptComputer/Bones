@@ -11,7 +11,7 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response for the GetAssetLayoutDashboardAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class GetAssetLayoutDashboardResponse : IParsable
     {
         /// <summary>The assets in this layout, ordered by date added from oldest to newest</summary>

@@ -45,7 +45,7 @@ public class UserHasAssetPermission(ISender sender)
         }
 
         bool? projectPermission = await sender.Send(
-            new UserHasProjectPermission.Query(asset.Project.Id, request.User, request.Claim),
+            new UserHasProjectPermission.Query(asset.ProjectId, request.User, request.Claim),
             cancellationToken);
 
         if (projectPermission == true)

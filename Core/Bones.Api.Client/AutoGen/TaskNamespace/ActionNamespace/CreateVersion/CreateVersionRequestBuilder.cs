@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.ActionNamespace.CreateVersion
     /// <summary>
     /// Builds and executes requests for operations under \Task\action\create-version
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.1")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class CreateVersionRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

@@ -3,7 +3,7 @@ using Bones.Database.DbSets.AccountManagement;
 using Bones.Database.DbSets.AssetManagement;
 using Bones.Database.DbSets.Items;
 using Bones.Logic.Features.Assets;
-using Bones.Logic.Features.Item;
+using Bones.Logic.Features.Items;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
 
@@ -44,8 +44,14 @@ public sealed record class CreateAssetAction : AssetActionBase
 
         Dictionary<Guid, object?> fieldValues = [];
 
-        foreach (ItemFieldVersion fieldVersion in layout.Current.FieldLinks.Select(x => x.FieldVersion))
+        foreach (ItemFieldVersion? fieldVersion in layout.Current.ItemLayoutFieldVersionLinks.Select(x => x.ItemFieldVersion))
         {
+            if (fieldVersion is null)
+            {
+                Log.Error("Null fieldVersion encountered in CreateAssetAction");
+                continue;
+            }
+
             ItemValueModel? fieldValue = FieldValues.FirstOrDefault(x => x.FieldVersionId == fieldVersion.Id);
 
             object? value = fieldVersion.Type switch

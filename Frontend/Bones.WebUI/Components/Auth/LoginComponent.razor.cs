@@ -53,7 +53,7 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
             });
 
             // Now refresh the Authentication State:
-            GetMyProfileResponse? me = await apiClient.Account.My.Profile.GetAsync();
+            GetMyProfileResponse? me = await apiClient.MyAccount.Profile.GetAsync();
             if (me is null)
             {
                 logger.LogError("Error getting my profile after logging in");
@@ -61,7 +61,7 @@ public partial class LoginComponent(BonesApiClient apiClient, BonesAuthenticatio
                 return;
             }
 
-            GetOrCreateMySessionResponse? session = await apiClient.Account.My.Session.GetAsync();
+            GetOrCreateMySessionResponse? session = await apiClient.MyAccount.Session.GetAsync();
 
             if (session is null)
             {

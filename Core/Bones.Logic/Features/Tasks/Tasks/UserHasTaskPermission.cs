@@ -45,7 +45,7 @@ public class UserHasTaskPermission(ISender sender)
         }
 
         bool? queuePermission = await sender.Send(
-            new UserHasTaskQueuePermission.Query(task.TaskQueue.Id, request.User, request.Claim),
+            new UserHasTaskQueuePermission.Query(task.TaskQueueId, request.User, request.Claim),
             cancellationToken);
 
         if (queuePermission == true)
