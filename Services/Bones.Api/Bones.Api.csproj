@@ -11,8 +11,8 @@
 
     <ItemGroup>
         <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="10.1.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="10.1.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.2" />
     </ItemGroup>
 
     <Target Name="CreateOpenApiDocument" AfterTargets="Build" Condition="$(Configuration) == 'Debug'">
