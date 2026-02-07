@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
 using Bones.Database.DbSets.System;
 
 namespace Bones.Database.Operations.System.SystemSettings;

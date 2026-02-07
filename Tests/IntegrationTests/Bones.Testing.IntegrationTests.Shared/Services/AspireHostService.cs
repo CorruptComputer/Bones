@@ -80,16 +80,10 @@ public class AspireHostService : IAsyncDisposable
 
         Environment.SetEnvironmentVariable("BonesBackendConfiguration__UseInMemoryDb", "true");
         Environment.SetEnvironmentVariable("BonesBackendConfiguration__InMemoryDbId", Guid.NewGuid().ToString());
-        // Name is a bit misleading in this context, used to indicate if default data should be loaded for manual testing.
-        // Anything needed in these tests can be created by the tests themselves.
-        Environment.SetEnvironmentVariable("BonesBackendConfiguration__SetupForTesting", "false");
-        Environment.SetEnvironmentVariable("ApiOnly", "true");
+        Environment.SetEnvironmentVariable("BonesBackendConfiguration__SetupForTesting", "true");
+        Environment.SetEnvironmentVariable("BonesBackendConfiguration__ApiOnly", "true");
 
         builder.Configuration.AddEnvironmentVariables();
-        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>()
-        {
-            { "ApiOnly", "true" }
-        });
 
         DistributedApplication app = await builder.BuildAsync(cancellationToken);
         ResourceNotificationService resourceNotificationService = app.Services.GetRequiredService<ResourceNotificationService>();

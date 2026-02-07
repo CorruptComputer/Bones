@@ -1,8 +1,8 @@
 using Bones.Database.DbConsts;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
-using Bones.Database.Operations.AccountManagement;
-using Bones.Database.Operations.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
+using Bones.Database.Operations.Accounts;
+using Bones.Database.Operations.Audits;
 
 namespace Bones.Logic.Features.Accounts;
 

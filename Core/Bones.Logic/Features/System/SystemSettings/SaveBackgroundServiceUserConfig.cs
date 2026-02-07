@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
-using Bones.Database.Operations.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
+using Bones.Database.Operations.Audits;
 using Bones.Shared.Extensions;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;

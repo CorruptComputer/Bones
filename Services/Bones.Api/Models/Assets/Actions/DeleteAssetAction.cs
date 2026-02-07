@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 
 namespace Bones.Api.Models.Assets.Actions;
 

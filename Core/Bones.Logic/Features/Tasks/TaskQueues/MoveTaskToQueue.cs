@@ -1,7 +1,8 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.DbSets.Projects;
 using Bones.Database.Operations.TaskManagement.TaskQueues;
-using Bones.Database.Operations.TaskManagement.Tasks;
+using Bones.Database.Operations.Items.Types.Tasks;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Tasks.TaskQueues;

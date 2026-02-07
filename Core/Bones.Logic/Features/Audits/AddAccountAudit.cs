@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
-using Bones.Database.Operations.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
+using Bones.Database.Operations.Audits;
 
 namespace Bones.Logic.Features.Audits;
 

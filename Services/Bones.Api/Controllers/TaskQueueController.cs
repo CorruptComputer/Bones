@@ -1,8 +1,8 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.TaskQueues;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.DbSets.Projects;
 using Bones.Logic.Features.Items;
 using Bones.Logic.Features.Tasks.TaskQueues;
 

@@ -4258,19 +4258,6 @@
   },
   "components": {
     "schemas": {
-      "AddressFields": {
-        "enum": [
-          "none",
-          "streetNumber",
-          "streetName",
-          "cityOrPlace",
-          "stateOrProvince",
-          "postalCode",
-          "county",
-          "country"
-        ],
-        "type": "string"
-      },
       "ApiConfigResponse": {
         "required": [
           "apiVersion",
@@ -4639,12 +4626,6 @@
             },
             "description": "If the Type of this field is a ValueList, the possible values this can have",
             "nullable": true
-          },
-          "geoLocationType": {
-            "$ref": "#/components/schemas/GeoLocationType"
-          },
-          "requiredAddressFields": {
-            "$ref": "#/components/schemas/AddressFields"
           }
         },
         "additionalProperties": false,
@@ -4681,12 +4662,6 @@
             },
             "description": "If the field is a ValueList, the possible values",
             "nullable": true
-          },
-          "geoLocationType": {
-            "$ref": "#/components/schemas/GeoLocationType"
-          },
-          "requiredAddressFields": {
-            "$ref": "#/components/schemas/AddressFields"
           }
         },
         "additionalProperties": false,
@@ -4872,30 +4847,30 @@
             "properties": {
               "taskId": {
                 "type": "string",
-                "description": "The ID of the  to perform the action on",
+                "description": "The ID of the task to perform the action on",
                 "format": "uuid"
               },
               "taskLayoutId": {
                 "type": "string",
-                "description": "The ID of the  layout (not version, automatically uses the current version)",
+                "description": "The ID of the task layout (not version, automatically uses the current version)",
                 "format": "uuid"
               },
               "title": {
                 "type": "string",
-                "description": "The title of the"
+                "description": "The title of the task"
               },
               "fieldValues": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ItemValueModel"
                 },
-                "description": "The fields of the"
+                "description": "The fields of the task"
               }
             },
             "additionalProperties": false
           }
         ],
-        "description": "Action to create a new version of a ."
+        "description": "Action to create a new version of a task."
       },
       "DashboardAssetModel": {
         "required": [
@@ -5087,17 +5062,7 @@
           "decimal",
           "boolean",
           "dateTime",
-          "valueList",
-          "geoLocation"
-        ],
-        "type": "string"
-      },
-      "GeoLocationType": {
-        "enum": [
-          "osmObject",
-          "latLon",
-          "address",
-          "geometry"
+          "valueList"
         ],
         "type": "string"
       },
@@ -5430,12 +5395,6 @@
             },
             "description": "If the field is a ValueList, the possible values",
             "nullable": true
-          },
-          "geoLocationType": {
-            "$ref": "#/components/schemas/GeoLocationType"
-          },
-          "requiredAddressFields": {
-            "$ref": "#/components/schemas/AddressFields"
           }
         },
         "additionalProperties": false,
@@ -6003,7 +5962,7 @@
             "items": {
               "$ref": "#/components/schemas/DashboardTaskModel"
             },
-            "description": "The s in this queue, ordered by date added from oldest to newest"
+            "description": "The tasks in this queue, ordered by date added from oldest to newest"
           }
         },
         "additionalProperties": false,
@@ -6411,12 +6370,6 @@
             },
             "description": "If the field is a ValueList, the possible values",
             "nullable": true
-          },
-          "geoLocationType": {
-            "$ref": "#/components/schemas/GeoLocationType"
-          },
-          "requiredAddressFields": {
-            "$ref": "#/components/schemas/AddressFields"
           }
         },
         "additionalProperties": false,

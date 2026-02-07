@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Audits;
 using Bones.Logic.Features.System;
 using Bones.Shared.Extensions;
 using FluentValidation.Results;
@@ -46,7 +46,7 @@ public sealed class ChangeEmail(UserManager<BonesUser> userManager, ISender send
             await sender.Send(new QueueConfirmationEmail.Command(request.UserToChange, request.NewEmail, true), cancellationToken);
             await sender.Send(new AddAccountAuditDb.Command(
                 request.UserToChange,
-                Database.DbSets.Audit.AccountAudit.Actions.UpdateEmail,
+                Database.DbSets.Audits.AccountAudit.Actions.UpdateEmail,
                 request.AuditUser ?? request.UserToChange,
                 $"Changed email from {request.UserToChange.Email} to {request.NewEmail}"), cancellationToken);
 

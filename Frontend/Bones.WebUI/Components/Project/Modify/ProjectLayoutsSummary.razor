@@ -1,0 +1,20 @@
+﻿@using Bones.WebUI.Models
+
+<div style="display: flex;">
+    <MudText>Number of layouts: @ItemLayoutsCount</MudText>
+    <MudSpacer/>
+    <MudButton Href="@GetCreateItemLayoutUrl(ProjectId)">Create Layout</MudButton>
+</div>
+
+<MudTable Items="@ItemLayoutsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemLayoutsListLoading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Layout Name</MudTh>
+        <MudTh>Layout Use</MudTh>
+        <MudTh>Edit Layout</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Layout Name">@context.Name</MudTd>
+        <MudTd DataLabel="Layout Use">@context.LayoutUse</MudTd>
+        <MudTd DataLabel="Edit Layout"><MudButton Href="@GetEditItemLayoutUrl(ProjectId, context.ItemLayoutId)">Edit</MudButton></MudTd>
+    </RowTemplate>
+</MudTable>

@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Logic.Features.Accounts;
 
 namespace Bones.Api.Models.MyAccount;

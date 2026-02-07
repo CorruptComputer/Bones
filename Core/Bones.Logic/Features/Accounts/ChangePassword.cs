@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.AccountManagement;
-using Bones.Database.Operations.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Accounts;
+using Bones.Database.Operations.Audits;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 
@@ -70,7 +70,7 @@ public sealed class ChangePassword(UserManager<BonesUser> userManager, ISender s
         {
             await sender.Send(new AddAccountAuditDb.Command(
                 request.UserToChange,
-                Database.DbSets.Audit.AccountAudit.Actions.UpdatePassword,
+                Database.DbSets.Audits.AccountAudit.Actions.UpdatePassword,
                 request.UserToChange,
                 $"Password changed{(request.InvalidateOtherSessions == true ? ", other sessions invalidated." : string.Empty)}"), cancellationToken);
 

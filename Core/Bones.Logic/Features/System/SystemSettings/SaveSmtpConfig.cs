@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Database.Operations.System.SystemSettings;
 using Bones.Database.Operations.System.SystemSettings.Models;
 

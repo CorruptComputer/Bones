@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Projects;
 using Bones.Database.Operations.TaskManagement.TaskQueues;
 using Bones.Shared.Consts;
 

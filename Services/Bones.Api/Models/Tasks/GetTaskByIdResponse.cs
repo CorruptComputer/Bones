@@ -1,6 +1,6 @@
-using Bones.Api.Models.Item;
 using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Items.Layouts;
+using Bones.Database.DbSets.Items.Types;
 using Bones.Shared.Exceptions;
 
 namespace Bones.Api.Models.Tasks;

@@ -38,7 +38,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.ActionNamespace.CreateVersion
         /// Creates a new  version
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.TaskActionResponse"/></returns>
-        /// <param name="body">Action to create a new version of a .</param>
+        /// <param name="body">Action to create a new version of a task.</param>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 400 status code</exception>
@@ -62,7 +62,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.ActionNamespace.CreateVersion
         /// Creates a new  version
         /// </summary>
         /// <returns>A <see cref="RequestInformation"/></returns>
-        /// <param name="body">Action to create a new version of a .</param>
+        /// <param name="body">Action to create a new version of a task.</param>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
         public RequestInformation ToPostRequestInformation(global::Bones.Api.Client.AutoGen.Models.CreateTaskVersionAction body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default)
         {

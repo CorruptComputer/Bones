@@ -1,7 +1,7 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.OrganizationManagement;
-using Bones.Database.Operations.OrganizationManagement;
-using Bones.Database.Operations.ProjectManagement.Projects;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Organizations;
+using Bones.Database.Operations.Organizations;
+using Bones.Database.Operations.Projects.Projects;
 using Bones.Logic.Features.Organizations;
 using Bones.Shared.Consts;
 

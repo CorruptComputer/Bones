@@ -1,18 +1,18 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.ProjectManagement.Projects;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Projects.Projects;
 using Bones.Shared.Consts;
 
 namespace Bones.Logic.Features.Projects;
 
 /// <inheritdoc />
-public sealed class GetProjectById(ISender sender) : IRequestHandler<GetProjectById.Query, QueryResponse<Database.DbSets.ProjectManagement.Project>>
+public sealed class GetProjectById(ISender sender) : IRequestHandler<GetProjectById.Query, QueryResponse<Database.DbSets.Projects.Project>>
 {
     /// <summary>
     ///   Query to get a project by its ID
     /// </summary>
     /// <param name="ProjectId"></param>
     /// <param name="RequestingUser"></param>
-    public sealed record Query(Guid ProjectId, BonesUser RequestingUser) : IRequest<QueryResponse<Database.DbSets.ProjectManagement.Project>>;
+    public sealed record Query(Guid ProjectId, BonesUser RequestingUser) : IRequest<QueryResponse<Database.DbSets.Projects.Project>>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Query>
@@ -25,7 +25,7 @@ public sealed class GetProjectById(ISender sender) : IRequestHandler<GetProjectB
     }
 
     /// <inheritdoc />
-    public async Task<QueryResponse<Database.DbSets.ProjectManagement.Project>> Handle(Query request, CancellationToken cancellationToken)
+    public async Task<QueryResponse<Database.DbSets.Projects.Project>> Handle(Query request, CancellationToken cancellationToken)
     {
         const string perm = BonesClaimTypes.Role.Project.VIEW_PROJECT;
         bool? hasPermission =
@@ -33,14 +33,14 @@ public sealed class GetProjectById(ISender sender) : IRequestHandler<GetProjectB
 
         if (hasPermission is not true)
         {
-            return QueryResponse<Database.DbSets.ProjectManagement.Project>.Forbid();
+            return QueryResponse<Database.DbSets.Projects.Project>.Forbid();
         }
 
-        Database.DbSets.ProjectManagement.Project? project = await sender.Send(new GetProjectByIdDb.Query(request.ProjectId), cancellationToken);
+        Database.DbSets.Projects.Project? project = await sender.Send(new GetProjectByIdDb.Query(request.ProjectId), cancellationToken);
 
         if (project is null)
         {
-            return QueryResponse<Database.DbSets.ProjectManagement.Project>.Fail("Project not found");
+            return QueryResponse<Database.DbSets.Projects.Project>.Fail("Project not found");
         }
 
         return project;

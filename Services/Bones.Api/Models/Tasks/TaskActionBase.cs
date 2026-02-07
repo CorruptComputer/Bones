@@ -1,5 +1,5 @@
 using Bones.Api.Models.Tasks.Actions;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 
 namespace Bones.Api.Models.Tasks;
 

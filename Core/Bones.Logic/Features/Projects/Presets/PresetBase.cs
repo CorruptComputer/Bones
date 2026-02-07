@@ -1,8 +1,6 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Projects;
 using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.Items;
 using Bones.Logic.Features.Initiatives;
@@ -10,7 +8,10 @@ using Bones.Logic.Features.Projects.Presets.Models;
 using Bones.Logic.Features.Tasks.TaskQueues;
 using Bones.Logic.Features.Tasks.Tasks;
 using Bones.Shared.Backend.Enums;
-using Bones.Database.Operations.Items;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.DbSets.Items.Layouts;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.Operations.Items.Layouts;
 
 namespace Bones.Logic.Features.Projects.Presets;
 
@@ -62,7 +63,7 @@ internal abstract class PresetBase
     {
         foreach ((PresetFields field, PresetFieldInfo fieldInfo) in ItemFields)
         {
-            CommandResponse result = await sender.Send(new CreateItemField.Command(projectId, fieldInfo.Name, fieldInfo.IsRequired, fieldInfo.Type, fieldInfo.CanBeNegative, fieldInfo.PossibleValues, fieldInfo.GeoLocationType, fieldInfo.RequiredAddressFields, requestingUser), cancellationToken);
+            CommandResponse result = await sender.Send(new CreateItemField.Command(projectId, fieldInfo.Name, fieldInfo.IsRequired, fieldInfo.Type, fieldInfo.CanBeNegative, fieldInfo.PossibleValues, requestingUser), cancellationToken);
             if (!result.Success || result.Ids.Count == 0)
             {
                 return false;

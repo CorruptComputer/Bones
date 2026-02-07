@@ -10,8 +10,6 @@ internal record PresetFieldInfo
     internal required FieldType Type { get; init; }
     internal bool? CanBeNegative { get; init; }
     internal Dictionary<string, StringValueMatchingType>? PossibleValues { get; init; }
-    internal GeoLocationType? GeoLocationType { get; init; }
-    internal AddressFields? RequiredAddressFields { get; init; }
 
     [MemberNotNullWhen(true, nameof(FieldId))]
     [MemberNotNullWhen(true, nameof(FieldVersionId))]

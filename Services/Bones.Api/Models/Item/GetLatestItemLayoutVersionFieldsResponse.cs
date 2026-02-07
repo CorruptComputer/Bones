@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Layouts;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Item;

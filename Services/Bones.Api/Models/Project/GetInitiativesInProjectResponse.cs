@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.Projects;
 
 namespace Bones.Api.Models.Project;
 

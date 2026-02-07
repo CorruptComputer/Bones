@@ -1,3 +1,4 @@
+@using Bones.WebUI.Components.Project.Modify
 @attribute [Route(FrontEndUrls.Project.MODIFY_PROJECT)]
 
 <MudText Typo="Typo.h4">Modify Project</MudText>
@@ -10,60 +11,26 @@
 
     <MudText>Project Name: @ProjectName</MudText>
     <MudText>Owner Name: @OwnerName</MudText>
+
+    <MudTabs Outlined="true"
+             Position="Position.Left"
+             Rounded="true"
+             Border="true"
+             ApplyEffectsToContainer="true"
+             Class="mt-8"
+             PanelClass="pa-6">
+
+        <MudTabPanel Text="Fields">
+            <ProjectFieldsSummary ProjectId="@ProjectId" />
+        </MudTabPanel>
+        <MudTabPanel Text="Assignments">
+            <MudText>Assignments</MudText>
+        </MudTabPanel>
+        <MudTabPanel Text="Layouts">
+            <ProjectLayoutsSummary ProjectId="@ProjectId" />
+        </MudTabPanel>
+        <MudTabPanel Text="Permissions">
+            <MudText>Permissions</MudText>
+        </MudTabPanel>
+    </MudTabs>
 </MudPaper>
-
-
-<div style="display: flex; justify-content: space-between;">
-    <div style="width:49%">
-        <div style="display: flex;">
-            <MudText Typo="Typo.h4">Project Fields</MudText>
-            <MudSpacer/>
-            <MudButton Href="@GetCreateItemFieldUrl(ProjectId)">Create Field</MudButton>
-        </div>
-
-        <MudPaper Class="pa-4">
-            <MudText>Number of fields: @ItemFieldsCount</MudText>
-
-            <MudTable Items="@ItemFieldsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemFieldsListLoading" LoadingProgressColor="Color.Info">
-                <HeaderContent>
-                    <MudTh>Field Name</MudTh>
-                    <MudTh>Is Required?</MudTh>
-                    <MudTh>Field Type</MudTh>
-                    <MudTh>Edit Field</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Field Name">@context.Name</MudTd>
-                    <MudTd DataLabel="Is Required?">@context.IsRequired</MudTd>
-                    <MudTd DataLabel="Field Type">@context.Type</MudTd>
-                    <MudTd DataLabel="Edit Field"><MudButton Href="@GetEditItemFieldUrl(ProjectId, context.ItemFieldId)">Edit</MudButton></MudTd>
-                </RowTemplate>
-            </MudTable>
-        </MudPaper>
-    </div>
-    <div style="width:49%">
-        <div style="display: flex;">
-            <MudText Typo="Typo.h4">Project Layouts</MudText>
-            <MudSpacer/>
-            <MudButton Href="@GetCreateItemLayoutUrl(ProjectId)">Create Layout</MudButton>
-        </div>
-
-        <MudPaper Class="pa-4">
-            <MudText>Number of layouts: @ItemLayoutsCount</MudText>
-
-            <MudTable Items="@ItemLayoutsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemLayoutsListLoading" LoadingProgressColor="Color.Info">
-                <HeaderContent>
-                    <MudTh>Layout Name</MudTh>
-                    <MudTh>Layout Use</MudTh>
-                    <MudTh>Edit Layout</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Layout Name">@context.Name</MudTd>
-                    <MudTd DataLabel="Layout Use">@context.LayoutUse</MudTd>
-                    <MudTd DataLabel="Edit Layout"><MudButton Href="@GetEditItemLayoutUrl(ProjectId, context.ItemLayoutId)">Edit</MudButton></MudTd>
-                </RowTemplate>
-            </MudTable>
-        </MudPaper>
-    </div>
-</div>
-
-<!-- TODO: Going to also need Role and Assignment settings here for Organizations once those start getting implemented -->

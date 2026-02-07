@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.ProjectManagement.Projects;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Projects.Projects;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects;
@@ -26,7 +26,7 @@ public sealed class GetProjectsUserCanAccess(ISender sender) : IRequestHandler<G
     /// <inheritdoc />
     public async Task<QueryResponse<Dictionary<Guid, string>>> Handle(Query request, CancellationToken cancellationToken)
     {
-        List<Database.DbSets.ProjectManagement.Project>? projects = await sender.Send(new GetProjectsByOwnerDb.Query(OwnershipType.User, request.RequestingUser.Id), cancellationToken);
+        List<Database.DbSets.Projects.Project>? projects = await sender.Send(new GetProjectsByOwnerDb.Query(OwnershipType.User, request.RequestingUser.Id), cancellationToken);
 
         if (projects is null)
         {

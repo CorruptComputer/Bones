@@ -1,0 +1,22 @@
+﻿@using Bones.WebUI.Models
+
+<div style="display: flex;">
+    <MudText>Number of fields: @ItemFieldsCount</MudText>
+    <MudSpacer/>
+    <MudButton Href="@GetCreateItemFieldUrl(ProjectId)">Create Field</MudButton>
+</div>
+
+<MudTable Items="@ItemFieldsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemFieldsListLoading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Field Name</MudTh>
+        <MudTh>Is Required?</MudTh>
+        <MudTh>Field Type</MudTh>
+        <MudTh>Edit Field</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Field Name">@context.Name</MudTd>
+        <MudTd DataLabel="Is Required?">@context.IsRequired</MudTd>
+        <MudTd DataLabel="Field Type">@context.Type</MudTd>
+        <MudTd DataLabel="Edit Field"><MudButton Href="@GetEditItemFieldUrl(ProjectId, context.ItemFieldId)">Edit</MudButton></MudTd>
+    </RowTemplate>
+</MudTable>

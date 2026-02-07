@@ -1,6 +1,8 @@
 using Bones.Api.Models.Item;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.DbSets.Items.Layouts;
 using Bones.Logic.Features.Items;
 using Bones.Logic.Features.Tasks.Tasks;
 using Bones.Shared.Backend.Enums;
@@ -9,28 +11,28 @@ using Bones.Shared.Exceptions;
 namespace Bones.Api.Models.Tasks.Actions;
 
 /// <summary>
-///   Action to create a new version of a .
+///   Action to create a new version of a task.
 /// </summary>
 [JsonSerializable(typeof(CreateTaskVersionAction))]
 public sealed record class CreateTaskVersionAction : TaskActionBase
 {
     /// <summary>
-    ///   The ID of the  to perform the action on
+    ///   The ID of the task to perform the action on
     /// </summary>
     public required Guid TaskId { get; init; }
 
     /// <summary>
-    ///   The ID of the  layout (not version, automatically uses the current version)
+    ///   The ID of the task layout (not version, automatically uses the current version)
     /// </summary>
     public required Guid TaskLayoutId { get; init; }
 
     /// <summary>
-    ///   The title of the
+    ///   The title of the task
     /// </summary>
     public required string Title { get; init; }
 
     /// <summary>
-    ///   The fields of the
+    ///   The fields of the task
     /// </summary>
     public required List<ItemValueModel> FieldValues { get; init; }
 
@@ -65,7 +67,6 @@ public sealed record class CreateTaskVersionAction : TaskActionBase
                 FieldType.Decimal => fieldValue?.DecimalValue,
                 FieldType.Boolean => fieldValue?.BoolValue,
                 FieldType.DateTime => fieldValue?.DateTimeValue,
-                //FieldType.GeoLocation => fieldValue?.StrValue, // TODO: Handle this
                 _ => null
             };
 

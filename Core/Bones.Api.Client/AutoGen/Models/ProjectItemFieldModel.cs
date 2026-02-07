@@ -20,16 +20,12 @@ namespace Bones.Api.Client.AutoGen.Models
         public Guid FieldId { get; set; } = default!;
         /// <summary>ID of the item field version</summary>
         public Guid FieldVersionId { get; set; } = default!;
-        /// <summary>The geoLocationType property</summary>
-        public global::Bones.Api.Client.AutoGen.Models.GeoLocationType? GeoLocationType { get; set; } = default!;
         /// <summary>Is the field required?</summary>
         public bool IsRequired { get; set; } = default!;
         /// <summary>Name of the item field</summary>
         public string Name { get; set; } = default!;
         /// <summary>If the field is a ValueList, the possible values</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair> PossibleValues { get; set; } = default!;
-        /// <summary>The requiredAddressFields property</summary>
-        public global::Bones.Api.Client.AutoGen.Models.AddressFields? RequiredAddressFields { get; set; } = default!;
         /// <summary>The type property</summary>
         public global::Bones.Api.Client.AutoGen.Models.FieldType? Type { get; set; } = default!;
         /// <summary>Version number of the item field</summary>
@@ -55,11 +51,9 @@ namespace Bones.Api.Client.AutoGen.Models
                 { "canBeNegative", n => { CanBeNegative = n.GetBoolValue(); } },
                 { "fieldId", n => { FieldId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldId'"); } },
                 { "fieldVersionId", n => { FieldVersionId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldVersionId'"); } },
-                { "geoLocationType", n => { GeoLocationType = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.GeoLocationType>(); } },
                 { "isRequired", n => { IsRequired = n.GetBoolValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'IsRequired'"); } },
                 { "name", n => { Name = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Name'"); } },
                 { "possibleValues", n => { PossibleValues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'PossibleValues'"); } },
-                { "requiredAddressFields", n => { RequiredAddressFields = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.AddressFields>(); } },
                 { "type", n => { Type = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>(); } },
                 { "version", n => { Version = n.GetLongValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Version'"); } },
             };
@@ -74,11 +68,9 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteBoolValue("canBeNegative", CanBeNegative);
             writer.WriteGuidValue("fieldId", FieldId);
             writer.WriteGuidValue("fieldVersionId", FieldVersionId);
-            writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.GeoLocationType>("geoLocationType", GeoLocationType);
             writer.WriteBoolValue("isRequired", IsRequired);
             writer.WriteStringValue("name", Name);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair>("possibleValues", PossibleValues);
-            writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.AddressFields>("requiredAddressFields", RequiredAddressFields);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>("type", Type);
             writer.WriteLongValue("version", Version);
         }

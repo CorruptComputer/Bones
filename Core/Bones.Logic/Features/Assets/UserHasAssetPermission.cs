@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.Operations.AssetManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.Operations.Items.Types.Assets;
 using Bones.Logic.Features.Projects;
 
 namespace Bones.Logic.Features.Assets;

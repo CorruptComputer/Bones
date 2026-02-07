@@ -1,5 +1,5 @@
 using Bones.Database;
-using Bones.Database.DbSets.Audit;
+using Bones.Database.DbSets.Audits;
 using Bones.Shared.Backend.Models;
 using Questy;
 using Microsoft.EntityFrameworkCore;

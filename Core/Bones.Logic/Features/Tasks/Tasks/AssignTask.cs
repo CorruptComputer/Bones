@@ -1,9 +1,9 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.TaskManagement;
-using Bones.Database.Operations.AccountManagement;
-using Bones.Database.Operations.Items;
-using Bones.Database.Operations.TaskManagement.Tasks;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Assignments;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.Operations.Accounts;
+using Bones.Database.Operations.Items.Assignments;
+using Bones.Database.Operations.Items.Types.Tasks;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
 

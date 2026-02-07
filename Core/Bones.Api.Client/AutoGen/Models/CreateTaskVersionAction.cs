@@ -9,20 +9,20 @@ using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
     /// <summary>
-    /// Action to create a new version of a .
+    /// Action to create a new version of a task.
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
     public partial class CreateTaskVersionAction : global::Bones.Api.Client.AutoGen.Models.TaskActionBase, IAdditionalDataHolder, IParsable
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; } = default!;
-        /// <summary>The fields of the</summary>
+        /// <summary>The fields of the task</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.ItemValueModel> FieldValues { get; set; } = default!;
-        /// <summary>The ID of the  to perform the action on</summary>
+        /// <summary>The ID of the task to perform the action on</summary>
         public Guid? TaskId { get; set; } = default!;
-        /// <summary>The ID of the  layout (not version, automatically uses the current version)</summary>
+        /// <summary>The ID of the task layout (not version, automatically uses the current version)</summary>
         public Guid? TaskLayoutId { get; set; } = default!;
-        /// <summary>The title of the</summary>
+        /// <summary>The title of the task</summary>
         public string? Title { get; set; } = default!;
         /// <summary>
         /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.CreateTaskVersionAction"/> and sets the default values.

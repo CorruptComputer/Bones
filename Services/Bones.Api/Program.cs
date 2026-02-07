@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Reflection;
 using Bones.Shared.Backend.Extensions;
 using Bones.Database.Operations.System;
+using Bones.Logic.Features.System.TestingDataSetup;
 
 namespace Bones.Api;
 
@@ -101,12 +102,16 @@ public static class Program
 
     private static async Task RunBonesApiAsync(this WebApplication app)
     {
-        // When using an in-memory db the API needs to setup the database itself, since the background service is in another process
-        if (config?.UseInMemoryDb ?? false)
+        if (config?.ApiOnly ?? false)
         {
             using IServiceScope scope = app.Services.CreateScope();
             ISender sender = scope.ServiceProvider.GetRequiredService<ISender>();
             await sender.Send(new SetupDb.Command());
+
+            if (config.SetupForTesting)
+            {
+                await sender.Send(new SetupTestData.Command());
+            }
         }
 
         string[] corsAllowedOrigins = config?.CorsAllowedOrigins

@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.DbSets.Items.Layouts;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
@@ -63,7 +64,7 @@ public record GetProjectSettingsResponse
     [JsonRequired]
     public required IEnumerable<ItemLayoutModel> ItemLayouts { get; init; }
 
-    internal static GetProjectSettingsResponse FromInternal(Database.DbSets.ProjectManagement.Project project, List<ItemField> itemFields, List<ItemLayout> itemLayouts)
+    internal static GetProjectSettingsResponse FromInternal(Database.DbSets.Projects.Project project, List<ItemField> itemFields, List<ItemLayout> itemLayouts)
     {
         // We know they won't be null
         Guid ownerId = project.OwnerType == OwnershipType.User

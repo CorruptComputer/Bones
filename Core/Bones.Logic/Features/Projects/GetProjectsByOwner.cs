@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.ProjectManagement.Projects;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Projects.Projects;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Logic.Features.Projects;
@@ -33,7 +33,7 @@ public sealed class GetProjectsByOwner(ISender sender) : IRequestHandler<GetProj
         if (request.OwnerType == OwnershipType.User
             && request.OwnerId == request.RequestingUser.Id)
         {
-            List<Database.DbSets.ProjectManagement.Project>? projects = await sender.Send(new GetProjectsByOwnerDb.Query(OwnershipType.User, request.RequestingUser.Id), cancellationToken);
+            List<Database.DbSets.Projects.Project>? projects = await sender.Send(new GetProjectsByOwnerDb.Query(OwnershipType.User, request.RequestingUser.Id), cancellationToken);
 
             if (projects is null)
             {

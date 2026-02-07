@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.Items;
-using Bones.Database.Operations.Items;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.Operations.Items.Fields;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Backend.Models;
 
@@ -32,8 +32,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             true,
             FieldType.TextField,
             null,
-            null,
-            null,
             null
         );
 
@@ -63,8 +61,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             "Optional Text",
             false,
             FieldType.TextField,
-            null,
-            null,
             null,
             null
         );
@@ -96,8 +92,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             true,
             FieldType.Decimal,
             false, // CanBeNegative
-            null,
-            null,
             null
         );
 
@@ -127,8 +121,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             "Date Field",
             true,
             FieldType.DateTime,
-            null,
-            null,
             null,
             null
         );
@@ -160,8 +152,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             true,
             FieldType.Decimal,
             null, // CanBeNegative is required for decimal fields
-            null,
-            null,
             null
         );
 
@@ -189,8 +179,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             true,
             FieldType.TextBox,
             null,
-            null,
-            null,
             null
         );
 
@@ -216,8 +204,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             "Invalid Field Type",
             true,
             (FieldType)999, // Invalid field type value
-            null,
-            null,
             null,
             null
         );
@@ -246,66 +232,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             true,
             FieldType.Decimal,
             null, // CanBeNegative is required for decimal fields
-            null,
-            null,
-            null
-        );
-
-        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveValidationErrors();
-    }
-
-    /// <summary>
-    ///   Test for creating a field with missing GeoLocation type
-    /// </summary>
-    [Fact]
-    public async Task MissingGeoLocationType_ShouldFail()
-    {
-        Guid projectId = await CreateEmptyProject("Test Project");
-
-        // Create a field
-        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
-        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
-        createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Ids.ShouldNotBeEmpty();
-
-        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Ids[nameof(ItemField)],
-            "Geo Field",
-            true,
-            FieldType.GeoLocation,
-            null,
-            null,
-            null,
-            null
-        );
-
-        TestValidationResult<CreateItemFieldVersionDb.Command> validationResult = await _validator.TestValidateAsync(createFieldVersionCommand);
-        validationResult.ShouldHaveValidationErrors();
-    }
-
-    /// <summary>
-    ///   Test for creating a field with missing required address fields
-    /// </summary>
-    [Fact]
-    public async Task MissingRequiredAddressFields_ShouldFail()
-    {
-        Guid projectId = await CreateEmptyProject("Test Project");
-
-        // Create a field
-        CreateItemFieldDb.Command createItemFieldCommand = new(projectId);
-        CommandResponse createFieldResponse = await Sender.Send(createItemFieldCommand);
-        createFieldResponse.Success.ShouldBeTrue();
-        createFieldResponse.Ids.ShouldNotBeEmpty();
-
-        CreateItemFieldVersionDb.Command createFieldVersionCommand = new(
-            createFieldResponse.Ids[nameof(ItemField)],
-            "GeoLocation Field",
-            true,
-            FieldType.GeoLocation,
-            null,
-            null,
-            null,
             null
         );
 
@@ -333,8 +259,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             true,
             FieldType.ValueList,
             null,
-            null,
-            null,
             null
         );
 
@@ -353,8 +277,6 @@ public class CreateItemFieldVersionDbTests : TestBase
             "Non-existent Field",
             true,
             FieldType.TextBox,
-            null,
-            null,
             null,
             null
         );
@@ -391,8 +313,6 @@ public class CreateItemFieldVersionDbTests : TestBase
                 true,
                 FieldType.TextBox,
                 null,
-                null,
-                null,
                 null
             );
 
@@ -427,8 +347,6 @@ public class CreateItemFieldVersionDbTests : TestBase
                     $"Version {i}",
                     true,
                     FieldType.TextField,
-                    null,
-                    null,
                     null,
                     null
                 );

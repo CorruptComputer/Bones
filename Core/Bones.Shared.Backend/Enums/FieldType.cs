@@ -39,9 +39,4 @@ public enum FieldType
     ///   The value will just be a <see cref="string" />, however it will be validated against a list of allowed values
     /// </summary>
     ValueList = 6,
-
-    /// <summary>
-    ///   Depending on the <see cref="LocationType" /> this can be a <see cref="string" />, a GeoJson Point, or a GeoJson FeatureCollection
-    /// </summary>
-    GeoLocation = 7,
 }

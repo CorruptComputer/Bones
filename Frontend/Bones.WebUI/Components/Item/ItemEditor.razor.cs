@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Net;
-using Bones.Shared.Exceptions;
 using ReQuesty.Runtime.Abstractions;
 
 namespace Bones.WebUI.Components.Item;
@@ -141,7 +140,6 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
                         _dateTimeValues[field.FieldVersionId] = null;
                         _timeSpanValues[field.FieldVersionId] = null;
                         break;
-                    //FieldType.GeoLocation => null, // TODO: Implement
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -259,7 +257,6 @@ public partial class ItemEditor(BonesApiClient apiClient, NavigationManager navM
                     _dateTimeValues[field.FieldVersionId] = field.Value is null ? null : DateTimeOffset.Parse(field.Value, CultureInfo.InvariantCulture).ToLocalTime().DateTime;
                     _timeSpanValues[field.FieldVersionId] = field.Value is null ? null : DateTimeOffset.Parse(field.Value, CultureInfo.InvariantCulture).ToLocalTime().TimeOfDay;
                     break;
-                //FieldType.GeoLocation => null, // TODO: Implement
                 default:
                     throw new ArgumentOutOfRangeException();
             }

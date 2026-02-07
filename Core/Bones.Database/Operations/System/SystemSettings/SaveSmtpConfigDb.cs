@@ -1,6 +1,6 @@
 using System.Text.Json;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
 using Bones.Database.DbSets.System;
 using Bones.Database.Operations.System.SystemSettings.Models;
 

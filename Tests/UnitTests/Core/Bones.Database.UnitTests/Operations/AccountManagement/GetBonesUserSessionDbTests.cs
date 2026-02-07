@@ -1,7 +1,7 @@
 using System.Net;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
-using Bones.Database.Operations.AccountManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
+using Bones.Database.Operations.Accounts;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.UnitTests.Shared.TestOperations.Audit;
 

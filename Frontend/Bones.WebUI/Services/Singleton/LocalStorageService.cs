@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Bones.WebUI.Consts;
-using Bones.WebUI.SubtleCrypto;
-using Bones.WebUI.SubtleCrypto.Models;
+using Bones.WebUI.Models.Interop.SubtleCrypto;
 using Microsoft.JSInterop;
 
 namespace Bones.WebUI.Services.Singleton;

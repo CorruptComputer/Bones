@@ -1,4 +1,6 @@
 using Bones.Database.DbConsts;
+using Bones.Database.DbSets.Items.Assignments;
+using Bones.Database.DbSets.Items.Layouts;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.Items;
@@ -6,7 +8,7 @@ namespace Bones.Database.DbSets.Items;
 /// <summary>
 ///   Model for the Item.ItemVersions table
 /// </summary>
-[Table(TableNames.Item.ItemVersions, Schema = SchemaNames.Item)]
+[Table(TableNames.Item.ItemVersions, Schema = SchemaNames.Items)]
 [PrimaryKey(nameof(Id))]
 [Index(nameof(Version))]
 public class ItemVersion

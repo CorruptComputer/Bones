@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Layouts;
+using Bones.Database.DbSets.Items.Types;
 
 namespace Bones.Api.Models.Assets;
 

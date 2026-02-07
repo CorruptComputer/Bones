@@ -1,14 +1,15 @@
 using System.Net;
 using Bones.Database.Converters;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
 using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.MappingManagement;
-using Bones.Database.DbSets.OrganizationManagement;
-using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.Items.Assignments;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.DbSets.Items.Layouts;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.DbSets.Organizations;
+using Bones.Database.DbSets.Projects;
 using Bones.Database.DbSets.System;
-using Bones.Database.DbSets.TaskManagement;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -22,16 +23,12 @@ namespace Bones.Database;
 public class BonesDbContext(BonesBackendConfiguration backendConfig)
     : IdentityDbContext<BonesUser, BonesRole, Guid, BonesUserClaim, BonesUserRole, BonesUserLogin, BonesRoleClaim, BonesUserToken>
 {
-    #region AccountManagement
+    #region Accounts
     internal DbSet<BonesUserSession> UserSessions { get; set; }
     /// The rest are all added by the base class, however we do override the base settings in <see cref="OnModelCreating(ModelBuilder)"/>
     #endregion
 
-    #region AssetManagement
-    internal DbSet<Asset> Assets { get; set; }
-    #endregion
-
-    #region Audit
+    #region Audits
     internal DbSet<AccountAudit> AccountAudits { get; set; }
 
     internal DbSet<LoginAudit> LoginAudits { get; set; }
@@ -42,15 +39,29 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     #endregion
 
     #region Items
-    internal DbSet<Item> Items { get; set; }
+    #region Assignment
     internal DbSet<ItemAssignee> ItemAssignees { get; set; }
     internal DbSet<ItemAssignmentSlot> ItemAssignmentSlots { get; set; }
+    #endregion
+
+    #region Fields
     internal DbSet<ItemField> ItemFields { get; set; }
     internal DbSet<ItemFieldListEntry> ItemFieldListEntries { get; set; }
     internal DbSet<ItemFieldVersion> ItemFieldVersions { get; set; }
+    #endregion
+
+    #region Layouts
     internal DbSet<ItemLayout> ItemLayouts { get; set; }
     internal DbSet<ItemLayoutFieldVersionLink> ItemLayoutFieldVersionLinks { get; set; }
     internal DbSet<ItemLayoutVersion> ItemLayoutVersions { get; set; }
+    #endregion
+
+    #region Types
+    internal DbSet<Asset> Assets { get; set; }
+    internal DbSet<BonesTask> Tasks { get; set; }
+    #endregion
+
+    internal DbSet<Item> Items { get; set; }
     internal DbSet<ItemValue> ItemValues { get; set; }
     internal DbSet<ItemVersion> ItemVersions { get; set; }
     #endregion
@@ -62,6 +73,7 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     #region ProjectManagement
     internal DbSet<Initiative> Initiatives { get; set; }
     internal DbSet<Project> Projects { get; set; }
+    internal DbSet<TaskQueue> TaskQueues { get; set; }
     #endregion
 
     #region System
@@ -76,12 +88,6 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     internal DbSet<SystemSetting> SystemSettings { get; set; }
 
     internal DbSet<TaskError> TaskErrors { get; set; }
-    #endregion
-
-    #region TaskManagement
-    internal DbSet<TaskQueue> TaskQueues { get; set; }
-
-    internal DbSet<BonesTask> Tasks { get; set; }
     #endregion
 
     /// <summary>
@@ -129,7 +135,6 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
                     options.MigrationsHistoryTable("__EFMigrationsHistory", "System");
                     options.MigrationsAssembly(typeof(BonesDbContext).Assembly.FullName);
                     options.EnableRetryOnFailure();
-                    options.UseNetTopologySuite();
                 }
             );
         }
@@ -175,10 +180,6 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
         builder.Entity<ItemLayoutVersion>(ItemLayoutVersion.BuildTable);
         builder.Entity<ItemValue>(ItemValue.BuildTable);
         builder.Entity<ItemVersion>(ItemVersion.BuildTable);
-
-        // Mapping Management
-        builder.Entity<GeoLocation>(GeoLocation.BuildTable);
-        builder.Entity<OsmObject>(OsmObject.BuildTable);
 
         // Organization Management
         builder.Entity<BonesOrganization>(BonesOrganization.BuildTable);

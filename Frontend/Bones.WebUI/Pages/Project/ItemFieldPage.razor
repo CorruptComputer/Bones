@@ -15,37 +15,15 @@
                     <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.FieldType.Boolean">Boolean</MudSelectItem>
                     <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.FieldType.DateTime">Date Time</MudSelectItem>
                     <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.FieldType.ValueList">Value List</MudSelectItem>
-                    <!-- disabled for now, not yet figured out how I want to handle it. Rest should all work -->
-                    <!--MudSelectItem Value="Bones.Api.Client.AutoGen.Models.FieldType.GeoLocation">Geo Location</MudSelectItem-->
                 </MudSelect>
 
                 @if (FieldType == Bones.Api.Client.AutoGen.Models.FieldType.ValueList)
                 {
                     <!-- TODO: Add boxes for them to add values to this -->
                 }
-                else if (FieldType == Bones.Api.Client.AutoGen.Models.FieldType.GeoLocation)
-                {
-                    <MudSelect T="GeoLocationType" Label="Geo Location Type" Required="true" RequiredError="Geo Location type is required!" @bind-value="@GeoLocationType">
-                        <MudSelectItem Value="GeoLocationType.OsmObject">OsmObject</MudSelectItem>
-                        <MudSelectItem Value="GeoLocationType.LatLon">LatLon</MudSelectItem>
-                        <MudSelectItem Value="GeoLocationType.Address">Address</MudSelectItem>
-                        <MudSelectItem Value="GeoLocationType.Geometry">Geometry</MudSelectItem>
-                    </MudSelect>
-                }
                 else if (FieldType == Bones.Api.Client.AutoGen.Models.FieldType.Decimal || FieldType == Bones.Api.Client.AutoGen.Models.FieldType.Integer)
                 {
                     <MudCheckBox Label="Can be negative?" @bind-value="@CanBeNegative"/>
-                }
-
-                @if (GeoLocationType == GeoLocationType.Address)
-                {
-                    <MudCheckBox Label="Street number required?" @bind-value="@StreetNumberRequired"/>
-                    <MudCheckBox Label="Street name required?" @bind-value="@StreetNameRequired"/>
-                    <MudCheckBox Label="City or Place required?" @bind-value="@CityOrPlaceRequired"/>
-                    <MudCheckBox Label="State or Province required?" @bind-value="@StateOrProvinceRequired"/>
-                    <MudCheckBox Label="Postal code required?" @bind-value="@PostalCodeRequired"/>
-                    <MudCheckBox Label="County required?" @bind-value="@CountyRequired"/>
-                    <MudCheckBox Label="Country required?" @bind-value="@CountryRequired"/>
                 }
 
                 <MudCheckBox Label="Is Required?" @bind-value="@IsRequired"/>

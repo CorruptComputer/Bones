@@ -11,7 +11,23 @@ public static class DefaultValues
     public const string DEFAULT_SYSTEM_ADMIN_EMAIL = "admin@example.com";
 
     /// <summary>
-    ///   The email address to use for the test user when the database is created and SetupForTesting is true. 
+    ///   Default values for test users created when SetupForTesting is true.
     /// </summary>
-    public const string TEST_USER_EMAIL = "user@example.com";
+    public static class TestUsers
+    {
+        /// <summary>
+        ///   The email address to use for the default test user.
+        /// </summary>
+        public const string TEST_USER_EMAIL = "user@example.com";
+
+        /// <summary>
+        ///   The email address to use for the change email test user.
+        /// </summary>
+        public const string CHANGE_EMAIL_TEST_USER_EMAIL = "change-email@example.com";
+
+        /// <summary>
+        ///   The email address to use for the change password test user.
+        /// </summary>
+        public const string CHANGE_PASSWORD_TEST_USER_EMAIL = "change-password@example.com";
+    }
 }

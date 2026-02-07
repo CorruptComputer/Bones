@@ -36,15 +36,6 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
 
     private bool CanBeNegative { get; set; } = false;
 
-    private GeoLocationType GeoLocationType { get; set; } = GeoLocationType.OsmObject;
-    private bool StreetNumberRequired { get; set; } = false;
-    private bool StreetNameRequired { get; set; } = false;
-    private bool CityOrPlaceRequired { get; set; } = false;
-    private bool StateOrProvinceRequired { get; set; } = false;
-    private bool PostalCodeRequired { get; set; } = false;
-    private bool CountyRequired { get; set; } = false;
-    private bool CountryRequired { get; set; } = false;
-
     /// <summary>
     ///   Fires when the page is loaded
     /// </summary>
@@ -84,15 +75,6 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
         IsRequired = latestVersion.IsRequired;
 
         CanBeNegative = latestVersion.CanBeNegative ?? false;
-
-        GeoLocationType = latestVersion.GeoLocationType ?? GeoLocationType.OsmObject;
-        StreetNumberRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.StreetNumber) ?? false;
-        StreetNameRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.StreetName) ?? false;
-        CityOrPlaceRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.CityOrPlace) ?? false;
-        StateOrProvinceRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.StateOrProvince) ?? false;
-        PostalCodeRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.PostalCode) ?? false;
-        CountyRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.County) ?? false;
-        CountryRequired = latestVersion.RequiredAddressFields?.HasFlag(AddressFields.Country) ?? false;
     }
 
     private async Task SendCreateRequestAsync()
@@ -147,50 +129,6 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
         {
             request.CanBeNegative = CanBeNegative;
         }
-        else if (request.Type is FieldType.GeoLocation)
-        {
-            request.GeoLocationType = GeoLocationType;
-
-            if (request.GeoLocationType is GeoLocationType.Address)
-            {
-                request.RequiredAddressFields = AddressFields.None;
-
-                if (StreetNumberRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.StreetNumber;
-                }
-
-                if (StreetNameRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.StreetName;
-                }
-
-                if (CityOrPlaceRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.CityOrPlace;
-                }
-
-                if (StateOrProvinceRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.StateOrProvince;
-                }
-
-                if (PostalCodeRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.PostalCode;
-                }
-
-                if (CountyRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.County;
-                }
-
-                if (CountryRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.Country;
-                }
-            }
-        }
 
         return request;
     }
@@ -212,50 +150,6 @@ public partial class ItemFieldPage(BonesApiClient ApiClient, NavigationManager N
         else if (request.Type is FieldType.Integer or FieldType.Decimal)
         {
             request.CanBeNegative = CanBeNegative;
-        }
-        else if (request.Type is FieldType.GeoLocation)
-        {
-            request.GeoLocationType = GeoLocationType;
-
-            if (request.GeoLocationType is GeoLocationType.Address)
-            {
-                request.RequiredAddressFields = AddressFields.None;
-
-                if (StreetNumberRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.StreetNumber;
-                }
-
-                if (StreetNameRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.StreetName;
-                }
-
-                if (CityOrPlaceRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.CityOrPlace;
-                }
-
-                if (StateOrProvinceRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.StateOrProvince;
-                }
-
-                if (PostalCodeRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.PostalCode;
-                }
-
-                if (CountyRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.County;
-                }
-
-                if (CountryRequired)
-                {
-                    request.RequiredAddressFields |= AddressFields.Country;
-                }
-            }
         }
 
         return request;

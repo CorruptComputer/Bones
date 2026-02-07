@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Items;
-using Bones.Database.Operations.Items;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.Operations.Items.Fields;
 using Bones.Logic.Features.Projects;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
@@ -19,12 +19,10 @@ public sealed class CreateItemFieldVersion(ISender sender) : IRequestHandler<Cre
     /// <param name="Type"></param>
     /// <param name="CanBeNegative"></param>
     /// <param name="PossibleValues"></param>
-    /// <param name="GeoLocationType"></param>
-    /// <param name="RequiredAddressFields"></param>
     /// <param name="RequestingUser"></param>
     public record Command(Guid ItemFieldId, string Name, bool IsRequired, FieldType Type,
         bool? CanBeNegative, Dictionary<string, StringValueMatchingType>? PossibleValues,
-        GeoLocationType? GeoLocationType, AddressFields? RequiredAddressFields, BonesUser RequestingUser) : IRequest<CommandResponse>;
+        BonesUser RequestingUser) : IRequest<CommandResponse>;
 
     /// <inheritdoc />
     public sealed class Validator : AbstractValidator<Command>
@@ -37,8 +35,6 @@ public sealed class CreateItemFieldVersion(ISender sender) : IRequestHandler<Cre
             RuleFor(x => x.Type).IsInEnum();
             RuleFor(x => x.CanBeNegative).NotNull().When(x => x.Type is FieldType.Integer or FieldType.Decimal);
             RuleFor(x => x.PossibleValues).NotEmpty().When(x => x.Type == FieldType.ValueList);
-            RuleFor(x => x.GeoLocationType).NotNull().When(x => x.Type == FieldType.GeoLocation);
-            RuleFor(x => x.RequiredAddressFields).NotNull().When(x => x.GeoLocationType == GeoLocationType.Address);
         }
     }
 
@@ -63,7 +59,6 @@ public sealed class CreateItemFieldVersion(ISender sender) : IRequestHandler<Cre
 
         return await sender.Send(
             new CreateItemFieldVersionDb.Command(field.Id, request.Name,
-            request.IsRequired, request.Type, request.CanBeNegative, request.PossibleValues,
-            request.GeoLocationType, request.RequiredAddressFields), cancellationToken);
+            request.IsRequired, request.Type, request.CanBeNegative, request.PossibleValues), cancellationToken);
     }
 }

@@ -1,8 +1,8 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.OrganizationManagement;
-using Bones.Database.Operations.OrganizationManagement;
-using Bones.Database.Operations.ProjectManagement.Initiatives;
-using Bones.Database.Operations.ProjectManagement.Projects;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Organizations;
+using Bones.Database.Operations.Organizations;
+using Bones.Database.Operations.Projects.Initiatives;
+using Bones.Database.Operations.Projects.Projects;
 using Bones.Logic.Features.Projects;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Consts;
@@ -35,7 +35,7 @@ public sealed class CreateInitiative(ISender sender) : IRequestHandler<CreateIni
     /// <inheritdoc />
     public async Task<CommandResponse> Handle(Command request, CancellationToken cancellationToken)
     {
-        Database.DbSets.ProjectManagement.Project? project = await sender.Send(new GetProjectByIdDb.Query(request.ProjectId), cancellationToken);
+        Database.DbSets.Projects.Project? project = await sender.Send(new GetProjectByIdDb.Query(request.ProjectId), cancellationToken);
 
         if (project is null)
         {

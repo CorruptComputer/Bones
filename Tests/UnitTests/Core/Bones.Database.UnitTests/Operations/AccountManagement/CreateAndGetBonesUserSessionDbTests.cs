@@ -1,7 +1,6 @@
-using System;
 using System.Net;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.AccountManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Accounts;
 using Bones.Shared.Backend.Models;
 
 namespace Bones.Database.UnitTests.Operations.AccountManagement;

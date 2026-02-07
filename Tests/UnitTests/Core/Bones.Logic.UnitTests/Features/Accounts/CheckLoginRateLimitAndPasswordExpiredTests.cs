@@ -1,5 +1,5 @@
 using System.Net;
-using Bones.Database.Operations.Audit;
+using Bones.Database.Operations.Audits;
 using Bones.Logic.Features.Accounts;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.UnitTests.Shared;

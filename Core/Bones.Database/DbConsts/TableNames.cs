@@ -2,7 +2,7 @@ namespace Bones.Database.DbConsts;
 
 internal static class TableNames
 {
-    internal static class AccountManagement
+    internal static class Accounts
     {
         internal const string BonesRoles = "BonesRoles";
         internal const string BonesRoleClaims = "BonesRoleClaims";
@@ -15,12 +15,7 @@ internal static class TableNames
         internal const string BonesUserTokens = "BonesUserTokens";
     }
 
-    internal static class AssetManagement
-    {
-        internal const string Assets = "Assets";
-    }
-
-    internal static class Audit
+    internal static class Audits
     {
         internal const string AccountAudits = "AccountAudits";
         internal const string LoginAudits = "LoginAudits";
@@ -32,23 +27,36 @@ internal static class TableNames
 
     internal static class Item
     {
+        internal static class Assignments
+        {
+            internal const string ItemAssignmentSlots = "ItemAssignmentSlots";
+            internal const string ItemAssignees = "ItemAssignees";
+        }
+
+        internal static class Fields
+        {
+            internal const string ItemFields = "ItemFields";
+            internal const string ItemFieldListEntries = "ItemFieldListEntries";
+            internal const string ItemFieldVersions = "ItemFieldVersions";
+        }
+
+        internal static class Layouts
+        {
+            internal const string ItemLayouts = "ItemLayouts";
+            internal const string ItemLayoutFieldVersionLinks = "ItemLayoutFieldVersionLinks";
+            internal const string ItemLayoutVersions = "ItemLayoutVersions";
+        }
+
+        internal static class Types
+        {
+            internal const string Assets = "Assets";
+
+            internal const string Tasks = "Tasks";
+        }
+
         internal const string Items = "Items";
-        internal const string ItemAssignmentSlots = "ItemAssignmentSlots";
-        internal const string ItemAssignees = "ItemAssignees";
-        internal const string ItemFields = "ItemFields";
-        internal const string ItemFieldListEntries = "ItemFieldListEntries";
-        internal const string ItemFieldVersions = "ItemFieldVersions";
-        internal const string ItemLayouts = "ItemLayouts";
-        internal const string ItemLayoutFieldVersionLinks = "ItemLayoutFieldVersionLinks";
-        internal const string ItemLayoutVersions = "ItemLayoutVersions";
         internal const string ItemValues = "ItemValues";
         internal const string ItemVersions = "ItemVersions";
-    }
-
-    internal static class MappingManagement
-    {
-        internal const string GeoLocations = "GeoLocations";
-        internal const string OsmObjects = "OsmObjects";
     }
 
     internal static class OrganizationManagement
@@ -60,6 +68,7 @@ internal static class TableNames
     {
         internal const string Initiatives = "Initiatives";
         internal const string Projects = "Projects";
+        internal const string TaskQueues = "TaskQueues";
     }
 
     internal static class System
@@ -73,12 +82,5 @@ internal static class TableNames
         internal const string SystemSettings = "SystemSettings";
 
         internal const string TaskErrors = "TaskErrors";
-    }
-
-    internal static class Task
-    {
-        internal const string Tasks = "TaskItems";
-
-        internal const string TaskQueues = "TaskQueues";
     }
 }

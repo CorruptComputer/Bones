@@ -2,7 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Bones.Logic;
 using Bones.Database;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Shared.Backend.Extensions;
 using Questy;
 using Microsoft.AspNetCore.Identity;

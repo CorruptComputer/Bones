@@ -1,5 +1,5 @@
 using Bones.Logic.Features.Accounts;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Database.DbSets.System;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.UnitTests.Shared;

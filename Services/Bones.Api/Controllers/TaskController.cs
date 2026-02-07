@@ -2,9 +2,9 @@ using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Assignment;
 using Bones.Api.Models.Tasks;
 using Bones.Api.Models.Tasks.Actions;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Assignments;
+using Bones.Database.DbSets.Items.Types;
 using Bones.Logic.Features.Tasks.Tasks;
 
 namespace Bones.Api.Controllers;

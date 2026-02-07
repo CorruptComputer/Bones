@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Logic.Features.Items;
 using Bones.Shared.Backend.Enums;
 
@@ -38,18 +38,8 @@ public record CreateItemFieldVersionRequest
     /// </summary>
     public List<KeyValuePair<string, StringValueMatchingType>>? PossibleValues { get; init; }
 
-    /// <summary>
-    ///   If the field is a GeoLocation, the type of geo location
-    /// </summary>
-    public GeoLocationType? GeoLocationType { get; init; }
-
-    /// <summary>
-    ///   If the field is a GeoLocation of type Address, the required address fields
-    /// </summary>
-    public AddressFields? RequiredAddressFields { get; init; }
-
     internal CreateItemFieldVersion.Command ToInternal(Guid itemFieldId, BonesUser user)
     {
-        return new(itemFieldId, Name, IsRequired, Type, CanBeNegative, PossibleValues?.ToDictionary(), GeoLocationType, RequiredAddressFields, user);
+        return new(itemFieldId, Name, IsRequired, Type, CanBeNegative, PossibleValues?.ToDictionary(), user);
     }
 }

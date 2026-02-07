@@ -1,5 +1,5 @@
 using System.Net;
-using Bones.Database.Operations.Audit;
+using Bones.Database.Operations.Audits;
 
 namespace Bones.Logic.Features.Audits;
 

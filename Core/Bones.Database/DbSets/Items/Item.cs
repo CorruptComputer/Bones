@@ -1,5 +1,6 @@
 using Bones.Database.DbConsts;
-using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.Items.Layouts;
+using Bones.Database.DbSets.Projects;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bones.Database.DbSets.Items;
@@ -7,7 +8,7 @@ namespace Bones.Database.DbSets.Items;
 /// <summary>
 ///   Model for the Item.Items table
 /// </summary>
-[Table(TableNames.Item.Items, Schema = SchemaNames.Item)]
+[Table(TableNames.Item.Items, Schema = SchemaNames.Items)]
 [PrimaryKey(nameof(Id))]
 [Index(nameof(FriendlyId))]
 public class Item

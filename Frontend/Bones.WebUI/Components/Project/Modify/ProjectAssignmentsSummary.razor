@@ -1,0 +1,20 @@
+﻿@using Bones.WebUI.Models
+
+<div style="display: flex;">
+    <MudText>Number of assignments: @ItemAssignmentsCount</MudText>
+    <MudSpacer/>
+    <!--MudButton Href="@GetCreateItemAssignmentUrl(ProjectId)">Create Assignment</MudButton-->
+</div>
+
+<!--MudTable Items="@ItemAssignmentsList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemAssignmentsListLoading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Assignment Name</MudTh>
+        <MudTh>Layout Use</MudTh>
+        <MudTh>Edit Assignment</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Assignment Name">@context.Name</MudTd>
+        <MudTd DataLabel="Layout Use">@context.LayoutUse</MudTd>
+        <MudTd DataLabel="Edit Layout"><MudButton Href="@GetEditItemAssignmentUrl(ProjectId, context.ItemAssignmentId)">Edit</MudButton></MudTd>
+    </RowTemplate>
+</MudTable-->

@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 

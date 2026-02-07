@@ -1,6 +1,6 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.AccountManagement;
-using Bones.Database.Operations.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Accounts;
+using Bones.Database.Operations.Audits;
 using Bones.Logic.Features.System;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
@@ -91,7 +91,7 @@ public class RegisterUser(UserManager<BonesUser> userManager, ISender sender) : 
             await sender.Send(new QueueConfirmationEmail.Command(user, request.Email), cancellationToken);
             await sender.Send(new AddAccountAuditDb.Command(
                 createdUser,
-                Database.DbSets.Audit.AccountAudit.Actions.Create,
+                Database.DbSets.Audits.AccountAudit.Actions.Create,
                 createdUser,
                 "Registered"), cancellationToken);
         }

@@ -2,7 +2,6 @@ using Bones.Api.Controllers.Base;
 using Bones.Api.Models.ItemVersions;
 using Bones.Database.DbSets.Items;
 using Bones.Logic.Features.Items;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Bones.Api.Controllers;
 

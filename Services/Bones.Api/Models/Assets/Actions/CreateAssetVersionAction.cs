@@ -1,6 +1,8 @@
 using Bones.Api.Models.Item;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.DbSets.Items.Layouts;
 using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.Items;
 using Bones.Shared.Backend.Enums;
@@ -65,7 +67,6 @@ public sealed record class CreateAssetVersionAction : AssetActionBase
                 FieldType.Decimal => fieldValue?.DecimalValue,
                 FieldType.Boolean => fieldValue?.BoolValue,
                 FieldType.DateTime => fieldValue?.DateTimeValue,
-                //FieldType.GeoLocation => fieldValue?.StrValue, // TODO: Handle this
                 _ => null
             };
 

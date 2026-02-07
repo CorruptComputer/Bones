@@ -1,9 +1,8 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Initiatives;
 using Bones.Api.Models.Project;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Projects;
 using Bones.Logic.Features.Initiatives;
 using Bones.Logic.Features.Tasks.TaskQueues;
 

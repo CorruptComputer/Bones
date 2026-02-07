@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Projects;
 
 namespace Bones.Api.Models.TaskQueues;
 

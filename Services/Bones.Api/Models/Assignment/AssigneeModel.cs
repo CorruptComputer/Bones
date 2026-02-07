@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Assignments;
 
 namespace Bones.Api.Models.Assignment;
 

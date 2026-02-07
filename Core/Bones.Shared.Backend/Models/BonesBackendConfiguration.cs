@@ -33,4 +33,9 @@ public class BonesBackendConfiguration
     ///   If true, setup the database for testing with default test data
     /// </summary>
     public bool SetupForTesting { get; set; } = false;
+
+    /// <summary>
+    ///   If true, setup the database when running the API.
+    /// </summary>
+    public bool ApiOnly { get; set; } = false;
 }

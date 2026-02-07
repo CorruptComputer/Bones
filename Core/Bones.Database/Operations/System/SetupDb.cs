@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using Bones.Database.DbConsts;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
-using Bones.Database.Operations.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
+using Bones.Database.Operations.Audits;
 using Bones.Database.Operations.System.SystemSettings;
 using Bones.Database.Operations.System.SystemSettings.Models;
 using Bones.Shared.Consts;

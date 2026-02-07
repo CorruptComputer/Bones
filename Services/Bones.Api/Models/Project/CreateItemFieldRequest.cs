@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Logic.Features.Items;
 using Bones.Shared.Backend.Enums;
 
@@ -44,18 +44,8 @@ public record CreateItemFieldRequest
     /// </summary>
     public List<KeyValuePair<string, StringValueMatchingType>>? PossibleValues { get; init; }
 
-    /// <summary>
-    ///   If the Type of this field is a GeoLocation, the type of GeoLocation this is
-    /// </summary>
-    public GeoLocationType? GeoLocationType { get; init; }
-
-    /// <summary>
-    ///   If the GeoLocationType of this field is an Address, the required fields for this address
-    /// </summary>
-    public AddressFields? RequiredAddressFields { get; init; }
-
     internal CreateItemField.Command ToInternal(BonesUser user)
     {
-        return new(ProjectId, Name, IsRequired, Type, CanBeNegative, PossibleValues?.ToDictionary(), GeoLocationType, RequiredAddressFields, user);
+        return new(ProjectId, Name, IsRequired, Type, CanBeNegative, PossibleValues?.ToDictionary(), user);
     }
 }

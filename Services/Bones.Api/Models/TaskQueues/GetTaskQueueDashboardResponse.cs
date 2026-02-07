@@ -1,4 +1,5 @@
-using Bones.Database.DbSets.TaskManagement;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.DbSets.Projects;
 
 namespace Bones.Api.Models.TaskQueues;
 
@@ -14,7 +15,7 @@ public sealed record GetTaskQueueDashboardResponse
     public required string QueueName { get; init; }
 
     /// <summary>
-    ///   The s in this queue, ordered by date added from oldest to newest
+    ///   The tasks in this queue, ordered by date added from oldest to newest
     /// </summary>
     public required List<DashboardTaskModel> Tasks { get; init; }
 

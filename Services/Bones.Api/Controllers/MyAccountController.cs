@@ -1,7 +1,7 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.MyAccount;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
 using Bones.Logic.Features.Accounts;
 using Bones.Logic.Features.Audits;
 

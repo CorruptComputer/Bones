@@ -1,7 +1,7 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Accounts;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.Operations.AccountManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.Operations.Accounts;
 
 namespace Bones.Api.Controllers;
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace Bones.Api.IntegrationTests.Account;
 
 /// <summary>
@@ -8,21 +6,21 @@ namespace Bones.Api.IntegrationTests.Account;
 public class PasswordTests : TestBase
 {
     /// <summary>
-    ///   Default admin should be able to change their password
+    ///   Change password user should be able to change their password
     /// </summary>
     /// <returns></returns>
-    [Fact(Skip = "need to make an account specifically for this")]
-    public async Task DefaultAdmin_ShouldBeAbleToChangePassword()
+    [Fact]
+    public async Task ChangePasswordUser_ShouldBeAbleToChangePassword()
     {
         await SetupApiClientAsync();
-        await LoginAsync(TestCredentials.User.DefaultAdmin);
+        await LoginAsync(TestCredentials.User.ChangePassword);
 
         bool? successful = null;
         if (ApiClient is not null)
         {
             Task<bool?> task = ApiClient.MyAccount.Password.PutAsync(new ChangeMyPasswordRequest()
             {
-                CurrentPassword = TestCredentials.Credentials[TestCredentials.User.DefaultAdmin].password,
+                CurrentPassword = TestCredentials.Credentials[TestCredentials.User.ChangePassword].password,
                 InvalidateOtherSessions = false,
                 NewPassword = "newPassword!123"
             });

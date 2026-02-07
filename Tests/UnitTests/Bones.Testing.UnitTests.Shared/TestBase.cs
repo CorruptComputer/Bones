@@ -1,9 +1,9 @@
 using Questy;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Database.Operations.System.SystemSettings;
 using Bones.Shared.Backend.Models;
-using Bones.Database.Operations.ProjectManagement.Projects;
-using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.Operations.Projects.Projects;
+using Bones.Database.DbSets.Projects;
 using Bones.Shared.Backend.Enums;
 using Bones.Logic.Features.Projects;
 using Bones.Testing.Shared.Exceptions;

@@ -1,5 +1,3 @@
-using System;
-
 namespace Bones.Api.IntegrationTests.Account;
 
 /// <summary>

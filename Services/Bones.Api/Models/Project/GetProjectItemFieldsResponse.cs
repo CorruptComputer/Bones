@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Fields;
 using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Models.Project;
@@ -72,16 +72,6 @@ public class GetProjectItemFieldsResponse
         /// </summary>
         public IEnumerable<KeyValuePair<string, StringValueMatchingType>>? PossibleValues { get; init; }
 
-        /// <summary>
-        ///   If the field is a GeoLocation, the type of geo location
-        /// </summary>
-        public GeoLocationType? GeoLocationType { get; init; }
-
-        /// <summary>
-        ///   If the field is a GeoLocation of type Address, the required address fields
-        /// </summary>
-        public AddressFields? RequiredAddressFields { get; init; }
-
         internal static ProjectItemFieldModel FromInternal(ItemField field)
         {
             if (field.Current is null)
@@ -98,9 +88,7 @@ public class GetProjectItemFieldsResponse
                 IsRequired = field.Current.IsRequired,
                 Type = field.Current.Type,
                 CanBeNegative = field.Current.CanBeNegative,
-                PossibleValues = field.Current.PossibleValues?.Select(x => new KeyValuePair<string, StringValueMatchingType>(x.Value, x.MatchingType)),
-                GeoLocationType = field.Current.GeoLocationType,
-                RequiredAddressFields = field.Current.RequiredAddressFields
+                PossibleValues = field.Current.PossibleValues?.Select(x => new KeyValuePair<string, StringValueMatchingType>(x.Value, x.MatchingType))
             };
         }
     }

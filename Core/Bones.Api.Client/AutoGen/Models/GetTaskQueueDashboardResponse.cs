@@ -16,7 +16,7 @@ namespace Bones.Api.Client.AutoGen.Models
     {
         /// <summary>The name of the queue</summary>
         public string QueueName { get; set; } = default!;
-        /// <summary>The s in this queue, ordered by date added from oldest to newest</summary>
+        /// <summary>The tasks in this queue, ordered by date added from oldest to newest</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.DashboardTaskModel> Tasks { get; set; } = default!;
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value

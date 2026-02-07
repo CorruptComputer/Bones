@@ -61,7 +61,6 @@
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.HOME">Home</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.Asset.CREATE_ASSET">Create Asset</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.Task.CREATE_TASK">Create Task</MudNavLink>
-            <!--MudNavLink Match="NavLinkMatch.All" href="/TestMapPage">Test Map Page</MudNavLink-->
             <AuthorizeView Roles="@SystemRoles.SYSTEM_ADMINISTRATORS">
                 <Authorized>
                     <MudNavLink Match="NavLinkMatch.All" href="@FrontEndUrls.SystemAdmin.DASHBOARD">System Admin Dashboard</MudNavLink>

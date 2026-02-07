@@ -1,5 +1,5 @@
 using Bones.Database;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Shared.Backend.Extensions;
 using Bones.Shared.Consts;
 using Microsoft.AspNetCore.Authentication.Cookies;

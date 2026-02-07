@@ -1,7 +1,7 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Items;
-using Bones.Database.DbSets.TaskManagement;
-using Bones.Database.Operations.TaskManagement.Tasks;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Layouts;
+using Bones.Database.DbSets.Items.Types;
+using Bones.Database.Operations.Items.Types.Tasks;
 using Bones.Logic.Features.Items;
 using Bones.Shared.Consts;
 

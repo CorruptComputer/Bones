@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bones.Logic.Features.Accounts;

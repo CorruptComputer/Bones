@@ -7,21 +7,21 @@ namespace Bones.Api.IntegrationTests.Account;
 public class EmailTests : TestBase
 {
     /// <summary>
-    ///   Default admin should be able to change their email
+    ///   Change email user should be able to change their email
     /// </summary>
     /// <returns></returns>
-    [Fact(Skip = "need to make an account specifically for this")]
-    public async Task DefaultAdmin_ShouldBeAbleToChangeEmail()
+    [Fact]
+    public async Task ChangeEmailUser_ShouldBeAbleToChangeEmail()
     {
         await SetupApiClientAsync();
-        await LoginAsync(TestCredentials.User.DefaultAdmin);
+        await LoginAsync(TestCredentials.User.ChangeEmail);
 
         bool? successful = null;
         if (ApiClient is not null)
         {
             Task<bool?> task = ApiClient.MyAccount.Email.PutAsync(new ChangeMyEmailRequest()
             {
-                NewEmail = "admin2@example.com"
+                NewEmail = "change-email2@example.com"
             });
             await task.ShouldNotThrowAsync();
             successful = await task;

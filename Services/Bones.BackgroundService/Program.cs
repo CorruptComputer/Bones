@@ -3,7 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Bones.Logic;
 using Bones.BackgroundService.Extensions;
 using Bones.Database;
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Database.Extensions;
 using Bones.Shared.Backend.Extensions;
 using Bones.Shared.Extensions;

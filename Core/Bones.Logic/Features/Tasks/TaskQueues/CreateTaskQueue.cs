@@ -1,8 +1,8 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.OrganizationManagement;
-using Bones.Database.DbSets.ProjectManagement;
-using Bones.Database.Operations.OrganizationManagement;
-using Bones.Database.Operations.ProjectManagement.Initiatives;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Organizations;
+using Bones.Database.DbSets.Projects;
+using Bones.Database.Operations.Organizations;
+using Bones.Database.Operations.Projects.Initiatives;
 using Bones.Database.Operations.TaskManagement.TaskQueues;
 using Bones.Logic.Features.Initiatives;
 using Bones.Shared.Backend.Enums;

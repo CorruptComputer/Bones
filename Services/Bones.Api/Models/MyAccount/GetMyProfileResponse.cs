@@ -1,6 +1,6 @@
 using System.Security.Claims;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.Audit;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Audits;
 using Bones.Shared.Consts;
 
 namespace Bones.Api.Models.MyAccount;

@@ -1,5 +1,5 @@
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.ProjectManagement;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Projects;
 using Bones.Logic.Features.Projects.Presets;
 using Bones.Shared.Backend.Enums;
 

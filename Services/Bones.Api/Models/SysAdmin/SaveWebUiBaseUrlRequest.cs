@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Logic.Features.System.SystemSettings;
 
 namespace Bones.Api.Models.SysAdmin;

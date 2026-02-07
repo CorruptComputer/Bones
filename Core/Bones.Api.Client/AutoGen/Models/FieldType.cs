@@ -36,9 +36,5 @@ namespace Bones.Api.Client.AutoGen.Models
         #pragma warning disable CS1591
         ValueList,
         #pragma warning restore CS1591
-        [EnumMember(Value = "geoLocation")]
-        #pragma warning disable CS1591
-        GeoLocation,
-        #pragma warning restore CS1591
     }
 }

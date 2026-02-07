@@ -1,7 +1,8 @@
 using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Item;
 using Bones.Api.Models.Project;
-using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Items.Fields;
+using Bones.Database.DbSets.Items.Layouts;
 using Bones.Logic.Features.Items;
 
 namespace Bones.Api.Controllers;

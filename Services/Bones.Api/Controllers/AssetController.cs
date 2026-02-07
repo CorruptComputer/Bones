@@ -2,12 +2,11 @@ using Bones.Api.Controllers.Base;
 using Bones.Api.Models.Assets;
 using Bones.Api.Models.Assets.Actions;
 using Bones.Api.Models.Assignment;
-using Bones.Database.DbSets.AccountManagement;
-using Bones.Database.DbSets.AssetManagement;
-using Bones.Database.DbSets.Items;
+using Bones.Database.DbSets.Accounts;
+using Bones.Database.DbSets.Items.Assignments;
+using Bones.Database.DbSets.Items.Types;
 using Bones.Logic.Features.Assets;
 using Bones.Logic.Features.Items;
-using Bones.Shared.Backend.Enums;
 
 namespace Bones.Api.Controllers;
 

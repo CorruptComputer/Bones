@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.AccountManagement;
+using Bones.Database.DbSets.Accounts;
 using Bones.Logic.Features.Tasks.TaskQueues;
 
 namespace Bones.Api.Models.TaskQueues;

@@ -23,8 +23,6 @@
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
         <PackageReference Include="FluentValidation" Version="12.1.1" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-        <PackageReference Include="NetTopologySuite" Version="2.6.0" />
-        <PackageReference Include="NetTopologySuite.Features" Version="2.2.0" />
         <PackageReference Include="Questy" Version="0.0.7" />
         <PackageReference Include="Questy.Autofac" Version="0.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.2" />

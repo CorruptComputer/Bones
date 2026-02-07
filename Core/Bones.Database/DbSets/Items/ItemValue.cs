@@ -1,6 +1,6 @@
 using System.Globalization;
 using Bones.Database.DbConsts;
-using Bones.Database.DbSets.MappingManagement;
+using Bones.Database.DbSets.Items.Fields;
 using Bones.Shared.Backend.Enums;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
@@ -11,7 +11,7 @@ namespace Bones.Database.DbSets.Items;
 /// <summary>
 ///   Model for the Item.ItemValues table
 /// </summary>
-[Table(TableNames.Item.ItemValues, Schema = SchemaNames.Item)]
+[Table(TableNames.Item.ItemValues, Schema = SchemaNames.Items)]
 [PrimaryKey(nameof(Id))]
 public class ItemValue
 {
@@ -35,11 +35,6 @@ public class ItemValue
     ///   The ID of the ItemFieldVersion this value belongs to
     /// </summary>
     public required Guid ItemFieldVersionId { get; init; }
-
-    /// <summary>
-    ///   If the field this value belongs to is a Location, the location info will be saved here
-    /// </summary>
-    public GeoLocation? Location { get; private set; }
 
     /// <summary>
     ///   The value this field holds
@@ -95,7 +90,6 @@ public class ItemValue
             FieldType.Boolean => ValidateAndSetBooleanValue(valueToSet),
             FieldType.DateTime => ValidateAndSetDateTimeValue(valueToSet),
             FieldType.ValueList => ValidateAndSetValueListValue(valueToSet),
-            FieldType.GeoLocation => ValidateAndSetGeoLocationValue(valueToSet),
             _ => false
         };
 
@@ -110,15 +104,6 @@ public class ItemValue
     /// <exception cref="BonesException">Throw up, we can't digest this the type isn't valid</exception>
     public T? GetValue<T>()
     {
-        if (ItemFieldVersion?.Type != FieldType.GeoLocation && Value == null)
-        {
-            return default;
-        }
-        else if (ItemFieldVersion?.Type == FieldType.GeoLocation && Location == null)
-        {
-            return default;
-        }
-
         return ItemFieldVersion?.Type switch
         {
             FieldType.TextField or FieldType.TextBox => GetStringValue<T>(),
@@ -127,7 +112,6 @@ public class ItemValue
             FieldType.Decimal => GetDecimalValue<T>(),
             FieldType.Boolean => GetBooleanValue<T>(),
             FieldType.DateTime => GetDateTimeValue<T>(),
-            FieldType.GeoLocation => GetGeoLocationValue<T>(),
             _ => throw new BonesException($"Invalid ItemFieldVersion.Type '{ItemFieldVersion?.Type}' specified.")
         };
     }
@@ -212,19 +196,6 @@ public class ItemValue
 
         return false;
     }
-
-    private bool ValidateAndSetGeoLocationValue<T>(T valueToSet)
-        where T : notnull
-    {
-        if (valueToSet is GeoLocation geoLocation)
-        {
-            Value = null; // Just to be explicit here, these will NOT be stored in the Value column.
-            Location = geoLocation;
-            return true;
-        }
-
-        return false;
-    }
     #endregion
 
     #region Get Value Helpers
@@ -287,16 +258,6 @@ public class ItemValue
         }
 
         throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a DateTimeOffset instead.");
-    }
-
-    private T? GetGeoLocationValue<T>()
-    {
-        if (typeof(T) == typeof(GeoLocation))
-        {
-            return (T?)Convert.ChangeType(Location, typeof(GeoLocation));
-        }
-
-        throw new BonesException($"Cannot convert {ItemFieldVersion?.Type} to {typeof(T).Name}, try a GeoLocation instead.");
     }
     #endregion
 }
