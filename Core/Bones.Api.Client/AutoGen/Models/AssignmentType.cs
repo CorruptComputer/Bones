@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
-    /// <summary>The assignment type</summary>
+    /// <summary>The level of assignment for this assignee slot, user or role</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
     public enum AssignmentType
     {

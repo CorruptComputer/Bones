@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
-    /// <summary>The selection type</summary>
+    /// <summary>The selection type for this assignee slot, single or multiple</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
     public enum SelectionType
     {

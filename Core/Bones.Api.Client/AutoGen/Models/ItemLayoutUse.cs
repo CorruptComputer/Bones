@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
-    /// <summary>The uses for which this layout is enabled</summary>
+    /// <summary>The use for which this layout is intended</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
     public enum ItemLayoutUse
     {
