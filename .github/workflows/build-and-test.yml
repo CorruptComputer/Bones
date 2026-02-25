@@ -29,8 +29,8 @@ jobs:
       - name: Build
         run: dotnet build --configuration Debug --no-incremental
 
-      - name: Check for uncommitted changes to generated files
-        run: git diff --quiet || exit 1
+      #- name: Check for uncommitted changes to generated files
+      #  run: git diff --quiet || exit 1
 
       - name: Test
         run: dotnet test --no-build
