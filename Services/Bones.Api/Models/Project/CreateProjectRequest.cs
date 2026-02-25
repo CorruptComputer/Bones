@@ -11,13 +11,12 @@ public record CreateProjectRequest
     /// <summary>
     ///   Name of the project to create
     /// </summary>
-    [JsonRequired]
     public required string Name { get; init; }
 
     /// <summary>
     ///   The preset to use for this project, if any
     /// </summary>
-    public ProjectPreset? Preset { get; init; }
+    public required ProjectPreset Preset { get; init; }
 
     /// <summary>
     ///   Optionally the organization that this should be created under, if not specified will be created for the requesting user.

@@ -73,11 +73,14 @@ internal static class TableNames
 
     internal static class System
     {
-        internal const string ConfirmationEmailDeadQueue = "ConfirmationEmailDeadQueue";
-        internal const string ConfirmationEmailQueue = "ConfirmationEmailQueue";
+        internal static class Queues
+        {
+            internal const string ConfirmationEmailDeadQueue = "ConfirmationEmailDeadQueue";
+            internal const string ConfirmationEmailQueue = "ConfirmationEmailQueue";
 
-        internal const string ForgotPasswordEmailDeadQueue = "ForgotPasswordEmailDeadQueue";
-        internal const string ForgotPasswordEmailQueue = "ForgotPasswordEmailQueue";
+            internal const string ForgotPasswordEmailDeadQueue = "ForgotPasswordEmailDeadQueue";
+            internal const string ForgotPasswordEmailQueue = "ForgotPasswordEmailQueue";
+        }
 
         internal const string SystemSettings = "SystemSettings";
 

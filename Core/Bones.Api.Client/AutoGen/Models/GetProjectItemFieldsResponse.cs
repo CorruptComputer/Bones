@@ -11,11 +11,20 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// API response for the GetProjectItemFieldsAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetProjectItemFieldsResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetProjectItemFieldsResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>List of item fields associated with the project</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.ProjectItemFieldModel> ItemFields { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetProjectItemFieldsResponse"/> and sets the default values.
+        /// </summary>
+        public GetProjectItemFieldsResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -23,7 +32,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetProjectItemFieldsResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetProjectItemFieldsResponse();
         }
         /// <summary>
@@ -43,8 +52,9 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ProjectItemFieldModel>("itemFields", ItemFields);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

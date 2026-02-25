@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.Project.Item.Layouts
     /// <summary>
     /// Builds and executes requests for operations under \Project\{projectId}\layouts
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class LayoutsRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -81,7 +81,7 @@ namespace Bones.Api.Client.AutoGen.Project.Item.Layouts
         /// <summary>
         /// Gets the item layouts for a project, optionally filtered by the uses they are enabled for
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
         public partial class LayoutsRequestBuilderGetQueryParameters 
         {
             #pragma warning disable CS1591

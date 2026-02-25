@@ -11,23 +11,25 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Action to create a new .
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class CreateTaskAction : global::Bones.Api.Client.AutoGen.Models.TaskActionBase, IAdditionalDataHolder, IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class CreateTaskAction : IAdditionalDataHolder, IParsable
     {
+        /// <summary>The timestamp of when this action was performed</summary>
+        public DateTimeOffset ActionDateTime { get; set; } = default!;
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The fields of the</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.ItemValueModel> FieldValues { get; set; } = default!;
         /// <summary>The ID of the  layout (not version, automatically uses the current version)</summary>
-        public Guid? TaskLayoutId { get; set; } = default!;
+        public Guid TaskLayoutId { get; set; } = default!;
         /// <summary>The ID of the  queue to create the  in</summary>
-        public Guid? TaskQueueId { get; set; } = default!;
+        public Guid TaskQueueId { get; set; } = default!;
         /// <summary>The title of the</summary>
-        public string? Title { get; set; } = default!;
+        public string Title { get; set; } = default!;
         /// <summary>
         /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.CreateTaskAction"/> and sets the default values.
         /// </summary>
-        public CreateTaskAction() : base()
+        public CreateTaskAction()
         {
             AdditionalData = new Dictionary<string, object>();
         }
@@ -36,33 +38,34 @@ namespace Bones.Api.Client.AutoGen.Models
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.CreateTaskAction"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static new global::Bones.Api.Client.AutoGen.Models.CreateTaskAction CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::Bones.Api.Client.AutoGen.Models.CreateTaskAction CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.CreateTaskAction();
         }
         /// <summary>
         /// The deserialization information for the current model
         /// </summary>
         /// <returns>A IDictionary&lt;string, Action&lt;IParseNode&gt;&gt;</returns>
-        public override IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
+        public virtual IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<IParseNode>>(base.GetFieldDeserializers())
+            return new Dictionary<string, Action<IParseNode>>
             {
+                { "actionDateTime", n => { ActionDateTime = n.GetDateTimeOffsetValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ActionDateTime'"); } },
                 { "fieldValues", n => { FieldValues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemValueModel>(global::Bones.Api.Client.AutoGen.Models.ItemValueModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldValues'"); } },
-                { "taskLayoutId", n => { TaskLayoutId = n.GetGuidValue(); } },
-                { "taskQueueId", n => { TaskQueueId = n.GetGuidValue(); } },
-                { "title", n => { Title = n.GetStringValue(); } },
+                { "taskLayoutId", n => { TaskLayoutId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'TaskLayoutId'"); } },
+                { "taskQueueId", n => { TaskQueueId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'TaskQueueId'"); } },
+                { "title", n => { Title = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Title'"); } },
             };
         }
         /// <summary>
         /// Serializes information the current object
         /// </summary>
         /// <param name="writer">Serialization writer to use to serialize this model</param>
-        public override void Serialize(ISerializationWriter writer)
+        public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
-            base.Serialize(writer);
+            ArgumentNullException.ThrowIfNull(writer);
+            writer.WriteDateTimeOffsetValue("actionDateTime", ActionDateTime);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemValueModel>("fieldValues", FieldValues);
             writer.WriteGuidValue("taskLayoutId", TaskLayoutId);
             writer.WriteGuidValue("taskQueueId", TaskQueueId);

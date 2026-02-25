@@ -11,13 +11,22 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response model for getting the latest assignments for an item.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetLatestAssignmentsResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetLatestAssignmentsResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The assignees currently assigned to the item.</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.AssigneeModel> Assignees { get; set; } = default!;
         /// <summary>The assignment slots associated with the item.</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.AssignmentSlotModel> AssignmentSlots { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetLatestAssignmentsResponse"/> and sets the default values.
+        /// </summary>
+        public GetLatestAssignmentsResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -25,7 +34,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetLatestAssignmentsResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetLatestAssignmentsResponse();
         }
         /// <summary>
@@ -46,9 +55,10 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.AssigneeModel>("assignees", Assignees);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.AssignmentSlotModel>("assignmentSlots", AssignmentSlots);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

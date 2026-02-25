@@ -11,15 +11,24 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Represents an audit of a user account
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class MyAccountAuditModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class MyAccountAuditModel : IAdditionalDataHolder, IParsable
     {
         /// <summary>The action that took place</summary>
         public string Action { get; set; } = default!;
         /// <summary>Who is responsible for the action</summary>
         public string ActionBy { get; set; } = default!;
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The date and time the action was taken</summary>
         public DateTimeOffset DateTime { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.MyAccountAuditModel"/> and sets the default values.
+        /// </summary>
+        public MyAccountAuditModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -27,7 +36,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.MyAccountAuditModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.MyAccountAuditModel();
         }
         /// <summary>
@@ -49,10 +58,11 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteStringValue("action", Action);
             writer.WriteStringValue("actionBy", ActionBy);
             writer.WriteDateTimeOffsetValue("dateTime", DateTime);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

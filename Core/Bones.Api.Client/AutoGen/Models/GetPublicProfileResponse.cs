@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response for the GetPublicProfileAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetPublicProfileResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetPublicProfileResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The ID of the user</summary>
         public Guid BonesUserId { get; set; } = default!;
         /// <summary>The date and time the user was created</summary>
@@ -21,13 +23,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The display name of the user, defaults to their email if they don&apos;t have one set</summary>
         public string DisplayName { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetPublicProfileResponse"/> and sets the default values.
+        /// </summary>
+        public GetPublicProfileResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.GetPublicProfileResponse"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetPublicProfileResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetPublicProfileResponse();
         }
         /// <summary>
@@ -49,10 +58,11 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteGuidValue("bonesUserId", BonesUserId);
             writer.WriteDateTimeOffsetValue("createDateTime", CreateDateTime);
             writer.WriteStringValue("displayName", DisplayName);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

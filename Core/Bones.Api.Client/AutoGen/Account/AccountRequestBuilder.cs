@@ -13,7 +13,7 @@ namespace Bones.Api.Client.AutoGen.Account
     /// <summary>
     /// Builds and executes requests for operations under \Account
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class AccountRequestBuilder : BaseRequestBuilder
     {
         /// <summary>Gets an item from the Bones.Api.Client.AutoGen.Account.item collection</summary>

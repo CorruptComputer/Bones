@@ -3,16 +3,15 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
+    /// <summary>The type of entity that owns this object</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
-    #pragma warning disable CS1591
     public enum OwnershipType
-    #pragma warning restore CS1591
     {
-        [EnumMember(Value = "user")]
+        [EnumMember(Value = "User")]
         #pragma warning disable CS1591
         User,
         #pragma warning restore CS1591
-        [EnumMember(Value = "organization")]
+        [EnumMember(Value = "Organization")]
         #pragma warning disable CS1591
         Organization,
         #pragma warning restore CS1591

@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// API response for the GetLatestItemLayoutVersionAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetProjectLayoutsResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetProjectLayoutsResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The friendly ID prefix for this layout</summary>
         public string FriendlyIdPrefix { get; set; } = default!;
         /// <summary>ID of the current layout version</summary>
@@ -25,13 +27,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>Name of the layout</summary>
         public string LayoutName { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetProjectLayoutsResponse"/> and sets the default values.
+        /// </summary>
+        public GetProjectLayoutsResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.GetProjectLayoutsResponse"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetProjectLayoutsResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetProjectLayoutsResponse();
         }
         /// <summary>
@@ -55,12 +64,13 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteStringValue("friendlyIdPrefix", FriendlyIdPrefix);
             writer.WriteGuidValue("latestLayoutVersionId", LatestLayoutVersionId);
             writer.WriteLongValue("latestVersionNumber", LatestVersionNumber);
             writer.WriteGuidValue("layoutId", LayoutId);
             writer.WriteStringValue("layoutName", LayoutName);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

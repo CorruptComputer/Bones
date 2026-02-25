@@ -3,16 +3,19 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
+    /// <summary>The preset to use for this project, if any</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
-    #pragma warning disable CS1591
     public enum ProjectPreset
-    #pragma warning restore CS1591
     {
-        [EnumMember(Value = "development")]
+        [EnumMember(Value = "None")]
+        #pragma warning disable CS1591
+        None,
+        #pragma warning restore CS1591
+        [EnumMember(Value = "Development")]
         #pragma warning disable CS1591
         Development,
         #pragma warning restore CS1591
-        [EnumMember(Value = "test")]
+        [EnumMember(Value = "Test")]
         #pragma warning disable CS1591
         Test,
         #pragma warning restore CS1591

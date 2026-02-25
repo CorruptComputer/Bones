@@ -13,7 +13,7 @@ namespace Bones.Api.Client.AutoGen.Account.Item
     /// <summary>
     /// Builds and executes requests for operations under \Account\{bonesUserId}
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class WithBonesUserItemRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The publicProfile property</summary>

@@ -1,11 +1,11 @@
 using Bones.Database.DbConsts;
 
-namespace Bones.Database.DbSets.System;
+namespace Bones.Database.DbSets.System.Queues;
 
 /// <summary>
-///   Model for the System.ConfirmationEmailDeadQueue table
+///   Model for the System.Queues.ConfirmationEmailDeadQueue table
 /// </summary>
-[Table(TableNames.System.ConfirmationEmailDeadQueue, Schema = SchemaNames.System)]
+[Table(TableNames.System.Queues.ConfirmationEmailDeadQueue, Schema = SchemaNames.System_Queues)]
 [PrimaryKey(nameof(Id))]
 public class ConfirmationEmailDeadQueue
 {

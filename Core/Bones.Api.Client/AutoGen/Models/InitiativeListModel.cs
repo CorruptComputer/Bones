@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model for the initiatives to be listed in a project&apos;s dashboard
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class InitiativeListModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class InitiativeListModel : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The initiatives ID</summary>
         public Guid InitiativeId { get; set; } = default!;
         /// <summary>The name of the initiative</summary>
@@ -21,13 +23,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The number of queues in the initiative</summary>
         public int QueueCount { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.InitiativeListModel"/> and sets the default values.
+        /// </summary>
+        public InitiativeListModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.InitiativeListModel"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.InitiativeListModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.InitiativeListModel();
         }
         /// <summary>
@@ -49,10 +58,11 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteGuidValue("initiativeId", InitiativeId);
             writer.WriteStringValue("initiativeName", InitiativeName);
             writer.WriteIntValue("queueCount", QueueCount);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

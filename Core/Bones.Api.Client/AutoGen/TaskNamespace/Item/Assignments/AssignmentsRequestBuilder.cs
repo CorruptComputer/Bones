@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.Item.Assignments
     /// <summary>
     /// Builds and executes requests for operations under \Task\{taskId}\assignments
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class AssignmentsRequestBuilder : BaseRequestBuilder
     {
         /// <summary>

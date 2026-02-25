@@ -26,7 +26,7 @@ namespace Bones.Database.Migrations
                 name: "Accounts");
 
             migrationBuilder.EnsureSchema(
-                name: "System");
+                name: "System.Queues");
 
             migrationBuilder.EnsureSchema(
                 name: "Projects");
@@ -42,6 +42,9 @@ namespace Bones.Database.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "Items");
+
+            migrationBuilder.EnsureSchema(
+                name: "System");
 
             migrationBuilder.CreateTable(
                 name: "BonesOrganizations",
@@ -89,7 +92,7 @@ namespace Bones.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "ConfirmationEmailDeadQueue",
-                schema: "System",
+                schema: "System.Queues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -108,7 +111,7 @@ namespace Bones.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "ConfirmationEmailQueue",
-                schema: "System",
+                schema: "System.Queues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -126,7 +129,7 @@ namespace Bones.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "ForgotPasswordEmailDeadQueue",
-                schema: "System",
+                schema: "System.Queues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -145,7 +148,7 @@ namespace Bones.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "ForgotPasswordEmailQueue",
-                schema: "System",
+                schema: "System.Queues",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -1223,19 +1226,19 @@ namespace Bones.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConfirmationEmailDeadQueue",
-                schema: "System");
+                schema: "System.Queues");
 
             migrationBuilder.DropTable(
                 name: "ConfirmationEmailQueue",
-                schema: "System");
+                schema: "System.Queues");
 
             migrationBuilder.DropTable(
                 name: "ForgotPasswordEmailDeadQueue",
-                schema: "System");
+                schema: "System.Queues");
 
             migrationBuilder.DropTable(
                 name: "ForgotPasswordEmailQueue",
-                schema: "System");
+                schema: "System.Queues");
 
             migrationBuilder.DropTable(
                 name: "ItemAssignees",

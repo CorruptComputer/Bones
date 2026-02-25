@@ -11,11 +11,13 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model for a Task in the dashboard
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class DashboardTaskModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class DashboardTaskModel : IAdditionalDataHolder, IParsable
     {
         /// <summary>The date and time the Task was added to the queue</summary>
         public DateTimeOffset AddedToQueueDateTime { get; set; } = default!;
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The friendly ID of the Task</summary>
         public string FriendlyId { get; set; } = default!;
         /// <summary>The ID of the Task</summary>
@@ -23,13 +25,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The title of the Task</summary>
         public string Title { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.DashboardTaskModel"/> and sets the default values.
+        /// </summary>
+        public DashboardTaskModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.DashboardTaskModel"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.DashboardTaskModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.DashboardTaskModel();
         }
         /// <summary>
@@ -52,11 +61,12 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteDateTimeOffsetValue("addedToQueueDateTime", AddedToQueueDateTime);
             writer.WriteStringValue("friendlyId", FriendlyId);
             writer.WriteGuidValue("id", Id);
             writer.WriteStringValue("title", Title);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

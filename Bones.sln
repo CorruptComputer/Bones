@@ -1,61 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.2.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2A5FCFB-6AD5-4EA6-8C14-081F7824EE90}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-		LICENSE = LICENSE
-		.gitignore = .gitignore
-		build-cloudflare.sh = build-cloudflare.sh
-		global.json = global.json
-		update-dotnet-tools.sh = update-dotnet-tools.sh
-		reset-db.sql = reset-db.sql
-		project-references.drawio = project-references.drawio
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{EB4F2664-935A-A444-46ED-837C0A2A4A29}"
-	ProjectSection(SolutionItems) = preProject
-		.github\dependabot.yml = .github\dependabot.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{F6425AAE-A5C1-DBED-87C4-5D0A3DCEAB22}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setup-env", "setup-env", "{2DF28F2F-224E-BF36-3637-C4E34E7B064B}"
-	ProjectSection(SolutionItems) = preProject
-		.github\actions\setup-env\action.yml = .github\actions\setup-env\action.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql", "codeql", "{E09E9E3E-44EF-35F0-27C0-87C6E00EB51B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql-custom-queries-csharp", "codeql-custom-queries-csharp", "{1AD4E5AB-E08B-10B9-2CFA-D44867C7BF1E}"
-	ProjectSection(SolutionItems) = preProject
-		.github\codeql\codeql-custom-queries-csharp\unused_local_var.ql = .github\codeql\codeql-custom-queries-csharp\unused_local_var.ql
-		.github\codeql\codeql-custom-queries-csharp\switch_case.ql = .github\codeql\codeql-custom-queries-csharp\switch_case.ql
-		.github\codeql\codeql-custom-queries-csharp\eq_true.ql = .github\codeql\codeql-custom-queries-csharp\eq_true.ql
-		.github\codeql\codeql-custom-queries-csharp\codeql-pack.yml = .github\codeql\codeql-custom-queries-csharp\codeql-pack.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{BD87C076-72F0-7B48-4AE3-45E7A5947060}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build-and-test.yml = .github\workflows\build-and-test.yml
-		.github\workflows\nightly-build-server.yml = .github\workflows\nightly-build-server.yml
-		.github\workflows\publish-client.yml = .github\workflows\publish-client.yml
-		.github\workflows\publish-server.yml = .github\workflows\publish-server.yml
-		.github\workflows\codeql.yml = .github\workflows\codeql.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sonarlint", ".sonarlint", "{B1DE1A41-4DFD-5B27-44E1-D40881FCE43A}"
-	ProjectSection(SolutionItems) = preProject
-		.sonarlint\Bones.json = .sonarlint\Bones.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{8C6856CF-7D93-D083-570C-88032DD94DD8}"
-	ProjectSection(SolutionItems) = preProject
-		.vscode\Bones.code-workspace = .vscode\Bones.code-workspace
-		.vscode\extensions.json = .vscode\extensions.json
-		.vscode\launch.json = .vscode\launch.json
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bones.Api.Client", "Core\Bones.Api.Client\Bones.Api.Client.csproj", "{12C73BFE-490F-48E3-B409-0092CD242612}"
@@ -312,14 +257,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EB4F2664-935A-A444-46ED-837C0A2A4A29} = {A2A5FCFB-6AD5-4EA6-8C14-081F7824EE90}
-		{F6425AAE-A5C1-DBED-87C4-5D0A3DCEAB22} = {EB4F2664-935A-A444-46ED-837C0A2A4A29}
-		{2DF28F2F-224E-BF36-3637-C4E34E7B064B} = {F6425AAE-A5C1-DBED-87C4-5D0A3DCEAB22}
-		{E09E9E3E-44EF-35F0-27C0-87C6E00EB51B} = {EB4F2664-935A-A444-46ED-837C0A2A4A29}
-		{1AD4E5AB-E08B-10B9-2CFA-D44867C7BF1E} = {E09E9E3E-44EF-35F0-27C0-87C6E00EB51B}
-		{BD87C076-72F0-7B48-4AE3-45E7A5947060} = {EB4F2664-935A-A444-46ED-837C0A2A4A29}
-		{B1DE1A41-4DFD-5B27-44E1-D40881FCE43A} = {A2A5FCFB-6AD5-4EA6-8C14-081F7824EE90}
-		{8C6856CF-7D93-D083-570C-88032DD94DD8} = {A2A5FCFB-6AD5-4EA6-8C14-081F7824EE90}
 		{12C73BFE-490F-48E3-B409-0092CD242612} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
 		{770FD557-F74A-4A65-9292-F66DAD5EE244} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}
 		{5311F839-CD12-4BBD-B233-725F3A3D8184} = {701C93BA-DD9C-4BC2-94E0-2D93DBCD6698}

@@ -13,7 +13,7 @@ namespace Bones.Api.Client.AutoGen.AssetSearch.ByLayout
     /// <summary>
     /// Builds and executes requests for operations under \AssetSearch\by-layout
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class ByLayoutRequestBuilder : BaseRequestBuilder
     {
         /// <summary>Gets an item from the Bones.Api.Client.AutoGen.AssetSearch.byLayout.item collection</summary>

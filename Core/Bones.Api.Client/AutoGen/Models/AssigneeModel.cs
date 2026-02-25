@@ -11,13 +11,15 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model representing an assignee.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class AssigneeModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class AssigneeModel : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The role ID assigned to this assignee, if applicable.</summary>
-        public Guid AssignedRoleId { get; set; } = default!;
+        public Guid? AssignedRoleId { get; set; } = default!;
         /// <summary>The user ID assigned to this assignee, if applicable.</summary>
-        public Guid AssignedUserId { get; set; } = default!;
+        public Guid? AssignedUserId { get; set; } = default!;
         /// <summary>The display name of the assignee.</summary>
         public string AssigneeDisplayName { get; set; } = default!;
         /// <summary>The unique identifier for the assignee.</summary>
@@ -27,13 +29,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The state in which this assignment is in</summary>
         public string AssignmentState { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.AssigneeModel"/> and sets the default values.
+        /// </summary>
+        public AssigneeModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.AssigneeModel"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.AssigneeModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.AssigneeModel();
         }
         /// <summary>
@@ -44,8 +53,8 @@ namespace Bones.Api.Client.AutoGen.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "assignedRoleId", n => { AssignedRoleId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssignedRoleId'"); } },
-                { "assignedUserId", n => { AssignedUserId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssignedUserId'"); } },
+                { "assignedRoleId", n => { AssignedRoleId = n.GetGuidValue(); } },
+                { "assignedUserId", n => { AssignedUserId = n.GetGuidValue(); } },
                 { "assigneeDisplayName", n => { AssigneeDisplayName = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssigneeDisplayName'"); } },
                 { "assigneeId", n => { AssigneeId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssigneeId'"); } },
                 { "assignmentSlotId", n => { AssignmentSlotId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssignmentSlotId'"); } },
@@ -58,13 +67,14 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteGuidValue("assignedRoleId", AssignedRoleId);
             writer.WriteGuidValue("assignedUserId", AssignedUserId);
             writer.WriteStringValue("assigneeDisplayName", AssigneeDisplayName);
             writer.WriteGuidValue("assigneeId", AssigneeId);
             writer.WriteGuidValue("assignmentSlotId", AssignmentSlotId);
             writer.WriteStringValue("assignmentState", AssignmentState);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

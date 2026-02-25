@@ -16,7 +16,7 @@ namespace Bones.Api.Client.AutoGen.TaskQueue.Item
     /// <summary>
     /// Builds and executes requests for operations under \TaskQueue\{taskQueueId}
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class WithTaskQueueItemRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The dashboard property</summary>

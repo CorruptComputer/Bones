@@ -13,7 +13,7 @@ public sealed record GetLatestItemLayoutVersionFieldsResponse
     /// <summary>
     ///   ID for the ItemFieldVersion
     /// </summary>
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
     /// <summary>
     ///   The order number for which this field should be displayed
@@ -34,7 +34,7 @@ public sealed record GetLatestItemLayoutVersionFieldsResponse
     /// <summary>
     ///   Is this field required to have a value?
     /// </summary>
-    public bool IsRequired { get; set; } = false;
+    public required bool IsRequired { get; set; } = false;
 
     /// <summary>
     ///   If the field type is a ValueList, this will contain the possible values for this field.

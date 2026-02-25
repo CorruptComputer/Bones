@@ -3,36 +3,35 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
+    /// <summary>The type of the field</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
-    #pragma warning disable CS1591
     public enum FieldType
-    #pragma warning restore CS1591
     {
-        [EnumMember(Value = "textField")]
+        [EnumMember(Value = "TextField")]
         #pragma warning disable CS1591
         TextField,
         #pragma warning restore CS1591
-        [EnumMember(Value = "textBox")]
+        [EnumMember(Value = "TextBox")]
         #pragma warning disable CS1591
         TextBox,
         #pragma warning restore CS1591
-        [EnumMember(Value = "integer")]
+        [EnumMember(Value = "Integer")]
         #pragma warning disable CS1591
         Integer,
         #pragma warning restore CS1591
-        [EnumMember(Value = "decimal")]
+        [EnumMember(Value = "Decimal")]
         #pragma warning disable CS1591
         Decimal,
         #pragma warning restore CS1591
-        [EnumMember(Value = "boolean")]
+        [EnumMember(Value = "Boolean")]
         #pragma warning disable CS1591
         Boolean,
         #pragma warning restore CS1591
-        [EnumMember(Value = "dateTime")]
+        [EnumMember(Value = "DateTime")]
         #pragma warning disable CS1591
         DateTime,
         #pragma warning restore CS1591
-        [EnumMember(Value = "valueList")]
+        [EnumMember(Value = "ValueList")]
         #pragma warning disable CS1591
         ValueList,
         #pragma warning restore CS1591

@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.Register
     /// <summary>
     /// Builds and executes requests for operations under \Anonymous\register
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class RegisterRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -45,7 +45,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.Register
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 500 status code</exception>
         public async Task<global::Bones.Api.Client.AutoGen.Models.EmptyResponse?> PostAsync(global::Bones.Api.Client.AutoGen.Models.RegisterUserApiRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
             var requestInfo = ToPostRequestInformation(body, requestConfiguration);
             var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
             {
@@ -62,7 +62,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.Register
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
         public RequestInformation ToPostRequestInformation(global::Bones.Api.Client.AutoGen.Models.RegisterUserApiRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
             var requestInfo = new RequestInformation(Method.POST, UrlTemplate, PathParameters);
             requestInfo.Configure(requestConfiguration);
             requestInfo.Headers.TryAdd("Accept", "application/json");

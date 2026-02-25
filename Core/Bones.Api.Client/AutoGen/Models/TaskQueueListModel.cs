@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model for the  queues to be listed in an initiative
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class TaskQueueListModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class TaskQueueListModel : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The number of s in the  queue</summary>
         public int TaskCount { get; set; } = default!;
         /// <summary>The  queue ID</summary>
@@ -21,13 +23,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The name of the  queue</summary>
         public string TaskQueueName { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel"/> and sets the default values.
+        /// </summary>
+        public TaskQueueListModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.TaskQueueListModel();
         }
         /// <summary>
@@ -49,10 +58,11 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteIntValue("taskCount", TaskCount);
             writer.WriteGuidValue("taskQueueId", TaskQueueId);
             writer.WriteStringValue("taskQueueName", TaskQueueName);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

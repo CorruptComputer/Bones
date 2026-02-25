@@ -8,24 +8,33 @@ using System.IO;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     #pragma warning disable CS1591
-    public partial class StringStringValueMatchingTypeKeyValuePair : IParsable
+    public partial class KeyValuePairOfstringAndStringValueMatchingType : IAdditionalDataHolder, IParsable
     #pragma warning restore CS1591
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The key property</summary>
         public string? Key { get; set; } = default!;
-        /// <summary>The value property</summary>
+        /// <summary>Type of string matching to use for this</summary>
         public global::Bones.Api.Client.AutoGen.Models.StringValueMatchingType? Value { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType"/> and sets the default values.
+        /// </summary>
+        public KeyValuePairOfstringAndStringValueMatchingType()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
-        /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair"/></returns>
+        /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
-        public static global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair();
+            ArgumentNullException.ThrowIfNull(parseNode);
+            return new global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType();
         }
         /// <summary>
         /// The deserialization information for the current model
@@ -45,9 +54,10 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteStringValue("key", Key);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.StringValueMatchingType>("value", Value);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

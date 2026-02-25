@@ -14,7 +14,7 @@ namespace Bones.Api.Client.AutoGen.Initiative.Item
     /// <summary>
     /// Builds and executes requests for operations under \Initiative\{initiativeId}
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class WithInitiativeItemRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The dashboard property</summary>

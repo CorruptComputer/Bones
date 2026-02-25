@@ -1,8 +1,8 @@
 {
-  "descriptionHash": "9D0BC91FCF07979F8601A27A9B20D5BB9D873DDF7C5B2384D8AED3126365A67C28B4DA20BDC06ECF166D7BEE2515F009D69052D77BFF483F2BAC69DA0B8B0AB1",
-  "descriptionLocation": "../../../Services/Bones.Api/OpenApi/swagger.json",
+  "descriptionHash": "C10F9D85E0FCB0634F3F21829D47B49079C80FD9373797CE4C6DAD5C70E968A6913218C016CA369977F995957704336AE378C962EAF3A4E3A8D1EE5FA496A15B",
+  "descriptionLocation": "../../../Services/Bones.Api/OpenApi/Bones.Api_develop.json",
   "lockFileVersion": "1.0.0",
-  "reQuestyVersion": "0.0.2",
+  "reQuestyVersion": "0.0.6",
   "clientClassName": "AutoGenBonesApiClient",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "Bones.Api.Client.AutoGen",

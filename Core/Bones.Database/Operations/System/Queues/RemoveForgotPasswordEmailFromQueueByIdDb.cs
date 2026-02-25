@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.System;
+using Bones.Database.DbSets.System.Queues;
 
 namespace Bones.Database.Operations.System.Queues;
 
@@ -6,7 +6,7 @@ namespace Bones.Database.Operations.System.Queues;
 public sealed class RemoveForgotPasswordEmailFromQueueByIdDb(BonesDbContext dbContext) : IRequestHandler<RemoveForgotPasswordEmailFromQueueByIdDb.Command, CommandResponse>
 {
     /// <summary>
-    ///   Checks if any confirmation emails are in the queue
+    ///   Checks if any forgot password emails are in the queue
     /// </summary>
     public sealed record Command(Guid Id) : IRequest<CommandResponse>;
 

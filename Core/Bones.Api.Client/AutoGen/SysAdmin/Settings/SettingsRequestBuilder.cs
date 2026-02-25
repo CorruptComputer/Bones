@@ -16,7 +16,7 @@ namespace Bones.Api.Client.AutoGen.SysAdmin.Settings
     /// <summary>
     /// Builds and executes requests for operations under \SysAdmin\settings
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class SettingsRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The backgroundServiceUserConfig property</summary>

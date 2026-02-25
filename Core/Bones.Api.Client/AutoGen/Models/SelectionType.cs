@@ -3,16 +3,15 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
+    /// <summary>The selection type</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
-    #pragma warning disable CS1591
     public enum SelectionType
-    #pragma warning restore CS1591
     {
-        [EnumMember(Value = "single")]
+        [EnumMember(Value = "Single")]
         #pragma warning disable CS1591
         Single,
         #pragma warning restore CS1591
-        [EnumMember(Value = "multiple")]
+        [EnumMember(Value = "Multiple")]
         #pragma warning disable CS1591
         Multiple,
         #pragma warning restore CS1591

@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// API response for the GetLatestItemLayoutVersionFieldsAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetLatestItemLayoutVersionFieldsResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetLatestItemLayoutVersionFieldsResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>If the Type of this field is either an Integer or Decimal, can it be negative?</summary>
         public bool? CanBeNegative { get; set; } = default!;
         /// <summary>ID for the ItemFieldVersion</summary>
@@ -26,8 +28,15 @@ namespace Bones.Api.Client.AutoGen.Models
         public int OrderNumber { get; set; } = default!;
         /// <summary>If the field type is a ValueList, this will contain the possible values for this field.</summary>
         public List<string> PossibleValues { get; set; } = default!;
-        /// <summary>The type property</summary>
+        /// <summary>The FieldType for this field</summary>
         public global::Bones.Api.Client.AutoGen.Models.FieldType? Type { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetLatestItemLayoutVersionFieldsResponse"/> and sets the default values.
+        /// </summary>
+        public GetLatestItemLayoutVersionFieldsResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -35,7 +44,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetLatestItemLayoutVersionFieldsResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetLatestItemLayoutVersionFieldsResponse();
         }
         /// <summary>
@@ -61,7 +70,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteBoolValue("canBeNegative", CanBeNegative);
             writer.WriteGuidValue("id", Id);
             writer.WriteBoolValue("isRequired", IsRequired);
@@ -69,6 +78,7 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteIntValue("orderNumber", OrderNumber);
             writer.WriteCollectionOfPrimitiveValues<string>("possibleValues", PossibleValues);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>("type", Type);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

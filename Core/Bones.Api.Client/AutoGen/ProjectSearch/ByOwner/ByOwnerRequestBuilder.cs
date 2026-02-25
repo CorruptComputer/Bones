@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.ProjectSearch.ByOwner
     /// <summary>
     /// Builds and executes requests for operations under \ProjectSearch\by-owner
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class ByOwnerRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -80,7 +80,7 @@ namespace Bones.Api.Client.AutoGen.ProjectSearch.ByOwner
         /// <summary>
         /// Gets the projects for the current user, or specified organization
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
         public partial class ByOwnerRequestBuilderGetQueryParameters 
         {
             /// <summary>The ID of the organization, if applicable</summary>

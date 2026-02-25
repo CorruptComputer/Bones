@@ -1,8 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Bones.Shared.Backend.Enums;
 
 /// <summary>
 ///   The assignment type
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum AssignmentType
 {
     /// <summary>

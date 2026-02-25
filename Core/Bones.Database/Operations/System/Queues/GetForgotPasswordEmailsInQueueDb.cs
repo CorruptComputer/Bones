@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.System;
+using Bones.Database.DbSets.System.Queues;
 
 namespace Bones.Database.Operations.System.Queues;
 

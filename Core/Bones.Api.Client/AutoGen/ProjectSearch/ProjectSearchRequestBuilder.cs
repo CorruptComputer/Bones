@@ -14,7 +14,7 @@ namespace Bones.Api.Client.AutoGen.ProjectSearch
     /// <summary>
     /// Builds and executes requests for operations under \ProjectSearch
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class ProjectSearchRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The byOwner property</summary>

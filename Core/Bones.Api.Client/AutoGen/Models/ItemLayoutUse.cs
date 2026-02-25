@@ -3,20 +3,19 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
+    /// <summary>The uses for which this layout is enabled</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
-    #pragma warning disable CS1591
     public enum ItemLayoutUse
-    #pragma warning restore CS1591
     {
-        [EnumMember(Value = "none")]
+        [EnumMember(Value = "None")]
         #pragma warning disable CS1591
         None,
         #pragma warning restore CS1591
-        [EnumMember(Value = "tasks")]
+        [EnumMember(Value = "Tasks")]
         #pragma warning disable CS1591
         Tasks,
         #pragma warning restore CS1591
-        [EnumMember(Value = "assets")]
+        [EnumMember(Value = "Assets")]
         #pragma warning disable CS1591
         Assets,
         #pragma warning restore CS1591

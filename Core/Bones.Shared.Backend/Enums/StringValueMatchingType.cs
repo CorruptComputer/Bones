@@ -1,8 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Bones.Shared.Backend.Enums;
 
 /// <summary>
 ///   Type of string matching to use for this
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum StringValueMatchingType
 {
     /// <summary>

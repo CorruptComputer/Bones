@@ -1,11 +1,11 @@
 using Bones.Database.DbConsts;
 
-namespace Bones.Database.DbSets.System;
+namespace Bones.Database.DbSets.System.Queues;
 
 /// <summary>
-///   Model for the System.ForgotPasswordEmailDeadQueue table
+///   Model for the System.Queues.ForgotPasswordEmailDeadQueue table
 /// </summary>
-[Table(TableNames.System.ForgotPasswordEmailDeadQueue, Schema = SchemaNames.System)]
+[Table(TableNames.System.Queues.ForgotPasswordEmailDeadQueue, Schema = SchemaNames.System_Queues)]
 [PrimaryKey(nameof(Id))]
 public class ForgotPasswordEmailDeadQueue
 {

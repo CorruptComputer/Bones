@@ -11,17 +11,26 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// API response for the GetSystemAdminDashboardAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetSystemAdminDashboardResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetSystemAdminDashboardResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The number of items in the system</summary>
-        public int ItemCount { get; set; } = default!;
+        public int? ItemCount { get; set; } = default!;
         /// <summary>The number of organizations in the system</summary>
-        public int OrganizationCount { get; set; } = default!;
+        public int? OrganizationCount { get; set; } = default!;
         /// <summary>The number of projects in the system</summary>
-        public int ProjectCount { get; set; } = default!;
+        public int? ProjectCount { get; set; } = default!;
         /// <summary>The number of users in the system</summary>
-        public int UserCount { get; set; } = default!;
+        public int? UserCount { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetSystemAdminDashboardResponse"/> and sets the default values.
+        /// </summary>
+        public GetSystemAdminDashboardResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -29,7 +38,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetSystemAdminDashboardResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetSystemAdminDashboardResponse();
         }
         /// <summary>
@@ -40,10 +49,10 @@ namespace Bones.Api.Client.AutoGen.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                { "itemCount", n => { ItemCount = n.GetIntValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ItemCount'"); } },
-                { "organizationCount", n => { OrganizationCount = n.GetIntValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'OrganizationCount'"); } },
-                { "projectCount", n => { ProjectCount = n.GetIntValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ProjectCount'"); } },
-                { "userCount", n => { UserCount = n.GetIntValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'UserCount'"); } },
+                { "itemCount", n => { ItemCount = n.GetIntValue(); } },
+                { "organizationCount", n => { OrganizationCount = n.GetIntValue(); } },
+                { "projectCount", n => { ProjectCount = n.GetIntValue(); } },
+                { "userCount", n => { UserCount = n.GetIntValue(); } },
             };
         }
         /// <summary>
@@ -52,11 +61,12 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteIntValue("itemCount", ItemCount);
             writer.WriteIntValue("organizationCount", OrganizationCount);
             writer.WriteIntValue("projectCount", ProjectCount);
             writer.WriteIntValue("userCount", UserCount);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

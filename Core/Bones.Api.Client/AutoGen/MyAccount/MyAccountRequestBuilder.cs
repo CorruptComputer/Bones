@@ -16,7 +16,7 @@ namespace Bones.Api.Client.AutoGen.MyAccount
     /// <summary>
     /// Builds and executes requests for operations under \MyAccount
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class MyAccountRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The email property</summary>

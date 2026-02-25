@@ -1,8 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Bones.Shared.Backend.Enums;
 
 /// <summary>
 ///   The use for an item layout
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ItemLayoutUse : ushort
 {
     /// <summary>

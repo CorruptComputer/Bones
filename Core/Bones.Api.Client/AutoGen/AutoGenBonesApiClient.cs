@@ -30,7 +30,7 @@ namespace Bones.Api.Client.AutoGen
     /// <summary>
     /// The main entry point of the SDK, exposes the configuration and the fluent API.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class AutoGenBonesApiClient : BaseRequestBuilder
     {
         /// <summary>The Account property</summary>

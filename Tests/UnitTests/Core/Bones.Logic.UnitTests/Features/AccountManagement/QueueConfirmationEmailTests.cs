@@ -1,5 +1,5 @@
 using Bones.Database.DbSets.Accounts;
-using Bones.Database.DbSets.System;
+using Bones.Database.DbSets.System.Queues;
 using Bones.Shared.Backend.Models;
 using Bones.Testing.UnitTests.Shared;
 using Bones.Testing.UnitTests.Shared.TestOperations.AccountManagement;

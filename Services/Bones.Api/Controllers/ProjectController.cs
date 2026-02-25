@@ -167,7 +167,6 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
 
         return GetInitiativesInProjectResponse.FromInternalList(initiativeResponse.Result);
     }
-
     #endregion
 
     #region POST
@@ -181,8 +180,8 @@ public sealed class ProjectController(ISender sender) : AuthenticatedControllerB
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
     public async ValueTask<ActionResult<Guid>> CreateProjectAsync([FromBody] CreateProjectRequest request)
     {
-        CommandResponse response = request.Preset.HasValue
-            ? await Sender.Send(new CreateProjectWithPreset.Command(request.Name, request.Preset.Value, await GetCurrentBonesUserAsync(), request.OrganizationId))
+        CommandResponse response = request.Preset != ProjectPreset.None
+            ? await Sender.Send(new CreateProjectWithPreset.Command(request.Name, request.Preset, await GetCurrentBonesUserAsync(), request.OrganizationId))
             : await Sender.Send(new CreateProject.Command(request.Name, await GetCurrentBonesUserAsync(), request.OrganizationId));
 
         if (!response.Success)

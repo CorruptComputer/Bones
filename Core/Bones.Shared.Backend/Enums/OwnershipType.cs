@@ -1,8 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Bones.Shared.Backend.Enums;
 
 /// <summary>
 ///   The type of entity that owns this object
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum OwnershipType
 {
     /// <summary>

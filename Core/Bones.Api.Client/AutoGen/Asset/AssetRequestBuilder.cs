@@ -14,7 +14,7 @@ namespace Bones.Api.Client.AutoGen.Asset
     /// <summary>
     /// Builds and executes requests for operations under \Asset
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class AssetRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The create property</summary>

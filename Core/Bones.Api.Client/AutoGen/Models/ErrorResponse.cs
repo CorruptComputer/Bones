@@ -12,15 +12,24 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// The response body is empty, this is a workaround for the limitations of the API client.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class ErrorResponse : ApiException, IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class ErrorResponse : ApiException, IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The error message, if any.</summary>
         public string? ErrorMessage { get; set; } = default!;
         /// <summary>The errors that occurred, with the key being either the input that was invalid and the list of reasons it was invalid, or &apos;server&apos; with the list of server errors.</summary>
-        public List<global::Bones.Api.Client.AutoGen.Models.StringStringListKeyValuePair> Errors { get; set; } = default!;
+        public List<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndListOfstring> Errors { get; set; } = default!;
         /// <summary>The primary error message.</summary>
         public override string Message { get => base.Message; }
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse"/> and sets the default values.
+        /// </summary>
+        public ErrorResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -28,7 +37,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.ErrorResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.ErrorResponse();
         }
         /// <summary>
@@ -40,7 +49,7 @@ namespace Bones.Api.Client.AutoGen.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "errorMessage", n => { ErrorMessage = n.GetStringValue(); } },
-                { "errors", n => { Errors = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringListKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.StringStringListKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Errors'"); } },
+                { "errors", n => { Errors = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndListOfstring>(global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndListOfstring.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Errors'"); } },
             };
         }
         /// <summary>
@@ -49,9 +58,10 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteStringValue("errorMessage", ErrorMessage);
-            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringListKeyValuePair>("errors", Errors);
+            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndListOfstring>("errors", Errors);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

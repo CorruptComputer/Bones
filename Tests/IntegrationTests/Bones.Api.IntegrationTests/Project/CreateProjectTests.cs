@@ -23,6 +23,7 @@ public class CreateProjectTests : TestBase
         Guid? projectId = await ApiClient.Project.Create.PostAsync(new()
         {
             Name = "test",
+            Preset = ProjectPreset.None,
             OrganizationId = null
         });
 

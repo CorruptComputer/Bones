@@ -19,7 +19,7 @@ namespace Bones.Api.Client.AutoGen.Asset.Item
     /// <summary>
     /// Builds and executes requests for operations under \Asset\{asset-id}
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class AssetItemRequestBuilder : BaseRequestBuilder
     {
         /// <summary>The assignments property</summary>

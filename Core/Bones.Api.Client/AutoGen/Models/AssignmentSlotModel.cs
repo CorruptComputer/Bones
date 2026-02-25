@@ -11,12 +11,14 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model representing an assignment slot for an item.
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class AssignmentSlotModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class AssignmentSlotModel : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The unique identifier for the assignment slot.</summary>
         public Guid AssignmentSlotId { get; set; } = default!;
-        /// <summary>The assignmentSlotLevel property</summary>
+        /// <summary>The level of assignment for this assignee slot, user or role</summary>
         public global::Bones.Api.Client.AutoGen.Models.AssignmentType? AssignmentSlotLevel { get; set; } = default!;
         /// <summary>The name of the assignment slot.</summary>
         public string AssignmentSlotName { get; set; } = default!;
@@ -24,8 +26,15 @@ namespace Bones.Api.Client.AutoGen.Models
         public List<string> AssignmentStates { get; set; } = default!;
         /// <summary>The display order for this assignee slot</summary>
         public int OrderIndex { get; set; } = default!;
-        /// <summary>The selectionSlotType property</summary>
+        /// <summary>The selection type for this assignee slot, single or multiple</summary>
         public global::Bones.Api.Client.AutoGen.Models.SelectionType? SelectionSlotType { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.AssignmentSlotModel"/> and sets the default values.
+        /// </summary>
+        public AssignmentSlotModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -33,7 +42,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.AssignmentSlotModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.AssignmentSlotModel();
         }
         /// <summary>
@@ -58,13 +67,14 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteGuidValue("assignmentSlotId", AssignmentSlotId);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.AssignmentType>("assignmentSlotLevel", AssignmentSlotLevel);
             writer.WriteStringValue("assignmentSlotName", AssignmentSlotName);
             writer.WriteCollectionOfPrimitiveValues<string>("assignmentStates", AssignmentStates);
             writer.WriteIntValue("orderIndex", OrderIndex);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.SelectionType>("selectionSlotType", SelectionSlotType);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

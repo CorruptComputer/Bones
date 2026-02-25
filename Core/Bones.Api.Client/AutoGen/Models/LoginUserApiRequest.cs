@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Request to login
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class LoginUserApiRequest : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class LoginUserApiRequest : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The users email address</summary>
         public string Email { get; set; } = default!;
         /// <summary>The users password</summary>
@@ -23,13 +25,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>If they have 2fa and can&apos;t use their authenticator, include a recovery code here</summary>
         public string? TwoFactorRecoveryCode { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.LoginUserApiRequest"/> and sets the default values.
+        /// </summary>
+        public LoginUserApiRequest()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.LoginUserApiRequest"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.LoginUserApiRequest CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.LoginUserApiRequest();
         }
         /// <summary>
@@ -52,11 +61,12 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteStringValue("email", Email);
             writer.WriteStringValue("password", Password);
             writer.WriteStringValue("twoFactorCode", TwoFactorCode);
             writer.WriteStringValue("twoFactorRecoveryCode", TwoFactorRecoveryCode);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

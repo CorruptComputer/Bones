@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.MyAccount.Session
     /// <summary>
     /// Builds and executes requests for operations under \MyAccount\session
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class SessionRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -35,7 +35,7 @@ namespace Bones.Api.Client.AutoGen.MyAccount.Session
         {
         }
         /// <summary>
-        /// Gets or creates a session token for the user and an encryption key to be used for the session.All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.            This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
+        /// Gets or creates a session token for the user and an encryption key to be used for the session.All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.GetOrCreateMySessionResponse"/></returns>
         /// <param name="cancellationToken">Cancellation token to use when cancelling requests</param>
@@ -57,7 +57,7 @@ namespace Bones.Api.Client.AutoGen.MyAccount.Session
             return await RequestAdapter.SendAsync<global::Bones.Api.Client.AutoGen.Models.GetOrCreateMySessionResponse>(requestInfo, global::Bones.Api.Client.AutoGen.Models.GetOrCreateMySessionResponse.CreateFromDiscriminatorValue, errorMapping, cancellationToken).ConfigureAwait(false);
         }
         /// <summary>
-        /// Gets or creates a session token for the user and an encryption key to be used for the session.All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.            This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
+        /// Gets or creates a session token for the user and an encryption key to be used for the session.All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
         /// </summary>
         /// <returns>A <see cref="RequestInformation"/></returns>
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
@@ -78,9 +78,9 @@ namespace Bones.Api.Client.AutoGen.MyAccount.Session
             return new global::Bones.Api.Client.AutoGen.MyAccount.Session.SessionRequestBuilder(rawUrl, RequestAdapter);
         }
         /// <summary>
-        /// Gets or creates a session token for the user and an encryption key to be used for the session.All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.            This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
+        /// Gets or creates a session token for the user and an encryption key to be used for the session.All data stored in localStorage on the client side should be encrypted with the encryption key, to protect against XSS attacks.This encryption key should not be persistantly saved in the client, instead save the session token Guid and use it to retrieve the encryption key from the server.
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
         public partial class SessionRequestBuilderGetQueryParameters 
         {
             /// <summary>The session token to use, if null a new one will be created</summary>

@@ -13,7 +13,7 @@ namespace Bones.Api.Client.AutoGen.ItemVersion
     /// <summary>
     /// Builds and executes requests for operations under \ItemVersion
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class ItemVersionRequestBuilder : BaseRequestBuilder
     {
         /// <summary>Gets an item from the Bones.Api.Client.AutoGen.ItemVersion.item collection</summary>

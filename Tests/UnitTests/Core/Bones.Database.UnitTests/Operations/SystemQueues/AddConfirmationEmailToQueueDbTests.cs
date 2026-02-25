@@ -1,4 +1,4 @@
-using Bones.Database.DbSets.System;
+using Bones.Database.DbSets.System.Queues;
 using Bones.Database.Operations.System.Queues;
 using Bones.Shared.Backend.Models;
 

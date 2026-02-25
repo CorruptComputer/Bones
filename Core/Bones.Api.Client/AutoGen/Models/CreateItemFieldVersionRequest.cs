@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Request to create a new item field version
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class CreateItemFieldVersionRequest : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class CreateItemFieldVersionRequest : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>If the field is numeric, can it be negative?</summary>
         public bool? CanBeNegative { get; set; } = default!;
         /// <summary>Is the field required?</summary>
@@ -21,9 +23,16 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>Name of the item field to create</summary>
         public string Name { get; set; } = default!;
         /// <summary>If the field is a ValueList, the possible values</summary>
-        public List<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair> PossibleValues { get; set; } = default!;
-        /// <summary>The type property</summary>
+        public List<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType> PossibleValues { get; set; } = default!;
+        /// <summary>Type of the item field</summary>
         public global::Bones.Api.Client.AutoGen.Models.FieldType? Type { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.CreateItemFieldVersionRequest"/> and sets the default values.
+        /// </summary>
+        public CreateItemFieldVersionRequest()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -31,7 +40,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.CreateItemFieldVersionRequest CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.CreateItemFieldVersionRequest();
         }
         /// <summary>
@@ -45,7 +54,7 @@ namespace Bones.Api.Client.AutoGen.Models
                 { "canBeNegative", n => { CanBeNegative = n.GetBoolValue(); } },
                 { "isRequired", n => { IsRequired = n.GetBoolValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'IsRequired'"); } },
                 { "name", n => { Name = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Name'"); } },
-                { "possibleValues", n => { PossibleValues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'PossibleValues'"); } },
+                { "possibleValues", n => { PossibleValues = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType>(global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'PossibleValues'"); } },
                 { "type", n => { Type = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>(); } },
             };
         }
@@ -55,12 +64,13 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteBoolValue("canBeNegative", CanBeNegative);
             writer.WriteBoolValue("isRequired", IsRequired);
             writer.WriteStringValue("name", Name);
-            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.StringStringValueMatchingTypeKeyValuePair>("possibleValues", PossibleValues);
+            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfstringAndStringValueMatchingType>("possibleValues", PossibleValues);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>("type", Type);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

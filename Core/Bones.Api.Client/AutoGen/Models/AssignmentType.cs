@@ -3,16 +3,15 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
+    /// <summary>The assignment type</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
-    #pragma warning disable CS1591
     public enum AssignmentType
-    #pragma warning restore CS1591
     {
-        [EnumMember(Value = "user")]
+        [EnumMember(Value = "User")]
         #pragma warning disable CS1591
         User,
         #pragma warning restore CS1591
-        [EnumMember(Value = "role")]
+        [EnumMember(Value = "Role")]
         #pragma warning disable CS1591
         Role,
         #pragma warning restore CS1591

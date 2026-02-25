@@ -10,6 +10,7 @@ using Bones.Database.DbSets.Items.Types;
 using Bones.Database.DbSets.Organizations;
 using Bones.Database.DbSets.Projects;
 using Bones.Database.DbSets.System;
+using Bones.Database.DbSets.System.Queues;
 using Bones.Shared.Exceptions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -66,11 +67,11 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     internal DbSet<ItemVersion> ItemVersions { get; set; }
     #endregion
 
-    #region OrganizationManagement
+    #region Organizations
     internal DbSet<BonesOrganization> Organizations { get; set; }
     #endregion
 
-    #region ProjectManagement
+    #region Projects
     internal DbSet<Initiative> Initiatives { get; set; }
     internal DbSet<Project> Projects { get; set; }
     internal DbSet<TaskQueue> TaskQueues { get; set; }
@@ -79,11 +80,13 @@ public class BonesDbContext(BonesBackendConfiguration backendConfig)
     #region System
     /// See also <see cref="OnConfiguring(DbContextOptionsBuilder)" />, "__EFMigrationsHistory" is here too
 
+    #region Queues
     internal DbSet<ConfirmationEmailDeadQueue> ConfirmationEmailDeadQueue { get; set; }
     internal DbSet<ConfirmationEmailQueue> ConfirmationEmailQueue { get; set; }
 
     internal DbSet<ForgotPasswordEmailDeadQueue> ForgotPasswordEmailDeadQueue { get; set; }
     internal DbSet<ForgotPasswordEmailQueue> ForgotPasswordEmailQueue { get; set; }
+    #endregion
 
     internal DbSet<SystemSetting> SystemSettings { get; set; }
 

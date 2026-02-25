@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.MyAccount.Password
     /// <summary>
     /// Builds and executes requests for operations under \MyAccount\password
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class PasswordRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace Bones.Api.Client.AutoGen.MyAccount.Password
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 500 status code</exception>
         public async Task<bool?> PutAsync(global::Bones.Api.Client.AutoGen.Models.ChangeMyPasswordRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
             var requestInfo = ToPutRequestInformation(body, requestConfiguration);
             var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
             {
@@ -66,7 +66,7 @@ namespace Bones.Api.Client.AutoGen.MyAccount.Password
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
         public RequestInformation ToPutRequestInformation(global::Bones.Api.Client.AutoGen.Models.ChangeMyPasswordRequest body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
             var requestInfo = new RequestInformation(Method.PUT, UrlTemplate, PathParameters);
             requestInfo.Configure(requestConfiguration);
             requestInfo.Headers.TryAdd("Accept", "application/json");

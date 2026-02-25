@@ -11,19 +11,28 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Slot of an item assignee
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class ItemAssigneeSlotModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class ItemAssigneeSlotModel : IAdditionalDataHolder, IParsable
     {
-        /// <summary>The assignmentType property</summary>
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
+        /// <summary>The assignment type</summary>
         public global::Bones.Api.Client.AutoGen.Models.AssignmentType? AssignmentType { get; set; } = default!;
         /// <summary>Name of the assignee slot</summary>
         public string Name { get; set; } = default!;
         /// <summary>The order number of the assignee slot</summary>
         public int OrderNumber { get; set; } = default!;
-        /// <summary>The selectionType property</summary>
+        /// <summary>The selection type</summary>
         public global::Bones.Api.Client.AutoGen.Models.SelectionType? SelectionType { get; set; } = default!;
         /// <summary>The states this assignment can be in</summary>
         public List<string> States { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel"/> and sets the default values.
+        /// </summary>
+        public ItemAssigneeSlotModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -31,7 +40,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel();
         }
         /// <summary>
@@ -55,12 +64,13 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.AssignmentType>("assignmentType", AssignmentType);
             writer.WriteStringValue("name", Name);
             writer.WriteIntValue("orderNumber", OrderNumber);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.SelectionType>("selectionType", SelectionType);
             writer.WriteCollectionOfPrimitiveValues<string>("states", States);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

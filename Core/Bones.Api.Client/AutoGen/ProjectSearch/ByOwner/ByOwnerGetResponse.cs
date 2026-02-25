@@ -8,7 +8,7 @@ using System.IO;
 using System;
 namespace Bones.Api.Client.AutoGen.ProjectSearch.ByOwner
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     #pragma warning disable CS1591
     public partial class ByOwnerGetResponse : IAdditionalDataHolder, IParsable
     #pragma warning restore CS1591
@@ -29,7 +29,7 @@ namespace Bones.Api.Client.AutoGen.ProjectSearch.ByOwner
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.ProjectSearch.ByOwner.ByOwnerGetResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.ProjectSearch.ByOwner.ByOwnerGetResponse();
         }
         /// <summary>
@@ -48,7 +48,7 @@ namespace Bones.Api.Client.AutoGen.ProjectSearch.ByOwner
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteAdditionalData(AdditionalData);
         }
     }

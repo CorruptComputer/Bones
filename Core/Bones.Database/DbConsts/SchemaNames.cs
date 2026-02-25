@@ -20,4 +20,5 @@ internal static class SchemaNames
     internal const string Projects = "Projects";
 
     internal const string System = "System";
+    internal const string System_Queues = "System.Queues";
 }

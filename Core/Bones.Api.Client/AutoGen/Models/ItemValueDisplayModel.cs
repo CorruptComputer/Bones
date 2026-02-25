@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model for the values of an item
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class ItemValueDisplayModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class ItemValueDisplayModel : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>If the field is a number, can it be negative?</summary>
         public bool? CanBeNegative { get; set; } = default!;
         /// <summary>The ID of the field version this value is for</summary>
@@ -28,8 +30,15 @@ namespace Bones.Api.Client.AutoGen.Models
         public List<string> PossibleValues { get; set; } = default!;
         /// <summary>The value of the field</summary>
         public string? Value { get; set; } = default!;
-        /// <summary>The valueType property</summary>
+        /// <summary>The type of the field</summary>
         public global::Bones.Api.Client.AutoGen.Models.FieldType? ValueType { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel"/> and sets the default values.
+        /// </summary>
+        public ItemValueDisplayModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -37,7 +46,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.ItemValueDisplayModel();
         }
         /// <summary>
@@ -64,7 +73,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteBoolValue("canBeNegative", CanBeNegative);
             writer.WriteGuidValue("fieldVersionId", FieldVersionId);
             writer.WriteBoolValue("isRequired", IsRequired);
@@ -73,6 +82,7 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteCollectionOfPrimitiveValues<string>("possibleValues", PossibleValues);
             writer.WriteStringValue("value", Value);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>("valueType", ValueType);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

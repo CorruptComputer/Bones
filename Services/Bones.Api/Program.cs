@@ -6,10 +6,10 @@ using Bones.Database;
 using Bones.Shared.Exceptions;
 using Bones.Shared.Extensions;
 using System.Text.Json;
-using System.Reflection;
 using Bones.Shared.Backend.Extensions;
 using Bones.Database.Operations.System;
 using Bones.Logic.Features.System.TestingDataSetup;
+using Microsoft.OpenApi;
 
 namespace Bones.Api;
 
@@ -65,34 +65,13 @@ public static class Program
             configure.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             configure.JsonSerializerOptions.AllowTrailingCommas = true;
             configure.JsonSerializerOptions.RespectNullableAnnotations = true;
+            configure.JsonSerializerOptions.RespectRequiredConstructorParameters = true;
         });
 
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(options =>
+        builder.Services.AddOpenApi("develop", options =>
         {
-            options.SwaggerDoc("develop", new()
-            {
-                Version = "develop",
-                Title = "Bones API",
-                Description = "Its an API and it does stuff",
-                Contact = new()
-                {
-                    Name = "GitHub Issues",
-                    Url = new("https://github.com/CorruptComputer/Bones/issues")
-                },
-                License = new()
-                {
-                    Name = "MIT License",
-                    Url = new("https://github.com/CorruptComputer/Bones/blob/develop/LICENSE")
-                }
-            });
-
-            string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-            options.SupportNonNullableReferenceTypes();
-            options.NonNullableReferenceTypesAsRequired();
-            options.UseOneOfForPolymorphism();
-            options.UseAllOfForInheritance();
+            options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_1;
         });
 
         builder.Services.AddDbContext<BonesDbContext>();
@@ -134,11 +113,11 @@ public static class Program
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
+            app.MapOpenApi();
             app.UseReDoc(c =>
             {
                 c.DocumentTitle = "Bones API Documentation";
-                c.SpecUrl = "/swagger/develop/swagger.json";
+                c.SpecUrl = "/openapi/develop.json";
             });
 
             // Really clutters up the logs, but is useful sometimes

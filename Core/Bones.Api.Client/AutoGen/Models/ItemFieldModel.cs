@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Model for an item field in a projects settings
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class ItemFieldModel : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class ItemFieldModel : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>Is this field required to have a value?</summary>
         public bool IsRequired { get; set; } = default!;
         /// <summary>Internal ID for the ItemField</summary>
@@ -22,8 +24,15 @@ namespace Bones.Api.Client.AutoGen.Models
         public Guid ItemFieldLatestVersionId { get; set; } = default!;
         /// <summary>The name of this ItemField</summary>
         public string Name { get; set; } = default!;
-        /// <summary>The type property</summary>
+        /// <summary>The FieldType for this field</summary>
         public global::Bones.Api.Client.AutoGen.Models.FieldType? Type { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.ItemFieldModel"/> and sets the default values.
+        /// </summary>
+        public ItemFieldModel()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -31,7 +40,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.ItemFieldModel CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.ItemFieldModel();
         }
         /// <summary>
@@ -55,12 +64,13 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteBoolValue("isRequired", IsRequired);
             writer.WriteGuidValue("itemFieldId", ItemFieldId);
             writer.WriteGuidValue("itemFieldLatestVersionId", ItemFieldLatestVersionId);
             writer.WriteStringValue("name", Name);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.FieldType>("type", Type);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

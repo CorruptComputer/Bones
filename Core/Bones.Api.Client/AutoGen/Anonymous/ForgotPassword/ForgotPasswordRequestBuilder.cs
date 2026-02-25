@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.ForgotPassword
     /// <summary>
     /// Builds and executes requests for operations under \Anonymous\forgot-password
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class ForgotPasswordRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -74,7 +74,7 @@ namespace Bones.Api.Client.AutoGen.Anonymous.ForgotPassword
         /// <summary>
         /// Queues a forgot password email
         /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+        [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
         public partial class ForgotPasswordRequestBuilderPostQueryParameters 
         {
             #pragma warning disable CS1591

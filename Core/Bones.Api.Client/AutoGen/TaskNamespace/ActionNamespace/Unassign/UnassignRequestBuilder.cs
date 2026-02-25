@@ -15,7 +15,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.ActionNamespace.Unassign
     /// <summary>
     /// Builds and executes requests for operations under \Task\action\unassign
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
     public partial class UnassignRequestBuilder : BaseRequestBuilder
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.ActionNamespace.Unassign
         /// <exception cref="global::Bones.Api.Client.AutoGen.Models.ErrorResponse">When receiving a 500 status code</exception>
         public async Task<global::Bones.Api.Client.AutoGen.Models.TaskActionResponse?> PostAsync(global::Bones.Api.Client.AutoGen.Models.UnassignTaskAction body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default, CancellationToken cancellationToken = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
             var requestInfo = ToPostRequestInformation(body, requestConfiguration);
             var errorMapping = new Dictionary<string, ParsableFactory<IParsable>>
             {
@@ -66,7 +66,7 @@ namespace Bones.Api.Client.AutoGen.TaskNamespace.ActionNamespace.Unassign
         /// <param name="requestConfiguration">Configuration for the request such as headers, query parameters, and middleware options.</param>
         public RequestInformation ToPostRequestInformation(global::Bones.Api.Client.AutoGen.Models.UnassignTaskAction body, Action<RequestConfiguration<DefaultQueryParameters>>? requestConfiguration = default)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
+            ArgumentNullException.ThrowIfNull(body);
             var requestInfo = new RequestInformation(Method.POST, UrlTemplate, PathParameters);
             requestInfo.Configure(requestConfiguration);
             requestInfo.Headers.TryAdd("Accept", "application/json");

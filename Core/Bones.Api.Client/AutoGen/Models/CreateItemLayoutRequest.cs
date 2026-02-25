@@ -11,21 +11,30 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// API request to create a new item layout
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class CreateItemLayoutRequest : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class CreateItemLayoutRequest : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The assignee slots to use for the initial layout version</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel> AssigneeSlots { get; set; } = default!;
         /// <summary>The field versions to use for the initial layout version</summary>
-        public List<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair> FieldVersions { get; set; } = default!;
+        public List<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid> FieldVersions { get; set; } = default!;
         /// <summary>The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.</summary>
         public string FriendlyIdPrefix { get; set; } = default!;
-        /// <summary>The layoutUse property</summary>
+        /// <summary>The use for which this layout is intended</summary>
         public global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse? LayoutUse { get; set; } = default!;
         /// <summary>Name of the item layout to create</summary>
         public string Name { get; set; } = default!;
         /// <summary>The ID of the project to create this layout in</summary>
         public Guid ProjectId { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.CreateItemLayoutRequest"/> and sets the default values.
+        /// </summary>
+        public CreateItemLayoutRequest()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -33,7 +42,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.CreateItemLayoutRequest CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.CreateItemLayoutRequest();
         }
         /// <summary>
@@ -45,7 +54,7 @@ namespace Bones.Api.Client.AutoGen.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "assigneeSlots", n => { AssigneeSlots = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel>(global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssigneeSlots'"); } },
-                { "fieldVersions", n => { FieldVersions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldVersions'"); } },
+                { "fieldVersions", n => { FieldVersions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid>(global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldVersions'"); } },
                 { "friendlyIdPrefix", n => { FriendlyIdPrefix = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FriendlyIdPrefix'"); } },
                 { "layoutUse", n => { LayoutUse = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse>(); } },
                 { "name", n => { Name = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Name'"); } },
@@ -58,13 +67,14 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel>("assigneeSlots", AssigneeSlots);
-            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>("fieldVersions", FieldVersions);
+            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid>("fieldVersions", FieldVersions);
             writer.WriteStringValue("friendlyIdPrefix", FriendlyIdPrefix);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse>("layoutUse", LayoutUse);
             writer.WriteStringValue("name", Name);
             writer.WriteGuidValue("projectId", ProjectId);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

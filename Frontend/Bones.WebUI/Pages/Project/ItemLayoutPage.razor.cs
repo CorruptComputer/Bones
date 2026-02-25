@@ -143,7 +143,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
                 {
                     Name = LayoutName,
                     LayoutUse = LayoutUse,
-                    FieldVersions = [..SelectedItemFields.Select(x => new Int32GuidKeyValuePair()
+                    FieldVersions = [..SelectedItemFields.Select(x => new KeyValuePairOfintAndGuid()
                     {
                         Key = x.Key,
                         Value = x.Value.FieldVersionId
@@ -158,7 +158,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
                     ProjectId = ProjectId,
                     Name = LayoutName,
                     LayoutUse = LayoutUse,
-                    FieldVersions = [..SelectedItemFields.Select(x => new Int32GuidKeyValuePair()
+                    FieldVersions = [..SelectedItemFields.Select(x => new KeyValuePairOfintAndGuid()
                     {
                         Key = x.Key,
                         Value = x.Value.FieldVersionId

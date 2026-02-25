@@ -11,9 +11,11 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response for the GetSmtpConfigAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetSmtpConfigResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetSmtpConfigResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The email address to use as the from address for emails sent by this system</summary>
         public string FromAddress { get; set; } = default!;
         /// <summary>The name to use as the from name for emails sent by this system</summary>
@@ -31,13 +33,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>Whether to use SSL for the connection</summary>
         public bool UseSsl { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetSmtpConfigResponse"/> and sets the default values.
+        /// </summary>
+        public GetSmtpConfigResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.GetSmtpConfigResponse"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetSmtpConfigResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetSmtpConfigResponse();
         }
         /// <summary>
@@ -64,7 +73,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteStringValue("fromAddress", FromAddress);
             writer.WriteStringValue("fromName", FromName);
             writer.WriteBoolValue("isEnabled", IsEnabled);
@@ -73,6 +82,7 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteStringValue("server", Server);
             writer.WriteStringValue("username", Username);
             writer.WriteBoolValue("useSsl", UseSsl);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

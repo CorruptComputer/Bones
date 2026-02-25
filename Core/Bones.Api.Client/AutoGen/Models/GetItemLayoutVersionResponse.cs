@@ -11,18 +11,20 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// API response for the GetLatestItemLayoutVersionAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetItemLayoutVersionResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetItemLayoutVersionResponse : IAdditionalDataHolder, IParsable
     {
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The assignee slots for the layout version</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel> AssigneeSlots { get; set; } = default!;
         /// <summary>The field versions</summary>
-        public List<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair> FieldVersions { get; set; } = default!;
+        public List<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid> FieldVersions { get; set; } = default!;
         /// <summary>The prefix at the start of a Friendly ID for items using this layout, up to 6 letters.</summary>
         public string FriendlyIdPrefix { get; set; } = default!;
         /// <summary>The current latest version of this layout</summary>
         public long LatestVersion { get; set; } = default!;
-        /// <summary>The layoutUse property</summary>
+        /// <summary>The uses for which this layout is enabled</summary>
         public global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse? LayoutUse { get; set; } = default!;
         /// <summary>Name of the item layout</summary>
         public string Name { get; set; } = default!;
@@ -31,7 +33,14 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The version number for this ItemLayoutVersion</summary>
         public long Version { get; set; } = default!;
         /// <summary>Is there a version update available for this layout version?</summary>
-        public bool VersionUpdateAvailable { get; private set; } = default!;
+        public bool? VersionUpdateAvailable { get; set; } = default!;
+        /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetItemLayoutVersionResponse"/> and sets the default values.
+        /// </summary>
+        public GetItemLayoutVersionResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -39,7 +48,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetItemLayoutVersionResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetItemLayoutVersionResponse();
         }
         /// <summary>
@@ -51,14 +60,14 @@ namespace Bones.Api.Client.AutoGen.Models
             return new Dictionary<string, Action<IParseNode>>
             {
                 { "assigneeSlots", n => { AssigneeSlots = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel>(global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'AssigneeSlots'"); } },
-                { "fieldVersions", n => { FieldVersions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>(global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldVersions'"); } },
+                { "fieldVersions", n => { FieldVersions = n.GetCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid>(global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid.CreateFromDiscriminatorValue)?.AsList() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FieldVersions'"); } },
                 { "friendlyIdPrefix", n => { FriendlyIdPrefix = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'FriendlyIdPrefix'"); } },
                 { "latestVersion", n => { LatestVersion = n.GetLongValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'LatestVersion'"); } },
                 { "layoutUse", n => { LayoutUse = n.GetEnumValue<global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse>(); } },
                 { "name", n => { Name = n.GetStringValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Name'"); } },
                 { "projectId", n => { ProjectId = n.GetGuidValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'ProjectId'"); } },
                 { "version", n => { Version = n.GetLongValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'Version'"); } },
-                { "versionUpdateAvailable", n => { VersionUpdateAvailable = n.GetBoolValue() ?? throw new NullReferenceException("Unexpected null value for non-nullable property: 'VersionUpdateAvailable'"); } },
+                { "versionUpdateAvailable", n => { VersionUpdateAvailable = n.GetBoolValue(); } },
             };
         }
         /// <summary>
@@ -67,15 +76,17 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.ItemAssigneeSlotModel>("assigneeSlots", AssigneeSlots);
-            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.Int32GuidKeyValuePair>("fieldVersions", FieldVersions);
+            writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.KeyValuePairOfintAndGuid>("fieldVersions", FieldVersions);
             writer.WriteStringValue("friendlyIdPrefix", FriendlyIdPrefix);
             writer.WriteLongValue("latestVersion", LatestVersion);
             writer.WriteEnumValue<global::Bones.Api.Client.AutoGen.Models.ItemLayoutUse>("layoutUse", LayoutUse);
             writer.WriteStringValue("name", Name);
             writer.WriteGuidValue("projectId", ProjectId);
             writer.WriteLongValue("version", Version);
+            writer.WriteBoolValue("versionUpdateAvailable", VersionUpdateAvailable);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

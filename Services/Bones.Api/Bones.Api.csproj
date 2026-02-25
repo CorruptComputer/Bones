@@ -2,6 +2,9 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+
+        <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
+        <OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)/OpenApi</OpenApiDocumentsDirectory>
     </PropertyGroup>
 
     <!-- install the systemd service when installing the deb/rpm -->
@@ -11,27 +14,18 @@
 
     <ItemGroup>
         <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="10.1.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.2" />
-    </ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="10.1.4" />
 
-    <Target Name="CreateOpenApiDocument" AfterTargets="Build" Condition="$(Configuration) == 'Debug'">
-        <Message Text="Installing Swashbuckle.AspNetCore.Cli" Importance="High" />
-        <Exec Command="dotnet tool install Swashbuckle.AspNetCore.Cli" />
-
-        <Message Text="Generating OpenAPI Document" Importance="High" />
-        <Exec Command="BonesBackendConfiguration__UseInMemoryDb=true dotnet swagger tofile --output OpenApi/swagger.json $(OutputPath)$(AssemblyName).dll develop" WorkingDirectory="$(ProjectDir)" />
-    </Target>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\Core\Bones.Logic\Bones.Logic.csproj" />
-        <ProjectReference Include="..\..\Core\Bones.Shared.Backend\Bones.Shared.Backend.csproj" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="10.0.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Models/Accounts/" />
-        <Folder Include="Models/ItemVersions/" />
-        <Folder Include="OpenApi\" />
+        <ProjectReference Include="../../Core/Bones.Logic/Bones.Logic.csproj" />
+        <ProjectReference Include="../../Core/Bones.Shared.Backend/Bones.Shared.Backend.csproj" />
     </ItemGroup>
 
     <ItemGroup Condition="$(Configuration) == 'Release'">

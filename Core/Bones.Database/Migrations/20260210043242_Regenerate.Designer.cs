@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bones.Database.Migrations
 {
     [DbContext(typeof(BonesDbContext))]
-    [Migration("20260207145522_Regenerate")]
+    [Migration("20260210043242_Regenerate")]
     partial class Regenerate
     {
         /// <inheritdoc />
@@ -911,7 +911,7 @@ namespace Bones.Database.Migrations
                     b.ToTable("TaskQueues", "Projects");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.System.ConfirmationEmailDeadQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.Queues.ConfirmationEmailDeadQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -945,10 +945,10 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConfirmationEmailDeadQueue", "System");
+                    b.ToTable("ConfirmationEmailDeadQueue", "System.Queues");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.System.ConfirmationEmailQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.Queues.ConfirmationEmailQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -979,10 +979,10 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConfirmationEmailQueue", "System");
+                    b.ToTable("ConfirmationEmailQueue", "System.Queues");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.System.ForgotPasswordEmailDeadQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.Queues.ForgotPasswordEmailDeadQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1016,10 +1016,10 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ForgotPasswordEmailDeadQueue", "System");
+                    b.ToTable("ForgotPasswordEmailDeadQueue", "System.Queues");
                 });
 
-            modelBuilder.Entity("Bones.Database.DbSets.System.ForgotPasswordEmailQueue", b =>
+            modelBuilder.Entity("Bones.Database.DbSets.System.Queues.ForgotPasswordEmailQueue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1050,7 +1050,7 @@ namespace Bones.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ForgotPasswordEmailQueue", "System");
+                    b.ToTable("ForgotPasswordEmailQueue", "System.Queues");
                 });
 
             modelBuilder.Entity("Bones.Database.DbSets.System.SystemSetting", b =>

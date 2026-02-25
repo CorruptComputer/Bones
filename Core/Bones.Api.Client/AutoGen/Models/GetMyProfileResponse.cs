@@ -11,11 +11,13 @@ namespace Bones.Api.Client.AutoGen.Models
     /// <summary>
     /// Response for the GetMyProfileAsync endpoint
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.2")]
-    public partial class GetMyProfileResponse : IParsable
+    [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0.0.6")]
+    public partial class GetMyProfileResponse : IAdditionalDataHolder, IParsable
     {
         /// <summary>A list of audits that have been performed on the account</summary>
         public List<global::Bones.Api.Client.AutoGen.Models.MyAccountAuditModel> AccountAudits { get; set; } = default!;
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; } = default!;
         /// <summary>The date and time the user was created</summary>
         public DateTimeOffset CreateDateTime { get; set; } = default!;
         /// <summary>The display name of the user, defaults to their email if they don&apos;t have one set</summary>
@@ -31,13 +33,20 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <summary>The date and time the user last set their password</summary>
         public DateTimeOffset PasswordLastSetDateTime { get; set; } = default!;
         /// <summary>
+        /// Instantiates a new <see cref="global::Bones.Api.Client.AutoGen.Models.GetMyProfileResponse"/> and sets the default values.
+        /// </summary>
+        public GetMyProfileResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
         /// <returns>A <see cref="global::Bones.Api.Client.AutoGen.Models.GetMyProfileResponse"/></returns>
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         public static global::Bones.Api.Client.AutoGen.Models.GetMyProfileResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
-            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            ArgumentNullException.ThrowIfNull(parseNode);
             return new global::Bones.Api.Client.AutoGen.Models.GetMyProfileResponse();
         }
         /// <summary>
@@ -64,7 +73,7 @@ namespace Bones.Api.Client.AutoGen.Models
         /// <param name="writer">Serialization writer to use to serialize this model</param>
         public virtual void Serialize(ISerializationWriter writer)
         {
-            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            ArgumentNullException.ThrowIfNull(writer);
             writer.WriteCollectionOfObjectValues<global::Bones.Api.Client.AutoGen.Models.MyAccountAuditModel>("accountAudits", AccountAudits);
             writer.WriteDateTimeOffsetValue("createDateTime", CreateDateTime);
             writer.WriteStringValue("displayName", DisplayName);
@@ -73,6 +82,7 @@ namespace Bones.Api.Client.AutoGen.Models
             writer.WriteDateTimeOffsetValue("emailConfirmedDateTime", EmailConfirmedDateTime);
             writer.WriteBoolValue("isSysAdmin", IsSysAdmin);
             writer.WriteDateTimeOffsetValue("passwordLastSetDateTime", PasswordLastSetDateTime);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

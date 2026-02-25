@@ -3,20 +3,19 @@ using System.Runtime.Serialization;
 using System;
 namespace Bones.Api.Client.AutoGen.Models
 {
+    /// <summary>Type of string matching to use for this</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("ReQuesty", "0")]
-    #pragma warning disable CS1591
     public enum StringValueMatchingType
-    #pragma warning restore CS1591
     {
-        [EnumMember(Value = "exact")]
+        [EnumMember(Value = "Exact")]
         #pragma warning disable CS1591
         Exact,
         #pragma warning restore CS1591
-        [EnumMember(Value = "caseInvariant")]
+        [EnumMember(Value = "CaseInvariant")]
         #pragma warning disable CS1591
         CaseInvariant,
         #pragma warning restore CS1591
-        [EnumMember(Value = "soundex")]
+        [EnumMember(Value = "Soundex")]
         #pragma warning disable CS1591
         Soundex,
         #pragma warning restore CS1591
