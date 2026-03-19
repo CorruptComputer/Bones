@@ -9,14 +9,14 @@
     </PropertyGroup>
 
     <ItemGroup Condition="$(Configuration) == 'Debug'">
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.3" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.5" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.3" />
-        <PackageReference Include="MudBlazor" Version="9.0.0" />
-        <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="9.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.5" />
+        <PackageReference Include="MudBlazor" Version="9.2.0" />
+        <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="9.0.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.3" />
+      <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.5" />
         <Content Remove="wwwroot/appsettings.Development.json" Condition="$(Configuration) == 'Release'" />
     </ItemGroup>
 
