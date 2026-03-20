@@ -35,7 +35,7 @@
                 <RowTemplate>
                     <MudTd DataLabel="Controls">
                         <div style="display: flex;">
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => AddField(context.FieldVersionId))" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(async () => await AddFieldAsync(context.FieldVersionId))" />
                         </div>
                     </MudTd>
                     <MudTd DataLabel="Field Name">@context.Name</MudTd>
@@ -60,9 +60,9 @@
                 <RowTemplate>
                     <MudTd DataLabel="Controls">
                         <div style="display: flex;">
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary" aria-label="move up" OnClick="@(() => MoveFieldUp(context.Value.FieldVersionId))" />
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" aria-label="move down" OnClick="@(() => MoveFieldDown(context.Value.FieldVersionId))" />
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="remove" OnClick="@(() => RemoveField(context.Value.FieldVersionId))" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary" aria-label="move up" OnClick="@(async () => await MoveFieldUpAsync(context.Value.FieldVersionId))" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" aria-label="move down" OnClick="@(async () => await MoveFieldDownAsync(context.Value.FieldVersionId))" />
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="remove" OnClick="@(async () => await RemoveFieldAsync(context.Value.FieldVersionId))" />
                         </div>
                     </MudTd>
                     <MudTd DataLabel="Field Name">@context.Value.Name</MudTd>
@@ -93,7 +93,7 @@
                 <MudSelectItem Value="Bones.Api.Client.AutoGen.Models.SelectionType.Multiple">Multiple</MudSelectItem>
             </MudSelect>
 
-            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => AddAssignee())" />
+            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(async () => await AddAssigneeAsync())" />
 
             <MudTable Items="@ItemAssigneesList" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@ItemAssigneesListLoading" LoadingProgressColor="Color.Info">
                 <HeaderContent>
@@ -106,9 +106,9 @@
                     <MudTd DataLabel="Controls">
                         <MudTd DataLabel="Controls">
                             <div style="display: flex;">
-                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary" aria-label="move up" OnClick="@(() => MoveAssigneeUp(context.Name))" />
-                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" aria-label="move down" OnClick="@(() => MoveAssigneeDown(context.Name))" />
-                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="remove" OnClick="@(() => RemoveAssignee(context.Name))" />
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Primary" aria-label="move up" OnClick="@(async () => await MoveAssigneeUpAsync(context.Name))" />
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Primary" aria-label="move down" OnClick="@(async () => await MoveAssigneeDownAsync(context.Name))" />
+                                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Delete" aria-label="remove" OnClick="@(async () => await RemoveAssigneeAsync(context.Name))" />
                             </div>
                         </MudTd>
                     </MudTd>
