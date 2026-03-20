@@ -175,7 +175,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         }
     }
 
-    private void AddField(Guid FieldVersionId)
+    private async Task AddFieldAsync(Guid FieldVersionId)
     {
         if (SelectedItemFields.Any(x => x.Value.FieldVersionId == FieldVersionId))
         {
@@ -192,10 +192,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         SelectedItemFields.Add(SelectedItemFields.Count, new(field.FieldVersionId, field.Name, field.IsRequired, field.Type!.Value));
         SelectedItemFieldsCount = SelectedItemFields.Count;
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
-    private void MoveFieldDown(Guid FieldVersionId)
+    private async Task MoveFieldDownAsync(Guid FieldVersionId)
     {
         if (!SelectedItemFields.Any(x => x.Value.FieldVersionId == FieldVersionId) || SelectedItemFields[(SelectedItemFields.Count - 1)].FieldVersionId == FieldVersionId)
         {
@@ -209,10 +209,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         SelectedItemFields[fieldToMoveUp.Key] = fieldToMoveDown.Value;
         SelectedItemFieldsCount = SelectedItemFields.Count;
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
-    private void MoveFieldUp(Guid FieldVersionId)
+    private async Task MoveFieldUpAsync(Guid FieldVersionId)
     {
         if (!SelectedItemFields.Any(x => x.Value.FieldVersionId == FieldVersionId) || SelectedItemFields[0].FieldVersionId == FieldVersionId)
         {
@@ -226,10 +226,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         SelectedItemFields[fieldToMoveDown.Key] = fieldToMoveUp.Value;
         SelectedItemFieldsCount = SelectedItemFields.Count;
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
-    private void RemoveField(Guid FieldVersionId)
+    private async Task RemoveFieldAsync(Guid FieldVersionId)
     {
         if (!SelectedItemFields.Any(x => x.Value.FieldVersionId == FieldVersionId))
         {
@@ -252,10 +252,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
         SelectedItemFields.Remove(SelectedItemFields.Count - 1);
         SelectedItemFieldsCount = SelectedItemFields.Count;
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
-    private void AddAssignee()
+    private async Task AddAssigneeAsync()
     {
         if (NewAssigneeName.Trim().Length == 0 || ItemAssigneesList.Any(x => x.Name == NewAssigneeName.Trim()))
         {
@@ -270,10 +270,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             OrderNumber = ItemAssigneesList.Count
         });
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
-    private void MoveAssigneeDown(string assigneeName)
+    private async Task MoveAssigneeDownAsync(string assigneeName)
     {
         if (!ItemAssigneesList.Any(x => x.Name == assigneeName))
         {
@@ -293,10 +293,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
         ItemAssigneesList = [.. ItemAssigneesList.OrderBy(a => a.OrderNumber)];
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
-    private void MoveAssigneeUp(string assigneeName)
+    private async Task MoveAssigneeUpAsync(string assigneeName)
     {
         if (!ItemAssigneesList.Any(x => x.Name == assigneeName))
         {
@@ -316,10 +316,10 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
 
         ItemAssigneesList = [.. ItemAssigneesList.OrderBy(a => a.OrderNumber)];
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
-    private void RemoveAssignee(string assigneeName)
+    private async Task RemoveAssigneeAsync(string assigneeName)
     {
         if (!ItemAssigneesList.Any(x => x.Name == assigneeName))
         {
@@ -335,7 +335,7 @@ public partial class ItemLayoutPage(BonesApiClient apiClient, NavigationManager 
             ItemAssigneesList[i].OrderNumber--;
         }
 
-        Form.Validate();
+        await Form.ValidateAsync();
     }
 
     /// <summary>
