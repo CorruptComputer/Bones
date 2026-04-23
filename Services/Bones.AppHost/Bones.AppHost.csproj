@@ -10,6 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
         <ProjectReference Include="../../Frontend/Bones.WebUI/Bones.WebUI.csproj" />
         <ProjectReference Include="../Bones.Api/Bones.Api.csproj" />
         <ProjectReference Include="../Bones.BackgroundService/Bones.BackgroundService.csproj" />
